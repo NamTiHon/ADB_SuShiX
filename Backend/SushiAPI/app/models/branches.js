@@ -10,7 +10,8 @@ export class Branch {
         hasCarParking,
         supportsDelivery,
         managerId,
-        areaId
+        areaId,
+        menuId
     ) {
         this.branchId = branchId;
         this.name = name;
@@ -23,5 +24,6 @@ export class Branch {
         this.supportsDelivery = supportsDelivery;
         this.managerId = managerId;
         this.areaId = areaId;
+        this.menuId = menuId;
     }
 }
