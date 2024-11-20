@@ -1,12 +1,18 @@
-import express from 'express'
-import bodyParser from 'body-parser'
+import express from 'express';
+import bodyParser from 'body-parser';
+import logger from './middleware/logger.js'
 
 const app = express()
 
+// Body parser
 app.use(bodyParser.json())
 
-//app.use('/api/products', products)
+// Logger middleware
+app.use(logger);
 
-//app.use('/api/orders', orders)
+
+app.get('/', (req, res) => {
+    res.json({msg: "Home Page"})
+});
 
 export default app
