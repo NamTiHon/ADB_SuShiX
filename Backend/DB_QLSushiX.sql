@@ -222,45 +222,120 @@ go
 
 -- Bảng Chi Nhánh:
 alter table ChiNhanh
-	add constraint FK_CN_MaChiNhanh_LSLV_MaChiNhanhCu
-	foreign key (LSLV_MaChiNhanhCu)
-	references ChiNhanh(CN_MaChiNhanh)
+	add constraint FK_CN_MaQuanLi_NV_NhanVien
+	foreign key (CN_MaQuanLi)
+	references NhanVien(NV_MaNhanVien)
 
 alter table ChiNhanh
-	add constraint FK_CN_MaChiNhanh_DT_MaChiNhanh
-	foreign key (DT_MaChiNhanh)
-	references ChiNhanh(CN_MaChiNhanh)
-
-alter table ChiNhanh
-	add constraint FK_CN_MaChiNhanh_KM_MaChiNhanh
-	foreign key (KM_MaChiNhanh)
-	references ChiNhanh(CN_MaChiNhanh)
-
-alter table ChiNhanh
-	add constraint FK_CN_MaChiNhanh_BP_NV_MaChiNhanh
-	foreign key (BP_NV_MaChiNhanh)
-	references ChiNhanh(CN_MaChiNhanh)
-
--- Bảng Khu vực:
-alter table KhuVuc
-	add constraint FK_KV_MaKhuVuc_CN_MaKhuVuc
+	add constraint FK_CN_MaKhuVuc_KV_MaKhuVuc
 	foreign key (CN_MaKhuVuc)
 	references KhuVuc(KV_MaKhuVuc)
 
--- Bảng thực đơn:
-alter table ThucDon
+-- Bảng Khu vực:
+alter table KhuVuc
 	add constraint FK_KV_MaThucDon_TD_MaThucDon
 	foreign key (KV_MaThucDon)
 	references ThucDon(TD_MaThucDon)
 
+--Bảng Danh mục trong thực đơn
+alter table DanhMuc_ThucDon
+	add constraint FK_DM_TD_MaThucDon_TD_MaThucDon
+	foreign key (DM_TD_MaThucDon)
+	references ThucDon(TD_MaTHucDon)
 
+alter table DanhMuc_ThucDon
+	add constraint FK_DM_TD_MaDanhMuc_DM_MaDanhMuc
+	foreign key (DM_TD_MaDanhMuc)
+	references DanhMuc(DM_MaDanhMuc)
 
+--Bảng Món ăn
+alter table MonAn
+	add constraint FK_MA_MaDanhMuc_DM_MaDanhMuc
+	foreign key (MA_MaDanhMuc)
+	references DanhMuc(DM_MaDanhMuc)
 
+--Bảng Món được đặt
+alter table MonDuocDat
+	add constraint FK_MDD_MaMon_MA_MaMon
+	foreign key (MDD_MaMon)
+	references MonAn(MA_MaMonAn)
 
+alter table MonDuocDat
+	add constraint FK_MDD_MaPhieu_PDM_MaPhieu
+	foreign key (MDD_MaPhieu)
+	references PhieuDatMon(PDM_MaPhieu)
 
+--Bảng Phiếu đặt món
+alter table PhieuDatMon
+	add constraint FK_PDM_SDT_KH_KH_SDT
+	foreign key (PDM_SDT_KH)
+	references KhachHang(KH_SDT)
 
+alter table PhieuDatMon
+	add constraint FK_PDM_MaNhanVien_NV_MaNhanVien
+	foreign key (PDM_MaNhanVien)
+	references KhachHang(NV_MaNhanVien)
 
+--Bảng Đặt trước
+alter table DatTruoc
+	add constraint FK_DT_MaChiNhanh_CN_MaChiNHanh
+	foreign key (DT_MaChiNhanh)
+	references ChiNhanh(CN_MaChiNhanh)
 
+--Bảng Thẻ thành viên
+alter table TheThanhVien
+	add constraint FK_TTV_LoaiThe_LT_TenLoaiThe
+	foreign key (TTV_LoaiThe)
+	references LoaiThe(LT_TenLoaiThe)
+
+alter table TheThanhVien
+	add constraint FK_TTV_SDT_KH_KH_SDT
+	foreign key (TTV_SDT_KH)
+	references KhachHang(KH_SDT)
+
+alter table TheThanhVien
+	add constraint FK_TTV_MaNhanVien_NV_MaNhanVien
+	foreign key (TTV_MaNhanVien)
+	references NhanVien(NV_MaNhanVien)
+
+--Bảng Khuyến mãi
+alter table KhuyenMai
+	add constraint FK_KM_MaChiNhanh_CN_MaChiNhanh
+	foreign key (KM_MaChiNhanh)
+	references ChiNhanh(CN_MaChiNhanh)
+
+alter table KhuyenMai
+	add constraint FK_KM_LoaiTheApDung_LT_TenLoaiThe
+	foreign key (KM_LoaiTheApDung)
+	references LoaiThe(LT_TenLoaiThe)
+
+--Bảng Phiếu đánh giá
+alter table PhieuDanhGia
+	add constraint FK_PDG_MaHoaDon_HD_MaHoaDon
+	foreign key (PDG_MaHoaDon)
+	references HoaDon(HD_MaHoaDon)
+
+--Bảng Bộ phận của nhân viên
+alter table BoPhan_NhanVien
+	add constraint FK_BP_NV_MaNhanVien_NV_MaNhanVien
+	foreign key (BP_NV_MaNhanVien)
+	references NhanVien(NV_MaNhanVien)
+
+alter table BoPhan_NhanVien
+	add constraint FK_BP_NV_MaChiNhanh_CN_MaChiNhanh
+	foreign key (BP_NV_MaChiNhanh)
+	references ChiNhanh(CN_MaChiNhanh)
+
+--Bảng Lịch sử làm việc
+alter table LichSuLamViec
+	add constraint FK_LSLV_MaChiNhanhCu_CN_MaChiNhanh
+	foreign key (LSLV_MaChiNhanhCu)
+	references ChiNhanh(CN_MaChiNhanh)
+
+alter table LichSuLamViec
+	add constraint FK_LSLV_MaNhanVien_NV_BangNhanVien
+	foreign key (LSLV_MaNhanVien)
+	references NhanVien(NV_MaNhanVien)
 
 -- Xóa database:
 -- use master;
