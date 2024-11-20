@@ -1,86 +1,116 @@
 import { Dish } from '../models/dish.js';
 
+// Dữ liệu mẫu
+let dishes = [
+    { dishId: 1, name: 'Sushi Roll', currentPrice: 150000, portion: 2, isAvailable: true, supportsDelivery: true, categoryId: 1 },
+    { dishId: 2, name: 'Sashimi Set', currentPrice: 300000, portion: 1, isAvailable: true, supportsDelivery: true, categoryId: 2 },
+    { dishId: 3, name: 'Tempura', currentPrice: 120000, portion: 2, isAvailable: false, supportsDelivery: false, categoryId: 3 },
+];
+
 export class DishController {
-    // Lấy danh sách món ăn
+    // @desc   Get all dishes
+    // @route  GET /api/dishes
     static async getDishes(req, res) {
         try {
-            // Dữ liệu mẫu
-            const dishes = [
-                { dishId: 1, name: 'Sushi Roll', currentPrice: 150000, portion: 2, isAvailable: true, supportsDelivery: true, categoryId: 1 },
-                { dishId: 2, name: 'Sashimi Set', currentPrice: 300000, portion: 1, isAvailable: true, supportsDelivery: true, categoryId: 2 },
-                { dishId: 3, name: 'Tempura', currentPrice: 120000, portion: 2, isAvailable: false, supportsDelivery: false, categoryId: 3 },
-            ];
-
-            res.status(200).json(dishes); // Trả về danh sách món ăn
+            res.status(200).json(dishes);
         } catch (error) {
             res.status(500).json({ message: 'Failed to retrieve dishes', error });
         }
     }
 
-    // Thêm món ăn mới
+    // @desc   Get a single dish
+    // @route  GET /api/dishes/:dishId
+    static async updateDish(req, res) {
+    try {
+        const dishId = parseInt(req.params.dishId);
+        const dish = dishes.find((dish) => dish.dishId === dishId); 
+
+        if (!dish) {
+            return res.status(404).json({ message: `Dish with id ${dishId} not found` });
+        }
+
+        dish.name = req.body.name || dish.name;
+        dish.currentPrice = req.body.currentPrice || dish.currentPrice;
+        dish.portion = req.body.portion || dish.portion;
+        dish.isAvailable = req.body.isAvailable ?? dish.isAvailable;
+        dish.supportsDelivery = req.body.supportsDelivery ?? dish.supportsDelivery;
+        dish.categoryId = req.body.categoryId || dish.categoryId;
+
+        // Return the updated dish
+        res.status(200).json(dish);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update dish', error });
+    }
+}
+
+
+    // @desc    Create new dish
+    // @route   POST /api/dishes
     static async addDish(req, res) {
-        const { name, currentPrice, portion, isAvailable, supportsDelivery, categoryId } = req.body;
-
         try {
-            if (!name || !currentPrice || !portion) {
-                return res.status(400).json({ message: 'Missing required fields: name, currentPrice, portion' });
-            }
-
-            // Dữ liệu mẫu (thêm món ăn vào danh sách)
             const newDish = {
-                dishId: Math.floor(Math.random() * 1000), // Tạo ID ngẫu nhiên
-                name,
-                currentPrice,
-                portion,
-                isAvailable: isAvailable ?? true,
-                supportsDelivery: supportsDelivery ?? true,
-                categoryId,
+                dishId: dishes.length + 1,
+                name: req.body.name,
+                currentPrice: req.body.currentPrice,
+                portion: req.body.portion,
+                isAvailable: req.body.isAvailable ?? true,  // Default to true if not provided
+                supportsDelivery: req.body.supportsDelivery ?? true,  // Default to true if not provided
+                categoryId: req.body.categoryId
             };
 
-            res.status(201).json(newDish); // Trả về món ăn vừa tạo
+            if (!newDish.name || !newDish.currentPrice || !newDish.portion) {
+                const error = new Error('Please include a name, price, and portion for the dish');
+            }
+
+            dishes.push(newDish);
+            res.status(201).json(dishes);
         } catch (error) {
-            res.status(500).json({ message: 'Failed to add dish', error });
+            res.status(500).json({ message: 'An unexpected error occurred while adding the dish', error });
         }
     }
 
-    // Cập nhật món ăn
+
+    // @desc    Update dish
+    // @route   PUT /api/dishes/:dishId
     static async updateDish(req, res) {
-        const { dishId } = req.params;
-        const { name, currentPrice, portion, isAvailable, supportsDelivery, categoryId } = req.body;
-
         try {
-            // Dữ liệu mẫu (giả sử tìm thấy món ăn)
-            const dish = { dishId, name: 'Sushi Roll', currentPrice: 150000, portion: 2, isAvailable: true, supportsDelivery: true, categoryId };
+            const dishId = parseInt(req.params.dishId); 
+            const dish = dishes.find((dish) => dish.dishId === dishId); 
 
-            if (!dish) return res.status(404).json({ message: 'Dish not found' });
+            if (!dish) {
+                return res.status(404).json({ message: `Dish with id ${dishId} not found` });
+            }
 
-            // Cập nhật thông tin món ăn
-            dish.name = name || dish.name;
-            dish.currentPrice = currentPrice || dish.currentPrice;
-            dish.portion = portion || dish.portion;
-            dish.isAvailable = isAvailable ?? dish.isAvailable;
-            dish.supportsDelivery = supportsDelivery ?? dish.supportsDelivery;
-            dish.categoryId = categoryId || dish.categoryId;
+            dish.name = req.body.name || dish.name;
+            dish.currentPrice = req.body.currentPrice || dish.currentPrice;
+            dish.portion = req.body.portion || dish.portion;
+            dish.isAvailable = req.body.isAvailable ?? dish.isAvailable;
+            dish.supportsDelivery = req.body.supportsDelivery ?? dish.supportsDelivery;
+            dish.categoryId = req.body.categoryId || dish.categoryId;
 
-            res.status(200).json(dish); // Trả về món ăn đã cập nhật
+            res.status(200).json(dish);
         } catch (error) {
             res.status(500).json({ message: 'Failed to update dish', error });
         }
     }
 
-    // Xóa món ăn
+
+    // @desc    Delete dish
+    // @route   Delete /api/dishes/:dishId
     static async deleteDish(req, res) {
-        const { dishId } = req.params;
         try {
-            // Dữ liệu mẫu (giả sử tìm thấy món ăn)
-            const dish = { dishId, name: 'Sushi Roll', currentPrice: 150000, portion: 2, isAvailable: true, supportsDelivery: true, categoryId: 1 };
+            const dishId = parseInt(req.params.dishId);
+            const dish = dishes.find((dish) => dish.dishId === dishId);
 
-            if (!dish) return res.status(404).json({ message: 'Dish not found' });
+            if (!dish) {
+                return res.status(404).json({ message: `Dish with id ${dishId} not found` });
+            }
 
-            // Xóa món ăn
-            res.status(204).send(); // Trả về status 204 khi xóa thành công
+            dishes = dishes.filter((dish) => dish.dishId !== dishId);
+            res.status(204).json(dishes);
         } catch (error) {
             res.status(500).json({ message: 'Failed to delete dish', error });
         }
     }
+
 }
