@@ -1,0 +1,28 @@
+/* FILE: Menu.css */
+body {
+  font-family: Arial, sans-serif;
+}
+
+
+.menu-container {
+  text-align: center;
+}
+
+.menu-header {
+  margin-bottom: 20px;
+}
+
+.dish-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.dish-item {
+  flex: 1;
+  margin: 20px 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  width: 200px;
+}
