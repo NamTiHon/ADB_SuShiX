@@ -222,8 +222,8 @@ go
 -- Tạo khóa ngoại:
 -- Bảng Chi Nhánh:
 alter table ChiNhanh
-	add constraint FK_CN_MaQuanLi_NV_NhanVien
-	foreign key (CN_MaQuanLi)
+	add constraint FK_CN_MaQuanLy_NV_NhanVien
+	foreign key (CN_MaQuanLy)
 	references NhanVien(NV_MaNhanVien)
 
 alter table ChiNhanh
@@ -258,7 +258,7 @@ alter table MonAn
 alter table MonDuocDat
 	add constraint FK_MDD_MaMon_MA_MaMon
 	foreign key (MDD_MaMon)
-	references MonAn(MA_MaMonAn)
+	references MonAn(MA_MaMon)
 
 alter table MonDuocDat
 	add constraint FK_MDD_MaPhieu_PDM_MaPhieu
@@ -274,7 +274,7 @@ alter table PhieuDatMon
 alter table PhieuDatMon
 	add constraint FK_PDM_MaNhanVien_NV_MaNhanVien
 	foreign key (PDM_MaNhanVien)
-	references KhachHang(NV_MaNhanVien)
+	references NhanVien(NV_MaNhanVien)
 
 --Bảng Đặt trước
 alter table DatTruoc
@@ -470,4 +470,4 @@ alter table LichSuLamViec
 	check (LSLV_NgayBatDau < LSLV_NgayKetThuc)
 -- Xóa database:
 -- use master;
--- drop database DB_SushiX;
+-- drop database DB_SushiX;6
