@@ -20,6 +20,10 @@ body {
     font-weight: bold;
     color: #ff0099;
 }
+.logo a {
+    color: #ff0099;
+    text-decoration: none;
+}
   
 .menu ul {
     display: flex;

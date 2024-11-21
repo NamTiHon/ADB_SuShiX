@@ -3,13 +3,13 @@ import '../css/nav.css';
 function Nav() {
     return (
         <nav className="navbar">
-            <div className="logo">SuShiX</div>
+            <div className="logo"><a href="/home">SuShiX</a></div>
             <div className="menu">
                 <ul>
-                    <li><a href="#">Trang Chủ</a></li>
-                    <li><a href="#">Thực đơn<i className="fas fa-angle-down"></i></a></li>
+                    <li><a href="/home">Trang Chủ</a></li>
+                    <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
                     <li><a href="#">Dịch vụ <i className="fas fa-angle-down"></i></a></li>
-                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
                 </ul>
             </div>
             <div className="search">

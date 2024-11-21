@@ -1,0 +1,40 @@
+.about-page {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff; /* Màu nền trắng */
+    color: #333; /* Màu chữ đen nhạt */
+}
+
+.about-hero {
+    background-color: #ffe6f2; /* Màu nền hồng nhạt */
+    padding: 20px;
+    text-align: center;
+    color: #cc0052; /* Màu chữ hồng đậm */
+}
+
+.about-content {
+    padding: 20px;
+    background-color: #fff; /* Màu nền trắng */
+    color: #333; /* Màu chữ đen nhạt */
+}
+
+.about-content h3 {
+    margin-top: 20px;
+    color: #cc0052; /* Màu chữ hồng đậm */
+}
+
+.about-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.about-content ul li {
+    margin: 10px 0;
+    color: #cc0052; /* Màu chữ hồng đậm */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #cc0052; /* Màu nền hồng đậm */
+    color: #fff; /* Màu chữ trắng */
+}
