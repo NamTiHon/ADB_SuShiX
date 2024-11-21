@@ -1,0 +1,68 @@
+/* home.css */
+.img {
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 200px;
+}
+  
+.main-image {
+    width: 500px; /* Điều chỉnh kích thước hình ảnh */
+    height: 500px; /* Điều chỉnh kích thước hình ảnh */
+    border-radius: 50%; /* Làm cho hình ảnh thành hình tròn */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border: 2px solid #f5cae4; /* Thêm viền màu hồng */
+    box-shadow: 5;
+}
+
+.home {
+    font-family: 'Roboto', sans-serif;
+}
+  
+.content-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+  
+.hero-section {
+    max-width: 600px;
+    justify-items: center;
+    margin-left: 200px;
+    margin-top: 20px;
+}
+h1{
+    font-size: 50px;
+    font-family:'Courier New', Courier, monospace;
+}
+.highlight {
+    width: 100px;
+    color: #ff0099;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    justify-content: center;
+}
+
+p{
+    font-size: 20px;
+}
+
+.main-image:hover {
+    transform: scale(1.1); /* Phóng to hình ảnh khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Tăng bóng đổ khi hover */
+}
+
+button {
+    background-color: #ff0099;
+    border: 1px solid #f5cae4;
+    border-radius: 30px;
+    color: white;
+    padding: 15px 30px;
+    font-size: 16px;
+    margin: 10px;
+}
+
+button:hover{
+    transform: scale(1.1);
+    background-color: #f5cae4;
+    color: black;
+}

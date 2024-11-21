@@ -11,7 +11,7 @@ body {
     justify-content: space-between;
     padding: 10px 20px;
     background-color: white;
-    border-bottom: 1px solid #898989;
+    border-bottom: 1px solid #cccccc;
 }
   
 .logo {
@@ -59,8 +59,9 @@ body {
   
 .search input {
     width: 500px;
+    height: 30px;
     padding: 8px 8px;
-    border: 1px solid #534d4d;
+    border: 1px solid #c1c0c0;
     border-radius: 20px;
     font-size: 16px;
     outline: none;
@@ -90,6 +91,19 @@ body {
     background-color: #e60085;
 }
 
+.checkorder {
+    background-color: #ffeaf5;
+    color: rgb(0, 0, 0);
+    padding: 8px 15px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.checkorder :hover {
+    color:#e60085;
+}
 .cart-icon {
     display: flex;
     align-items: center;
@@ -111,4 +125,4 @@ body {
 .cart :hover {
     color:#e60085;
     text-decoration: none;
-  }
+}

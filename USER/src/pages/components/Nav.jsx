@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/nav.css';
+
 function Nav() {
     return (
         <nav className="navbar">
@@ -8,7 +9,6 @@ function Nav() {
                 <ul>
                     <li><a href="/home">Trang Chủ</a></li>
                     <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
-                    <li><a href="#">Dịch vụ <i className="fas fa-angle-down"></i></a></li>
                     <li><a href="/about">Về chúng tôi</a></li>
                 </ul>
             </div>
@@ -18,6 +18,9 @@ function Nav() {
             </div>
             <div className="cart">
                 <a href="#" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
+            </div>
+            <div className="checkorder">
+                <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
             </div>
             <a href="#" className="login">Đăng nhập</a>
         </nav>
