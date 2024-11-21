@@ -1,21 +1,12 @@
 import React from 'react';
+import Nav from './Nav';
 import '../css/home.css';
 
 function Home() {
   /*code js*/
   return (
     <div className="Home">
-      <header>
-        <h1>Chào mừng đến với SushiX</h1>
-        <nav>
-          <ul>
-            <li><a href="#">Trang chủ</a></li>
-            <li><a href="#">Thực đơn</a></li>
-            <li><a href="#">Đặt hàng</a></li>
-            <li><a href="#">Liên hệ</a></li>
-          </ul>
-        </nav>
-      </header>
+      <Nav />
       <main>
         <section className="hero">
           <h2>Sushi tươi ngon giao đến tận nhà</h2>
