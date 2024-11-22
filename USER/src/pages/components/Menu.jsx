@@ -6,39 +6,38 @@ const MenuItem = ({ dish }) => {
     return (
         <div className="dish-item">
             <img src={dish.image} alt={dish.name} />
-            <h2>{dish.name}</h2>
-            <p>{dish.info}</p>
-            <p>Giá: {dish.price} VND</p>
-            <button>Chọn</button>
-            <button>Chi tiết</button>
+            <h2 className="dish-name">{dish.name}</h2>
+            <p className="dish-price">{dish.price} đ</p>
+            <p className="dish-button-select">Chọn</p>
+            {/* <button>Chi tiết</button> */}
         </div>
     );
 }
 
 const Menu = () => {
     const typedishes = [
-        { name: 'Sushi', info: 'Món ăn truyền thống của Nhật Bản' },
-        { name: 'Ramen', info: 'Món mì nổi tiếng của Nhật Bản' },
-        { name: 'Tempura', info: 'Món chiên giòn của Nhật Bản' },
-        { name: 'Sashimi', info: 'Món cá sống tươi ngon' },
-        { name: 'Takoyaki', info: 'Món bánh bạch tuộc nổi tiếng' },
-        { name: 'Okonomiyaki', info: 'Món bánh xèo Nhật Bản' }
+        { name: 'Sushi', info: 'Món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với hải sản, rau củ, hoặc các nguyên liệu khác, thường được cuốn trong rong biển.' },
+        { name: 'Khai vị', info: 'Khai vị là các món ăn nhẹ được phục vụ đầu bữa để kích thích vị giác, thường có hương vị tinh tế và dễ ăn.' },
+        { name: 'Tempura', info: 'Gồm hải sản hoặc rau củ được tẩm bột và chiên giòn, tạo lớp vỏ nhẹ và xốp.' },
+        { name: 'Udon', info: 'Món mì Nhật Bản với sợi mì dày, dai, thường được phục vụ trong nước dùng thanh nhẹ kèm rau củ và thịt.' },
+        { name: 'Hotpot', info: 'Món lẩu phổ biến ở châu Á, với nồi nước dùng sôi để nhúng các loại thịt, hải sản, rau củ, và nấm, thường ăn kèm nước chấm.' },
+        { name: 'Lunch set', info: 'Gồm nhiều món nhỏ được kết hợp trong một khay hoặc đĩa, thường bao gồm món chính, cơm, súp, rau, và tráng miệng, nhằm mang lại bữa ăn cân bằng dinh dưỡng.' }
     ];
 
     const dishes = [
-        { name: 'Sushi gà', info: 'Món sushi cùng với gà', image: sushi, price: 100000 }
+        { name: 'Dish Name', info: 'Dish info', image: sushi, price: 100000 }
     ]
 
     return (
         <div>
             <div className="menu-container">
-                <h1 className="menu-header">Thực đơn</h1>
-                <p>Chọn món ăn yêu thích của bạn</p>
+                {/* <h1 className="menu-header">Thực đơn</h1> */}
+                {/* <p>Chọn món ăn yêu thích của bạn</p> */}
                 <div className="dish-list">
                     {typedishes.map((dish, index) => (
-                        <div key={index} className="dish-item">
-                            <h2>{dish.name}</h2>
-                            <p>{dish.info}</p>
+                        <div key={index} className="dish-list">
+                            <h2 className="type-header">{dish.name}</h2>
+                            <p className="description">{dish.info}</p>
                         </div>
                     ))}
                 </div>
