@@ -11,7 +11,7 @@ body {
   margin-bottom: 20px;
 }
 
-.dish-list {
+.menu-list {
   /* border: 1px solid #ccc; */
   display: flex;
   flex-wrap: wrap;
@@ -42,7 +42,8 @@ body {
 
 .dish-item {
   /* padding: 10px 0px; */
-  border: 1px solid #000000;
+  border-radius: 10px;
+  border: 1px solid #c4c4c4;
   flex: 1;
   font-size-adjust: 0.35;
   font-size: 1em;
@@ -55,19 +56,18 @@ body {
 }
 
 .dish-item img {
-  /* size-adjust: 0.4em; */
-  width:inherit;
-  max-height: 50%;
-  max-height: 50;
-  object-fit: fill;
-  border-bottom: 1px solid #000000;
+  width: inherit;
+  border-radius: 10px 10px 0 0;
+  max-height: 191px;
+  object-fit: cover;
+  border-bottom: 1px solid #c4c4c4;
 }
 
 .dish-name {
-  color: #f80c0c;
+  color: #ff0000;
   display: inline-block;
-  margin:0;
-  padding:0;
+  margin: 10px 10px;
+  padding: 0;
   float: left;
   font-size: xx-large;
 }
@@ -75,24 +75,39 @@ body {
 .dish-price {
   color: #0073ff;
   float: right;
-  margin:0;
-  padding:0;
+  margin: 10px 10px;
+  padding: 0;
   display: inline-block;
-  font-size:x-large;
+  font-size: x-large;
 }
 
 .dish-button-select {
-  /* margin: 4px 2px; */
-  background-color: #ff0099;
+  background-color: #000000;
   border-radius: 10px;
-  bottom: 0;
-  color: white;
+  color: #ffffff;
   cursor: pointer;
-  display: inline-block;
-  font-size: 16px;
-  padding: 10px 24px;
+  display: inline;
+  font-size: 21px;
   position: absolute;
-  right: 0;
-  text-align: left;
-  text-decoration: none;
+  bottom: 5px;
+  right: 5px;
+  margin: 0;
+  padding: 5px 30px;
+}
+
+.dish-button-select:hover {
+  background-color: #878787;
+}
+
+.dish-button-info {
+  cursor: pointer;
+  position: absolute;
+  bottom:0;
+  left:0;
+  margin: 10px 10px;
+  padding:0;
+}
+
+.dish-button-info:hover {
+  text-decoration:underline;
 }

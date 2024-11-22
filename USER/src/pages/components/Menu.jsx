@@ -2,20 +2,29 @@ import React from 'react';
 import '../css/menu.css';
 import sushi from '../img/sushi.jpg';
 
-const MenuItem = ({ dish }) => {
+const MenuItem = ({ menu }) => {
+    return (
+        <div className="dish-list">
+            <h2 className="type-header">{menu.name}</h2>
+            <p className="description">{menu.info}</p>
+        </div>
+    )
+}
+
+const DishItem = ({ dish }) => {
     return (
         <div className="dish-item">
             <img src={dish.image} alt={dish.name} />
             <h2 className="dish-name">{dish.name}</h2>
             <p className="dish-price">{dish.price} đ</p>
-            <p className="dish-button-select">Chọn</p>
-            {/* <button>Chi tiết</button> */}
+            <a className="dish-button-info">Chi tiết</a>
+            <a className="dish-button-select"><i class="fa fa-cart-plus"></i> Chọn</a>
         </div>
     );
 }
 
 const Menu = () => {
-    const typedishes = [
+    const menuitems = [
         { name: 'Sushi', info: 'Món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với hải sản, rau củ, hoặc các nguyên liệu khác, thường được cuốn trong rong biển.' },
         { name: 'Khai vị', info: 'Khai vị là các món ăn nhẹ được phục vụ đầu bữa để kích thích vị giác, thường có hương vị tinh tế và dễ ăn.' },
         { name: 'Tempura', info: 'Gồm hải sản hoặc rau củ được tẩm bột và chiên giòn, tạo lớp vỏ nhẹ và xốp.' },
@@ -30,21 +39,20 @@ const Menu = () => {
 
     return (
         <div>
-            <div className="menu-container">
-                {/* <h1 className="menu-header">Thực đơn</h1> */}
-                {/* <p>Chọn món ăn yêu thích của bạn</p> */}
-                <div className="dish-list">
-                    {typedishes.map((dish, index) => (
-                        <div key={index} className="dish-list">
-                            <h2 className="type-header">{dish.name}</h2>
-                            <p className="description">{dish.info}</p>
+            <div>
+                <div className="menu-list">
+                    {menuitems.map((menu, index) => (
+                        <div key={index} className="menu-list">
+                            <a>
+                                <MenuItem key={index} menu={menu} />
+                            </a>
                         </div>
                     ))}
                 </div>
             </div>
             <div>
                 {dishes.map((dish, index) => (
-                    <MenuItem key={index} dish={dish} />
+                    <DishItem key={index} dish={dish} />
                 ))}
             </div>
         </div>
