@@ -6,6 +6,9 @@ const router = express.Router();
 // Lấy danh sách món ăn
 router.get('/', DishController.getDishes);
 
+// Lấy món ăn
+router.get('/:dishId', DishController.getDish);
+
 // Thêm món ăn mới
 router.post('/', DishController.addDish);
 
