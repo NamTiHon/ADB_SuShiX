@@ -5,6 +5,7 @@ import logger from './middleware/logger.js';
 import dishRoutes from './routes/dishRoutes.js';
 import authRoutes from './routes/authRoutes.js';  // Import các route của auth
 
+
 const app = express()
 
 app.use(express.json());  // Middleware to parse JSON bodies

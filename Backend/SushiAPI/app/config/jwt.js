@@ -1,18 +1,22 @@
 import jwt from 'jsonwebtoken';
 
-// The secret key for signing the JWT tokens, should be stored in an environment variable
-const JWT_SECRET = process.env.JWT_SECRET;
+//const JWT_SECRET = process.env.JWT_SECRET;
+//console.log('JWT_SECRET:', process.env.JWT_SECRET);  // Should print 'strong-jwt-secret-key'
 
-// Function to generate JWT token
+const JWT_SECRET = 'strong-jwt-secret-key';  // JWT secret key
+
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is not defined in environment variables');  // Early error check
+}
+
 export const generateToken = (user) => {
-    const payload = { id: user.id, email: user.email, role: user.role };
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });  // Token expires in 1 hour
+    const payload = { id: user.id, email: user.email };  // Creating payload
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });  // Signing the JWT token
 };
 
-// Function to verify JWT token
 export const verifyToken = (token) => {
     try {
-        return jwt.verify(token, JWT_SECRET);  // Verify the token using the secret
+        return jwt.verify(token, JWT_SECRET);  // Verifying the JWT token
     } catch (error) {
         return null;  // Return null if token is invalid or expired
     }
