@@ -6,9 +6,34 @@ import Footer from './Footer';
 import '../css/home.css';
 
 function Home() {
+  const popularItems = [
+    {
+      title: 'Sushi Set',
+      image: '/img/sushi-set.jpg',
+      description: 'Combo sushi đặc biệt'
+    },
+    {
+      title: 'Ramen',
+      image: '/img/ramen.jpg',
+      description: 'Mì Ramen truyền thống'
+    },
+    {
+      title: 'Tempura',
+      image: '/img/tempura.jpg',
+      description: 'Tempura giòn rụm'
+    },
+    {
+      title: 'Bento Box',
+      image: '/img/bento.jpg',
+      description: 'Hộp cơm Bento'
+    }
+  ];
+
   return (
     <div className="home">
       <Nav />
+      
+      {/* Hero Section */}
       <div className="content-container">
         <div className="hero-section">
           <h1>
@@ -29,6 +54,23 @@ function Home() {
           <img src="/img/home.jpg" alt="SuShiX" className="main-image" />
         </div>
       </div>
+
+      {/* Popular Section */}
+      <div className="popular-section">
+        <h2>Món mục phổ biến</h2>
+        <div className="popular-grid">
+          {popularItems.map((item, index) => (
+            <div className="popular-card" key={index}>
+              <img src={item.image} alt={item.title} />
+              <div className="card-content">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
       <Footer />
     </div>
   );
