@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../context/UserContext.js';
+import { Link } from 'react-router-dom';
 import '../css/nav.css';
 
 function Nav() {
+    const { user } = useContext(UserContext);
+
     return (
         <nav className="navbar">
             <div className="logo"><a href="/home">SuShiX</a></div>
@@ -22,7 +26,14 @@ function Nav() {
             <div className="checkorder">
                 <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
             </div>
-            <a href="#" className="login">Đăng nhập</a>
+            
+            {user ? (
+                <div className="user-profile">
+                    <span className="username">{user.email}</span>
+                </div>
+            ) : (
+                <Link to="/login" className="login">Đăng nhập</Link>
+            )}
         </nav>
     );
 }

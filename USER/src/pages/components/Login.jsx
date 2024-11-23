@@ -1,96 +1,80 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// src/pages/components/Login.jsx
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
+import '../css/login.css';
+
+const Login = () => {
+    const navigate = useNavigate();
+    const { setCurrentUser } = useContext(UserContext);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
 
+    const users = [
+        { email: 'user1@gmail.com', password: 'user123', name: 'User One' },
+        { email: 'admin@gmail.com', password: 'admin123', name: 'Admin' },
+        { email: 'test@gmail.com', password: 'test123' }
+    ];
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+            setCurrentUser(user);
+            navigate('/');
+        } else {
+            setError('Email hoặc mật khẩu không chính xác');
+        }
+    };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const Navigation = () => {
-//     return (
-//         <nav>
-//             <ul>
-//                 <li>
-//                     <Link to="/">Trang chủ</Link>
-//                 </li>
-//                 <li>
-//                     <Link to="/user/services">Dịch vụ</Link>
-//                 </li>
-//                 <li>
-//                     <Link to="/menu">Thực đơn</Link>
-//                 </li>
-//                 <li>
-//                     <Link to="/about">Về chúng tôi</Link>
-//                 </li>
-//             </ul>
-//         </nav>
-//     );
-// };
-
-// const Login = () => {
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         // Handle login logic here
-//         console.log('Email:', email);
-//         console.log('Password:', password);
-//     };
-
-//     return (
-//         <div className="login-container">
-//             <Home />
-//             <h2>Login</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <label>
-//                     Email:
-//                 </label>
-//                 <input type ="email" id="email" placeholder="Email"/>
-
-//                 {/* <label>
-//                     Password:
-//                     <input
-//                         type="password"
-//                         value={password}
-//                         onChange={(e) => setPassword(e.target.value)}
-//                         required
-//                     />
-//                 </label> */}
-//                 <button type="submit">Login</button>
-//             </form>
-//         </div>
-//     );
-// };
-
-// const LoginPage = () => {
-//     return (
-//         <>
-//             <Navigation />
-//             <Login />
-//         </>
-//     );
-// };
-
-// export default LoginPage;
-
-
+    return (
+        <div className="login-container">
+            <div className="back-arrow">
+                <Link to="/">
+                    <i className="fas fa-arrow-left"></i>
+                </Link>
+            </div>
+            <div className="login-form">
+                <h2>Đăng nhập</h2>
+                {error && <div className="error-message">{error}</div>}
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Email:
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Mật khẩu:
+                        <div className="password-input">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <i 
+                                className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                                onClick={() => setShowPassword(!showPassword)}
+                            ></i>
+                        </div>
+                    </label>
+                    <button type="submit">Đăng nhập</button>
+                </form>
+                <div className="form-footer">
+                    <Link to="/forgot-password" className="forgot-password">
+                        Quên mật khẩu?
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+};
+export default Login;

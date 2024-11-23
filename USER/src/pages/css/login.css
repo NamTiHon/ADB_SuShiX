@@ -1,1 +1,138 @@
-/* */
+/* login.css */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+/* Update in login.css */
+.login-form {
+    background-color: #fff;
+    padding: 50px;  /* Increased padding */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;  /* Increased width */
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 28px;  /* Larger heading */
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 15px;
+    color: #666;
+    text-align: left;
+    font-size: 16px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px 15px;  /* Increased padding */
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 15px;  /* Taller button */
+    background-color: #ff0099;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;  /* Larger font */
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-form button:hover {
+    background-color: #e60085;
+}
+
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.forgot-password {
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    color: #ff0099;
+    text-decoration: underline;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+.back-arrow a {
+    color: #666;
+    font-size: 24px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-arrow a:hover {
+    color: #ff0099;
+    transform: translateX(-5px);
+}
+
+.error-message {
+    color: #ff0000;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.password-input {
+    position: relative;
+    width: 100%;
+}
+
+.password-input input {
+    width: 100%;
+    padding: 12px 15px;
+    padding-right: 45px; /* Space for icon */
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    height: 45px; /* Fixed height */
+}
+
+.password-input i {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    font-size: 18px;
+    height: 18px; /* Fixed height for icon */
+    width: 18px; /* Fixed width for icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -12px; /* Adjust for input bottom margin */
+}
+
+.password-input i:hover {
+    color: #ff0099;
+}
