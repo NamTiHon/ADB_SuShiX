@@ -81,7 +81,7 @@ button:hover{
 
 .popular-section {
     padding: 60px 20px;
-    background-color: #f9f9f9;
+    background-color: #fff; /* Changed from #f9f9f9 to white */
     width: 100%;
     margin-top: 50px;
 }
@@ -106,7 +106,7 @@ button:hover{
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Lighter shadow for white background */
     transition: transform 0.3s ease;
 }
 
