@@ -29,6 +29,51 @@ function Home() {
     }
   ];
 
+  const bestSellers = [
+    {
+      title: 'Salmon Sushi',
+      image: '/img/salmon-sushi.jpg',
+      description: 'Sushi cá hồi tươi ngon',
+      price: '189.000đ',
+      rating: 4.5
+    },
+    {
+      title: 'Dragon Roll',
+      image: '/img/dragon-roll.jpg',
+      description: 'Cầu vồng hương vị độc đáo',
+      price: '259.000đ',
+      rating: 5
+    },
+    {
+      title: 'Udon Special',
+      image: '/img/udon.jpg',
+      description: 'Mì Udon đặc biệt',
+      price: '149.000đ',
+      rating: 4.8
+    },
+    {
+      title: 'Sake Sashimi',
+      image: '/img/sashimi.jpg',
+      description: 'Cá hồi sashimi thượng hạng',
+      price: '219.000đ',
+      rating: 4.7
+    }
+  ];
+
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<i key={`star-${i}`} className="fas fa-star"></i>);
+    }
+    if (hasHalfStar) {
+      stars.push(<i key="half-star" className="fas fa-star-half-alt"></i>);
+    }
+    return stars;
+  };
+
   return (
     <div className="home">
       <Nav />
@@ -70,6 +115,29 @@ function Home() {
           ))}
         </div>
       </div>
+
+      {/* Best Sellers Section */}
+      <div className="bestseller-section">
+        <h2>Best Sellers</h2>
+        <div className="bestseller-grid">
+          {bestSellers.map((item, index) => (
+            <div className="bestseller-card" key={index}>
+            <img src={item.image} alt={item.title} />
+            <div className="card-content">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <div className="info-grid">
+                <span className="price">{item.price}</span>
+                <div className="rating">
+                  <span>{item.rating}</span>
+                  <i className="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
       
       <Footer />
     </div>
