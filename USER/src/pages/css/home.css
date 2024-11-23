@@ -66,3 +66,13 @@ button:hover{
     background-color: #f5cae4;
     color: black;
 }
+/* Add to home.css */
+.home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-container {
+    flex: 1;
+}

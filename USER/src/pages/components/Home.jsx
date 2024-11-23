@@ -1,14 +1,15 @@
+// Home.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Nav from './Nav';
+import Footer from './Footer';
 import '../css/home.css';
 
 function Home() {
-  /*code js*/
   return (
     <div className="home">
-      <Nav/>
+      <Nav />
       <div className="content-container">
-        {/* Phần nội dung văn bản */}
         <div className="hero-section">
           <h1>
             Hương vị biển khơi <br />
@@ -24,11 +25,11 @@ function Home() {
           </div>
         </div>
 
-        {/* Phần hình ảnh */}
         <div className="img">
-          <img src="/img/home.jpg" alt="SuShiX" className="main-image"/>
+          <img src="/img/home.jpg" alt="SuShiX" className="main-image" />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
