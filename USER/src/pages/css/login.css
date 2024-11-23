@@ -3,12 +3,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: calc(100vh - 80px); /* Adjust for nav height */
     background-color: #f0f0f0;
+    margin-top: 0;
 }
 
 /* Update in login.css */
 .login-form {
+    position: relative;
     background-color: #fff;
     padding: 50px;  /* Increased padding */
     border-radius: 15px;
@@ -75,8 +77,9 @@
 
 .back-arrow {
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 20px;
+    left: 20px;
+    z-index: 1;
 }
 
 .back-arrow a {
@@ -88,7 +91,6 @@
 
 .back-arrow a:hover {
     color: #ff0099;
-    transform: translateX(-5px);
 }
 
 .error-message {

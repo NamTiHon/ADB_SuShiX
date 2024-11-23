@@ -8,10 +8,10 @@ function Nav() {
 
     return (
         <nav className="navbar">
-            <div className="logo"><a href="/home">SuShiX</a></div>
+            <div className="logo"><a href="/">SuShiX</a></div>
             <div className="menu">
                 <ul>
-                    <li><a href="/home">Trang Chủ</a></li>
+                    <li><a href="/">Trang Chủ</a></li>
                     <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
                     <li><a href="/about">Về chúng tôi</a></li>
                 </ul>
