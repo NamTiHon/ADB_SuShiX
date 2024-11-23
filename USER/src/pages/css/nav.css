@@ -126,3 +126,25 @@ body {
     color:#e60085;
     text-decoration: none;
 }
+
+.username {
+    color: #ff0099;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background-color: #ffeaf5;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-name {
+    background-color: #ffeaf5;
+    color: #ff0099;
+    padding: 8px 15px;
+    border-radius: 30px;
+    font-weight: bold;
+}

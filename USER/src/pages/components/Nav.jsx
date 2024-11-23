@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../context/UserContext.js';
+import { Link } from 'react-router-dom';
 import '../css/nav.css';
 
 function Nav() {
+    const { user } = useContext(UserContext);
+
     return (
         <nav className="navbar">
-            <div className="logo"><a href="/home">SuShiX</a></div>
+            <div className="logo"><a href="/">SuShiX</a></div>
             <div className="menu">
                 <ul>
-                    <li><a href="/home">Trang Chủ</a></li>
+                    <li><a href="/">Trang Chủ</a></li>
                     <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
                     <li><a href="/about">Về chúng tôi</a></li>
                 </ul>
@@ -22,7 +26,14 @@ function Nav() {
             <div className="checkorder">
                 <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
             </div>
-            <a href="#" className="login">Đăng nhập</a>
+            
+            {user ? (
+                <div className="user-profile">
+                    <span className="username">{user.email}</span>
+                </div>
+            ) : (
+                <Link to="/login" className="login">Đăng nhập</Link>
+            )}
         </nav>
     );
 }
