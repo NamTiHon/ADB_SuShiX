@@ -1,5 +1,4 @@
-﻿--Store procedure
-
+﻿--STORE PROCEDURE
 --Thêm món ăn của nhà hàng
 create or alter proc sp_ThemMonAn
 	@MaMon varchar(10), 
@@ -34,7 +33,7 @@ end;
 
 go
 
---Chỉnh sửa thông tin món ăn: Nhập tất cả các thuộc tính của món ăn( thay đổi thông tin cần thiết, còn lại giữ nguyên)
+--Chỉnh sửa thông tin món ăn
 create or alter proc sp_ChinhSuaThongTinMonAn
 	@MaMon varchar(10), 
 	@TenMon nvarchar(50), 
@@ -59,7 +58,12 @@ begin
 	else
 	begin
 		update MonAn
-		set MA_TenMon = @TenMon, MA_GiaHienTai = @Gia, MA_KhauPhan = @KhauPhan, MA_CoSan = @CoSan, MA_HoTroGiaoHang = @HoTroGiaoHang, MA_MaDanhMuc =  @MaDanhMuc
+		set MA_TenMon = coalesce(@TenMon, MA_TenMon), --Nếu không thay đổi tên món, giữ tên món như cũ
+			MA_GiaHienTai = coalesce(@Gia, MA_GiaHienTai),
+			MA_KhauPhan = coalesce(@KhauPhan, MA_KhauPhan),
+			MA_CoSan = coalesce(@CoSan, MA_CoSan), 
+			MA_HoTroGiaoHang = coalesce(@HoTroGiaoHang, MA_HoTroGiaoHang),
+			MA_MaDanhMuc =  coalesce(@MaDanhMuc, MA_MaDanhMuc)
 		where MA_MaMon = @MaMon
 	end
 
@@ -137,7 +141,7 @@ end;
 
 go 
 
---Chỉnh sửa thông tin chi nhánh: Nhập tất cả các thuộc tính của món ăn( thay đổi thông tin cần thiết, còn lại giữ nguyên)
+--Chỉnh sửa thông tin chi nhánh
 create or alter proc sp_ChinhSuaThongTinChiNhanh
 	@MaChiNhanh varchar(10),
 	@Ten nvarchar(50),
@@ -172,7 +176,16 @@ begin
 	else
 	begin
 		update ChiNhanh
-		set CN_Ten = @Ten, CN_DiaChi = @DiaChi, CN_TGMoCua = @TGMoCua, CN_TGDongCua = @TGDongCua, CN_SDT = @SDT, CN_BaiDoXeMay = @BaiDoXeMay, cn_BaiDoOto = @BaiDoOto, CN_HoTroGiaoHang = @HoTroGiaoHang, CN_MaQuanLy = @MaQuanLy, CN_MaKhuVuc = @MaKhuVuc
+		set CN_Ten = coalesce(@Ten, CN_Ten),
+			CN_DiaChi = coalesce(@DiaChi, CN_DiaChi),
+			CN_TGMoCua = coalesce(@TGMoCua, CN_TGMoCua),
+			CN_TGDongCua = coalesce(@TGDongCua, CN_TGDongCua), 
+			CN_SDT = coalesce(@SDT, CN_SDT),
+			CN_BaiDoXeMay = coalesce(@BaiDoXeMay, CN_BaiDoXeMay),
+			CN_BaiDoXeOto = coalesce(@BaiDoXeOto, CN_BaiDoXeOto),
+			CN_HoTroGiaoHang = coalesce(@HoTroGiaoHang, CN_HoTroGiaoHang),
+			CN_MaQuanLy = coalesce(@MaQuanLy, CN_MaQuanLy),
+			CN_MaKhuVuc = coalesce(@MaKhuVuc, CN_MaKhuVuc)
 		where CN_MaChiNhanh = @MaChiNhanh
 	end
 
@@ -203,6 +216,7 @@ end;
 
 go
 
+--Thêm khu vực mới
 create or alter proc sp_ThemKhuVuc
 	@MaKhuVuc varchar(10),
 	@Ten nvarchar(50),
@@ -232,6 +246,7 @@ end;
 
 go
 
+--Điều chỉnh thông tin khu vực nếu có thay đổi
 create or alter proc sp_ChinhSuaThongTinKhuVuc
 	@MaKhuVuc varchar(10),
 	@Ten nvarchar(50),
@@ -252,7 +267,8 @@ begin
 	else
 	begin
 		update KhuVuc
-		set KV_Ten = @Ten, KV_MaThucDon = @MaThucDon
+		set KV_Ten = coalesce(@Ten, KV_Ten),
+			KV_MaThucDon = coalesce(@MaThucDon, KV_MaThucDon)
 		where KV_MaKhuVuc = @MaKhuVuc
 	end
 
@@ -261,6 +277,7 @@ end;
 
 go
 
+--Xóa khu vực khỏi phạm vi kinh doanh của nhà hàng
 create or alter proc sp_XoaKhuVuc
 	@MaKhuVuc varchar(10)
 as
@@ -280,6 +297,7 @@ end;
 
 go
 
+--Tạo phiếu đặt món
 create or alter proc sp_TaoPhieuDatMon
 	@MaPhieu varchar(10),
 	@ThoiGianDat datetime,
@@ -310,6 +328,7 @@ end;
 
 go
 
+--Chỉnh sửa thông tin phiếu đặt món
 create or alter proc sp_ChinhSuaThongTinDatMon
 	@MaPhieu varchar(10),
 	@ThoiGianDat datetime,
@@ -331,7 +350,9 @@ begin
 	else
 	begin
 		update PhieuDatMon
-		set PDM_ThoiGianDat =  @ThoiGianDat, PDM_SDT_KH = @SDT_KH, PDM_MaNhanVien =  @MaNhanVien
+		set PDM_ThoiGianDat =  coalesce(@ThoiGianDat, PDM_ThoiGianDat),
+			PDM_SDT_KH = coalesce(@SDT_KH, PDM_SDT_KH),
+			PDM_MaNhanVien =  coalesce(@MaNhanVien, PDM_MaNhanVien)
 		where PDM_MaPhieu = @MaPhieu
 	end
 
@@ -340,6 +361,7 @@ end;
 
 go
 
+--Hủy phiếu đặt món
 create or alter proc sp_HuyPhieuDatMon
 	@MaPhieu varchar(10)
 as
@@ -365,6 +387,220 @@ end;
 
 go
 
+--Tạo phiếu đặt trực tiếp
+create or alter proc sp_TaoPhieuDatTrucTiep
+	@MaPhieu varchar(10),
+	@SoBan int,
+	@SoLuongKhach int
+as
+begin 
+	if exists(select * from DatTrucTiep where DTT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này này đã tồn tại')
+		return
+	end
+	else
+	begin
+		insert into DatTrucTiep(DTT_MaPhieu, DTT_SoBan, DTT_SoLuongKH)
+			values
+			(@MaPhieu, @SoBan, @SoLuongKhach)
+	end
+
+	print(N'Đã nhận phiếu đặt trực tiếp.')
+end;
+
+go
+
+--Chỉnh sửa thông tin phiếu đặt trực tiếp
+create or alter proc sp_ChinhSuaThongTinDatTrucTiep
+	@MaPhieu varchar(10),
+	@SoBan int,
+	@SoLuongKhach int
+as
+begin 
+	if not exists(select * from DatTrucTiep where DTT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại.')
+		return
+	end
+	else
+	begin
+		update DatTrucTiep
+		set DTT_SoBan =  coalesce(@SoBan, DTT_SoBan),
+			DTT_SoLuongKH =  coalesce(@SoLuongKhach, DTT_SoLuongKH)
+		where DTT_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã thay đổi thông tin phiếu đặt trực tiếp.')
+end;
+
+go
+
+--Hủy phiếu đặt trực tiếp
+create or alter proc sp_HuyPhieuDatTrucTiep
+	@MaPhieu varchar(10)
+as
+begin 
+	if not exists(select * from DatTrucTiep where DTT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại')
+		return
+	end
+	else
+	begin
+		delete from DatTrucTiep where DTT_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã hủy phiếu đặt trực tiếp.')
+end;
+
+go
+
+--Tạo phiếu đặt trước
+create or alter proc sp_TaoPhieuDatTruoc
+	@MaPhieu varchar(10),
+	@MaChiNhanh varchar(10),
+	@SoBan int, 
+	@SoLuongKH int,
+	@ThoiGianDen datetime,
+	@GhiChuThem nvarchar(100)
+as
+begin 
+	if exists(select * from DatTruoc where DT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này này đã tồn tại')
+		return
+	end
+	else
+	begin
+		insert into DatTruoc(DT_MaPhieu, DT_MaChiNhanh, DT_SoBan, DT_SoLuongKH, DT_ThoiGianDen, DT_GhiChuThem)
+			values
+			(@MaPhieu, @MaChiNhanh, @SoBan, @SoLuongKH, @ThoiGianDen, @GhiChuThem)
+	end
+
+	print(N'Đã nhận phiếu đặt trước.')
+end;
+
+go
+
+--Chỉnh sửa thông tin phiếu đặt trước
+create or alter proc sp_ChinhSuaThongTinDatTruoc
+	@MaPhieu varchar(10),
+	@MaChiNhanh varchar(10),
+	@SoBan int, 
+	@SoLuongKH int,
+	@ThoiGianDen datetime,
+	@GhiChuThem nvarchar(100)
+as
+begin 
+	if not exists(select * from DatTruoc where DT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại.')
+		return
+	end
+	else
+	begin
+		update DatTruoc
+		set DT_MaChiNhanh =  coalesce(@SoBan, DT_MaChiNhanh),
+			DT_SoBan =  coalesce(@SoBan, DT_SoBan),
+			DT_SoLuongKH = coalesce(@SoLuongKH, DT_SoLuongKH),
+			DT_ThoiGianDen = coalesce(@ThoiGianDen, DT_ThoiGianDen),
+			DT_GhiChuThem = coalesce(@GhiChuThem, DT_GhiChuThem)
+		where DT_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã thay đổi thông tin phiếu đặt trước.')
+end;
+
+go
+
+--Hủy phiếu đặt trước
+create or alter proc sp_HuyPhieuDatTruoc
+	@MaPhieu varchar(10)
+as
+begin 
+	if not exists(select * from DatTruoc where DT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại')
+		return
+	end
+	else
+	begin
+		delete from DatTruoc where DT_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã hủy phiếu đặt trước')
+end;
+
+go
+
+--Tạo phiếu đặt online
+create or alter proc sp_TaoPhieuDatOnline
+	@MaPhieu varchar(10),
+	@DiaChiGiao nvarchar(100)
+as
+begin 
+	if exists(select * from DatOnline where DO_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này này đã tồn tại')
+		return
+	end
+	else
+	begin
+		insert into DatOnline(DO_MaPhieu, DO_DiaChiGiao)
+			values
+			(@MaPhieu, @DiaChiGiao)
+	end
+
+	print(N'Đã nhận phiếu đặt online.')
+end;
+
+go
+
+--Chỉnh sửa địa chỉ giao hàng phiếu đặt online
+create or alter proc sp_ChinhSuaThongTinDatTruoc
+	@MaPhieu varchar(10),
+	@DiaChiGiao nvarchar(100)
+as
+begin 
+	if not exists(select * from DatTruoc where DT_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại.')
+		return
+	end
+	else
+	begin
+		update DatOnline
+		set DO_DiaChiGiao =  coalesce(@DiaChiGiao, DO_DiaChiGiao)
+		where DO_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã thay đổi thông tin phiếu đặt online.')
+end;
+
+go
+
+--Hủy phiếu đặt online
+create or alter proc sp_HuyPhieuDatOnline
+	@MaPhieu varchar(10)
+as
+begin 
+	if not exists(select * from DatOnline where DO_MaPhieu = @MaPhieu)
+	begin
+		print(N'Mã phiếu này không tồn tại.')
+		return
+	end
+	else
+	begin
+		delete from DatOnline where DO_MaPhieu = @MaPhieu
+	end
+
+	print(N'Đã hủy phiếu đặt online.')
+end;
+
+go
+
+--Thêm món ăn mới vào phiếu đặt món( nếu có yêu cầu thêm)
 create or alter proc sp_ThemMonDuocDat
 	@MaMon varchar(10),
 	@MaPhieu varchar(10),
@@ -394,6 +630,7 @@ end;
 
 go
 
+--Thay đổi thông tin số lượng của món đã có trong phiếu đặt món
 create or alter proc sp_ThayDoiSoLuongMon
 	@MaMon varchar(10),
 	@MaPhieu varchar(10),
@@ -414,7 +651,7 @@ begin
 	else
 	begin
 		update MonDuocDat
-		set MDD_SoLuong =  @SoLuong
+		set MDD_SoLuong =  coalesce(@SoLuong, MDD_SoLuong)
 		where MDD_MaMon = @MaMon and MDD_MaPhieu = @MaPhieu
 	end
 
@@ -423,6 +660,7 @@ end;
 
 go
 
+--Hủy món ăn có trong phiếu đặt món
 create or alter proc sp_HuyMon
 	@MaMon varchar(10),
 	@MaPhieu varchar(10)
@@ -443,6 +681,7 @@ end;
 
 go
 
+--Tạo thẻ thành viên cho khách hàng mới
 create or alter proc sp_TaoTheThanhVien
 	@MaThe varchar(10),
 	@NgayTao date,
@@ -479,7 +718,8 @@ begin
 end;
 
 go
-	
+
+--Cập nhật thông tin thẻ thàng viên
 create or alter proc sp_CapNhatThongTinTheThanhVien
 	@MaThe varchar(10),
 	@SoNamSuDung int,
@@ -494,7 +734,7 @@ begin
 		return
 	end
 
-	if exists(select * from TheThanhVien where TTV_MaThe = @MaThe and TTV_Trang_Thai = N'Đã khóa')
+	if exists(select * from TheThanhVien where TTV_MaThe = @MaThe and TTV_TrangThai = N'Đã khóa')
 	begin
 		print(N'Thẻ đã bị vô hiệu hóa.')
 		return
@@ -502,7 +742,10 @@ begin
 	else
 	begin
 		update TheThanhVien
-		set TTV_SoNamSuDung = @SoNamSuDung, TTV_DiemTichLuy = @DiemTichLuy, TTV_TrangThai = @TrangThai, TTV_LoaiThe = @LoaiThe
+		set TTV_SoNamSuDung = coalesce(@SoNamSuDung, TTV_SoNamSuDung),
+			TTV_DiemTichLuy = coalesce(@DiemTichLuy, TTV_DiemTichLuy),
+			TTV_TrangThai = coalesce(@TrangThai, TTV_TrangThai),
+			TTV_LoaiThe = coalesce(@LoaiThe, TTV_LoaiThe)
 		where TTV_MaThe = @MaThe
 	end
 
@@ -511,6 +754,7 @@ end;
 
 go
 
+--Tạo hóa đơn theo phiếu đặt món
 create or alter proc sp_TaoHoaDon
 	@MaHoaDon varchar(10),
 	@SoTienGiam float,
@@ -526,7 +770,7 @@ begin
 
 	if not exists(select * from HoaDon where HD_MaHoaDon = @MaHoaDon)
 	begin
-		print(N'Mã hóa dơn này đã tồn tại.')
+		print(N'Mã hóa đơn này đã tồn tại.')
 		return
 	end
 	else
@@ -537,4 +781,273 @@ begin
 	end
 
 	print(N'Đã tạo hóa đơn thành công.')
-end;
+end
+
+go
+
+--Thêm khách hàng mới
+create or alter proc sp_ThemKhachHang
+	@SDT varchar(12),
+	@HoTen nvarchar(50), 
+	@CCCD varchar(13),
+	@Email varchar(30),
+	@GioiTinh nvarchar(3)
+as
+begin
+	if exists(select * from KhachHang where KH_SDT = @SDT)
+	begin
+		print(N'Số điện thoại này đã tồn tại khách hàng đăng ký.')
+		return
+	end
+	else
+	begin
+		insert into KhachHang(KH_SDT , KH_HoTen , KH_CCCD , KH_Email , KH_GioiTinh)
+		values
+		(@SDT, @HoTen, @CCCD, @Email, @GioiTinh)
+	end
+	print(N'Đã thêm khách hàng mới.')
+end
+
+go
+--Chỉnh sửa thông tin khách hàng
+create or alter proc sp_ChinhSuaThongTinKhachHang
+	@SDT varchar(12),
+	@HoTen nvarchar(50), 
+	@CCCD varchar(13),
+	@Email varchar(30),
+	@GioiTinh nvarchar(3)
+as
+begin
+	if not exists(select * from KhachHang where KH_SDT = @SDT)
+	begin
+		print(N'Số điện thoại này không có trong danh sách khách hàng.')
+		return
+	end
+	else
+	begin
+		update KhachHang
+		set KH_HoTen = coalesce(@HoTen, KH_HoTen),
+			KH_CCCD = coalesce(@CCCD, KH_CCCD),
+			KH_Email = coalesce(@Email, KH_Email),
+			KH_GioiTinh = coalesce(@GioiTinh, KH_GioiTinh)			
+	end
+	print(N'Đã thay đổi thông tin khách hàng.')
+end
+
+go
+--Thêm nhân viên mới vào danh sách nhân viên của nhà hàng
+create or alter proc sp_ThemNhanVien
+	@MaNhanVien varchar(10),
+	@HoTen nvarchar(50),
+	@NgaySinh datetime,
+	@GioiTinh nvarchar(3),
+	@NgayVaoLam datetime,
+	@NgayNghiViec datetime,
+	@DiaChi nvarchar(100),
+	@SDT varchar(12),
+	@SoNha int,
+	@TenDuong nvarchar(30),
+	@TenPhuong nvarchar(30),
+	@TenQuan nvarchar(30),
+	@TenThanhPho nvarchar(30)
+as
+begin
+	if exists(select *  from NhanVien where NV_MaNhanVien = @MaNhanVien)
+	begin
+		print(N'Đã tồn tại mã nhân viên này.')
+		return
+	end
+	else
+	begin
+		insert into NhanVien(NV_MaNhanVien, NV_HoTen, NV_NgaySinh, NV_GioiTinh, NV_NgayVaoLam, NV_NgayNghiViec, NV_DiaChi, NV_SDT, NV_SoNha, NV_TenDuong, NV_TenPhuong, NV_TenQuan, NV_TenThanhPho)
+			values
+			(@MaNhanVien, @HoTen, @NgaySinh, @GioiTinh, @NgayVaoLam, @NgayNghiViec, @DiaChi, @SDT, @SoNha, @TenDuong, @TenPhuong, @TenQuan, @TenThanhPho)
+	end
+	print(N'Thêm nhan viên thành công.')
+end
+
+go
+
+--Thêm bộ phận, chức vụ cho nhân viên theo chi nhánh
+create or alter proc sp_ThemBoPhanNhanVien
+	@MaNhanVien varchar(10),
+	@MaChiNhanh varchar(10),
+	@TenBoPhan nvarchar(50),
+	@ChucVu nvarchar(20),
+	@Luong float
+as
+begin
+	if not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
+	begin
+		print(N'Không có mã nhân viên này')
+		return
+	end
+
+	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	begin
+		print(N'Không tồn tại chi nhánh này.')
+		return
+	end
+
+	if exists(select * from BoPhan_NhanVien where BP_NV_MaChiNhanh = @MaChiNhanh and BP_NV_MaNhanVien = @MaNhanVien and BP_NV_TenBoPhan = @TenBoPhan)
+	begin
+		print(N'Nhân viên này đang ở trong bộ phận này.')
+		return
+	end
+	else
+	begin
+		insert into BoPhan_NhanVien(BP_NV_MaNhanVien, BP_NV_MaChiNhanh, BP_NV_TenBoPhan, BP_NV_ChucVu, BP_NV_Luong)
+			values
+			(@MaNhanVien, @MaChiNhanh, @TenBoPhan, @ChucVu, @Luong)
+	end
+	print(N'Thêm thông tin bộ phận của nhân viên thành công.')
+end
+
+go
+
+--Thay đổi bộ phận và/hoặc chi nhánh nhân viên nếu có thay đổi về nơi làm việc và/hoặc chức vụ tại nhà hàng
+create or alter proc sp_ThayDoiBoPhanNhanVien
+	@MaNhanVien varchar(10),
+	@MaChiNhanh varchar(10),
+	@TenBoPhan nvarchar(50),
+	@ChucVu nvarchar(20),
+	@Luong float
+as
+begin
+	if not exists(select * from BoPhan_NhanVien where BP_NV_MaNhanVien = @MaNhanVien)
+	begin
+		print(N'Không có mã nhân viên này trong danh sách chức vụ nhà hàng. Hãy bổ sung nếu cần thiết.')
+		return
+	end
+
+	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	begin
+		print(N'Không tồn tại chi nhánh này.')
+		return
+	end
+
+	if exists(select * from BoPhan_NhanVien where BP_NV_MaChiNhanh = @MaChiNhanh and BP_NV_MaNhanVien = @MaNhanVien and BP_NV_TenBoPhan = @TenBoPhan)
+	begin
+		print(N'Nhân viên này đang ở trong bộ phận này của chi nhánh.')
+		return
+	end
+	else
+	begin
+		update BoPhan_NhanVien
+		set BP_NV_MaChiNhanh = @MaChiNhanh, BP_NV_TenBoPhan = @TenBoPhan, BP_NV_ChucVu = @ChucVu, BP_NV_Luong = @Luong
+		where BP_NV_MaNhanVien = @MaNhanVien
+	end
+	print(N'Cập nhật thông tin bộ phận của nhân viên thành công.')
+end
+	
+go
+--Bổ sung lịch sử làm việc của nhân viên tại nhà hàng nếu có thay đổi về nơi làm việc và/hoặc chức vụ tại nhà hàng
+create or alter proc sp_BoSungLichSuLamViec
+	@MaNhanVien varchar(10),
+	@MaChiNhanhCu varchar(10),
+	@NgayBatDau datetime,
+	@NgayKetThuc datetime
+as
+begin
+	if not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
+	begin
+		print(N'Không có mã nhân viên này')
+		return
+	end
+
+	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanhCu)
+	begin
+		print(N'Không tồn tại chi nhánh này.')
+		return
+	end
+
+	if exists(select * from LichSuLamViec where LSLV_MaChiNhanhCu = @MaChiNhanhCu and LSLV_MaNhanVien = @MaNhanVien and LSLV_NgayBatDau = @NgayBatDau)
+	begin
+		print(N'Đã tồn tại lịch sử làm việc này.')
+		return
+	end
+	else
+	begin
+		insert into LichSulamViec(LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau, LSLV_NgayKetThuc)
+			values
+			(@MaNhanVien, @MaChiNhanhCu, @NgayBatDau, @NgayKetThuc)
+	end
+	print(N'Thêm lịch sử làm việc của nhân viên thành công.')
+end
+
+go
+--FUNCTION
+create or alter function uf_DanhSachMonAnTheoKhuVuc
+	(@MaKhuVuc varchar(10))
+	returns table
+as
+	return ( select * from MonAn join DanhMuc_ThucDon on MA_MaDanhMuc = DM_TD_MaDanhMuc
+			 where DM_TD_MaThucDon = (select KV_MaThucDon from KhuVuc where KV_MaKhuVuc = @MaKhuVuc))
+
+
+go
+--Xem danh sách chi nhánh có món ăn X
+create or alter function uf_DanhSachKhuVucCoMonAn
+	(@MaMonAn varchar(10))
+	returns table
+as
+	return ( select * from KhuVuc
+			 where KV_MaThucDon = (select DM_TD_MaThucDon from MonAn join DanhMuc_ThucDon on MA_MaDanhMuc = DM_TD_MaDanhMuc where MA_MaMon = @MaMonAn))
+
+go
+--Xem danh sách chi nhánh trong một khu vực
+create or alter function uf_DanhSachChiNhanhCuaKhuVuc
+	(@MaKhuVuc varchar(10))
+	returns table
+as
+	return ( select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang
+			 from ChiNhanh
+			 where CN_MaKhuVuc = @MaKhuVuc)
+go
+
+--Xem danh sách nhân viên theo chi nhánh
+create or alter function uf_XemDanhSachNhanVienTheoChiNhanh
+	(@MaChiNhanh varchar(10))
+	returns table
+as
+	return ( select * from NhanVien join BoPhan_NhanVien on NV_MaNhanVien = BP_NV_MaNhanVien
+			 where BP_NV_MaChiNhanh = @MaChiNhanh)
+go
+
+--Xem danh sách nhân viên theo bộ phận
+create or alter function uf_XemDanhSachNhanVienTheoChiNhanh
+	(@TenBoPhan nvarchar(50))
+	returns table
+as
+	return ( select * from NhanVien join BoPhan_NhanVien on NV_MaNhanVien = BP_NV_MaNhanVien
+			 where BP_NV_TenBoPhan = @TenBoPhan)
+go
+
+--Xem thông tin nhân viên
+create or alter function uf_XemThongTinNhanVien
+	(@MaNhanVien varchar(10))
+	returns table
+as
+	return ( select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
+go
+
+--Tìm hóa đơn theo khách hàng
+create or alter function uf_HoaDonKhachHang
+	(@SDT_KH varchar(12))
+	returns table
+as
+	return ( select * from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
+			 where PDM_SDT_KH = @SDT_KH)
+go
+
+--Tìm hóa đơn theo ngày
+create or alter function uf_HoaDonTheoNgay
+	(@ThoiGianDat datetime)
+	returns table
+as
+	return ( select * from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
+			 where PDM_ThoiGianDat = @ThoiGianDat)
+go
+
+--TRIGGER
+
