@@ -108,7 +108,7 @@ create or alter proc sp_ThemChiNhanh
 	@MaKhuVuc varchar(10)
 as
 begin
-	if not exists(select * from NhanVien where NV_NhanVien = @MaQuanLi)
+	if not exists(select * from NhanVien where NV_MaNhanVien = @MaQuanLy)
 	begin
 		print(N'Nhân viên quản lí này không tồn tại.')
 		return
@@ -129,7 +129,7 @@ begin
 	begin
 		insert into ChiNhanh(CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc)
 			values
-			(@MaChiNhanh, @Ten, @DiaChi, @TGMoCua, @TGDongCua, @SDT, @BaiDoXeMay, @BaiDoOto, @HoTroGiaoHang, @MaQuanLy, @MaKhuVuc)
+			(@MaChiNhanh, @Ten, @DiaChi, @TGMoCua, @TGDongCua, @SDT, @BaiDoXeMay, @BaiDoXeOto, @HoTroGiaoHang, @MaQuanLy, @MaKhuVuc)
 	end
 
 	print(N'Đã thêm chi nhánh')
@@ -152,7 +152,7 @@ create or alter proc sp_ChinhSuaThongTinChiNhanh
 	@MaKhuVuc varchar(10)
 as
 begin
-	if not exists(select * from NhanVien where NV_NhanVien = @MaQuanLi)
+	if not exists(select * from NhanVien where NV_MaNhanVien = @MaQuanLy)
 	begin
 		print(N'Nhân viên quản lí này không tồn tại.')
 		return
@@ -293,7 +293,7 @@ begin
 		return
 	end
 
-	if exists(select * from PhieuDatMon where KV_MaPhieu = @MaPhieu)
+	if exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Mã phiếu này này đã tồn tại')
 		return
@@ -323,7 +323,7 @@ begin
 		return
 	end
 
-	if not exists(select * from PhieuDatMon where KV_MaPhieu = @MaPhieu)
+	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Mã phiếu này không tồn tại')
 		return
@@ -344,7 +344,7 @@ create or alter proc sp_HuyPhieuDatMon
 	@MaPhieu varchar(10)
 as
 begin 
-	if not exists(select * from PhieuDatMon where KV_MaPhieu = @MaPhieu)
+	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Mã phiếu này không tồn tại')
 		return
@@ -400,7 +400,7 @@ create or alter proc sp_ThayDoiSoLuongMon
 	@SoLuong int
 as
 begin 
-	if not exists(select * from KhachHang where KH_SDT = @SDT_KH)
+	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Phiếu đặt món không tồn tại.')
 		return
@@ -414,7 +414,7 @@ begin
 	else
 	begin
 		update MonDuocDat
-		set MDD_SoLuonh =  @SoLuong
+		set MDD_SoLuong =  @SoLuong
 		where MDD_MaMon = @MaMon and MDD_MaPhieu = @MaPhieu
 	end
 
@@ -425,7 +425,7 @@ go
 
 create or alter proc sp_HuyMon
 	@MaMon varchar(10),
-	@MaPhieu varchar(10),
+	@MaPhieu varchar(10)
 as
 begin 
 	if not (exists(select * from MonDuocDat where MDD_MaMon = @MaMon) and exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu))
@@ -518,13 +518,13 @@ create or alter proc sp_TaoHoaDon
 	@MaPhieu varchar(10)
 as
 begin
-	if not exists(select * from PhieuDatMon where PDT_MaPhieu = @MaPhieu)
+	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Phiếu đặt món không hợp lệ.')
 		return
 	end
 
-	if not exists(select * from MaHoaDon where HD_MaHoaDon = @MaHoaDon)
+	if not exists(select * from HoaDon where HD_MaHoaDon = @MaHoaDon)
 	begin
 		print(N'Mã hóa dơn này đã tồn tại.')
 		return
@@ -538,5 +538,3 @@ begin
 
 	print(N'Đã tạo hóa đơn thành công.')
 end;
-
-create or alter proc sp_T
