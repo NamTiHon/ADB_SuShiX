@@ -10,7 +10,7 @@ import { UserProvider } from './context/UserContext';
 import Profile from './pages/components/Profile';
 import { CartProvider } from './context/CartContext';
 import Cart from './pages/components/Cart';
-
+import About  from './pages/components/AboutUs';
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route path="/customer-info" element={<CustomerInfo />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </Router>
       </CartProvider>
