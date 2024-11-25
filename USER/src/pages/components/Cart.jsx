@@ -7,7 +7,7 @@ import { CartContext } from '../../context/CartContext';
 const Cart = () => {
     const { cartItems, setCartItems } = useContext(CartContext);
     const [selectedItems, setSelectedItems] = useState([]);
-
+    
     const updateQuantity = (id, change) => {
         setCartItems(items => 
             items.map(item => 
@@ -35,7 +35,7 @@ const Cart = () => {
         .filter(item => selectedItems.includes(item.id))
         .reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    return (
+        const shippingFee = selectedTotal === 0 ? 0 : selectedTotal < 500000 ? 30000 : 0;    return (
         <div>
             <Nav />
             <div className="cart-container">
@@ -79,13 +79,15 @@ const Cart = () => {
                             <span>Tạm tính:</span>
                             <span>{selectedTotal.toLocaleString()}đ</span>
                         </div>
-                        <div className="summary-row">
-                            <span>Phí vận chuyển:</span>
-                            <span>30,000đ</span>
-                        </div>
+                        {shippingFee > 0 && (
+                            <div className="summary-row">
+                                <span>Phí vận chuyển:</span>
+                                <span>{shippingFee.toLocaleString()}đ</span>
+                            </div>
+                        )}
                         <div className="summary-total">
                             <span>Tổng cộng:</span>
-                            <span>{(selectedTotal + 30000).toLocaleString()}đ</span>
+                            <span>{(selectedTotal + shippingFee).toLocaleString()}đ</span>
                         </div>
                         <button 
                             className="checkout-btn"
