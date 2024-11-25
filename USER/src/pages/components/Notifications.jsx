@@ -1,9 +1,28 @@
 // src/pages/components/Notifications.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/notifications.css';
 
 const Notifications = () => {
+    const navigate = useNavigate();
+
+    const handleNotificationClick = (type, id) => {
+        switch(type) {
+            case 'order':
+                navigate(`/orders/${id}`);
+                break;
+            case 'promotion':
+                navigate('/menu');
+                break;
+            case 'reservation':
+                navigate('/reservations');
+                break;
+            default:
+                break;
+        }
+    };
+
     const notifications = [
         {
             id: 1,
@@ -44,6 +63,8 @@ const Notifications = () => {
                         <div 
                             key={notification.id} 
                             className={`notification-item ${!notification.isRead ? 'unread' : ''}`}
+                            onClick={() => handleNotificationClick(notification.type, notification.id)}
+                            style={{ cursor: 'pointer' }}
                         >
                             <div className="notification-icon">
                                 <i className={`fas ${notification.icon}`}></i>
