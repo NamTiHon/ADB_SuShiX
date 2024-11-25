@@ -105,3 +105,30 @@
     color: #ff0099;
     font-weight: bold;
 }
+
+/* Add to profile.css */
+.logout-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #fff;
+    border: 2px solid #ff0099;
+    color: #ff0099;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #ff0099;
+    color: white;
+}
+
+.logout-btn i {
+    font-size: 16px;
+}

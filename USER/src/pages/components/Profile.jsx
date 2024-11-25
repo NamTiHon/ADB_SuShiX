@@ -1,13 +1,20 @@
 // src/pages/components/Profile.jsx
 import React, { useContext, useState, useRef } from 'react';
 import { UserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom'; // Add this
 import Nav from './Nav';
 import '../css/profile.css';
 
 const Profile = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, logout } = useContext(UserContext); // Add logout
+    const navigate = useNavigate(); // Add this
     const [previewUrl, setPreviewUrl] = useState(user?.avatar || '/default-avatar.png');
     const fileInputRef = useRef(null);
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -52,6 +59,10 @@ const Profile = () => {
                                 Thay đổi ảnh
                             </button>
                         </div>
+                        <button onClick={handleLogout} className="logout-btn">
+                            <i className="fas fa-sign-out-alt"></i>
+                            Đăng xuất
+                        </button>
                     </div>
 
                     {/* Right Content */}
