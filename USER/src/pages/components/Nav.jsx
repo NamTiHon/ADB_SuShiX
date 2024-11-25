@@ -12,7 +12,23 @@ function Nav() {
     <div className="menu">
         <ul>
             <li><a href="/">Trang Chủ</a></li>
-            <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
+                <li className="menu-dropdown">
+                    <a href="/menu">
+                        Thực đơn
+                        <i className="fas fa-angle-down"></i>
+                    </a>
+                    <div className="dropdown-content">
+                        <a href="/menu/sushi">Sushi</a>
+                        <a href="/menu/appetizer">Khai vị</a>
+                        <a href="/menu/tempura">Tempura</a>
+                        <a href="/menu/udon">Udon</a>
+                        <a href="/menu/hotpot">Lẩu</a>
+                        <a href="/menu/lunch-set">Lunch Set</a>
+                        <a href="/menu/specialty">Đặc sản</a>
+                        <a href="/menu/dessert">Tráng miệng</a>
+                        <a href="/menu/drinks">Đồ uống</a>
+                    </div>
+                </li>
             <li><a href="/about">Về chúng tôi</a></li>
             <li>
                 <a href="/notifications">
