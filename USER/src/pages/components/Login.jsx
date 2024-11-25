@@ -25,7 +25,7 @@ const Login = () => {
         const user = users.find(u => u.email === email && u.password === password);
         
         if (user) {
-            setUser(user);  // Changed from setCurrentUser to setUser
+            setUser(user); // UserContext will handle localStorage
             navigate('/');
         } else {
             setError('Email hoặc mật khẩu không chính xác');
