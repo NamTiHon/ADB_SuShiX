@@ -309,6 +309,12 @@ alter table KhuyenMai
 	foreign key (KM_LoaiTheApDung)
 	references LoaiThe(LT_TenLoaiThe)
 
+--Bảng hóa đơn
+alter table HoaDon
+	add constraint FK_HD_MaPhieu_PDM_MaPhieu
+	foreign key (HD_MaPhieu)
+	references PhieuDatMon(PDM_MaPhieu)
+
 --Bảng Phiếu đánh giá
 alter table PhieuDanhGia
 	add constraint FK_PDG_MaHoaDon_HD_MaHoaDon
