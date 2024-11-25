@@ -14,10 +14,10 @@ export const showAllUsers = (req, res) => {
 
 // Đăng ký user mới
 export const register = async (req, res) => {
-    const { email, password, name } = req.body;
+    const { email, password, name, role } = req.body;
 
     try {
-        const result = await userService.registerUser(email, password, name);
+        const result = await userService.registerUser(email, password, name, role);
         if (!result.success) {
             return res.status(400).json({ message: result.message });
         }

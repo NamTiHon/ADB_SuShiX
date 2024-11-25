@@ -13,7 +13,7 @@ export const userService = {
     },
 
     // Tạo user mới
-    registerUser: async (email, password, name) => {
+    registerUser: async (email, password, name, role) => {
         const existingUser = getUserByEmail(email);
         if (existingUser) {
             return { success: false, message: 'User already exists' };  // Nếu email đã tồn tại
@@ -23,8 +23,8 @@ export const userService = {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Lưu user mới
-        const newUser = createUser({ email, password: hashedPassword, name });
-        return { success: true, user: { id: newUser.id, email: newUser.email, name: newUser.name } };
+        const newUser = createUser({ email, password: hashedPassword, name, role });
+        return { success: true, user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newRole.role } };
     },
 
     // Kiểm tra mật khẩu

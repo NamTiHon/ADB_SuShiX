@@ -6,8 +6,8 @@ const getUserByEmail = (email) => {
 };
 
 // Function to create a new user
-const createUser = ({ email, password, name }) => {
-    const user = { id: users.length + 1, email, password, name };  // Add user details and ID
+const createUser = ({ email, password, name, role }) => {
+    const user = { id: users.length + 1, email, password, name, role: role || 'customer' };  // Add user details and ID
     users.push(user);  // Push the new user into the array (simulating DB storage)
     return user;  // Return the created user
 };
