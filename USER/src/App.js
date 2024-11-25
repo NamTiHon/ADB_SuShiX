@@ -11,6 +11,8 @@ import { CartProvider } from './context/CartContext';
 import Cart from './pages/components/Cart';
 import About  from './pages/components/AboutUs';
 import MessengerIcon from './pages/components/MessengerIcon';
+import Notifications from './pages/components/Notifications';
+
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/about" element={<About />} />
+            <Route path="/notifications" element={<Notifications />} />
           </Routes>
           <MessengerIcon />
         </Router>

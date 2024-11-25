@@ -17,7 +17,7 @@ function Nav() {
             <li>
                 <a href="/notifications">
                     Thông báo
-                    <i className="fas fa-bell notification-icon"></i>
+                    <i className="fas fa-bell nav-notification-icon"></i>
                 </a>
             </li>
         </ul>
