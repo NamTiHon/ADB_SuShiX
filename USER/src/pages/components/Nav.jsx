@@ -27,7 +27,7 @@ function Nav() {
             <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
         </div>
         <div className="cart">
-            <a href="#" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
+            <a href="/cart" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
         </div>
         {user ? (
             <div className="user-profile">
