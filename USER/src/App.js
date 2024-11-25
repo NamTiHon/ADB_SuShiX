@@ -7,6 +7,7 @@ import Login from './pages/components/Login';
 import BranchSearch from './pages/components/BranchSearch';
 import CustomerInfo from './pages/components/CustomerInfo';
 import { UserProvider } from './context/UserContext';
+import Profile from './pages/components/Profile';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/branch" element={<BranchSearch />} />
           <Route path="/customer-info" element={<CustomerInfo />} />
+          <Route path="/profile" element={<Profile />} />
+
         </Routes>
       </Router>
     </UserProvider>

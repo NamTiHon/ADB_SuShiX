@@ -7,7 +7,7 @@ import Nav from './Nav';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { setCurrentUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -25,7 +25,7 @@ const Login = () => {
         const user = users.find(u => u.email === email && u.password === password);
         
         if (user) {
-            setCurrentUser(user);
+            setUser(user);  // Changed from setCurrentUser to setUser
             navigate('/');
         } else {
             setError('Email hoặc mật khẩu không chính xác');

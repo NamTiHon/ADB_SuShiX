@@ -8,33 +8,38 @@ function Nav() {
 
     return (
         <nav className="navbar">
-            <div className="logo"><a href="/">SuShiX</a></div>
-            <div className="menu">
-                <ul>
-                    <li><a href="/">Trang Chủ</a></li>
-                    <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
-                    <li><a href="/about">Về chúng tôi</a></li>
-                </ul>
+    <div className="logo"><a href="/">SuShiX</a></div>
+    <div className="menu">
+        <ul>
+            <li><a href="/">Trang Chủ</a></li>
+            <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
+            <li><a href="/about">Về chúng tôi</a></li>
+        </ul>
+    </div>
+    <div className="search-container">
+        <div className="search">
+            <input type="text" placeholder="Tìm kiếm..." />
+            <i className="fas fa-search"></i>
+        </div>
+    </div>
+    <div className="right-nav">
+        <div className="checkorder">
+            <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
+        </div>
+        <div className="cart">
+            <a href="#" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
+        </div>
+        {user ? (
+            <div className="user-profile">
+                <Link to="/profile" className="username">
+                    {user.email}
+                </Link>
             </div>
-            <div className="search">
-                <input type="text" placeholder="Tìm kiếm..." />
-                <i className="fas fa-search"></i>
-            </div>
-            <div className="cart">
-                <a href="#" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
-            </div>
-            <div className="checkorder">
-                <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
-            </div>
-            
-            {user ? (
-                <div className="user-profile">
-                    <span className="username">{user.email}</span>
-                </div>
-            ) : (
-                <Link to="/login" className="login">Đăng nhập</Link>
-            )}
-        </nav>
+        ) : (
+            <Link to="/login" className="login">Đăng nhập</Link>
+        )}
+    </div>
+</nav>
     );
 }
 

@@ -51,31 +51,7 @@ body {
     margin-left: 2px;
 }
   
-.search {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-  
-.search input {
-    width: 500px;
-    height: 30px;
-    padding: 8px 8px;
-    border: 1px solid #c1c0c0;
-    border-radius: 20px;
-    font-size: 16px;
-    outline: none;
-}
-  
-.search i {
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #1c1b1b;
-}
+
   
 .login {
     background-color: #ff0099;
@@ -147,4 +123,42 @@ body {
     padding: 8px 15px;
     border-radius: 30px;
     font-weight: bold;
+}
+
+.auth-container {
+    display: flex;
+    gap: 1rem;
+}
+.search-container {
+    flex: 0 1 400px; /* Don't grow, can shrink, base width 400px */
+    margin: 0 20px;
+}
+
+.search {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search input {
+    width: 100%;
+    padding: 8px 35px 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.search i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+}
+.right-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }

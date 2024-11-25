@@ -111,3 +111,24 @@ body {
 .dish-button-info:hover {
   text-decoration:underline;
 }
+
+/* Remove auth-container styles since we only have one button */
+.auth-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Keep login button styles */
+.login {
+    background-color: #ff0099;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.login:hover {
+    background-color: #e60085;
+}
