@@ -14,6 +14,12 @@ function Nav() {
             <li><a href="/">Trang Chủ</a></li>
             <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
             <li><a href="/about">Về chúng tôi</a></li>
+            <li>
+                <a href="/notifications">
+                    Thông báo
+                    <i className="fas fa-bell notification-icon"></i>
+                </a>
+            </li>
         </ul>
     </div>
     <div className="search-container">

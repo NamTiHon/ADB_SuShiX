@@ -162,3 +162,6 @@ body {
     align-items: center;
     gap: 20px;
 }
+.notification-icon {
+    margin-left: 8px;
+}
