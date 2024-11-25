@@ -1,10 +1,11 @@
 import React from 'react';
 import '../css/menu.css';
+import Nav from './Nav';
 import sushi from '../img/sushi.jpg';
 
 const MenuItem = ({ menu }) => {
     return (
-        <div className="dish-list">
+        <div className="menu-item">
             <h2 className="type-header">{menu.name}</h2>
             <p className="description">{menu.info}</p>
         </div>
@@ -39,21 +40,25 @@ const Menu = () => {
 
     return (
         <div>
-            <div>
-                <div className="menu-list">
-                    {menuitems.map((menu, index) => (
-                        <div key={index} className="menu-list">
-                            <a>
-                                <MenuItem key={index} menu={menu} />
-                            </a>
-                        </div>
+            <Nav class="sticky"/>
+            <div className="menu-page-container">
+                <h1 className="menu-header">Thực đơn</h1>
+                <div>
+                    <div className="menu-list">
+                        {menuitems.map((menu, index) => (
+                            <div key={index} className="menu-list">
+                                <a>
+                                    <MenuItem key={index} menu={menu} />
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    {dishes.map((dish, index) => (
+                        <DishItem key={index} dish={dish} />
                     ))}
                 </div>
-            </div>
-            <div>
-                {dishes.map((dish, index) => (
-                    <DishItem key={index} dish={dish} />
-                ))}
             </div>
         </div>
     );

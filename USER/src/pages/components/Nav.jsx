@@ -12,7 +12,7 @@ function Nav() {
     <div className="menu">
         <ul>
             <li><a href="/">Trang Chủ</a></li>
-            <li><a href="/menu">Thực đơn<i className="fas fa-angle-down"></i></a></li>
+            <li><a href="/menu">Thực đơn <i className="fas fa-angle-down"></i></a></li>
             <li><a href="/about">Về chúng tôi</a></li>
         </ul>
     </div>

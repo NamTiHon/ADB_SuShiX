@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/branchsearch.css';
+import Nav from './Nav';
 import lvv from '../img/sushi.jpg';
 
 const BranchItem = ({ branch }) => {
@@ -19,23 +20,25 @@ const BranchSearch = () => {
 
     return (
         <div>
-            <h1>Hệ thống chi nhánh</h1>
-
-            <div className="filter-container">
-                <div className="filter-left">
-                    <h2>Bộ lọc tìm kiếm</h2>
-                    <p>Tỉnh</p>
-                    <p>Quận</p>
+            <Nav />
+            <div className="branchsearch-container">
+                <h1>Hệ thống chi nhánh</h1>
+                <div className="filter-container">
+                    <div className="filter-left">
+                        <h2>Bộ lọc tìm kiếm</h2>
+                        <p>Tỉnh <i className="fas fa-angle-down"></i></p>
+                        <p>Quận <i className="fas fa-angle-down"></i></p>
+                    </div>
+                    <div className="filter-right">
+                        <h2>Sắp xếp</h2>
+                        <p>Phổ biến <i className="fas fa-angle-down"></i></p>
+                    </div>
                 </div>
-                <div className="filter-right">
-                    <h2>Sắp xếp</h2>
-                    <p>Phổ biến</p>
+                <div className="branch-list">
+                    {branches.map((branch, index) => (
+                        <BranchItem key={index} branch={branch} />
+                    ))}
                 </div>
-            </div>
-            <div className="branch-list">
-                {branches.map((branch, index) => (
-                    <BranchItem key={index} branch={branch} />
-                ))}
             </div>
         </div>
     );
