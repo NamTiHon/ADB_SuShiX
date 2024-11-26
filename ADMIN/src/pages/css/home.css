@@ -3,35 +3,7 @@
     flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.sideBar {
-    width: 300px;
-    background-color: #fefcfc;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    height: 100vh;
-}
 
-.sideBar ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.sideBar ul li {
-    margin: 15px 0;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: #e183b5;
-    padding: 10px;
-    text-align: center;
-    font-weight: 600;
-    color: white;
-    border-radius: 10px;
-}
-.sideBar ul li:hover {
-    color: #0d0d0d;
-    background-color: #e8ccde;
-    transform: scale(1.1);
-}
 .adminContainer {
     display: flex;
     flex: 1;
