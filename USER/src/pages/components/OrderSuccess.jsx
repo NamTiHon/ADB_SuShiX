@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderSuccess.css';
+import { getOrder } from '../../utils/OrderStorage';
 
 const OrderSuccess = () => {
     const navigate = useNavigate();
@@ -9,10 +10,11 @@ const OrderSuccess = () => {
     const { formData, total, orderId } = location.state || {};
 
     useEffect(() => {
-        if (!location.state) {
-            navigate('/');
+        if (location.state?.orderId) {
+            const order = getOrder(location.state.orderId);
+            console.log('Verified saved order:', order); // Debug log
         }
-    }, [location.state, navigate]);
+    }, [location.state]);
 
     if (!location.state) {
         return null;

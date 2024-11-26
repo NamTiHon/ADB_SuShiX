@@ -1,21 +1,36 @@
 // Checkout.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 import Nav from './Nav';
 import '../css/checkout.css';
 
 const Checkout = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { user } = useContext(UserContext);
     const { cartItems = [], total = 0, shippingFee = 0 } = location.state || {};
 
     const [formData, setFormData] = useState({
         fullName: '',
+        email: '',
         phone: '',
         address: '',
         branch: '',
         paymentMethod: ''
     });
+
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                fullName: user.fullName || '',
+                email: user.email || '',
+                phone: user.phone || '',
+                address: user.address || ''
+            }));
+        }
+    }, [user]);
 
     const branches = [
         { id: 1, name: 'Chi nhánh Quận 1', address: '123 Nguyễn Huệ, Q1' },
@@ -36,11 +51,14 @@ const Checkout = () => {
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         navigate('/order-confirmation', {
             state: {
-                formData,
+                formData: {
+                    ...formData,
+                    email: user.email // Ensure email is passed
+                },
                 cartItems,
                 total,
                 shippingFee
@@ -87,6 +105,8 @@ const Checkout = () => {
                                     required
                                 />
                             </div>
+                            
+                          
 
                             <div className="form-group">
                                 <label>Chọn chi nhánh</label>

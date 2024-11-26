@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderTracking.css';
-
+import { getOrder } from '../../utils/OrderStorage';
 
 const OrderTracking = () => {
     const [orderId, setOrderId] = useState('');
@@ -12,25 +12,21 @@ const OrderTracking = () => {
     
     const handleSearch = (e) => {
         e.preventDefault();
-        // Mock data - replace with API call
-        const mockOrder = {
-            id: orderId,
-            status: 'preparing', // preparing, shipping, delivered
-            customerName: 'Nguyễn Văn A',
-            phone: '0123456789',
-            address: '123 Đường ABC, Quận 1, TP.HCM',
-            items: [
-                { id: 1, name: 'Sushi Cá Hồi', quantity: 2, price: 150000 },
-                { id: 2, name: 'Maki Roll', quantity: 1, price: 120000 }
-            ],
-            total: 420000,
-            shippingFee: 30000,
-            orderDate: '2024-03-20 14:30',
-            estimatedDelivery: '2024-03-20 15:30'
-        };
+        console.log('Searching for order:', orderId); // Debug log
+        console.log('All orders:', JSON.parse(localStorage.getItem('orders') || '{}')); // Debug log
         
-        setOrder(mockOrder);
-        setError('');
+        const searchId = orderId.trim().toUpperCase();
+        const foundOrder = getOrder(searchId);
+        
+        if (foundOrder) {
+            setOrder(foundOrder);
+            setError('');
+            console.log('Found order:', foundOrder); // Debug log
+        } else {
+            setOrder(null);
+            setError('Không tìm thấy đơn hàng với mã này');
+            console.log('Order not found for ID:', searchId); // Debug log
+        }
     };
 
     return (
