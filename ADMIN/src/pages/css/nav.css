@@ -1,0 +1,55 @@
+body{
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: rgb(214, 210, 210) 1px solid;
+}
+.right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+.adminBox{
+    background-color: #ff0099;
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: white;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.right a i.fas.fa-bell{
+    font-size: 24px;
+    color: #ff0099; 
+    cursor: pointer;
+}
+.adminBox i {
+    margin-right: 10px;
+}
+.adminBox:hover{
+    background-color: #f5cae4;
+    color: black;
+}
+.right a i.fas.fa-bell:hover {
+    color: #f8c2e2;
+}
+.left {
+    display: flex;
+    align-items: center;
+    color:#ff0099;
+    cursor: pointer;
+}
+.logo {
+    font-size: 34px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    margin-right: 20px;
+}
+.left .temp {
+    font-size: 24px;
+}
