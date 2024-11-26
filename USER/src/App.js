@@ -13,7 +13,7 @@ import About  from './pages/components/AboutUs';
 import MessengerIcon from './pages/components/MessengerIcon';
 import Notifications from './pages/components/Notifications';
 import Checkout from './pages/components/Checkout';
-
+import OrderConfirmation from './pages/components/OrderComfirmation';
 function App() {
   return (
     <UserProvider>
@@ -30,6 +30,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
           </Routes>
           <MessengerIcon />
         </Router>

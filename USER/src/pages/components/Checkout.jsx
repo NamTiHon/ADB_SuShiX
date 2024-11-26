@@ -38,14 +38,14 @@ const Checkout = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            // Handle order submission
-            // API call would go here
-            alert('Đặt hàng thành công!');
-            navigate('/order-success');
-        } catch (error) {
-            alert('Có lỗi xảy ra. Vui lòng thử lại.');
-        }
+        navigate('/order-confirmation', {
+            state: {
+                formData,
+                cartItems,
+                total,
+                shippingFee
+            }
+        });
     };
 
     return (
