@@ -13,7 +13,13 @@ const OrderConfirmation = () => {
         try {
             // API call would go here
             alert('Đặt hàng thành công!');
-            navigate('/order-success');
+            navigate('/order-success', {
+                state: {
+                    formData,
+                    total,
+                    orderId: Math.random().toString(36).substr(2, 9).toUpperCase()
+                }
+            });
         } catch (error) {
             alert('Có lỗi xảy ra. Vui lòng thử lại.');
         }
