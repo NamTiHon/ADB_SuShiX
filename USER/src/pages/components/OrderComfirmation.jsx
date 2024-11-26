@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderConfirmation.css';
 import { sendOrderConfirmationEmail } from '../../utils/EmailService';
+import { saveOrder } from '../../utils/OrderStorage';
 
 const OrderConfirmation = () => {
     const location = useLocation();
@@ -12,29 +13,52 @@ const OrderConfirmation = () => {
 
     const handleConfirm = async () => {
         try {
+            const orderId = Math.random().toString(36).substr(2, 9).toUpperCase();
             const orderDetails = {
-                id: Math.random().toString(36).substr(2, 9).toUpperCase(),
+                orderId,
                 customerName: formData.fullName,
-                items: cartItems,
-                total: total + shippingFee,
+                email: formData.email,
+                phone: formData.phone,
                 address: formData.address,
-                estimatedDelivery: new Date(Date.now() + 3600000).toLocaleString() // 1 hour from now
+                items: cartItems,
+                total,
+                shippingFee,
+                paymentMethod: formData.paymentMethod,
+                status: 'preparing',
+                orderDate: new Date().toISOString(),
+                estimatedDelivery: new Date(Date.now() + 3600000).toISOString(),
+                branch: formData.branch
             };
-    
+
+            // Save order to storage
+            const saved = saveOrder(orderDetails);
+            if (!saved) {
+                throw new Error('Failed to save order');
+            }
+
             // Send confirmation email
-            await sendOrderConfirmationEmail(orderDetails, formData.email);
-    
+            await sendOrderConfirmationEmail(orderDetails);
+
+            // Navigate to success page
             navigate('/order-success', {
                 state: {
+                    orderId,
                     formData,
                     total,
-                    orderId: orderDetails.id
+                    shippingFee,
+                    items: cartItems
                 }
             });
         } catch (error) {
-            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+            console.error('Error during order confirmation:', error);
+            alert('Có lỗi xảy ra khi xác nhận đơn hàng. Vui lòng thử lại.');
         }
     };
+
+    if (!formData || !cartItems) {
+        navigate('/cart');
+        return null;
+    }
 
     return (
         <div>
@@ -51,12 +75,20 @@ const OrderConfirmation = () => {
                                 <span>{formData.fullName}</span>
                             </div>
                             <div className="info-item">
+                                <label>Email:</label>
+                                <span>{formData.email}</span>
+                            </div>
+                            <div className="info-item">
                                 <label>Số điện thoại:</label>
                                 <span>{formData.phone}</span>
                             </div>
                             <div className="info-item">
                                 <label>Địa chỉ:</label>
                                 <span>{formData.address}</span>
+                            </div>
+                            <div className="info-item">
+                                <label>Chi nhánh:</label>
+                                <span>{formData.branch}</span>
                             </div>
                             <div className="info-item">
                                 <label>Phương thức thanh toán:</label>
@@ -101,7 +133,14 @@ const OrderConfirmation = () => {
                     </div>
 
                     <div className="confirmation-actions">
-                        <button onClick={() => navigate(-1)} className="back-btn">
+                        <button 
+                            onClick={() => {
+                                if (window.confirm('Bạn có chắc muốn quay lại? Thông tin đơn hàng sẽ không được lưu.')) {
+                                    navigate(-1);
+                                }
+                            }} 
+                            className="back-btn"
+                        >
                             Quay lại
                         </button>
                         <button onClick={handleConfirm} className="confirm-btn">
