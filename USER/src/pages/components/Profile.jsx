@@ -12,6 +12,7 @@ const Profile = () => {
     const fileInputRef = useRef(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({...user});
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -101,6 +102,19 @@ const Profile = () => {
             </div>
         );
     };
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true);
+    };
+
+    const handleLogoutConfirm = () => {
+        logout();
+        setShowLogoutModal(false);
+        navigate('/');
+    };
+
+    const handleLogoutCancel = () => {
+        setShowLogoutModal(false);
+    };
 
     return (
         <div>
@@ -121,10 +135,27 @@ const Profile = () => {
                                 Thay đổi ảnh
                             </button>
                         </div>
-                        <button onClick={handleLogout} className="logout-btn">
+                        <button onClick={handleLogoutClick} className="logout-btn">
                             <i className="fas fa-sign-out-alt"></i>
                             Đăng xuất
                         </button>
+
+                        {showLogoutModal && (
+                            <div className="modal-overlay">
+                                <div className="modal-content">
+                                    <h3>Xác nhận đăng xuất</h3>
+                                    <p>Bạn có chắc chắn muốn đăng xuất?</p>
+                                    <div className="modal-actions">
+                                        <button onClick={handleLogoutConfirm} className="confirm-btn">
+                                            Xác nhận
+                                        </button>
+                                        <button onClick={handleLogoutCancel} className="cancel-btn">
+                                            Hủy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <div className="profile-content">
