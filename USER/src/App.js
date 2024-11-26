@@ -12,7 +12,7 @@ import Cart from './pages/components/Cart';
 import About  from './pages/components/AboutUs';
 import MessengerIcon from './pages/components/MessengerIcon';
 import Notifications from './pages/components/Notifications';
-
+import Checkout from './pages/components/Checkout';
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/about" element={<About />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/checkout" element={<Checkout />} />
           </Routes>
           <MessengerIcon />
         </Router>

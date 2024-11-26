@@ -4,9 +4,23 @@ import { UserContext } from '../../context/UserContext';
 import Nav from './Nav';
 import '../css/cart.css';
 import { CartContext } from '../../context/CartContext';
+import { useNavigate } from 'react-router-dom';
+
 const Cart = () => {
+    const navigate = useNavigate();
     const { cartItems, setCartItems } = useContext(CartContext);
     const [selectedItems, setSelectedItems] = useState([]);
+    const handleCheckout = () => {
+        if (selectedItems.length === 0) return;
+        
+        navigate('/checkout', {
+            state: {
+                cartItems: cartItems.filter(item => selectedItems.includes(item.id)),
+                total: selectedTotal,
+                shippingFee: shippingFee
+            }
+        });
+    };
     
     const updateQuantity = (id, change) => {
         setCartItems(items => 
@@ -17,7 +31,7 @@ const Cart = () => {
             )
         );
     };
-
+    
     const deleteItem = (id) => {
         setCartItems(items => items.filter(item => item.id !== id));
         setSelectedItems(prev => prev.filter(itemId => itemId !== id));
@@ -90,6 +104,7 @@ const Cart = () => {
                             <span>{(selectedTotal + shippingFee).toLocaleString()}đ</span>
                         </div>
                         <button 
+                            onClick={handleCheckout}
                             className="checkout-btn"
                             disabled={selectedItems.length === 0}
                         >
