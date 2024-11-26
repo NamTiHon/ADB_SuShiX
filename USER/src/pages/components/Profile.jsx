@@ -1,15 +1,17 @@
 // src/pages/components/Profile.jsx
 import React, { useContext, useState, useRef } from 'react';
 import { UserContext } from '../../context/UserContext';
-import { useNavigate } from 'react-router-dom'; // Add this
+import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/profile.css';
 
 const Profile = () => {
-    const { user, setUser, logout } = useContext(UserContext); // Add logout
-    const navigate = useNavigate(); // Add this
+    const { user, setUser, logout } = useContext(UserContext);
+    const navigate = useNavigate();
     const [previewUrl, setPreviewUrl] = useState(user?.avatar || '/default-avatar.png');
     const fileInputRef = useRef(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedUser, setEditedUser] = useState({...user});
 
     const handleLogout = () => {
         logout();
@@ -19,15 +21,11 @@ const Profile = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            // Preview image
             const reader = new FileReader();
             reader.onload = () => {
                 setPreviewUrl(reader.result);
             };
             reader.readAsDataURL(file);
-
-            // Here you would typically upload to server
-            // For now just update local state
             setUser({
                 ...user,
                 avatar: reader.result
@@ -35,8 +33,41 @@ const Profile = () => {
         }
     };
 
-    const triggerFileInput = () => {
-        fileInputRef.current.click();
+    const handleInputChange = (e) => {
+        setEditedUser({
+            ...editedUser,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSave = () => {
+        setUser(editedUser);
+        setIsEditing(false);
+        // Here you would typically make an API call to update the user
+    };
+
+    const handleCancel = () => {
+        setEditedUser({...user});
+        setIsEditing(false);
+    };
+
+    const renderField = (label, field, type = "text") => {
+        return (
+            <div className="info-item">
+                <label>{label}:</label>
+                {isEditing ? (
+                    <input
+                        type={type}
+                        name={field}
+                        value={editedUser[field] || ''}
+                        onChange={handleInputChange}
+                        className="edit-input"
+                    />
+                ) : (
+                    <span>{user[field]}</span>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -44,7 +75,6 @@ const Profile = () => {
             <Nav />
             <div className="profile-container">
                 <div className="profile-grid">
-                    {/* Left Sidebar */}
                     <div className="profile-sidebar">
                         <div className="avatar-container">
                             <img src={previewUrl} alt="Avatar" className="avatar" />
@@ -55,7 +85,7 @@ const Profile = () => {
                                 accept="image/*"
                                 style={{ display: 'none' }}
                             />
-                            <button onClick={triggerFileInput} className="change-avatar-btn">
+                            <button onClick={() => fileInputRef.current.click()} className="change-avatar-btn">
                                 Thay đổi ảnh
                             </button>
                         </div>
@@ -65,39 +95,34 @@ const Profile = () => {
                         </button>
                     </div>
 
-                    {/* Right Content */}
                     <div className="profile-content">
-                        <h2>Thông tin cá nhân</h2>
+                        <div className="profile-header">
+                            <h2>Thông tin cá nhân</h2>
+                            {!isEditing ? (
+                                <button onClick={() => setIsEditing(true)} className="edit-btn">
+                                    <i className="fas fa-edit"></i> Chỉnh sửa
+                                </button>
+                            ) : (
+                                <div className="edit-actions">
+                                    <button onClick={handleSave} className="save-btn">
+                                        <i className="fas fa-save"></i> Lưu
+                                    </button>
+                                    <button onClick={handleCancel} className="cancel-btn">
+                                        <i className="fas fa-times"></i> Hủy
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                        
                         <div className="profile-info">
                             <div className="info-group">
-                                <div className="info-item">
-                                    <label>Họ và tên:</label>
-                                    <span>{user?.fullName}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Email:</label>
-                                    <span>{user?.email}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Số điện thoại:</label>
-                                    <span>{user?.phone}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Địa chỉ:</label>
-                                    <span>{user?.address}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Ngày sinh:</label>
-                                    <span>{user?.birthDate}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>CCCD:</label>
-                                    <span>{user?.idCard}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Giới tính:</label>
-                                    <span>{user?.gender}</span>
-                                </div>
+                                {renderField("Họ và tên", "fullName")}
+                                {renderField("Email", "email", "email")}
+                                {renderField("Số điện thoại", "phone", "tel")}
+                                {renderField("Địa chỉ", "address")}
+                                {renderField("Ngày sinh", "birthDate", "date")}
+                                {renderField("CCCD", "idCard")}
+                                {renderField("Giới tính", "gender")}
                             </div>
 
                             <div className="membership-info">
