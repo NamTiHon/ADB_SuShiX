@@ -1,5 +1,5 @@
 // src/pages/components/Profile.jsx
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
@@ -40,11 +40,43 @@ const Profile = () => {
         });
     };
 
-    const handleSave = () => {
-        setUser(editedUser);
-        setIsEditing(false);
-        // Here you would typically make an API call to update the user
+    const handleSave = async () => {
+        try {
+            // Save to localStorage
+            localStorage.setItem('userProfile', JSON.stringify(editedUser));
+    
+            // If using an API, add this:
+            /*
+            const response = await fetch('/api/profile/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedUser)
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to update profile');
+            }
+            */
+    
+            setUser(editedUser);
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            // Handle error (show error message to user)
+        }
     };
+    
+    // Load saved profile on component mount
+    useEffect(() => {
+        const savedProfile = localStorage.getItem('userProfile');
+        if (savedProfile) {
+            const parsedProfile = JSON.parse(savedProfile);
+            setUser(parsedProfile);
+            setEditedUser(parsedProfile);
+        }
+    }, []);
 
     const handleCancel = () => {
         setEditedUser({...user});
