@@ -318,7 +318,7 @@ alter table HoaDon
 --Bảng Phiếu đánh giá
 alter table PhieuDanhGia
 	add constraint FK_PDG_MaHoaDon_HD_MaHoaDon
-	foreign key (PDG_MaHoaDon)
+	foreign key (DG_MaHoaDon)
 	references HoaDon(HD_MaHoaDon)
 
 --Bảng Bộ phận của nhân viên
@@ -477,3 +477,24 @@ alter table LichSuLamViec
 -- Xóa database:
 -- use master;
 -- drop database DB_SushiX;6
+
+-- -- Thêm dữ liệu mẫu vào bảng DanhMuc
+-- INSERT INTO DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
+-- VALUES
+-- ('DM001', 'Khai vị'),
+-- ('DM002', 'Món chính'),
+-- ('DM003', 'Tráng miệng'),
+-- ('DM004', 'Đồ uống');
+
+-- -- Thêm dữ liệu mẫu vào bảng MonAn
+-- INSERT INTO MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
+-- VALUES	
+-- ('MA001', 'Gỏi cuốn', 50000, 2, 1, 1, 'DM001'),
+-- ('MA002', 'Sashimi cá hồi', 200000, 1, 1, 1, 'DM002'),
+-- ('MA003', 'Tempura', 150000, 1, 0, 1, 'DM002'),
+-- ('MA004', 'Bánh chocolate', 80000, 1, 1, 0, 'DM003'),
+-- ('MA005', 'Trà đá', 10000, 1, 1, 1, 'DM004'),
+-- ('MA006', 'Combo lẩu thập cẩm', 400000, 4, 1, 0, 'DM002'),
+-- ('MA007', 'Súp miso', 25000, 1, 1, 1, 'DM001'),
+-- ('MA008', 'Kem trà xanh', 50000, 1, 1, 0, 'DM003'),
+-- ('MA009', 'Chanh đá', 15000, 1, 1, 1, 'DM004');
