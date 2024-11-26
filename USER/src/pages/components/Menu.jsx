@@ -1,112 +1,156 @@
-import React from 'react';
-import '../css/menu.css';
+// src/pages/components/Menu.jsx
+import React, { useState } from 'react';
 import Nav from './Nav';
-import sushi from '../img/sushi.jpg';
-
-const MenuItem = ({ menu }) => {
-    return (
-        <div className="menu-item">
-            <h2 className="type-header">{menu.name}</h2>
-            <p className="description">{menu.info}</p>
-        </div>
-    )
-}
-
-const DishItem = ({ dish }) => {
-    return (
-        <div className="dish-item">
-            <img src={dish.image} alt={dish.name} />
-            <h2 className="dish-name">{dish.name}</h2>
-            <p className="dish-price">{dish.price} đ</p>
-            <a className="dish-button-info">Chi tiết</a>
-            <a className="dish-button-select"><i class="fa fa-cart-plus"></i> Chọn</a>
-        </div>
-    );
-}
+import Footer from './Footer';
+import '../css/menu.css';
 
 const Menu = () => {
-    const menuitems = [
-        { name: 'Sushi', info: 'Món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với hải sản, rau củ, hoặc các nguyên liệu khác, thường được cuốn trong rong biển.' },
-        { name: 'Khai vị', info: 'Khai vị là các món ăn nhẹ được phục vụ đầu bữa để kích thích vị giác, thường có hương vị tinh tế và dễ ăn.' },
-        { name: 'Tempura', info: 'Gồm hải sản hoặc rau củ được tẩm bột và chiên giòn, tạo lớp vỏ nhẹ và xốp.' },
-        { name: 'Udon', info: 'Món mì Nhật Bản với sợi mì dày, dai, thường được phục vụ trong nước dùng thanh nhẹ kèm rau củ và thịt.' },
-        { name: 'Hotpot', info: 'Món lẩu phổ biến ở châu Á, với nồi nước dùng sôi để nhúng các loại thịt, hải sản, rau củ, và nấm, thường ăn kèm nước chấm.' },
-        { name: 'Lunch set', info: 'Gồm nhiều món nhỏ được kết hợp trong một khay hoặc đĩa, thường bao gồm món chính, cơm, súp, rau, và tráng miệng, nhằm mang lại bữa ăn cân bằng dinh dưỡng.' }
+    const [selectedCategory, setSelectedCategory] = useState('all');
+
+    const categories = [
+        { id: 'all', name: 'Tất cả' },
+        { id: 'sushi', name: 'Sushi' },
+        { id: 'appetizer', name: 'Khai vị' },
+        { id: 'tempura', name: 'Tempura' },
+        { id: 'udon', name: 'Udon' },
+        { id: 'hotpot', name: 'Lẩu' },
+        { id: 'lunch-set', name: 'Lunch Set' },
+        { id: 'specialty', name: 'Đặc sản' },
+        { id: 'dessert', name: 'Tráng miệng' },
+        { id: 'drinks', name: 'Đồ uống' }
     ];
 
     const dishes = [
-        { name: 'Dish Name', info: 'Dish info', image: sushi, price: 100000 }
-    ]
+        {
+            id: 1,
+            name: 'Salmon Sushi',
+            category: 'sushi',
+            price: 150000,
+            image: '/images/salmon-sushi.jpg',
+            description: 'Cá hồi tươi với cơm sushi'
+        },
+        {
+            id: 2,
+            name: 'Tuna Sushi',
+            category: 'sushi',
+            price: 140000,
+            image: '/images/tuna-sushi.jpg',
+            description: 'Cá ngừ tươi với cơm sushi'
+        },
+        {
+            id: 3,
+            name: 'Miso Soup',
+            category: 'appetizer',
+            price: 45000,
+            image: '/images/miso-soup.jpg',
+            description: 'Súp miso truyền thống Nhật Bản'
+        },
+        {
+            id: 4,
+            name: 'Tempura Tôm',
+            category: 'tempura',
+            price: 120000,
+            image: '/images/shrimp-tempura.jpg',
+            description: 'Tôm tẩm bột chiên giòn kiểu Nhật'
+        },
+        {
+            id: 5,
+            name: 'Udon Bò',
+            category: 'udon',
+            price: 95000,
+            image: '/images/beef-udon.jpg',
+            description: 'Mì udon với thịt bò và nước dùng nóng'
+        },
+        {
+            id: 6,
+            name: 'Lẩu Hải Sản',
+            category: 'hotpot',
+            price: 350000,
+            image: '/images/seafood-hotpot.jpg',
+            description: 'Lẩu hải sản phong cách Nhật cho 2-3 người'
+        },
+        {
+            id: 7,
+            name: 'Lunch Set A',
+            category: 'lunch-set',
+            price: 180000,
+            image: '/images/lunch-set-a.jpg',
+            description: 'Cơm, sushi, tempura và súp miso'
+        },
+        {
+            id: 8,
+            name: 'Wagyu Beef',
+            category: 'specialty',
+            price: 450000,
+            image: '/images/wagyu-beef.jpg',
+            description: 'Thịt bò Wagyu cao cấp nướng'
+        },
+        {
+            id: 9,
+            name: 'Matcha Ice Cream',
+            category: 'dessert',
+            price: 45000,
+            image: '/images/matcha-ice-cream.jpg',
+            description: 'Kem trà xanh matcha'
+        },
+        {
+            id: 10,
+            name: 'Sake',
+            category: 'drinks',
+            price: 180000,
+            image: '/images/sake.jpg',
+            description: 'Rượu sake Nhật Bản'
+        }
+    ];
+
+    const filteredDishes = selectedCategory === 'all' 
+        ? dishes 
+        : dishes.filter(dish => dish.category === selectedCategory);
 
     return (
         <div>
-            <Nav class="sticky"/>
-            <div className="menu-page-container">
-                <h1 className="menu-header">Thực đơn</h1>
-                <div>
-                    <div className="menu-list">
-                        {menuitems.map((menu, index) => (
-                            <div key={index} className="menu-list">
-                                <a>
-                                    <MenuItem key={index} menu={menu} />
-                                </a>
-                            </div>
+            <Nav />
+            <div className="menu-container">
+                <h1>Thực đơn</h1>
+                
+                <div className="category-container">
+                    <div className="category-nav">
+                        {categories.map(category => (
+                            <button
+                                key={category.id}
+                                className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(category.id)}
+                            >
+                                {category.name}
+                            </button>
                         ))}
                     </div>
                 </div>
-                <div>
-                    {dishes.map((dish, index) => (
-                        <DishItem key={index} dish={dish} />
+
+                <div className="dishes-grid">
+                    {filteredDishes.map(dish => (
+                        <div key={dish.id} className="dish-card">
+                            <div className="dish-image">
+                                <img src={dish.image} alt={dish.name} />
+                            </div>
+                            <div className="dish-info">
+                                <h3>{dish.name}</h3>
+                                <p>{dish.description}</p>
+                                <div className="dish-price">
+                                    {dish.price.toLocaleString()}đ
+                                </div>
+                            </div>
+                            <button className="add-to-cart-btn">
+                                <i className="fas fa-cart-plus"></i>
+                                Thêm vào giỏ
+                            </button>
+                        </div>
                     ))}
                 </div>
             </div>
+            <Footer />
         </div>
     );
-}
+};
 
 export default Menu;
-
-
-
-
-
-// import React from 'react';
-// import '../css/menu.css';
-
-// const Menu = () => {
-//     const dishes = [
-//         { name: 'Sushi', info: 'Món ăn truyền thống của Nhật Bản', image: '/images/sushi.jpg', price: 100000 },
-//         { name: 'Ramen', info: 'Món mì nổi tiếng của Nhật Bản', image: '/images/ramen.jpg', price: 80000 },
-//         { name: 'Tempura', info: 'Món chiên giòn của Nhật Bản', image: '/images/tempura.jpg', price: 90000 },
-//         { name: 'Sashimi', info: 'Món cá sống tươi ngon', image: '/images/sashimi.jpg', price: 120000 },
-//         { name: 'Takoyaki', info: 'Món bánh bạch tuộc nổi tiếng', image: '/images/takoyaki.jpg', price: 70000 },
-//         { name: 'Okonomiyaki', info: 'Món bánh xèo Nhật Bản', image: '/images/okonomiyaki.jpg', price: 85000 }
-//     ];
-
-//     return (
-//         <div className="menu-container">
-//             <h1 className="menu-header">Thực đơn</h1>
-//             <p>Chọn món ăn yêu thích của bạn</p>
-//             <div className="dish-list">
-//                 {dishes.map((dish, index) => (
-//                     <MenuItem key={index} dish={dish} />
-//                 ))}
-//             </div>
-//         </div>
-//     );
-// }
-
-// const MenuItem = ({ dish }) => {
-//     return (
-//         <div className="dish-item">
-//             <img src={dish.image} alt={dish.name} />
-//             <h2>{dish.name}</h2>
-//             <p>{dish.info}</p>
-//             <p>Giá: {dish.price} VND</p>
-//             <button>Chọn</button>
-//             <button>Chi tiết</button>
-//         </div>
-//     );
-// }
-
-// export default Menu;
