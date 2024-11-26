@@ -13,6 +13,8 @@ const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({...user});
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+    const [email, setEmail] = useState('');
 
     const handleLogout = () => {
         logout();
@@ -116,6 +118,29 @@ const Profile = () => {
         setShowLogoutModal(false);
     };
 
+
+    // Add handler functions
+const handleForgotPasswordClick = () => {
+    setShowForgotPasswordModal(true);
+};
+
+const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        // API call to send reset password email
+        // const response = await fetch('/api/forgot-password', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email })
+        // });
+        alert('Liên kết đặt lại mật khẩu đã được gửi đến email của bạn');
+        setShowForgotPasswordModal(false);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+    }
+};
+
     return (
         <div>
             <Nav />
@@ -153,6 +178,42 @@ const Profile = () => {
                                             Hủy
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <button onClick={handleForgotPasswordClick} className="forgot-password-btn">
+                            <i className="fas fa-key"></i>
+                            Quên mật khẩu
+                        </button>
+
+                        {showForgotPasswordModal && (
+                            <div className="modal-overlay">
+                                <div className="modal-content">
+                                    <h3>Quên mật khẩu</h3>
+                                    <p>Nhập email để nhận liên kết đặt lại mật khẩu</p>
+                                    <form onSubmit={handleForgotPasswordSubmit}>
+                                        <input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Nhập email của bạn"
+                                            className="forgot-password-input"
+                                            required
+                                        />
+                                        <div className="modal-actions">
+                                            <button type="submit" className="confirm-btn">
+                                                Gửi
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                onClick={() => setShowForgotPasswordModal(false)} 
+                                                className="cancel-btn"
+                                            >
+                                                Hủy
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         )}

@@ -200,3 +200,43 @@
 .cancel-btn:hover {
     background: #d0d0d0;
 }
+
+/* Add to profile.css */
+.forgot-password-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 2px solid #4a90e2;
+    color: #4a90e2;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.forgot-password-btn:hover {
+    background: linear-gradient(45deg, #4a90e2, #357abd);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.forgot-password-input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.forgot-password-input:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+}
