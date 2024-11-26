@@ -77,14 +77,13 @@
 }
 
 .info-item {
-    padding: 12px;
-    border-bottom: 2px solid #f0f0f0;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
     transition: all 0.3s ease;
 }
 
 .info-item:hover {
-    background: #fafafa;
-    border-bottom-color: #ff0099;
+    background-color: #fafafa;
 }
 
 .info-item label {
@@ -108,8 +107,12 @@
 
 .member-tier {
     color: #ff0099;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 4px 12px;
+    background: linear-gradient(to right, #ffeaf5, #fff0f5);
+    border-radius: 20px;
+    display: inline-block;
 }
 
 .points {
@@ -152,7 +155,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -280,6 +283,12 @@
     border-bottom: 2px solid #f0f0f0;
 }
 
+.modal-header h3 {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .close-btn {
     background: none;
     border: none;
@@ -287,9 +296,71 @@
     color: #666;
     cursor: pointer;
     padding: 5px;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .close-btn:hover {
     color: #ff0099;
+    transform: rotate(90deg);
+}
+
+
+.points-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.current-points {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #00b09b;
+    background: linear-gradient(to right, #e6fff2, #f0fff5);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.points-exchange-btn {
+    padding: 8px 16px;
+    background: linear-gradient(45deg, #00b09b, #96c93d);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.points-exchange-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,176,155,0.2);
+}
+
+.rewards-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Animation for modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rewards-modal {
+    animation: modalFadeIn 0.3s ease forwards;
 }
