@@ -1,11 +1,23 @@
 // src/pages/components/Menu.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Nav from './Nav';
 import Footer from './Footer';
 import '../css/menu.css';
 
 const Menu = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const categoryNavRef = useRef(null);
+
+    const scroll = (direction) => {
+        const container = categoryNavRef.current;
+        const scrollAmount = 200;
+        if (container) {
+            container.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     const categories = [
         { id: 'all', name: 'Tất cả', description: 'Tất cả các món ăn trong thực đơn.' },
