@@ -3,9 +3,14 @@ import React, { useState, useRef } from 'react';
 import Nav from './Nav';
 import Footer from './Footer';
 import '../css/menu.css';
+import { useLocation } from 'react-router-dom';
 
 const Menu = () => {
-    const [selectedCategory, setSelectedCategory] = useState('all');
+    
+    const location = useLocation();
+    const [selectedCategory, setSelectedCategory] = useState(
+        location.state?.category || 'all'
+    );
     const categoryNavRef = useRef(null);
 
     const scroll = (direction) => {

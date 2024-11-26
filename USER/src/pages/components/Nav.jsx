@@ -18,15 +18,15 @@ function Nav() {
                             <i className="fas fa-angle-down"></i>
                         </a>
                         <div className="dropdown-content">
-                            <a href="/menu/sushi">Sushi</a>
-                            <a href="/menu/appetizer">Khai vị</a>
-                            <a href="/menu/tempura">Tempura</a>
-                            <a href="/menu/udon">Udon</a>
-                            <a href="/menu/hotpot">Lẩu</a>
-                            <a href="/menu/lunch-set">Lunch Set</a>
-                            <a href="/menu/specialty">Đặc sản</a>
-                            <a href="/menu/dessert">Tráng miệng</a>
-                            <a href="/menu/drinks">Đồ uống</a>
+                            <Link to="/menu" state={{ category: 'sushi' }}>Sushi</Link>  
+                            <Link to="/menu" state={{ category: 'appetizer' }}>Khai vị</Link>
+                            <Link to="/menu" state={{ category: 'tempura' }}>Tempura</Link>
+                            <Link to="/menu" state={{ category: 'udon' }}>Udon</Link>
+                            <Link to="/menu" state={{ category: 'hotpot' }}>Lẩu</Link>
+                            <Link to="/menu" state={{ category: 'lunch-set' }}>Lunch Set</Link>
+                            <Link to="/menu" state={{ category: 'specialty' }}>Đặc sản</Link>
+                            <Link to="/menu" state={{ category: 'dessert' }}>Tráng miệng</Link>
+                            <Link to="/menu" state={{ category: 'drinks' }}>Đồ uống</Link>
                         </div>
                     </li>
                     <li><a href="/about">Về chúng tôi</a></li>
