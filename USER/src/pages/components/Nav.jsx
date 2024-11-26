@@ -46,7 +46,7 @@ function Nav() {
             </div>
             <div className="right-nav">
                 <div className="checkorder">
-                    <a href="#" className="checkorder">Kiểm tra đơn hàng</a>
+                    <a href="/order-tracking" className="checkorder">Kiểm tra đơn hàng</a>
                 </div>
                 <div className="checkorder">
                     <a href="/check-reservation" className="checkorder">Kiểm tra đặt bàn</a>

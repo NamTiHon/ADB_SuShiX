@@ -3,6 +3,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderConfirmation.css';
+import { sendOrderConfirmationEmail } from '../../utils/EmailService';
 
 const OrderConfirmation = () => {
     const location = useLocation();
@@ -11,13 +12,23 @@ const OrderConfirmation = () => {
 
     const handleConfirm = async () => {
         try {
-            // API call would go here
-            alert('Đặt hàng thành công!');
+            const orderDetails = {
+                id: Math.random().toString(36).substr(2, 9).toUpperCase(),
+                customerName: formData.fullName,
+                items: cartItems,
+                total: total + shippingFee,
+                address: formData.address,
+                estimatedDelivery: new Date(Date.now() + 3600000).toLocaleString() // 1 hour from now
+            };
+    
+            // Send confirmation email
+            await sendOrderConfirmationEmail(orderDetails, formData.email);
+    
             navigate('/order-success', {
                 state: {
                     formData,
                     total,
-                    orderId: Math.random().toString(36).substr(2, 9).toUpperCase()
+                    orderId: orderDetails.id
                 }
             });
         } catch (error) {
