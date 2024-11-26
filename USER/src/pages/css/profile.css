@@ -240,3 +240,56 @@
     outline: none;
     box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
 }
+
+/* Add to profile.css */
+.promotions-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 2px solid #ff9900;
+    color: #ff9900;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.promotions-btn:hover {
+    background: linear-gradient(45deg, #ff9900, #ffb347);
+    color: white;
+    border-color: transparent;
+}
+
+.promotions-modal {
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #ff0099;
+}

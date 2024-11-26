@@ -15,11 +15,9 @@ const Profile = () => {
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [email, setEmail] = useState('');
+    const [showPromotionsModal, setShowPromotionsModal] = useState(false);
 
-    const handleLogout = () => {
-        logout();
-        navigate('/');
-    };
+    
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -214,6 +212,48 @@ const handleForgotPasswordSubmit = async (e) => {
                                             </button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        )}
+                        <button onClick={() => setShowPromotionsModal(true)} className="promotions-btn">
+                            <i className="fas fa-gift"></i>
+                            Ưu đãi của tôi
+                        </button>
+                        {showPromotionsModal && (
+                            <div className="modal-overlay">
+                                <div className="modal-content promotions-modal">
+                                    <div className="modal-header">
+                                        <h3>Ưu đãi của tôi</h3>
+                                        <button 
+                                            className="close-btn"
+                                            onClick={() => setShowPromotionsModal(false)}
+                                        >
+                                            <i className="fas fa-times"></i>
+                                        </button>
+                                    </div>
+
+                                    <div className="promotions-grid">
+                                        <div className="promotion-card">
+                                            <span className="promotion-status status-valid">Còn hiệu lực</span>
+                                            <div className="promotion-discount">Giảm 20%</div>
+                                            <div className="promotion-code">WELCOME20</div>
+                                            <div className="promotion-expiry">Hết hạn: 31/12/2024</div>
+                                            <div className="promotion-terms">
+                                                Áp dụng cho đơn hàng từ 500.000đ
+                                            </div>
+                                            <button 
+                                                className="copy-btn"
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText('WELCOME20');
+                                                    alert('Đã sao chép mã');
+                                                }}
+                                            >
+                                                <i className="fas fa-copy"></i> Sao chép mã
+                                            </button>
+                                        </div>
+                                        
+                                        {/* Add more promotion cards here */}
+                                    </div>
                                 </div>
                             </div>
                         )}
