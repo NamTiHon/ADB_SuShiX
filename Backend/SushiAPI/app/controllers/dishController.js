@@ -1,63 +1,62 @@
 import { dishService } from '../services/dishService.js';
 
-export class DishController {
-    // @desc   Get all dishes
-    // @route  GET /api/dishes
-    static async getDishes(req, res) {
+export const dishController = {
+    // Get all dishes
+    getDishes: async (req, res) => {
         try {
-            const allDishes = dishService.getAllDishes();
-            res.status(200).json(allDishes);
+            const dishes = await dishService.getAllDishes();
+            res.status(200).json({ message: 'Dishes retrieved successfully', dishes });
         } catch (error) {
-            res.status(500).json({ message: 'Failed to retrieve dishes', error: error.message });
+            res.status(500).json({ message: error.message });
         }
-    }
+    },
 
-    // @desc   Get a single dish
-    // @route  GET /api/dishes/:dishId
-    static async getDish(req, res) {
+    // Get a single dish by MA_MaMon
+    getDishById: async (req, res) => {
         try {
-            const dishId = parseInt(req.params.dishId);
-            const dish = dishService.getDishById(dishId);
-            res.status(200).json(dish);
+            const MA_MaMon = req.params.MA_MaMon;
+            const dish = await dishService.getDishById(MA_MaMon);
+            if (!dish) {
+                return res.status(404).json({ message: `Dish with ID ${MA_MaMon} not found` });
+            }
+            res.status(200).json({ message: 'Dish retrieved successfully', dish });
         } catch (error) {
-            res.status(404).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
-    }
+    },
 
-    // @desc    Create new dish
-    // @route   POST /api/dishes
-    static async addDish(req, res) {
+    // Add a new dish
+    addDish: async (req, res) => {
         try {
-            const newDish = req.body; // Nhận dữ liệu từ request
-            const addedDish = dishService.addDish(newDish); // Gọi service để thêm
-            res.status(201).json(addedDish);
+            const newDish = await dishService.addDish(req.body);
+            res.status(201).json({ message: 'Dish added successfully', dish: newDish });
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
-    }
+    },
 
-    // @desc    Update dish
-    // @route   PUT /api/dishes/:dishId
-    static async updateDish(req, res) {
+    // Update an existing dish by MA_MaMon
+    updateDish: async (req, res) => {
         try {
-            const dishId = parseInt(req.params.dishId);
-            const updates = req.body; // Dữ liệu cập nhật từ request
-            const updatedDish = dishService.updateDish(dishId, updates); // Gọi service để cập nhật
-            res.status(200).json(updatedDish);
+            const MA_MaMon = req.params.MA_MaMon;
+            const updatedDish = await dishService.updateDish(MA_MaMon, req.body);
+            if (!updatedDish) {
+                return res.status(404).json({ message: `Dish with ID ${MA_MaMon} not found` });
+            }
+            res.status(200).json({ message: 'Dish updated successfully', dish: updatedDish });
         } catch (error) {
-            res.status(404).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
-    }
+    },
 
-    // @desc    Delete dish
-    // @route   DELETE /api/dishes/:dishId
-    static async deleteDish(req, res) {
+    // Delete a dish by MA_MaMon
+    deleteDish: async (req, res) => {
         try {
-            const dishId = parseInt(req.params.dishId);
-            dishService.deleteDish(dishId); // Gọi service để xóa
-            res.status(204).send(); // Không trả về dữ liệu
+            const MA_MaMon = req.params.MA_MaMon;
+            await dishService.deleteDish(MA_MaMon);
+            res.status(204).send(); // No content
         } catch (error) {
-            res.status(404).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
-}
+};

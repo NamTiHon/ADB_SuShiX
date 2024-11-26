@@ -1,71 +1,105 @@
-let dishes = [
-    { dishId: 1, name: 'Sushi Roll', currentPrice: 150000, portion: 2, isAvailable: true, supportsDelivery: true, categoryId: 1 },
-    { dishId: 2, name: 'Sashimi Set', currentPrice: 300000, portion: 1, isAvailable: true, supportsDelivery: true, categoryId: 2 },
-    { dishId: 3, name: 'Tempura', currentPrice: 120000, portion: 2, isAvailable: false, supportsDelivery: false, categoryId: 3 },
-];
+import sql from 'mssql';  // Import the sql module from mssql
+import conn from '../config/db.js';
 
 export const dishService = {
-    // Lấy danh sách tất cả món ăn
-    getAllDishes: () => {
-        return dishes;
-    },
-
-    // Lấy thông tin một món ăn qua ID
-    getDishById: (dishId) => {
-        const dish = dishes.find((dish) => dish.dishId === dishId);
-        if (!dish) {
-            throw new Error(`Dish with id ${dishId} not found`);
+    // Get all dishes with category details
+    getAllDishes: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request().query(`
+                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc
+                FROM MonAn
+                LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
+            `);
+            return result.recordset; // Return all dishes with category details
+        } catch (error) {
+            console.error('Error fetching dishes:', error);
+            throw new Error('Failed to fetch dishes');
         }
-        return dish;
     },
 
-    // Thêm món ăn mới
-    addDish: (newDish) => {
-        const { name, currentPrice, portion, categoryId } = newDish;
-
-        if (!name || !currentPrice || !portion) {
-            throw new Error('Please include a name, price, and portion for the dish');
+    // Get a single dish by MA_MaMon
+    getDishById: async (MA_MaMon) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
+                .query(`
+                    SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc
+                    FROM MonAn
+                    LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
+                    WHERE MA_MaMon = @MA_MaMon
+                `);
+            return result.recordset[0]; // Return single dish or undefined if not found
+        } catch (error) {
+            console.error('Error fetching dish by ID:', error);
+            throw new Error('Failed to fetch dish');
         }
-
-        const dish = {
-            dishId: dishes.length + 1, // Tạo ID mới dựa trên danh sách hiện tại
-            name,
-            currentPrice,
-            portion,
-            isAvailable: newDish.isAvailable ?? true,
-            supportsDelivery: newDish.supportsDelivery ?? true,
-            categoryId,
-        };
-
-        dishes.push(dish); // Thêm vào mảng
-        return dish;
     },
 
-    // Cập nhật món ăn
-    updateDish: (dishId, updates) => {
-        const dish = dishes.find((dish) => dish.dishId === dishId);
-        if (!dish) {
-            throw new Error(`Dish with id ${dishId} not found`);
+    // Add a new dish
+    addDish: async (dishData) => {
+        try {
+            const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = dishData;
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
+                .input('MA_TenMon', sql.NVarChar(50), MA_TenMon)
+                .input('MA_GiaHienTai', sql.Float, MA_GiaHienTai)
+                .input('MA_KhauPhan', sql.Int, MA_KhauPhan)
+                .input('MA_CoSan', sql.Bit, MA_CoSan)
+                .input('MA_HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
+                .input('MA_MaDanhMuc', sql.VarChar(10), MA_MaDanhMuc)
+                .query(`
+                    INSERT INTO MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
+                    OUTPUT INSERTED.*
+                    VALUES (@MA_MaMon, @MA_TenMon, @MA_GiaHienTai, @MA_KhauPhan, @MA_CoSan, @MA_HoTroGiaoHang, @MA_MaDanhMuc)
+                `);
+            return result.recordset[0]; // Return the inserted dish
+        } catch (error) {
+            console.error('Error adding dish:', error);
+            throw new Error('Failed to add dish');
         }
-
-        // Cập nhật các thuộc tính
-        dish.name = updates.name || dish.name;
-        dish.currentPrice = updates.currentPrice || dish.currentPrice;
-        dish.portion = updates.portion || dish.portion;
-        dish.isAvailable = updates.isAvailable ?? dish.isAvailable;
-        dish.supportsDelivery = updates.supportsDelivery ?? dish.supportsDelivery;
-        dish.categoryId = updates.categoryId || dish.categoryId;
-
-        return dish;
     },
 
-    // Xóa món ăn
-    deleteDish: (dishId) => {
-        const dishIndex = dishes.findIndex((dish) => dish.dishId === dishId);
-        if (dishIndex === -1) {
-            throw new Error(`Dish with id ${dishId} not found`);
+    // Update a dish by MA_MaMon
+    updateDish: async (MA_MaMon, updates) => {
+        try {
+            const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = updates;
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
+                .input('MA_TenMon', sql.NVarChar(50), MA_TenMon)
+                .input('MA_GiaHienTai', sql.Float, MA_GiaHienTai)
+                .input('MA_KhauPhan', sql.Int, MA_KhauPhan)
+                .input('MA_CoSan', sql.Bit, MA_CoSan)
+                .input('MA_HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
+                .input('MA_MaDanhMuc', sql.VarChar(10), MA_MaDanhMuc)
+                .query(`
+                    UPDATE MonAn
+                    SET MA_TenMon = @MA_TenMon, MA_GiaHienTai = @MA_GiaHienTai, MA_KhauPhan = @MA_KhauPhan,
+                        MA_CoSan = @MA_CoSan, MA_HoTroGiaoHang = @MA_HoTroGiaoHang, MA_MaDanhMuc = @MA_MaDanhMuc
+                    WHERE MA_MaMon = @MA_MaMon
+                    SELECT * FROM MonAn WHERE MA_MaMon = @MA_MaMon
+                `);
+            return result.recordset[0]; // Return the updated dish
+        } catch (error) {
+            console.error('Error updating dish:', error);
+            throw new Error('Failed to update dish');
         }
-
-        dishes.splice(dishIndex, 1); // Xóa món ăn
     },
+
+    // Delete a dish by MA_MaMon
+    deleteDish: async (MA_MaMon) => {
+        try {
+            const pool = await conn;
+            await pool.request()
+                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
+                .query('DELETE FROM MonAn WHERE MA_MaMon = @MA_MaMon');
+            return { success: true };
+        } catch (error) {
+            console.error('Error deleting dish:', error);
+            throw new Error('Failed to delete dish');
+        }
+    }
 };

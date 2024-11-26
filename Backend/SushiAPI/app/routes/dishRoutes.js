@@ -1,21 +1,12 @@
 import express from 'express';
-import { DishController } from '../controllers/dishController.js';
+import { dishController } from '../controllers/dishController.js';
 
 const router = express.Router();
 
-// Lấy danh sách món ăn
-router.get('/', DishController.getDishes);
-
-// Lấy món ăn
-router.get('/:dishId', DishController.getDish);
-
-// Thêm món ăn mới
-router.post('/', DishController.addDish);
-
-// Cập nhật món ăn
-router.put('/:dishId', DishController.updateDish);
-
-// Xóa món ăn
-router.delete('/:dishId', DishController.deleteDish);
+router.get('/', dishController.getDishes);
+router.get('/:MA_MaMon', dishController.getDishById);
+router.post('/', dishController.addDish);
+router.put('/:MA_MaMon', dishController.updateDish);
+router.delete('/:MA_MaMon', dishController.deleteDish);
 
 export default router;

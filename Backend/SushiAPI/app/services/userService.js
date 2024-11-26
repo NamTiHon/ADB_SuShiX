@@ -24,7 +24,7 @@ export const userService = {
 
         // Lưu user mới
         const newUser = createUser({ email, password: hashedPassword, name, role });
-        return { success: true, user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newRole.role } };
+        return { success: true, user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role } };
     },
 
     // Kiểm tra mật khẩu

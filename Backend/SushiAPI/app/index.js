@@ -5,11 +5,12 @@ import logger from './middleware/logger.js';
 import dishRoutes from './routes/dishRoutes.js';
 import authRoutes from './routes/authRoutes.js';  // Import các route của auth
 
-
 const app = express()
 
-app.use(express.json());  // Middleware to parse JSON bodies
-app.use(cors());  // Allow cross-origin requests
+app.use(express.json());
+app.use(express.urlencoded({ extended: true, charset: 'utf-8' }));
+app.use(cors());
+
 
 // Logger middleware
 app.use(logger);
