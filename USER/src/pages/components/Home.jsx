@@ -1,140 +1,147 @@
-// src/pages/components/Menu.jsx
-import React, { useState } from 'react';
+// Home.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import Footer from './Footer';
-import '../css/menu.css';
+import '../css/home.css';
 
-const Menu = () => {
-    const [selectedCategory, setSelectedCategory] = useState('all');
-
-    const categories = [
-        { id: 'all', name: 'Tất cả', description: 'Tất cả các món ăn trong thực đơn.' },
-        { id: 'sushi', name: 'Sushi', description: 'Sushi là món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với các loại hải sản tươi sống.' },
-        { id: 'appetizer', name: 'Khai vị', description: 'Các món khai vị nhẹ nhàng, kích thích vị giác.' },
-        { id: 'tempura', name: 'Tempura', description: 'Tempura là món chiên giòn đặc trưng của Nhật Bản.' },
-        { id: 'udon', name: 'Udon', description: 'Udon là loại mì dày, dai, thường được ăn với nước dùng nóng.' },
-        { id: 'hotpot', name: 'Lẩu', description: 'Lẩu Nhật Bản với hương vị đậm đà, phong phú.' },
-        { id: 'lunch-set', name: 'Lunch Set', description: 'Các set ăn trưa tiện lợi, đầy đủ dinh dưỡng.' },
-        { id: 'specialty', name: 'Đặc sản', description: 'Các món đặc sản cao cấp, độc đáo.' },
-        { id: 'dessert', name: 'Tráng miệng', description: 'Các món tráng miệng ngọt ngào, hấp dẫn.' },
-        { id: 'drinks', name: 'Đồ uống', description: 'Các loại đồ uống phong phú, đa dạng.' }
-    ];
-
-    const dishes = [
-      {
-          id: 1,
-          name: 'Salmon Sushi',
-          category: 'sushi',
-          price: 150000,
-          image: '/images/salmon-sushi.jpg',
-          description: 'Cá hồi tươi với cơm sushi'
-      },
-      {
-          id: 2,
-          name: 'Tuna Sushi',
-          category: 'sushi',
-          price: 160000,
-          image: '/images/tuna-sushi.jpg',
-          description: 'Cá ngừ tươi với cơm sushi'
-      },
-      {
-          id: 3,
-          name: 'Shrimp Tempura',
-          category: 'tempura',
-          price: 120000,
-          image: '/images/shrimp-tempura.jpg',
-          description: 'Tôm chiên giòn'
-      },
-      {
-          id: 4,
-          name: 'Beef Udon',
-          category: 'udon',
-          price: 180000,
-          image: '/images/beef-udon.jpg',
-          description: 'Mì Udon với thịt bò'
-      },
-      {
-          id: 5,
-          name: 'Chicken Hotpot',
-          category: 'hotpot',
-          price: 250000,
-          image: '/images/chicken-hotpot.jpg',
-          description: 'Lẩu gà Nhật Bản'
-      },
-      {
-          id: 6,
-          name: 'Matcha Ice Cream',
-          category: 'dessert',
-          price: 80000,
-          image: '/images/matcha-ice-cream.jpg',
-          description: 'Kem trà xanh'
-      },
-      {
-          id: 7,
-          name: 'Green Tea',
-          category: 'drinks',
-          price: 50000,
-          image: '/images/green-tea.jpg',
-          description: 'Trà xanh Nhật Bản'
-      }
+function Home() {
+  const popularItems = [
+    {
+      title: 'Sushi Set',
+      image: '/img/sushi-set.jpg',
+      description: 'Combo sushi đặc biệt'
+    },
+    {
+      title: 'Ramen',
+      image: '/img/ramen.jpg',
+      description: 'Mì Ramen truyền thống'
+    },
+    {
+      title: 'Tempura',
+      image: '/img/tempura.jpg',
+      description: 'Tempura giòn rụm'
+    },
+    {
+      title: 'Bento Box',
+      image: '/img/bento.jpg',
+      description: 'Hộp cơm Bento'
+    }
   ];
 
-    const filteredDishes = selectedCategory === 'all' 
-        ? dishes 
-        : dishes.filter(dish => dish.category === selectedCategory);
+  const bestSellers = [
+    {
+      title: 'Salmon Sushi',
+      image: '/img/salmon-sushi.jpg',
+      description: 'Sushi cá hồi tươi ngon',
+      price: '189.000đ',
+      rating: 4.5
+    },
+    {
+      title: 'Dragon Roll',
+      image: '/img/dragon-roll.jpg',
+      description: 'Cầu vồng hương vị độc đáo',
+      price: '259.000đ',
+      rating: 5
+    },
+    {
+      title: 'Udon Special',
+      image: '/img/udon.jpg',
+      description: 'Mì Udon đặc biệt',
+      price: '149.000đ',
+      rating: 4.8
+    },
+    {
+      title: 'Sake Sashimi',
+      image: '/img/sashimi.jpg',
+      description: 'Cá hồi sashimi thượng hạng',
+      price: '219.000đ',
+      rating: 4.7
+    }
+  ];
 
-    const selectedCategoryDescription = categories.find(category => category.id === selectedCategory)?.description;
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
 
-    return (
-        <div>
-            <Nav />
-            <div className="menu-container">
-                <h1>Thực đơn</h1>
-                
-                <div className="category-container">
-                    <div className="category-nav">
-                        {categories.map(category => (
-                            <button
-                                key={category.id}
-                                className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-                                onClick={() => setSelectedCategory(category.id)}
-                            >
-                                {category.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<i key={`star-${i}`} className="fas fa-star"></i>);
+    }
+    if (hasHalfStar) {
+      stars.push(<i key="half-star" className="fas fa-star-half-alt"></i>);
+    }
+    return stars;
+  };
 
-                {selectedCategoryDescription && (
-                    <div className="category-description">
-                        <p>{selectedCategoryDescription}</p>
-                    </div>
-                )}
-
-                <div className="dishes-grid">
-                    {filteredDishes.map(dish => (
-                        <div key={dish.id} className="dish-card">
-                            <div className="dish-image">
-                                <img src={dish.image} alt={dish.name} />
-                            </div>
-                            <div className="dish-info">
-                                <h3>{dish.name}</h3>
-                                <p>{dish.description}</p>
-                                <div className="dish-price">
-                                    {dish.price.toLocaleString()}đ
-                                </div>
-                            </div>
-                            <button className="add-to-cart-btn">
-                                <i className="fas fa-cart-plus"></i>
-                                Thêm vào giỏ
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <Footer />
+  return (
+    <div className="home">
+      <Nav />
+      
+      {/* Hero Section */}
+      <div className="content-container">
+        <div className="hero-section">
+          <h1>
+            Hương vị biển khơi <br />
+            <span className="highlight">xứ anh đào</span>
+          </h1>
+          <p><em>
+            Nơi những món ăn Nhật Bản hội tụ <br />
+            với chất lượng hảo hạng.
+          </em></p>
+          <div className="buttons">
+            <button className="btn-primary">Đặt ngay</button>
+            <button className="btn-secondary">Xem thực đơn</button>
+          </div>
         </div>
-    );
-};
 
-export default Menu;
+        <div className="img">
+          <img src="/img/home.jpg" alt="SuShiX" className="main-image" />
+        </div>
+      </div>
+
+      {/* Popular Section */}
+      <div className="popular-section">
+        <h2>Món mục phổ biến</h2>
+        <div className="popular-grid">
+          {popularItems.map((item, index) => (
+            <div className="popular-card" key={index}>
+              <img src={item.image} alt={item.title} />
+              <div className="card-content">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Best Sellers Section */}
+      <div className="bestseller-section">
+        <h2>Best Sellers</h2>
+        <div className="bestseller-grid">
+          {bestSellers.map((item, index) => (
+            <div className="bestseller-card" key={index}>
+            <img src={item.image} alt={item.title} />
+            <div className="card-content">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <div className="info-grid">
+                <span className="price">{item.price}</span>
+                <div className="rating">
+                  <span>{item.rating}</span>
+                  <i className="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+      
+      <Footer />
+    </div>
+  );
+}
+
+export default Home;
