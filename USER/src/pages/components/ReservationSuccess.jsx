@@ -67,21 +67,30 @@ const ReservationSuccess = () => {
                             )}
                         </div>
 
-                        {reservation.selectedItems && reservation.selectedItems.length > 0 && (
+                        {reservation.selectedDishes && reservation.selectedDishes.length > 0 && (
                             <div className="pre-order">
                                 <h3>Món đã đặt trước</h3>
                                 <div className="items-list">
-                                    {reservation.selectedItems.map(item => (
-                                        <div key={item.id} className="pre-order-item">
-                                            <span>{item.name} x{item.quantity}</span>
-                                            <span>{(item.price * item.quantity).toLocaleString()}đ</span>
+                                    {reservation.selectedDishes.map(dish => (
+                                        <div key={dish.id} className="pre-order-item">
+                                            <img src={dish.image} alt={dish.name} className="dish-image" />
+                                            <div className="dish-info">
+                                                <h4 className="dish-name">{dish.name}</h4>
+                                                <p className="dish-description">{dish.description}</p>
+                                                <div className="dish-details">
+                                                    <span className="quantity">Số lượng: {dish.quantity}</span>
+                                                    <span className="price">
+                                                        {(dish.price * dish.quantity).toLocaleString()}đ
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                     <div className="pre-order-total">
                                         <strong>Tổng cộng:</strong>
-                                        <strong>
-                                            {reservation.selectedItems
-                                                .reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                                        <strong className="total-amount">
+                                            {reservation.selectedDishes
+                                                .reduce((sum, dish) => sum + (dish.price * dish.quantity), 0)
                                                 .toLocaleString()}đ
                                         </strong>
                                     </div>
