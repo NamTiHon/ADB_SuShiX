@@ -16,6 +16,7 @@ import Checkout from './pages/components/Checkout';
 import OrderConfirmation from './pages/components/OrderComfirmation';
 import OrderSuccess from './pages/components/OrderSuccess';
 import OrderTracking from './pages/components/OrderTracking';
+import Reservation from './pages/components/Reservation';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/order-tracking" element={<OrderTracking />} />
+            <Route path="/reservation" element={<Reservation />} />
           </Routes>
           <MessengerIcon />
         </Router>
