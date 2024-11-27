@@ -140,3 +140,38 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255,0,153,0.3);
 }
+
+.coupon-input {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .coupon-input input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .apply-coupon-btn {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .apply-coupon-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  .summary-item.discount {
+    color: #4CAF50;
+  }

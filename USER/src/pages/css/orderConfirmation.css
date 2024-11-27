@@ -100,3 +100,13 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+
+.summary-row.discount {
+    color: #4CAF50;
+}
+
+.coupon-applied {
+    font-style: italic;
+    margin-top: 4px;
+    color: #666;
+}
