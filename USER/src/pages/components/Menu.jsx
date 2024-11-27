@@ -4,15 +4,25 @@ import Nav from './Nav';
 import Footer from './Footer';
 import '../css/menu.css';
 import { useLocation } from 'react-router-dom';
-
+import { useCart } from '../../context/CartContext';
+import Toast from '../components/Toast';
 const Menu = () => {
-    
+    const { addToCart } = useCart();
     const location = useLocation();
     const [selectedCategory, setSelectedCategory] = useState(
         location.state?.category || 'all'
     );
     const categoryNavRef = useRef(null);
+    const [showToast, setShowToast] = useState(false);
+    const [toastDishId, setToastDishId] = useState(null);
 
+    const handleAddToCart = (dish) => {
+        addToCart(dish);
+        setToastDishId(dish.id);
+        setTimeout(() => {
+            setToastDishId(null);
+        }, 3000);
+    };
     const scroll = (direction) => {
         const container = categoryNavRef.current;
         const scrollAmount = 200;
@@ -94,10 +104,20 @@ const Menu = () => {
                                     {dish.price.toLocaleString()}đ
                                 </div>
                             </div>
-                            <button className="add-to-cart-btn">
-                                <i className="fas fa-cart-plus"></i>
-                                Thêm vào giỏ
+                            <button 
+                                onClick={() => handleAddToCart(dish)}
+                                className="add-to-cart-btn"
+                            >
+                                <i className="fas fa-shopping-cart"></i>
+                                Thêm vào giỏ hàng
                             </button>
+
+                            {toastDishId === dish.id && (
+                                <div className="dish-toast">
+                                    <i className="fas fa-check-circle"></i>
+                                    Đã thêm vào giỏ hàng!
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
