@@ -56,7 +56,94 @@ const Menu = () => {
             image: '/images/salmon-sushi.jpg',
             description: 'Cá hồi tươi với cơm sushi'
         },
-        // Các món ăn khác...
+        {
+            id: 2,
+            name: 'California Roll',
+            category: 'sushi',
+            price: 120000,
+            image: '/images/california-roll.jpg',
+            description: 'Sushi cuộn với cua, bơ và dưa chuột'
+        },
+        {
+            id: 3,
+            name: 'Miso Soup',
+            category: 'appetizer',
+            price: 45000,
+            image: '/images/miso-soup.jpg',
+            description: 'Súp miso truyền thống Nhật Bản'
+        },
+        {
+            id: 4,
+            name: 'Tempura Moriawase',
+            category: 'tempura',
+            price: 180000,
+            image: '/images/tempura-moriawase.jpg',
+            description: 'Tổng hợp tempura hải sản và rau củ'
+        },
+        {
+            id: 5,
+            name: 'Kitsune Udon',
+            category: 'udon',
+            price: 95000,
+            image: '/images/kitsune-udon.jpg',
+            description: 'Mì udon với đậu phụ chiên'
+        },
+        {
+            id: 6,
+            name: 'Shabu Shabu',
+            category: 'hotpot',
+            price: 350000,
+            image: '/images/shabu-shabu.jpg',
+            description: 'Lẩu shabu shabu với thịt bò cắt lát mỏng'
+        },
+        {
+            id: 7,
+            name: 'Bento Box',
+            category: 'lunch-set',
+            price: 165000,
+            image: '/images/bento-box.jpg',
+            description: 'Set ăn trưa với cơm, tempura và sashimi'
+        },
+        {
+            id: 8,
+            name: 'Wagyu Steak',
+            category: 'specialty',
+            price: 850000,
+            image: '/images/wagyu-steak.jpg',
+            description: 'Thịt bò wagyu cao cấp'
+        },
+        {
+            id: 9,
+            name: 'Matcha Ice Cream',
+            category: 'dessert',
+            price: 55000,
+            image: '/images/matcha-ice-cream.jpg',
+            description: 'Kem trà xanh Nhật Bản'
+        },
+        {
+            id: 10,
+            name: 'Sake',
+            category: 'drinks',
+            price: 180000,
+            image: '/images/sake.jpg',
+            description: 'Rượu sake truyền thống'
+        },
+        {
+            id: 11,
+            name: 'Dragon Roll',
+            category: 'sushi',
+            price: 165000,
+            image: '/images/dragon-roll.jpg',
+            description: 'Sushi cuộn lươn với bơ'
+        },
+        {
+            id: 12,
+            name: 'Gyoza',
+            category: 'appetizer',
+            price: 75000,
+            image: '/images/gyoza.jpg',
+            description: 'Bánh xếp Nhật chiên giòn'
+        }
     ];
 
     const filteredDishes = selectedCategory === 'all' 
