@@ -3,8 +3,30 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/reservation.css';
+import { dishes } from './Menu'; // Import dishes array
+
+const categories = [
+    { id: 'all', name: 'Tất cả' },
+    { id: 'sushi', name: 'Sushi' },
+    { id: 'appetizer', name: 'Khai vị' },
+    { id: 'tempura', name: 'Tempura' },
+    { id: 'udon', name: 'Udon' },
+    { id: 'hotpot', name: 'Lẩu' },
+    { id: 'lunch-set', name: 'Lunch Set' },
+    { id: 'specialty', name: 'Đặc sản' },
+    { id: 'dessert', name: 'Tráng miệng' },
+    { id: 'drinks', name: 'Đồ uống' }
+];
 
 const Reservation = () => {
+   
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    
+    // Filter dishes by category
+    const filteredDishes = selectedCategory === 'all' 
+        ? dishes 
+        : dishes.filter(dish => dish.category === selectedCategory);
+
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -13,7 +35,8 @@ const Reservation = () => {
         time: '',
         guests: '2',
         note: '',
-        branch: ''
+        branch: '',
+        selectedDishes: [] // Add this
     });
 
     const timeSlots = [
@@ -32,6 +55,41 @@ const Reservation = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const handleDishSelect = (dish) => {
+        setFormData(prev => {
+            const existingDish = prev.selectedDishes.find(d => d.id === dish.id);
+            if (existingDish) {
+                return {
+                    ...prev,
+                    selectedDishes: prev.selectedDishes.map(d =>
+                        d.id === dish.id 
+                            ? {...d, quantity: d.quantity + 1}
+                            : d
+                    )
+                };
+            }
+            return {
+                ...prev,
+                selectedDishes: [...prev.selectedDishes, {...dish, quantity: 1}]
+            };
+        });
+    };
+
+    const handleQuantityChange = (dishId, change) => {
+        setFormData(prev => ({
+            ...prev,
+            selectedDishes: prev.selectedDishes.map(dish => {
+                if (dish.id === dishId) {
+                    const newQuantity = dish.quantity + change;
+                    return newQuantity > 0 
+                        ? {...dish, quantity: newQuantity}
+                        : null;
+                }
+                return dish;
+            }).filter(Boolean)
+        }));
     };
 
     const handleSubmit = (e) => {
@@ -55,6 +113,13 @@ const Reservation = () => {
             state: { reservationData: reservation } // Change this line only
         });
     };
+
+    const totalAmount = formData.selectedDishes.reduce(
+        (sum, dish) => sum + (dish.price * dish.quantity), 
+        0
+    );
+
+    const [showMenuModal, setShowMenuModal] = useState(false);
 
     return (
         <div>
@@ -157,6 +222,90 @@ const Reservation = () => {
                                 onChange={handleInputChange}
                                 placeholder="Yêu cầu đặc biệt (nếu có)"
                             />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Đặt món trước (không bắt buộc)</label>
+                            <button 
+                                type="button" 
+                                className="menu-select-btn"
+                                onClick={() => setShowMenuModal(true)}
+                            >
+                                Chọn món
+                            </button>
+                            
+                            {formData.selectedDishes.length > 0 && (
+                                <div className="selected-dishes">
+                                    <h3>Món đã chọn:</h3>
+                                    {formData.selectedDishes.map(dish => (
+                                        <div key={dish.id} className="selected-dish-item">
+                                            <span>{dish.name}</span>
+                                            <div className="quantity-controls">
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => handleQuantityChange(dish.id, -1)}
+                                                >-</button>
+                                                <span>{dish.quantity}</span>
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => handleQuantityChange(dish.id, 1)}
+                                                >+</button>
+                                            </div>
+                                            <span>{(dish.price * dish.quantity).toLocaleString()}đ</span>
+                                        </div>
+                                    ))}
+                                    <div className="total-amount">
+                                        Tổng cộng: {totalAmount.toLocaleString()}đ
+                                    </div>
+                                </div>
+                            )}
+
+                            {showMenuModal && (
+                                        <div className="menu-modal">
+                                            <div className="menu-modal-content">
+                                                <h3>Chọn món</h3>
+                                                <div className="category-tabs">
+                                                    {categories.map(category => (
+                                                        <button
+                                                            key={category.id}
+                                                            className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
+                                                            onClick={() => setSelectedCategory(category.id)}
+                                                        >
+                                                            {category.name}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <div className="menu-grid">
+                                                    {filteredDishes.map(dish => (
+                                                        <div key={dish.id} className="menu-item">
+                                                            <img src={dish.image} alt={dish.name} />
+                                                            <div className="menu-item-info">
+                                                                <h4>{dish.name}</h4>
+                                                                <p className="description">{dish.description}</p>
+                                                                <p className="price">{dish.price.toLocaleString()}đ</p>
+                                                                <button 
+                                                                    type="button"
+                                                                    onClick={() => handleDishSelect(dish)}
+                                                                    className="add-dish-btn"
+                                                                >
+                                                                    Thêm vào đơn
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <button 
+                                                    type="button" 
+                                                    className="close-modal-btn"
+                                                    onClick={() => setShowMenuModal(false)}
+                                                >
+                                                    Đóng
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+    
+
                         </div>
 
                         <button type="submit" className="submit-btn">
