@@ -148,20 +148,24 @@ const OrderConfirmation = () => {
                             </div>
                         </div>
 
-                        <h3>Món đã chọn</h3>
-                        <div className="selected-items">
-                            {cartItems?.map(item => (
-                                <div key={item.id} className="item-card">
-                                    <img src={item.image} alt={item.name} />
-                                    <div className="item-info">
-                                        <h4>{item.name}</h4>
-                                        <p>Số lượng: {item.quantity}</p>
-                                        <p className="price">
-                                            {(item.price * item.quantity).toLocaleString()}đ
-                                        </p>
+                        <div className="selected-items-section">
+                            <h3>Món đã chọn</h3>
+                            <div className="selected-items-grid">
+                                {cartItems?.map(item => (
+                                    <div key={item.id} className="item-card">
+                                        <div className="item-image">
+                                            <img src={item.image} alt={item.name} />
+                                        </div>
+                                        <div className="item-details">
+                                            <h4 className="item-name">{item.name}</h4>
+                                            <div className="item-meta">
+                                                <span className="quantity">Số lượng: {item.quantity}</span>
+                                                <span className="price">{(item.price * item.quantity).toLocaleString()}đ</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
 
                         <h3>Thông tin đơn hàng</h3>
