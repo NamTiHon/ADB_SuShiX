@@ -51,7 +51,9 @@ const Reservation = () => {
         localStorage.setItem('reservations', JSON.stringify(reservations));
 
         // Navigate to confirmation
-        navigate('/reservation-success', { state: { reservation } });
+        navigate('/table-selection', { 
+            state: { reservationData: formData }
+        });
     };
 
     return (

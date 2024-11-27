@@ -17,6 +17,9 @@ import OrderConfirmation from './pages/components/OrderComfirmation';
 import OrderSuccess from './pages/components/OrderSuccess';
 import OrderTracking from './pages/components/OrderTracking';
 import Reservation from './pages/components/Reservation';
+import ReservationSuccess from './pages/components/ReservationSuccess';
+import TableSelection from './pages/components/TableSelection';
+
 
 function App() {
   return (
@@ -38,6 +41,8 @@ function App() {
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/order-tracking" element={<OrderTracking />} />
             <Route path="/reservation" element={<Reservation />} />
+            <Route path="/table-selection" element={<TableSelection />} />
+            <Route path="/reservation-success" element={<ReservationSuccess />} />
           </Routes>
           <MessengerIcon />
         </Router>
