@@ -111,6 +111,7 @@ const Menu = () => {
     const [selectedCategory, setSelectedCategory] = useState(
         location.state?.category || 'all'
     );
+    const searchTerm = location.state?.searchTerm?.toLowerCase() || '';
     const categoryNavRef = useRef(null);
     const [showToast, setShowToast] = useState(false);
     const [toastDishId, setToastDishId] = useState(null);
@@ -148,9 +149,18 @@ const Menu = () => {
 
     
 
-    const filteredDishes = selectedCategory === 'all' 
-        ? dishes 
-        : dishes.filter(dish => dish.category === selectedCategory);
+    const filteredDishes = dishes.filter(dish => {
+        const matchesSearch = searchTerm ? (
+            dish.name.toLowerCase().includes(searchTerm) ||
+            dish.description.toLowerCase().includes(searchTerm) ||
+            dish.category.toLowerCase().includes(searchTerm)
+        ) : true;
+
+        const matchesCategory = selectedCategory === 'all' || 
+            dish.category === selectedCategory;
+
+        return matchesSearch && matchesCategory;
+    });
 
     const selectedCategoryDescription = categories.find(category => category.id === selectedCategory)?.description;
 
@@ -160,6 +170,13 @@ const Menu = () => {
             <div className="menu-container">
                 <h1>Thực đơn</h1>
                 
+                {searchTerm && (
+                    <div className="search-results">
+                        <h2>Kết quả tìm kiếm cho: "{searchTerm}"</h2>
+                        <p>Tìm thấy {filteredDishes.length} món</p>
+                    </div>
+                )}
+
                 <div className="category-container">
                     <div className="category-nav">
                         {categories.map(category => (

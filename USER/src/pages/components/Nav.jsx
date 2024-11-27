@@ -1,10 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext.js';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/nav.css';
 
 function Nav() {
     const { user } = useContext(UserContext);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate('/menu', { state: { searchTerm: searchTerm.trim() } });
+            setSearchTerm(''); // Clear search after submit
+        }
+    };
 
     return (
         <nav className="navbar">
@@ -39,10 +49,17 @@ function Nav() {
                 </ul>
             </div>
             <div className="search-container">
-                <div className="search">
-                    <input type="text" placeholder="Tìm kiếm..." />
-                    <i className="fas fa-search"></i>
-                </div>
+                <form className="search" onSubmit={handleSearchSubmit}>
+                    <input 
+                        type="text" 
+                        placeholder="Tìm kiếm..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <button type="submit">
+                        <i className="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
             <div className="right-nav">
                 <div className="checkorder">

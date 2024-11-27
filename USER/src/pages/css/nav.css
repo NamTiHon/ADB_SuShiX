@@ -157,6 +157,21 @@ body {
     cursor: pointer;
     font-size: 14px;
 }
+
+.search button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    color: #666;
+    position: absolute;
+    right: 0;
+}
+
+.search button:hover {
+    color: #ff0099;
+}
+
 .right-nav {
     display: flex;
     align-items: center;
