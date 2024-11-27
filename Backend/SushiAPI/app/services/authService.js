@@ -1,22 +1,26 @@
 import { userService } from './userService.js';
-import { generateToken, verifyToken } from '../config/jwt.js';
+import { generateToken } from '../config/jwt.js';
 
 export const authService = {
     // Xác thực thông tin đăng nhập
     loginUser: async (email, password) => {
-        const user = userService.findUserByEmail(email);
-        if (!user) {
-            return { success: false, message: 'Invalid credentials' };  // User không tồn tại
-        }
+        try {
+            const user = await userService.findUserByEmail(email);
+            if (!user) {
+                return { success: false, message: 'Invalid credentials' };
+            }
 
-        // Kiểm tra mật khẩu
-        const isMatch = await userService.verifyPassword(password, user.password);
-        if (!isMatch) {
-            return { success: false, message: 'Invalid credentials' };  // Mật khẩu không khớp
-        }
+            const isMatch = await userService.verifyPassword(password, user.Password);
+            if (!isMatch) {
+                return { success: false, message: 'Invalid credentials' };
+            }
 
-        // Tạo token nếu thông tin hợp lệ
-        const token = generateToken(user);
-        return { success: true, token };
-    }
+            // Tao token
+            const token = generateToken(user);
+            return { success: true, token };
+        } catch (error) {
+            console.error('Error during login:', error);
+            throw new Error('Failed to login user');
+        }
+    },
 };

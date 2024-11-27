@@ -1,13 +1,13 @@
 import { userService } from '../services/userService.js';
 import { authService } from '../services/authService.js';
 
-// Hiển thị danh sách user
-export const showAllUsers = (req, res) => {
+// Hiển thị danh sách tất cả user (test)
+export const showAllUsers = async (req, res) => {
     try {
-        const users = userService.getAllUsers();
+        const users = await userService.getAllUsers();
         res.status(200).json({ message: 'List of all users', users });
     } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error('Error fetching users:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
@@ -24,7 +24,7 @@ export const register = async (req, res) => {
 
         res.status(201).json({ message: 'User created successfully', user: result.user });
     } catch (error) {
-        console.error("Error during registration:", error);
+        console.error('Error during registration:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
@@ -34,7 +34,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+        return res.status(400).json({ message: 'Email and password are required' });
     }
 
     try {
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
 
         res.json({ message: 'Login successful', token: result.token });
     } catch (error) {
-        console.error("Error during login:", error);
+        console.error('Error during login:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

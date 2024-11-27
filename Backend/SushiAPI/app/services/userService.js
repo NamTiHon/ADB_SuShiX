@@ -1,34 +1,67 @@
+import sql from 'mssql';
+import conn from '../config/db.js';
 import bcrypt from 'bcryptjs';
-import { getUserByEmail, createUser, getAllUsers } from '../models/user.js';
 
 export const userService = {
-    // Lấy thông tin tất cả users
-    getAllUsers: () => {
-        return getAllUsers();  // Trả về toàn bộ user (từ model giả lập)
+    // Lấy danh sách tất cả người dùng
+    getAllUsers: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request().query('SELECT * FROM Users');
+            return result.recordset; // Return list of users
+        } catch (error) {
+            console.error('Error fetching all users:', error);
+            throw new Error('Failed to fetch users');
+        }
     },
 
     // Tìm user theo email
-    findUserByEmail: (email) => {
-        return getUserByEmail(email);  // Tìm user qua email (model giả lập)
+    findUserByEmail: async (email) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('Email', sql.NVarChar(100), email)
+                .query('SELECT * FROM Users WHERE Email = @Email');
+            return result.recordset[0]; // Return the first user found
+        } catch (error) {
+            console.error('Error finding user by email:', error);
+            throw new Error('Failed to find user');
+        }
     },
 
-    // Tạo user mới
-    registerUser: async (email, password, name, role) => {
-        const existingUser = getUserByEmail(email);
-        if (existingUser) {
-            return { success: false, message: 'User already exists' };  // Nếu email đã tồn tại
+    // Đăng ký user mới
+    registerUser: async (email, password, name, role = 'customer') => {
+        try {
+            // Kiểm tra email đã tồn tại
+            const existingUser = await userService.findUserByEmail(email);
+            if (existingUser) {
+                return { success: false, message: 'User already exists' };
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10); // Hash password
+
+            // Thêm user mới
+            const pool = await conn;
+            const result = await pool.request()
+                .input('Email', sql.NVarChar(100), email)
+                .input('Password', sql.NVarChar(sql.MAX), hashedPassword)
+                .input('Name', sql.NVarChar(100), name)
+                .input('Role', sql.NVarChar(50), role)
+                .query(`
+                    INSERT INTO Users (Email, Password, Name, Role)
+                    OUTPUT INSERTED.*
+                    VALUES (@Email, @Password, @Name, @Role)
+                `);
+
+            return { success: true, user: result.recordset[0] }; // Return new user
+        } catch (error) {
+            console.error('Error registering user:', error);
+            throw new Error('Failed to register user');
         }
-
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Lưu user mới
-        const newUser = createUser({ email, password: hashedPassword, name, role });
-        return { success: true, user: { id: newUser.id, email: newUser.email, name: newUser.name, role: newUser.role } };
     },
 
     // Kiểm tra mật khẩu
     verifyPassword: async (inputPassword, hashedPassword) => {
-        return await bcrypt.compare(inputPassword, hashedPassword);  // So sánh mật khẩu
+        return await bcrypt.compare(inputPassword, hashedPassword);
     },
 };

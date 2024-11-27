@@ -498,3 +498,13 @@ alter table LichSuLamViec
 -- ('MA007', 'Súp miso', 25000, 1, 1, 1, 'DM001'),
 -- ('MA008', 'Kem trà xanh', 50000, 1, 1, 0, 'DM003'),
 -- ('MA009', 'Chanh đá', 15000, 1, 1, 1, 'DM004');
+
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY, -- Tự động tăng ID cho mỗi user
+    Email NVARCHAR(100) NOT NULL UNIQUE, -- Email phải là duy nhất
+    Password NVARCHAR(MAX) NOT NULL,     -- Lưu mật khẩu đã được mã hóa (hashed password)
+    Name NVARCHAR(100) NOT NULL,         -- Tên người dùng
+    Role NVARCHAR(50) NOT NULL DEFAULT 'customer', -- Vai trò: customer, employee, admin
+    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo tài khoản
+    UpdatedAt DATETIME DEFAULT GETDATE()  -- Thời gian cập nhật tài khoản
+);
