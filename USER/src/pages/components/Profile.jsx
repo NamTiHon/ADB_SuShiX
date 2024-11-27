@@ -18,7 +18,11 @@ const Profile = () => {
     const [showPromotionsModal, setShowPromotionsModal] = useState(false);
     const [showRewardsModal, setShowRewardsModal] = useState(false);
     const [activeTab, setActiveTab] = useState('vouchers');
-
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
     
 
     const handleImageChange = (e) => {
@@ -141,6 +145,53 @@ const handleForgotPasswordSubmit = async (e) => {
     }
 };
 
+const handlePasswordClick = () => {
+    setShowPasswordModal(true);
+};
+
+const handlePasswordCancel = () => {
+    setShowPasswordModal(false);
+};
+
+const handlePasswordConfirm = async () => {
+    // Validate passwords
+    if (newPassword !== confirmPassword) {
+        setError('Mật khẩu mới không khớp');
+        return;
+    }
+    
+    try {
+        const response = await fetch('http://your-api/change-password', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                oldPassword,
+                newPassword
+            })
+        });
+
+        if (response.ok) {
+            setShowPasswordModal(false);
+            // Reset fields
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setError('');
+            alert('Thay đổi mật khẩu thành công');
+        } else {
+            const data = await response.json();
+            setError(data.message || 'Mật khẩu cũ không đúng');
+        }
+    } catch (err) {
+        setError('Đã xảy ra lỗi, vui lòng thử lại');
+    }
+};
+
+
+
     return (
         <div>
             <Nav />
@@ -160,6 +211,53 @@ const handleForgotPasswordSubmit = async (e) => {
                                 Thay đổi ảnh
                             </button>
                         </div>
+
+
+                        <button onClick={handlePasswordClick} className="password-btn">
+                            <i className="fas fa-key"></i>
+                            Thay đổi mật khẩu
+                        </button>
+
+                        {showPasswordModal && (
+                            <div className="modal-overlay">
+                                <div className="modal-content">
+                                    <h3>Thay đổi mật khẩu</h3>
+                                    {error && <div className="error-message">{error}</div>}
+                                    <div className="password-inputs">
+                                        <input 
+                                            type="password" 
+                                            placeholder="Mật khẩu cũ"
+                                            value={oldPassword}
+                                            onChange={(e) => setOldPassword(e.target.value)}
+                                        />
+                                        <input 
+                                            type="password" 
+                                            placeholder="Mật khẩu mới"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                        />
+                                        <input 
+                                            type="password" 
+                                            placeholder="Xác nhận mật khẩu mới"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="modal-actions">
+                                        <button 
+                                            onClick={handlePasswordConfirm} 
+                                            className="confirm-btn"
+                                            disabled={!oldPassword || !newPassword || !confirmPassword}
+                                        >
+                                            Xác nhận
+                                        </button>
+                                        <button onClick={handlePasswordCancel} className="cancel-btn">
+                                            Hủy
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <button onClick={handleLogoutClick} className="logout-btn">
                             <i className="fas fa-sign-out-alt"></i>
                             Đăng xuất
@@ -217,6 +315,9 @@ const handleForgotPasswordSubmit = async (e) => {
                                 </div>
                             </div>
                         )}
+
+                        
+
                         <button onClick={() => setShowPromotionsModal(true)} className="promotions-btn">
                             <i className="fas fa-gift"></i>
                             Ưu đãi của tôi
