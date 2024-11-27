@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Nav from './Nav';
 import Footer from './Footer';
 import '../css/home.css';
+import { useNavigate } from 'react-router-dom';
+
 
 function Home() {
   const popularItems = [
@@ -73,7 +75,7 @@ function Home() {
     }
     return stars;
   };
-
+  const navigate = useNavigate();
   return (
     <div className="home">
       <Nav />
@@ -90,8 +92,18 @@ function Home() {
             với chất lượng hảo hạng.
           </em></p>
           <div className="buttons">
-            <button className="btn-primary">Đặt ngay</button>
-            <button className="btn-secondary">Xem thực đơn</button>
+              <button 
+                  className="btn-primary" 
+                  onClick={() => navigate('/reservation')}
+              >
+                  Đặt ngay
+              </button>
+              <button 
+                  className="btn-secondary"
+                  onClick={() => navigate('/menu')}
+              >
+                  Xem thực đơn
+              </button>
           </div>
         </div>
 
