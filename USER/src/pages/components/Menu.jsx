@@ -5,7 +5,7 @@ import Footer from './Footer';
 import '../css/menu.css';
 import { useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import Toast from '../components/Toast';
+
 export const dishes = [
     {
         id: 1,
@@ -108,13 +108,25 @@ const Menu = () => {
     
     const { addToCart } = useCart();
     const location = useLocation();
+    const [toastDishId, setToastDishId] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(
         location.state?.category || 'all'
     );
-    const searchTerm = location.state?.searchTerm?.toLowerCase() || '';
-    const categoryNavRef = useRef(null);
-    const [showToast, setShowToast] = useState(false);
-    const [toastDishId, setToastDishId] = useState(null);
+    
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setIsSearching(true);
+        setSearchTerm(e.target.value);
+    };
+
+    const clearSearch = () => {
+        setSearchTerm('');
+        setIsSearching(false);
+    };
+    
 
     const handleAddToCart = (dish) => {
         addToCart(dish);
@@ -123,16 +135,7 @@ const Menu = () => {
             setToastDishId(null);
         }, 3000);
     };
-    const scroll = (direction) => {
-        const container = categoryNavRef.current;
-        const scrollAmount = 200;
-        if (container) {
-            container.scrollBy({
-                left: direction === 'left' ? -scrollAmount : scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    };
+    
 
     const categories = [
         { id: 'all', name: 'Tất cả', description: 'Tất cả các món ăn trong thực đơn.' },
@@ -169,11 +172,35 @@ const Menu = () => {
             <Nav />
             <div className="menu-container">
                 <h1>Thực đơn</h1>
-                
+                <div className="menu-search-container">
+                    <form className="menu-search-form">
+                        <input 
+                            type="text"
+                            placeholder="Tìm kiếm món ăn..."
+                            value={searchTerm}
+                            onChange={handleSearch}
+                            className="menu-search-input"
+                        />
+                        {searchTerm && (
+                            <button 
+                                type="button" 
+                                onClick={clearSearch}
+                                className="menu-search-clear"
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
+                        )}
+                    </form>
+                </div>
+
                 {searchTerm && (
                     <div className="search-results">
-                        <h2>Kết quả tìm kiếm cho: "{searchTerm}"</h2>
-                        <p>Tìm thấy {filteredDishes.length} món</p>
+                        <div className="search-header">
+                            <div>
+                                <h2>Kết quả tìm kiếm cho: "{searchTerm}"</h2>
+                                <p>Tìm thấy {filteredDishes.length} món</p>
+                            </div>
+                        </div>
                     </div>
                 )}
 

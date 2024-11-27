@@ -48,19 +48,7 @@ function Nav() {
                     </li>
                 </ul>
             </div>
-            <div className="search-container">
-                <form className="search" onSubmit={handleSearchSubmit}>
-                    <input 
-                        type="text" 
-                        placeholder="Tìm kiếm..." 
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button type="submit">
-                        <i className="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
+            
             <div className="right-nav">
                 <div className="checkorder">
                     <a href="/order-tracking" className="checkorder">Kiểm tra đơn hàng</a>
