@@ -36,7 +36,7 @@ const Reservation = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Save reservation
+        // Generate reservation ID
         const reservationId = Math.random().toString(36).substr(2, 9).toUpperCase();
         const reservation = {
             ...formData,
@@ -44,15 +44,15 @@ const Reservation = () => {
             status: 'pending',
             createdAt: new Date().toISOString()
         };
-
+    
         // Save to localStorage
         const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
         reservations[reservationId] = reservation;
         localStorage.setItem('reservations', JSON.stringify(reservations));
-
-        // Navigate to confirmation
+    
+        // Pass reservation data with ID to table selection
         navigate('/table-selection', { 
-            state: { reservationData: formData }
+            state: { reservationData: reservation } // Change this line only
         });
     };
 

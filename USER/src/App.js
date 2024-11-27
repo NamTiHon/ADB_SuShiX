@@ -19,7 +19,7 @@ import OrderTracking from './pages/components/OrderTracking';
 import Reservation from './pages/components/Reservation';
 import ReservationSuccess from './pages/components/ReservationSuccess';
 import TableSelection from './pages/components/TableSelection';
-
+import CheckReservation from './pages/components/CheckReservation';
 
 function App() {
   return (
@@ -43,6 +43,7 @@ function App() {
             <Route path="/reservation" element={<Reservation />} />
             <Route path="/table-selection" element={<TableSelection />} />
             <Route path="/reservation-success" element={<ReservationSuccess />} />
+            <Route path="/check-reservation" element={<CheckReservation />} />
           </Routes>
           <MessengerIcon />
         </Router>

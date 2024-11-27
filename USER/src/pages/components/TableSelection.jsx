@@ -27,13 +27,22 @@ const TableSelection = () => {
 
     const handleConfirm = () => {
         if (!selectedTable) return;
-
+    
+        // Create final reservation object with table info
         const finalReservation = {
             ...reservationData,
             tableId: selectedTable.id,
             tablePosition: selectedTable.position
         };
-
+    
+        // Get existing reservations from localStorage
+        const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
+        
+        // Save this reservation with its ID as key
+        reservations[finalReservation.id] = finalReservation;
+        localStorage.setItem('reservations', JSON.stringify(reservations));
+    
+        // Navigate to success page with reservation data
         navigate('/reservation-success', { 
             state: { reservation: finalReservation }
         });
