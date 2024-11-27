@@ -19,17 +19,17 @@ const ReservationSuccess = () => {
             <Nav />
             <div className="success-container">
                 <div className="success-content">
-                    <div className="success-icon">
-                        <i className="fas fa-check-circle"></i>
-                    </div>
-                    
-                    <h1>Đặt bàn thành công!</h1>
-                    <p className="booking-id">Mã đặt bàn: #{reservation.id}</p>
-                    
-                    <div className="success-message">
-                        <p>Cảm ơn bạn đã đặt bàn tại SuShiX!</p>
-                        <p>Chúng tôi sẽ liên hệ để xác nhận trong thời gian sớm nhất.</p>
-                    </div>
+                <div className="success-icon">
+                    <i className="fas fa-check-circle"></i>
+                </div>
+
+                <h1>Đặt bàn thành công!</h1>
+                <p className="booking-id">Mã đặt bàn: #{reservation.id}</p>  {/* Add this line */}
+
+                <div className="success-message">
+                    <p>Cảm ơn bạn đã đặt bàn tại SuShiX!</p>
+                    <p>Chúng tôi sẽ liên hệ để xác nhận trong thời gian sớm nhất.</p>
+                </div>
 
                     <div className="booking-info">
                         <h3>Chi tiết đặt bàn</h3>
@@ -54,6 +54,11 @@ const ReservationSuccess = () => {
                                 <label>Số người:</label>
                                 <span>{reservation.guests} người</span>
                             </div>
+                            <div className="info-item">
+                                <label>Bàn số:</label>
+                                <span>{reservation.tableId}</span>
+                            </div>
+    
                             {reservation.note && (
                                 <div className="info-item">
                                     <label>Ghi chú:</label>
