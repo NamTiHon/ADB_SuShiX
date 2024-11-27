@@ -1,12 +1,13 @@
 // src/pages/components/OrderConfirmation.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { sendOrderConfirmationEmail } from '../../utils/EmailService';
 import Nav from './Nav';
 import '../css/orderConfirmation.css';
-import { sendOrderConfirmationEmail } from '../../utils/EmailService';
 import { saveOrder } from '../../utils/OrderStorage';
 
 const OrderConfirmation = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const { formData, cartItems, total, shippingFee, discount, appliedCoupon } = location.state || {};
@@ -22,6 +23,9 @@ const OrderConfirmation = () => {
     };
 
     const handleConfirm = async () => {
+        if (isSubmitting) return;
+        
+        setIsSubmitting(true);
         try {
             // Generate better order ID
             const date = new Date();
@@ -81,7 +85,11 @@ const OrderConfirmation = () => {
             }
 
             // Send confirmation email
-            await sendOrderConfirmationEmail(orderDetails);
+            const emailSent = await sendOrderConfirmationEmail(orderDetails);
+            if (!emailSent) {
+                console.error('Failed to send confirmation email');
+                // Continue with order process even if email fails
+            }
 
             // Navigate to success page
             navigate('/order-success', {
@@ -99,8 +107,9 @@ const OrderConfirmation = () => {
         } catch (error) {
             console.error('Lỗi xác nhận đơn hàng:', error);
             alert(error.message || 'Có lỗi xảy ra khi xác nhận đơn hàng. Vui lòng thử lại.');
+        } finally {
+            setIsSubmitting(false);
         }
-  
     };
 
     if (!formData || !cartItems) {
@@ -205,8 +214,12 @@ const OrderConfirmation = () => {
                         >
                             Quay lại
                         </button>
-                        <button onClick={handleConfirm} className="confirm-btn">
-                            Xác nhận đặt hàng
+                        <button 
+                            onClick={handleConfirm} 
+                            className="confirm-btn"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Đang xử lý...' : 'Xác nhận đặt hàng'}
                         </button>
                     </div>
                 </div>
