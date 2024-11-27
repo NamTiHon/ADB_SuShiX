@@ -9,71 +9,95 @@ const OrderTracking = () => {
     const [orderId, setOrderId] = useState('');
     const [order, setOrder] = useState(null);
     const [error, setError] = useState('');
-    
+    const [isLoading, setIsLoading] = useState(false);
+    const calculateSubtotal = (items) => {
+        if (!items || !Array.isArray(items)) return 0;
+        return items.reduce((sum, item) => sum + ((item?.price || 0) * (item?.quantity || 0)), 0);
+    };
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log('Searching for order:', orderId); // Debug log
-        console.log('All orders:', JSON.parse(localStorage.getItem('orders') || '{}')); // Debug log
+        setIsLoading(true);
+        setError('');
         
-        const searchId = orderId.trim().toUpperCase();
-        const foundOrder = getOrder(searchId);
-        
-        if (foundOrder) {
-            setOrder(foundOrder);
-            setError('');
-            console.log('Found order:', foundOrder); // Debug log
-        } else {
+        try {
+            const searchId = orderId.trim().toUpperCase();
+            const foundOrder = getOrder(searchId);
+            
+            if (foundOrder) {
+                setOrder(foundOrder);
+            } else {
+                setError('Không tìm thấy đơn hàng với mã này');
+                setOrder(null);
+            }
+        } catch (error) {
+            setError('Có lỗi xảy ra khi tìm kiếm đơn hàng');
             setOrder(null);
-            setError('Không tìm thấy đơn hàng với mã này');
-            console.log('Order not found for ID:', searchId); // Debug log
+        } finally {
+            setIsLoading(false);
         }
+    };
+
+    const handleClear = () => {
+        setOrderId('');
+        setOrder(null);
+        setError('');
     };
 
     return (
         <div>
             <Nav />
             <div className="tracking-container">
-                <div className="tracking-content">
+                <div className="tracking-form">
                     <h2>Kiểm tra đơn hàng</h2>
+                    <p className="tracking-desc">
+                        Nhập mã đơn hàng để theo dõi tình trạng giao hàng của bạn
+                    </p>
                     
-                    <form onSubmit={handleSearch} className="search-form">
-                        <input
-                            type="text"
-                            placeholder="Nhập mã đơn hàng..."
-                            value={orderId}
-                            onChange={(e) => setOrderId(e.target.value)}
-                            required
-                        />
-                        <button type="submit">Kiểm tra</button>
+                    <form onSubmit={handleSearch}>
+                        <div className="search-container">
+                            <input
+                                type="text"
+                                value={orderId}
+                                onChange={(e) => setOrderId(e.target.value)}
+                                placeholder="Nhập mã đơn hàng của bạn"
+                                required
+                            />
+                            <button type="submit">Tìm kiếm</button>
+                        </div>
                     </form>
 
                     {error && <div className="error-message">{error}</div>}
+                </div>
 
-                    {order && (
-                        <div className="order-details">
-                            <div className="status-timeline">
-                                <div className={`status-step ${order.status === 'preparing' ? 'active' : ''}`}>
-                                    <div className="status-icon">
-                                        <i className="fas fa-utensils"></i>
-                                    </div>
-                                    <div className="status-label">Đang chuẩn bị</div>
-                                </div>
-                                <div className={`status-step ${order.status === 'shipping' ? 'active' : ''}`}>
-                                    <div className="status-icon">
-                                        <i className="fas fa-motorcycle"></i>
-                                    </div>
-                                    <div className="status-label">Đang giao</div>
-                                </div>
-                                <div className={`status-step ${order.status === 'delivered' ? 'active' : ''}`}>
-                                    <div className="status-icon">
-                                        <i className="fas fa-check-circle"></i>
-                                    </div>
-                                    <div className="status-label">Đã giao</div>
-                                </div>
+                {order && (
+                    <div className="tracking-result">
+                        <div className="order-header">
+                            <h3>Đơn hàng #{order.orderId}</h3>
+                            <span className={`status-badge ${order.status}`}>
+                                {order.status === 'preparing' && 'Đang chuẩn bị'}
+                                {order.status === 'shipping' && 'Đang giao'}
+                                {order.status === 'delivered' && 'Đã giao'}
+                            </span>
+                        </div>
+
+                        <div className="tracking-timeline">
+                            <div className={`timeline-step ${order.status === 'preparing' ? 'active' : ''}`}>
+                                <i className="fas fa-box"></i>
+                                <span>Đang chuẩn bị</span>
                             </div>
+                            <div className={`timeline-step ${order.status === 'shipping' ? 'active' : ''}`}>
+                                <i className="fas fa-shipping-fast"></i>
+                                <span>Đang giao</span>
+                            </div>
+                            <div className={`timeline-step ${order.status === 'delivered' ? 'active' : ''}`}>
+                                <i className="fas fa-check-circle"></i>
+                                <span>Đã giao</span>
+                            </div>
+                        </div>
 
-                            <div className="order-info">
-                                <h3>Thông tin đơn hàng #{order.id}</h3>
+                        <div className="order-details">
+                            <div className="detail-section">
+                                <h4>Thông tin giao hàng</h4>
                                 <div className="info-grid">
                                     <div className="info-item">
                                         <label>Người nhận:</label>
@@ -88,46 +112,57 @@ const OrderTracking = () => {
                                         <span>{order.address}</span>
                                     </div>
                                     <div className="info-item">
-                                        <label>Thời gian đặt:</label>
-                                        <span>{order.orderDate}</span>
-                                    </div>
-                                    <div className="info-item">
-                                        <label>Dự kiến giao:</label>
-                                        <span>{order.estimatedDelivery}</span>
+                                        <label>Chi nhánh:</label>
+                                        <span>{order.branchName}</span>
                                     </div>
                                 </div>
+                            </div>
 
+                            <div className="detail-section">
+                                <h4>Chi tiết đơn hàng</h4>
                                 <div className="order-items">
-                                    <h4>Món đã đặt</h4>
-                                    {order.items.map(item => (
+                                    {order.items?.map(item => (
                                         <div key={item.id} className="order-item">
-                                            <span className="item-name">{item.name}</span>
-                                            <span className="item-quantity">x{item.quantity}</span>
+                                            <div className="item-info">
+                                                <span className="item-name">{item.name}</span>
+                                                <span className="item-quantity">x{item.quantity}</span>
+                                            </div>
                                             <span className="item-price">
                                                 {(item.price * item.quantity).toLocaleString()}đ
                                             </span>
                                         </div>
                                     ))}
                                 </div>
-
+                                
                                 <div className="order-summary">
                                     <div className="summary-row">
                                         <span>Tạm tính:</span>
-                                        <span>{order.total.toLocaleString()}đ</span>
+                                        <span>{calculateSubtotal(order?.items || []).toLocaleString()}đ</span>
                                     </div>
+                                    {(order?.discount > 0) && (
+                                        <div className="summary-row discount">
+                                            <span>Giảm giá:</span>
+                                            <span>-{(order?.discount || 0).toLocaleString()}đ</span>
+                                            {order?.appliedCoupon && (
+                                                <small className="coupon-code">Mã: {order.appliedCoupon}</small>
+                                            )}
+                                        </div>
+                                    )}
                                     <div className="summary-row">
-                                        <span>Phí giao hàng:</span>
-                                        <span>{order.shippingFee.toLocaleString()}đ</span>
+                                        <span>Phí vận chuyển:</span>
+                                        <span>{(order?.shippingFee || 0).toLocaleString()}đ</span>
                                     </div>
                                     <div className="summary-total">
                                         <span>Tổng cộng:</span>
-                                        <span>{(order.total + order.shippingFee).toLocaleString()}đ</span>
+                                        <span>
+                                            {(calculateSubtotal(order?.items || []) - (order?.discount || 0) + (order?.shippingFee || 0)).toLocaleString()}đ
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );
