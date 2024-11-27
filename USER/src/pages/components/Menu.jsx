@@ -246,9 +246,16 @@ const Menu = () => {
                             </button>
 
                             {toastDishId === dish.id && (
-                                <div className="dish-toast">
-                                    <i className="fas fa-check-circle"></i>
-                                    Đã thêm vào giỏ hàng!
+                                <div className="dish-toast-container">
+                                    <div className="dish-toast">
+                                        <div className="toast-icon">
+                                            <i className="fas fa-check-circle"></i>
+                                        </div>
+                                        <div className="toast-message">
+                                            <span className="dish-name">{dish.name}</span>
+                                            <span>đã được thêm vào giỏ hàng!</span>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                         </div>

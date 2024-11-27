@@ -224,3 +224,50 @@
 .menu-search-clear:hover {
   color: #ff0099;
 }
+
+/* Add to menu.css */
+.dish-toast-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.dish-toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: toastSlide 0.3s ease forwards;
+}
+
+.toast-icon i {
+    color: #4CAF50;
+    font-size: 20px;
+}
+
+.toast-message {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.toast-message .dish-name {
+    font-weight: 600;
+    color: #ff0099;
+}
+
+@keyframes toastSlide {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
