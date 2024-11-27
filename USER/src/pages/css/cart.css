@@ -179,3 +179,44 @@
     transform: none;
 }
 
+.cart-actions {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.select-all-btn,
+.delete-all-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.select-all-btn {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.delete-all-btn {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+}
+
+.select-all-btn:hover {
+    background: #eee;
+}
+
+.delete-all-btn:hover {
+    background: #ff0000;
+}
+
+.select-all-btn:disabled,
+.delete-all-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

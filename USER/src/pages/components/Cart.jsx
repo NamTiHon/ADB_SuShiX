@@ -45,6 +45,23 @@ const Cart = () => {
         );
     };
 
+    const selectAllItems = () => {
+        // If all items are selected, deselect all
+        if (selectedItems.length === cartItems.length) {
+            setSelectedItems([]);
+        }
+        // Otherwise select all items
+        else {
+            const allItemIds = cartItems.map(item => item.id);
+            setSelectedItems(allItemIds);
+        }
+    };
+    
+    const deleteAllSelected = () => {
+        setCartItems(prev => prev.filter(item => !selectedItems.includes(item.id)));
+        setSelectedItems([]);
+    };
+    
     const selectedTotal = cartItems
         .filter(item => selectedItems.includes(item.id))
         .reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -54,6 +71,22 @@ const Cart = () => {
             <Nav />
             <div className="cart-container">
                 <h2>Giỏ hàng của bạn</h2>
+                <div className="cart-actions">
+                    <button 
+                        className="select-all-btn"
+                        onClick={selectAllItems}
+                        disabled={cartItems.length === 0}
+                    >
+                        {selectedItems.length === cartItems.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
+                    </button>
+                    <button 
+                        className="delete-all-btn"
+                        onClick={deleteAllSelected}
+                        disabled={selectedItems.length === 0}
+                    >
+                        Xóa mục đã chọn
+                    </button>
+                </div>
                 <div className="cart-content">
                     <div className="cart-items">
                         {cartItems.map(item => (
