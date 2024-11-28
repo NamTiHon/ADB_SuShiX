@@ -1,13 +1,15 @@
 import sql from 'mssql';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
-    user: 'sa',
-    password: '123',
-    server: 'localhost',
-    database: 'DB_SushiX',
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    server: process.env.SERVER,
+    database: process.env.DATABASE,
     options: {
         trustServerCertificate: true,
-        trustedConnection: false,
+        trustedConnection: false, // SQL Server Authentication đang được sử dụng
         enableArithAbort: true,
         instancename: 'MSSQLSERVER',
     },

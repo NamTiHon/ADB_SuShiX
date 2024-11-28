@@ -1,8 +1,8 @@
-import sql from 'mssql';  // Import the sql module from mssql
+import sql from 'mssql';  
 import conn from '../config/db.js';
 
 export const dishService = {
-    // Get all dishes with category details
+    // Lấy thông tin tất cả các món ăn với danh mục của chúng
     getAllDishes: async () => {
         try {
             const pool = await conn;
@@ -11,14 +11,14 @@ export const dishService = {
                 FROM MonAn
                 LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
             `);
-            return result.recordset; // Return all dishes with category details
+            return result.recordset; // Trả về danh sách món
         } catch (error) {
             console.error('Error fetching dishes:', error);
             throw new Error('Failed to fetch dishes');
         }
     },
 
-    // Get a single dish by MA_MaMon
+    // Lấy thông tin một món theo MA_MaMon
     getDishById: async (MA_MaMon) => {
         try {
             const pool = await conn;
@@ -30,14 +30,14 @@ export const dishService = {
                     LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
                     WHERE MA_MaMon = @MA_MaMon
                 `);
-            return result.recordset[0]; // Return single dish or undefined if not found
+            return result.recordset[0]; // Trả về undefined nếu không tìm thấy món
         } catch (error) {
             console.error('Error fetching dish by ID:', error);
             throw new Error('Failed to fetch dish');
         }
     },
 
-    // Add a new dish
+    // Thêm một món mới
     addDish: async (dishData) => {
         try {
             const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = dishData;
@@ -55,14 +55,14 @@ export const dishService = {
                     OUTPUT INSERTED.*
                     VALUES (@MA_MaMon, @MA_TenMon, @MA_GiaHienTai, @MA_KhauPhan, @MA_CoSan, @MA_HoTroGiaoHang, @MA_MaDanhMuc)
                 `);
-            return result.recordset[0]; // Return the inserted dish
+            return result.recordset[0]; // Trả về món vừa thêm
         } catch (error) {
             console.error('Error adding dish:', error);
             throw new Error('Failed to add dish');
         }
     },
 
-    // Update a dish by MA_MaMon
+    // Cập nhật một món theo MA_MaMon
     updateDish: async (MA_MaMon, updates) => {
         try {
             const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = updates;
@@ -82,14 +82,14 @@ export const dishService = {
                     WHERE MA_MaMon = @MA_MaMon
                     SELECT * FROM MonAn WHERE MA_MaMon = @MA_MaMon
                 `);
-            return result.recordset[0]; // Return the updated dish
+            return result.recordset[0]; // Trả về món vừa cập nhật
         } catch (error) {
             console.error('Error updating dish:', error);
             throw new Error('Failed to update dish');
         }
     },
 
-    // Delete a dish by MA_MaMon
+    // Xóa món theo MA_MaMon
     deleteDish: async (MA_MaMon) => {
         try {
             const pool = await conn;

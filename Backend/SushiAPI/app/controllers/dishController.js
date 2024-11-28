@@ -1,7 +1,9 @@
 import { dishService } from '../services/dishService.js';
 
 export const dishController = {
-    // Get all dishes
+
+    // @desc   Lấy toàn bộ các món ăn
+    // @route  GET /api/dishes
     getDishes: async (req, res) => {
         try {
             const dishes = await dishService.getAllDishes();
@@ -11,7 +13,8 @@ export const dishController = {
         }
     },
 
-    // Get a single dish by MA_MaMon
+    // @desc   Lấy một món theo MA_MaMon
+    // @route  GET /api/dishes/:MA_MaMon
     getDishById: async (req, res) => {
         try {
             const MA_MaMon = req.params.MA_MaMon;
@@ -25,7 +28,8 @@ export const dishController = {
         }
     },
 
-    // Add a new dish
+    // @desc    Thêm một món mới
+    // @route   POST /api/dishes
     addDish: async (req, res) => {
         try {
             const newDish = await dishService.addDish(req.body);
@@ -35,7 +39,8 @@ export const dishController = {
         }
     },
 
-    // Update an existing dish by MA_MaMon
+    // @desc    Cập nhật món theo MA_MaMon
+    // @route   PUT /api/dishes/:MA_MaMon
     updateDish: async (req, res) => {
         try {
             const MA_MaMon = req.params.MA_MaMon;
@@ -49,12 +54,13 @@ export const dishController = {
         }
     },
 
-    // Delete a dish by MA_MaMon
+    // @desc    Xóa món theo MA_MaMon
+    // @route   DELETE /api/dishes/:MA_MaMon
     deleteDish: async (req, res) => {
         try {
             const MA_MaMon = req.params.MA_MaMon;
             await dishService.deleteDish(MA_MaMon);
-            res.status(204).send(); // No content
+            res.status(204).send();
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
