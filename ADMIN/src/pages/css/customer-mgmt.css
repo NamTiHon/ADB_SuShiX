@@ -1,0 +1,73 @@
+.customer-mgmt-page {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
+}
+
+.page-container {
+    display: flex;
+    flex: 1;
+    /* gap: 50px; */
+}
+
+.main-content-box {
+    flex: 1;
+    /* gap: 50px; */
+    margin: 0 100px;
+}
+
+.table-box {
+    border-radius: 10px;
+    width: 100%;
+    height: fit-content;
+    padding: 30px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 30px;
+    width: 400px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ff0099;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-button {
+    background-color: #ff0099;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #a31b1b;
+}
+
+h1 {
+    margin: 50px 0;
+    font-size: 50px;
+    font-family: 'Arial', 'Courier', 'monospace';
+}
+
+.customer-table {
+    border: 1px solid #ccc; /* Viền đen */
+    border-radius: 10px; /* Độ cong 10px */
+    width: 100%; /* Vừa với ô chứa nội dung */
+    border-collapse: collapse; /* Gộp viền của các ô */
+}
+
+.customer-table th, .customer-table td {
+    border: 1px solid #ccc; /* Viền đen cho các ô */
+    padding: 10px; /* Khoảng cách bên trong các ô */
+    text-align: left; /* Căn trái nội dung */
+}
