@@ -39,11 +39,19 @@ function Nav() {
                             <Link to="/menu" state={{ category: 'drinks' }}>Đồ uống</Link>
                         </div>
                     </li>
+
+                    
                     <li><a href="/about">Về chúng tôi</a></li>
                     <li>
                         <a href="/notifications">
                             Thông báo
                             <i className="fas fa-bell nav-notification-icon"></i>
+                        </a>
+                    </li>
+
+                    <li className="branch-search">
+                        <a href="/branch-search">
+                            Tìm chi nhánh <i className="fas fa-search"></i>
                         </a>
                     </li>
                 </ul>
