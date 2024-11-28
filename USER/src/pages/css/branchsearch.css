@@ -201,3 +201,145 @@
 .filter-select:hover {
     border-color: #4CAF50;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 95%;
+    max-width: 1000px; /* Increased from 800px */
+    max-height: 95vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.modal-close i {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.modal-body {
+    padding: 3rem;
+}
+
+.modal-image {
+    position: relative;
+    height: 400px;
+    margin: -2rem -2rem 2rem -2rem;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-info h2 {
+    margin-bottom: 2.2rem;
+    font-size: 2rem;
+}
+
+.info-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.info-item i {
+    color: #4CAF50;
+    font-size: 1.4rem;
+}
+
+.features-section {
+    margin-top: 2rem;
+}
+
+.features-section h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.features-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.feature-item .feature-tag {
+    background: #f5f5f5;
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.rating {
+    position: absolute;
+    top: 1rem;
+    left: 1rem; /* Changed from right to left */
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.rating i {
+    color: #ffd700; /* Gold color for star */
+}
+
+.modal-content .rating {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;  /* Position on left side */
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    z-index: 1;
+}
+
+.modal-content .rating i {
+    color: #ffd700;
+}
