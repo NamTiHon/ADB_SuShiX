@@ -104,13 +104,14 @@ const OrderConfirmation = () => {
                     finalTotal
                 }
             });
-
+            
         } catch (error) {
             console.error('Lỗi xác nhận đơn hàng:', error);
             alert(error.message || 'Có lỗi xảy ra khi xác nhận đơn hàng. Vui lòng thử lại.');
         } finally {
             setIsSubmitting(false);
         }
+        
     };
 
     if (!formData || !cartItems) {
