@@ -106,3 +106,23 @@
     background: #4CAF50;
     color: white;
 }
+
+
+.discount-info {
+    color: #4CAF50;
+    margin: 8px 0;
+}
+
+.coupon-code {
+    display: block;
+    color: #666;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.total-amount {
+    font-size: 1.1em;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}

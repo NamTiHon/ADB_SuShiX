@@ -62,19 +62,7 @@ function Home() {
     }
   ];
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<i key={`star-${i}`} className="fas fa-star"></i>);
-    }
-    if (hasHalfStar) {
-      stars.push(<i key="half-star" className="fas fa-star-half-alt"></i>);
-    }
-    return stars;
-  };
+ 
   const navigate = useNavigate();
   return (
     <div className="home">
@@ -91,19 +79,23 @@ function Home() {
             Nơi những món ăn Nhật Bản hội tụ <br />
             với chất lượng hảo hạng.
           </em></p>
-          <div className="buttons">
-              <button 
-                  className="btn-primary" 
-                  onClick={() => navigate('/reservation')}
-              >
-                  Đặt ngay
-              </button>
-              <button 
-                  className="btn-secondary"
-                  onClick={() => navigate('/menu')}
-              >
-                  Xem thực đơn
-              </button>
+            <div className="buttons">
+              <div className="cta-buttons">
+                <button 
+                    className="btn-primary"
+                    onClick={() => navigate('/reservation')}
+                >
+                    <i className="fas fa-calendar-alt"></i>
+                    Đặt ngay
+                </button>
+                <button 
+                    className="btn-secondary"
+                    onClick={() => navigate('/menu')}
+                >
+                    <i className="fas fa-utensils"></i>
+                    Xem thực đơn
+                </button>
+            </div>
           </div>
         </div>
 
@@ -140,10 +132,7 @@ function Home() {
               <p>{item.description}</p>
               <div className="info-grid">
                 <span className="price">{item.price}</span>
-                <div className="rating">
-                  <span>{item.rating}</span>
-                  <i className="fas fa-star"></i>
-                </div>
+                
               </div>
             </div>
           </div>

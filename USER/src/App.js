@@ -20,7 +20,7 @@ import Reservation from './pages/components/Reservation';
 import ReservationSuccess from './pages/components/ReservationSuccess';
 import TableSelection from './pages/components/TableSelection';
 import CheckReservation from './pages/components/CheckReservation';
-
+import PrivateRoute from './pages/components/PrivateRoute';
 function App() {
   return (
     <UserProvider>
@@ -30,17 +30,25 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/branch" element={<BranchSearch />} />
+            <Route path="/branch-search" element={<BranchSearch />} />
             <Route path="/customer-info" element={<CustomerInfo />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/cart" element={
+                <PrivateRoute>
+                    <Cart />
+                </PrivateRoute>
+            } />
             <Route path="/about" element={<About />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/order-success" element={<OrderSuccess />} />
             <Route path="/order-tracking" element={<OrderTracking />} />
-            <Route path="/reservation" element={<Reservation />} />
+            <Route path="/reservation" element={
+                <PrivateRoute>
+                    <Reservation />
+                </PrivateRoute>
+            } />
             <Route path="/table-selection" element={<TableSelection />} />
             <Route path="/reservation-success" element={<ReservationSuccess />} />
             <Route path="/check-reservation" element={<CheckReservation />} />

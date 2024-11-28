@@ -10,6 +10,9 @@ const Checkout = () => {
     const location = useLocation();
     const { user } = useContext(UserContext);
     const { cartItems = [], total = 0, shippingFee = 0 } = location.state || {};
+    const [couponCode, setCouponCode] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [couponError, setCouponError] = useState('');
 
     const [formData, setFormData] = useState({
         fullName: '',
@@ -57,15 +60,55 @@ const Checkout = () => {
             state: {
                 formData: {
                     ...formData,
-                    email: user.email // Ensure email is passed
+                    email: user.email
                 },
                 cartItems,
                 total,
-                shippingFee
+                shippingFee,
+                appliedCoupon: appliedCoupon ? couponCode : null,
+                discount: calculateDiscount()
             }
         });
     };
+    const validateCoupon = (code) => {
+        // Mock coupon database - in real app this would come from backend
+        const coupons = {
+          'WELCOME200': { discount: 200000, minOrder: 500000 },
+          'SAVE50K': { discount: 50000, minOrder: 200000 },
+        };
+      
+        const coupon = coupons[code];
+        if (!coupon) {
+          return { valid: false, message: 'Mã giảm giá không hợp lệ' };
+        }
+      
+        if (total < coupon.minOrder) {
+          return { valid: false, message: `Đơn hàng tối thiểu ${coupon.minOrder.toLocaleString()}đ` };
+        }
+      
+        return { valid: true, coupon };
+      };
+    const handleApplyCoupon = () => {
+        setCouponError('');
+        const result = validateCoupon(couponCode.trim().toUpperCase());
+        
+        if (!result.valid) {
+        setCouponError(result.message);
+        setAppliedCoupon(null);
+        return;
+        }
 
+        setAppliedCoupon(result.coupon);
+        setCouponCode('');
+    };
+    const calculateDiscount = () => {
+        if (!appliedCoupon) return 0;
+        
+        if (typeof appliedCoupon.discount === 'number') {
+          return appliedCoupon.discount;  // Fixed amount discount
+        }
+        return Math.floor(total * appliedCoupon.discount); // Percentage discount
+      };
     return (
         <div>
             <Nav />
@@ -145,22 +188,48 @@ const Checkout = () => {
                                     ))}
                                 </div>
                             </div>
+                            
+                            <div className="form-group">
+                                <label>Mã giảm giá</label>
+                                <div className="coupon-input">
+                                    <input
+                                    type="text"
+                                    value={couponCode}
+                                    onChange={(e) => setCouponCode(e.target.value)}
+                                    placeholder="Nhập mã giảm giá"
+                                    />
+                                    <button 
+                                    type="button"
+                                    onClick={handleApplyCoupon}
+                                    className="apply-coupon-btn"
+                                    >
+                                    Áp dụng
+                                    </button>
+                                </div>
+                                {couponError && <div className="error-message">{couponError}</div>}
+                            </div>
 
                             <div className="order-summary">
                                 <h3>Tổng đơn hàng</h3>
                                 <div className="summary-item">
                                     <span>Tạm tính:</span>
-                                    <span>{(total || 0).toLocaleString()}đ</span>
+                                    <span>{total.toLocaleString()}đ</span>
                                 </div>
+                                {appliedCoupon && (
+                                    <div className="summary-item discount">
+                                    <span>Giảm giá:</span>
+                                    <span>-{calculateDiscount().toLocaleString()}đ</span>
+                                    </div>
+                                )}
                                 <div className="summary-item">
                                     <span>Phí giao hàng:</span>
-                                    <span>{(shippingFee || 0).toLocaleString()}đ</span>
+                                    <span>{shippingFee.toLocaleString()}đ</span>
                                 </div>
                                 <div className="summary-total">
                                     <span>Tổng cộng:</span>
-                                    <span>{((total || 0) + (shippingFee || 0)).toLocaleString()}đ</span>
+                                    <span>{(total - calculateDiscount() + shippingFee).toLocaleString()}đ</span>
                                 </div>
-                            </div>
+                                </div>
 
                             <button type="submit" className="checkout-btn">
                                 Đặt hàng

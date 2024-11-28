@@ -7,7 +7,8 @@ import { getOrder } from '../../utils/OrderStorage';
 const OrderSuccess = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { formData, total, orderId } = location.state || {};
+    const { formData, total, orderId, shippingFee, discount, appliedCoupon } = location.state || {};
+
 
     useEffect(() => {
         if (location.state?.orderId) {
@@ -32,17 +33,26 @@ const OrderSuccess = () => {
                     <h1>Đặt hàng thành công!</h1>
                     <p className="order-id">Mã đơn hàng: #{orderId}</p>
                     
-                    <div className="success-message">
-                        <p>Cảm ơn bạn đã đặt hàng tại SuShiX!</p>
-                        <p>Chúng tôi sẽ giao hàng đến bạn trong thời gian sớm nhất.</p>
-                    </div>
-
                     <div className="delivery-info">
                         <h3>Thông tin giao hàng</h3>
                         <p><strong>Người nhận:</strong> {formData?.fullName}</p>
                         <p><strong>Số điện thoại:</strong> {formData?.phone}</p>
                         <p><strong>Địa chỉ:</strong> {formData?.address}</p>
-                        <p><strong>Tổng tiền:</strong> {total?.toLocaleString()}đ</p>
+                        <div className="order-summary">
+                            <p><strong>Tạm tính:</strong> {total?.toLocaleString()}đ</p>
+                            {discount > 0 && (
+                                <div className="discount-info">
+                                    <p><strong>Giảm giá:</strong> -{discount.toLocaleString()}đ</p>
+                                    {appliedCoupon && (
+                                        <small className="coupon-code">Mã giảm giá: {appliedCoupon}</small>
+                                    )}
+                                </div>
+                            )}
+                            <p><strong>Phí vận chuyển:</strong> {shippingFee?.toLocaleString()}đ</p>
+                            <p className="total-amount">
+                                <strong>Tổng tiền:</strong> {(total - (discount || 0) + shippingFee).toLocaleString()}đ
+                            </p>
+                        </div>
                     </div>
 
                     <div className="success-actions">
