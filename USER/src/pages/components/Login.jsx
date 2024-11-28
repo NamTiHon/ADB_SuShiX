@@ -1,18 +1,19 @@
 // src/pages/components/Login.jsx
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../../context/UserContext';
 import '../css/login.css';
 import Nav from './Nav';
 
 const Login = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { setUser } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
+    const from = location.state?.from || '/';
 
     const users = [
         { email: 'user1@gmail.com', password: 'user123', name: 'User One' },
@@ -26,7 +27,7 @@ const Login = () => {
         
         if (user) {
             setUser(user); // UserContext will handle localStorage
-            navigate('/');
+            navigate(from, { replace: true }); // Navigate to original route
         } else {
             setError('Email hoặc mật khẩu không chính xác');
         }
