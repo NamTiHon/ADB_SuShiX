@@ -13,7 +13,7 @@ const config = {
         enableArithAbort: true,
         instancename: 'MSSQLSERVER',
     },
-    port: 1433
+    port: parseInt(process.env.DB_PORT, 10)
 }
 
 const conn = new sql.ConnectionPool(config).connect().then(pool => {
