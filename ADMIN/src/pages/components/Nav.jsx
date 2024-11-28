@@ -1,10 +1,11 @@
 import React from 'react';
 import "../css/nav.css";
+
 function Nav(){
     return (
         <nav className= "navBar">
             <div className="left">
-                <div className="logo">SuShiX</div><span className="temp">Admin</span>
+                <a href="/"><div className="logo">SuShiX</div></a><span className="temp">Admin</span>
             </div>
             <div className="right">
                 <a href="#"><i className="fas fa-bell 2x"></i></a>

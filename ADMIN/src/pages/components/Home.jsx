@@ -2,6 +2,7 @@ import React from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import '../css/home.css';
+
 function Home(){
     return (
         <div className="homePage">
@@ -16,4 +17,5 @@ function Home(){
         </div>
     );
 }
+
 export default Home;

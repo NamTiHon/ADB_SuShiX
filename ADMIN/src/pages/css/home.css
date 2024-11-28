@@ -11,12 +11,11 @@
 }
 
 .mainContainer {
-    flex:1;
+    flex: 1;
 }
 
 h1{
     margin: 50px 0;
     font-size: 50px;
     font-family:'Courier New', Courier, monospace;
-    
 }
