@@ -1,17 +1,18 @@
 // src/pages/components/OrderConfirmation.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sendOrderConfirmationEmail } from '../../utils/EmailService';
 import Nav from './Nav';
 import '../css/orderConfirmation.css';
 import { saveOrder } from '../../utils/OrderStorage';
+import { CartContext } from '../../context/CartContext';
 
 const OrderConfirmation = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const { formData, cartItems, total, shippingFee, discount, appliedCoupon } = location.state || {};
-
+    const { clearCart } = useContext(CartContext);
     // Get branch name helper
     const getBranchName = (branchId) => {
         const branches = {
@@ -90,7 +91,7 @@ const OrderConfirmation = () => {
                 console.error('Failed to send confirmation email');
                 // Continue with order process even if email fails
             }
-
+            clearCart();
             // Navigate to success page
             navigate('/order-success', {
                 state: {
