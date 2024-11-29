@@ -12,7 +12,6 @@ use DB_SushiX
 go
 
 -- Tạo bảng kèm khóa chính:
-
 -- Mã thì varchar(10)
 -- Tên thì nvarchar(50)
 -- Địa chỉ nvarchar(100)
@@ -217,6 +216,17 @@ create table LichSuLamViec (
 	LSLV_NgayKetThuc datetime,
 	primary key (LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau)
 );
+
+CREATE TABLE Users (
+    UserId INT IDENTITY(1,1) PRIMARY KEY, -- Tự động tăng ID cho mỗi user
+    Email NVARCHAR(100) NOT NULL UNIQUE, -- Email phải là duy nhất
+    Password NVARCHAR(MAX) NOT NULL,     -- Lưu mật khẩu đã được mã hóa (hashed password)
+    Name NVARCHAR(100) NOT NULL,         -- Tên người dùng
+    Role NVARCHAR(50) NOT NULL DEFAULT 'customer', -- Vai trò: customer, employee, admin
+    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo tài khoản
+    UpdatedAt DATETIME DEFAULT GETDATE()  -- Thời gian cập nhật tài khoản
+);
+
 go
 -- Tạo khóa ngoại và ràng buộc:
 -- Tạo khóa ngoại:
@@ -345,9 +355,9 @@ alter table LichSuLamViec
 
 -- Ràng buộc: 
 -- Bảng Chi Nhánh:
-alter table ChiNhanh
-	add constraint C_ChiNhanh_ThoiGian
-	check (CN_TGMoCua < CN_TGDongCua)
+--alter table ChiNhanh
+--	add constraint C_ChiNhanh_ThoiGian
+--	check (CN_TGMoCua < CN_TGDongCua)
 
 alter table ChiNhanh
 	add constraint C_ChiNhanh_BaiXeMay
@@ -476,7 +486,7 @@ alter table LichSuLamViec
 	check (LSLV_NgayBatDau < LSLV_NgayKetThuc)
 -- Xóa database:
 -- use master;
--- drop database DB_SushiX;6
+-- drop database DB_SushiX;
 
 -- -- Thêm dữ liệu mẫu vào bảng DanhMuc
 -- INSERT INTO DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
@@ -499,12 +509,3 @@ alter table LichSuLamViec
 -- ('MA008', 'Kem trà xanh', 50000, 1, 1, 0, 'DM003'),
 -- ('MA009', 'Chanh đá', 15000, 1, 1, 1, 'DM004');
 
-CREATE TABLE Users (
-    UserId INT IDENTITY(1,1) PRIMARY KEY, -- Tự động tăng ID cho mỗi user
-    Email NVARCHAR(100) NOT NULL UNIQUE, -- Email phải là duy nhất
-    Password NVARCHAR(MAX) NOT NULL,     -- Lưu mật khẩu đã được mã hóa (hashed password)
-    Name NVARCHAR(100) NOT NULL,         -- Tên người dùng
-    Role NVARCHAR(50) NOT NULL DEFAULT 'customer', -- Vai trò: customer, employee, admin
-    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo tài khoản
-    UpdatedAt DATETIME DEFAULT GETDATE()  -- Thời gian cập nhật tài khoản
-);
