@@ -1,10 +1,10 @@
 ﻿-- Tạo database:
 CREATE DATABASE DB_SushiX ON
     (Name = DB_SushiX_data, 
-    FileName = 'D:\SINHVIEN\tempCSDLNC\DB_SushiX_data.mdf')
+    FileName = 'D:\SINHVIEN\1.study\hk1_nam3\CSDL Nang cao\temp\DB_SushiX_data.mdf')
 LOG ON
     (Name = DB_SushiX_log,
-    FileName = 'D:\SINHVIEN\tempCSDLNC\DB_QLSushiX_log.ldf');
+    FileName = 'D:\SINHVIEN\1.study\hk1_nam3\CSDL Nang cao\temp\DB_QLSushiX_log.ldf');
 go
 
 -- Sử dụng database:
@@ -24,8 +24,8 @@ create table ChiNhanh (
 	CN_MaChiNhanh varchar(10),
 	CN_Ten nvarchar(50),
 	CN_DiaChi nvarchar(100),
-	CN_TGMoCua time, 
-	CN_TGDongCua time,
+	CN_TGMoCua TIME, 
+	CN_TGDongCua TIME,
 	CN_SDT varchar(12),
 	CN_BaiDoXeMay BIT,  -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	CN_BaiDoXeOto BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
@@ -509,3 +509,8 @@ alter table LichSuLamViec
 -- ('MA008', 'Kem trà xanh', 50000, 1, 1, 0, 'DM003'),
 -- ('MA009', 'Chanh đá', 15000, 1, 1, 1, 'DM004');
 
+create table HinhAnh_MonAn (
+	HA_MA_MaMon varchar(10), 
+	HA_MA_DuongLink nvarchar(100),
+	primary key (HA_MA_MaMon, HA_MA_DuongLink)
+)
