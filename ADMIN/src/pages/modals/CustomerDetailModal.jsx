@@ -24,10 +24,10 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
         <div className="modal-overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>X</button>
-                <h2>Chi Tiết Khách Hàng</h2>
+                <h2>CHI TIẾT KHÁCH HÀNG</h2>
                 <div className="modal-sections">
                     <div className="modal-section">
-                        <h3>Thông Tin Cá Nhân</h3>
+                        <h3>THÔNG TIN CÁ NHÂN</h3>
                         
                         {isEditing ? (
                             <>
@@ -36,7 +36,6 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
                                 <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={updatedCustomer.cccd} onChange={handleChange} /></p>
                                 <p><strong>Email:</strong> <input type="email" name="email" value={updatedCustomer.email} onChange={handleChange} /></p>
                                 <p><strong>Ngày sinh:</strong> <input type="date" name="dateOfBirth" value={updatedCustomer.dateOfBirth} onChange={handleChange} /></p>
-                                <p><strong>Địa chỉ:</strong> <input type="text" name="address" value={updatedCustomer.address} onChange={handleChange} /></p>
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
@@ -46,13 +45,13 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
                                 <p><strong>Số CCCD:</strong> {customer.cccd}</p>
                                 <p><strong>Email:</strong> {customer.email}</p>
                                 <p><strong>Ngày sinh:</strong> {customer.dateOfBirth}</p>
-                                <p><strong>Địa chỉ:</strong> {customer.address}</p>
-                                <button className="update-button" onClick={() => setIsEditing(true)}>Cập nhật</button>
+                                <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                             </>
                         )}
                     </div>
+                    <div className="divider"></div>
                     <div className="modal-section">
-                        <h3>Thông Tin Thẻ</h3>
+                        <h3>THÔNG TIN THẺ</h3>
                         <p><strong>Mã thẻ:</strong> {customer.cardId}</p>
                         <p><strong>Ngày tạo:</strong> {customer.createdDate}</p>
                         <p><strong>Số năm sử dụng:</strong> {customer.yearsOfUsing}</p>
