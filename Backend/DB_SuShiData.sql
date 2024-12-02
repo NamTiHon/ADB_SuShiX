@@ -126,13 +126,107 @@ values
 ('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, 'KV'); 
 go
 
+-- delete from DanhMuc_ThucDon
+insert into
+DanhMuc_ThucDon (DM_TD_MaThucDon, DM_TD_MaDanhMuc)
+values
+('TD001', 'KV'),
+('TD001', 'SASHIMI'),
+('TD001', 'TEMPURA'),
+('TD001', 'NIGIRI'),
+('TD001', 'DRINK'),
+('TD002', 'SASHIMI'),
+('TD002', 'NIGIRI'),
+('TD002', 'TEMPURA'),
+('TD002', 'UDON'),
+('TD003', 'KV'),
+('TD003', 'SASHIMI'),
+('TD003', 'NIGIRI'),
+('TD003', 'TEMPURA'),
+('TD004', 'HPT'),
+('TD004', 'UDON'),
+('TD004', 'LUNCH'),
+('TD004', 'DRINK'),
+('TD005', 'KV'),
+('TD005', 'SASHIMI'),
+('TD005', 'NIGIRI'),
+('TD005', 'DRINK'),
+('TD006', 'SASHIMI'),
+('TD006', 'LUNCH'),
+('TD006', 'HPT'),
+('TD006', 'DRINK'),
+('TD007', 'NIGIRI'),
+('TD007', 'TEMPURA'),
+('TD007', 'LUNCH'),
+('TD007', 'DRINK');
+
+-- delete from LoaiThe
+insert into 
+LoaiThe (LT_TenLoaiThe)
+values
+('Membership'),
+('Silver'),
+('Gold');
+go 
+
+-- delete from KhuyenMai
+insert into
+KhuyenMai (KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
+values
+('KM001', N'Khuyến mãi Hè 2024', N'Giảm giá 15% cho tất cả sản phẩm mùa hè', 0.15, 'Membership', 'CN001'),
+('KM002', N'Khuyến mãi Tết Nguyên Đán', N'Giảm giá 10% sản phẩm đặc biệt dịp Tết', 0.10, 'Silver', 'CN002'),
+('KM003', N'Khuyến mãi Black Friday', N'Giảm giá 20% cho các sản phẩm công nghệ', 0.20, 'Gold', 'CN003'),
+('KM004', N'Khuyến mãi Sinh Nhật Công Ty', N'Giảm 12% cho tất cả các sản phẩm trong tháng', 0.12, 'Membership', 'CN004'),
+('KM005', N'Khuyến mãi Giáng Sinh', N'Giảm giá 25% các món quà Giáng Sinh', 0.25, 'Silver', 'CN005'),
+('KM006', N'Khuyến mãi Mừng Năm Mới', N'Giảm giá 18% cho các sản phẩm gia dụng', 0.18, 'Gold', 'CN006'),
+('KM007', N'Khuyến mãi Học Sinh - Sinh Viên', N'Giảm 30% cho các sản phẩm học tập', 0.30, 'Membership', 'CN007'),
+('KM008', N'Khuyến mãi Ngày Quốc Tế Phụ Nữ', N'Giảm giá 8% cho các sản phẩm thời trang nữ', 0.08, 'Silver', 'CN008'),
+('KM009', N'Khuyến mãi Chào Mùa Thu', N'Giảm giá 5% cho tất cả các sản phẩm', 0.05, 'Gold', 'CN009'),
+('KM010', N'Khuyến mãi Mùa Thu 2024', N'Giảm 14% cho sản phẩm đồ điện tử', 0.14, 'Membership', 'CN010'),
+('KM011', N'Khuyến mãi Đặc Biệt Ngày Lễ Tình Nhân', N'Giảm giá 20% cho quà tặng và trang sức', 0.20, 'Silver', 'CN011'),
+('KM012', N'Khuyến mãi Đầu Năm Mới',N'Giảm giá 10% cho các sản phẩm chăm sóc sức khỏe', 0.10, 'Gold', 'CN012'),
+('KM013', N'Khuyến mãi Black Friday 2024', N'Giảm giá 25% cho các sản phẩm công nghệ cao cấp', 0.25, 'Membership', 'CN013'),
+('KM014', N'Khuyến mãi Giảm Giá Cuối Năm', N'Giảm giá 15% cho tất cả các sản phẩm gia đình', 0.15, 'Silver', 'CN014'),
+('KM015', N'Khuyến mãi Hè Vui', N'Giảm giá 18% cho các bộ quần áo mùa hè', 0.18, 'Gold', 'CN015'),
+('KM016', N'Khuyến mãi Mừng Ngày Quốc Khánh', N'Giảm giá 12% cho các sản phẩm nội thất', 0.12, 'Membership', 'CN016'),
+('KM017', N'Khuyến mãi Tháng 10', N'Giảm giá 8% cho các món ăn và thực phẩm', 0.08, 'Silver', 'CN017'),
+('KM018', N'Khuyến mãi Đêm Mua Sắm', N'Giảm giá 30% cho các sản phẩm đồ điện tử cao cấp', 0.30, 'Gold', 'CN018'),
+('KM019', N'Khuyến mãi Mừng Trung Thu', N'Giảm 20% cho các sản phẩm bánh trung thu', 0.20, 'Membership', 'CN019'),
+('KM020', N'Khuyến mãi Giảm Giá Toàn Cửa Hàng', N'Giảm giá 10% cho tất cả sản phẩm', 0.10, 'Silver', 'CN020'),
+('KM021', N'Khuyến mãi Quà Tặng Tết', N'Giảm giá 18% cho các gói quà tặng', 0.18, 'Gold', 'CN001'),
+('KM022', N'Khuyến mãi Mừng Ngày Quốc Tế Lao Động', N'Giảm giá 15% cho các sản phẩm thời trang', 0.15, 'Membership', 'CN002'),
+('KM023', N'Khuyến mãi Mua Sắm Mùa Đông', N'Giảm giá 10% cho các sản phẩm giữ ấm', 0.10, 'Silver', 'CN003'),
+('KM024', N'Khuyến mãi Chào Mừng Mùa Hè', N'Giảm giá 12% cho các sản phẩm làm đẹp', 0.12, 'Gold', 'CN004'),
+('KM025', N'Khuyến mãi Khai Trương Chi Nhánh', N'Giảm giá 20% cho tất cả sản phẩm tại chi nhánh mới', 0.20, 'Membership', 'CN005'),
+('KM026', N'Khuyến mãi Giảm Giá Sinh Nhật Khách Hàng', N'Giảm giá 18% cho các sản phẩm yêu thích', 0.18, 'Silver', 'CN006'),
+('KM027', N'Khuyến mãi Tháng Lễ Hội', N'Giảm giá 10% cho sản phẩm du lịch và nghỉ dưỡng', 0.10, 'Gold', 'CN007'),
+('KM028', N'Khuyến mãi Siêu Sale Cuối Tuần', N'Giảm giá 25% cho tất cả các sản phẩm mùa đông', 0.25, 'Membership', 'CN008'),
+('KM029', N'Khuyến mãi Mừng Ngày Phụ Nữ Việt Nam', N'Giảm giá 12% cho các sản phẩm làm đẹp', 0.12, 'Silver', 'CN009'),
+('KM030', N'Khuyến mãi Mua Sắm Tết', N'Giảm giá 15% cho các sản phẩm thực phẩm', 0.15, 'Gold', 'CN010'),
+('KM031', N'Khuyến mãi Ngày Nhà Giáo Việt Nam', N'Giảm giá 10% cho các sản phẩm giáo dục', 0.10, 'Membership', 'CN011'),
+('KM032', N'Khuyến mãi Đêm Mua Sắm Mùa Đông', N'Giảm 12% cho các sản phẩm thời trang mùa đông', 0.12, 'Silver', 'CN012'),
+('KM033', N'Khuyến mãi Mừng Ngày Môi Trường Thế Giới', N'Giảm giá 8% cho sản phẩm bảo vệ môi trường', 0.08, 'Gold', 'CN013'),
+('KM034', N'Khuyến mãi Cuối Tuần Siêu Giảm Giá', N'Giảm giá 30% cho các sản phẩm tiêu dùng', 0.30, 'Membership', 'CN014'),
+('KM035', N'Khuyến mãi Black Friday Duy Nhất', N'Giảm 20% cho các sản phẩm điện thoại', 0.20, 'Silver', 'CN015'),
+('KM036', N'Khuyến mãi Mùa Lễ Hội Cuối Năm', N'Giảm giá 25% cho các sản phẩm đồ điện tử', 0.25, 'Gold', 'CN016'),
+('KM037', N'Khuyến mãi Mua 1 Tặng 1', N'Giảm giá 15% cho sản phẩm quần áo', 0.15, 'Membership', 'CN017'),
+('KM038', N'Khuyến mãi Đặc Biệt Lễ Tết', N'Giảm giá 10% cho các sản phẩm thực phẩm', 0.10, 'Silver', 'CN018'),
+('KM039', N'Khuyến mãi Cuối Năm', N'Giảm giá 18% cho các sản phẩm gia dụng', 0.18, 'Gold', 'CN019'),
+('KM040', N'Khuyến mãi Mừng Lễ Tạ Ơn', N'Giảm giá 12% cho các món ăn đặc biệt', 0.12, 'Membership', 'CN020'),
+('KM041', N'Khuyến mãi Giảm Giá Sinh Nhật Công Ty', N'Giảm giá 20% cho tất cả sản phẩm', 0.20, 'Silver', 'CN001'),
+('KM042', N'Khuyến mãi Ngày Quà Tặng', N'Giảm giá 15% cho các món quà tặng', 0.15, 'Gold', 'CN002'),
+('KM043', N'Khuyến mãi Giảm Giá Thực Phẩm', N'Giảm giá 12% cho các sản phẩm thực phẩm', 0.12, 'Membership', 'CN003'),
+('KM044', N'Khuyến mãi Mua Sắm Dịp Tết', N'Giảm giá 10% cho tất cả các sản phẩm', 0.10, 'Silver', 'CN004'),
+('KM045', N'Khuyến mãi Chúc Mừng Ngày Giải Phóng', N'Giảm giá 18% cho các sản phẩm mùa hè', 0.18, 'Gold', 'CN005'),
+('KM046', N'Khuyến mãi Mừng Mùa Thu', N'Giảm giá 20% cho các sản phẩm mùa thu', 0.20, 'Membership', 'CN006'),
+('KM047', N'Khuyến mãi Ngày Mua Sắm Mùa Đông', N'Giảm 12% cho các sản phẩm mùa đông', 0.12, 'Silver', 'CN007'),
+('KM048', N'Khuyến mãi Siêu Khuyến Mãi', N'Giảm giá 25% cho tất cả sản phẩm', 0.25, 'Gold', 'CN008'),
+('KM049', N'Khuyến mãi Mừng Lễ Tạ Ơn', N'Giảm giá 15% cho các món ăn đặc biệt', 0.15, 'Membership', 'CN009'),
+('KM050', N'Khuyến mãi Mua Sắm Dịp Giáng Sinh', N'Giảm 12% cho các món quà Giáng Sinh', 0.12, 'Silver', 'CN010');
+
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
--- 
 -- delete from KhachHang
-update ChiNhanh
-set 
-	CN_TGDongCua = cast (CN_TGDongCua as time),
-	CN_TGMoCua = cast (CN_TGMoCua as time);
+
 
 -- select * from ChiNhanh
 -- select * from KhuVuc
@@ -140,3 +234,7 @@ set
 -- select * from DanhMuc
 -- select * from MonAn
 -- select * from KhachHang
+-- select * from DanhMuc_ThucDon
+-- select * from LoaiThe
+-- select * from KhuyenMai
+
