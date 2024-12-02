@@ -121,6 +121,7 @@ const BranchSearch = () => {
         const matchesDistrict = district ? branch.district === district : true;
         return matchesSearch && matchesDistrict;
     });
+    
     const handleGetDirections = (branchAddress) => {
         // Get user's current location
         if (navigator.geolocation) {

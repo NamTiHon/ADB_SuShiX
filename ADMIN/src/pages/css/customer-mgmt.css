@@ -24,33 +24,43 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
 }
 
-.search-box {
+.search-and-pagination-container {
     display: flex;
     align-items: center;
+    justify-items: space-between;
     gap: 10px;
     padding-bottom: 30px;
-    width: 400px;
+    width: 100%;
+    white-space: nowrap;
 }
 
 .search-input {
-    flex: 1;
+    width: 200px;
+    /* flex: 1; */
     padding: 8px 12px;
     border: 1px solid #ff0099;
     border-radius: 4px;
     font-size: 14px;
 }
 
-.search-button {
+/* .search-button {
     background-color: #ff0099;
     color: white;
     border: none;
     padding: 8px 20px;
     border-radius: 4px;
     cursor: pointer;
-}
+} */
 
 .search-button:hover {
     background-color: #a31b1b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevent wrapping */
+    gap: 10px;
 }
 
 h1 {
@@ -64,10 +74,19 @@ h1 {
     border-radius: 10px; /* Độ cong 10px */
     width: 100%; /* Vừa với ô chứa nội dung */
     border-collapse: collapse; /* Gộp viền của các ô */
+    font-size: small;
 }
 
 .customer-table th, .customer-table td {
     border: 1px solid #ccc; /* Viền đen cho các ô */
     padding: 10px; /* Khoảng cách bên trong các ô */
     text-align: left; /* Căn trái nội dung */
+}
+
+.customer-table tbody tr {
+    cursor: pointer;
+}
+
+.customer-table tbody tr:hover {
+    background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
 }
