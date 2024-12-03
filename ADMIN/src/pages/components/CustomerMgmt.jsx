@@ -4,54 +4,15 @@ import '../css/customer-mgmt.css';
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import CustomerDetailModal from "../modals/CustomerDetailModal";
-
+import AddCustomerModal from "../modals/AddCustomerModal";
 
 function CustomerMgmt() {
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [pageInput, setPageInput] = useState(1);
-    const customersPerPage = 10;
-
-    useEffect(() => {
-        setPageInput(currentPage);
-    }, [currentPage]);
-
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const handleRowClick = (customer) => {
-        setSelectedCustomer(customer);
-    };
-
-    const closeModal = () => {
-        setSelectedCustomer(null);
-    };
-
-    const handleUpdate = (customer) => {
-        // Implement the update logic here
-        console.log('Update customer:', customer);
-    };
-
-    const handlePageInputChange = (event) => {
-        const value = event.target.value;
-        if (value === '' || (Number(value) > 0 && Number(value) <= totalPages)) {
-            setPageInput(value);
-        }
-    };
-
-    const handlePageInputBlur = () => {
-        const pageNumber = Number(pageInput);
-        if (pageNumber > 0 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        } else {
-            setPageInput(currentPage);
-        }
-    };
-
-    // Customers mock database
-    const customers = [
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [customers, setCustomers] = useState([
         {
             phone: '0123456789',
             name: 'Nguyễn Văn Trung Thế A',
@@ -232,7 +193,49 @@ function CustomerMgmt() {
             membershipType: 'Gold',
             status: 'Hoạt động'
         }
-    ];
+    ]);
+    const customersPerPage = 10;
+
+    useEffect(() => {
+        setPageInput(currentPage);
+    }, [currentPage]);
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleRowClick = (customer) => {
+        setSelectedCustomer(customer);
+    };
+
+    const closeModal = () => {
+        setSelectedCustomer(null);
+    };
+
+    const handleUpdate = (customer) => {
+        // Implement the update logic here
+        console.log('Update customer:', customer);
+    };
+
+    const handlePageInputChange = (event) => {
+        const value = event.target.value;
+        if (value === '' || (Number(value) > 0 && Number(value) <= totalPages)) {
+            setPageInput(value);
+        }
+    };
+
+    const handlePageInputBlur = () => {
+        const pageNumber = Number(pageInput);
+        if (pageNumber > 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        } else {
+            setPageInput(currentPage);
+        }
+    };
+
+    const handleAddCustomer = (newCustomer) => {
+        setCustomers([...customers, newCustomer]);
+    };
 
     const sortedCustomers = customers.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
@@ -282,7 +285,10 @@ function CustomerMgmt() {
             <div className="page-container">
                 <SideBar />
                 <div className="main-content-box">
-                    <h1>Quản lí khách hàng</h1>
+                    <div className="header-container">
+                        <h1>Quản lí khách hàng</h1>
+                        <button className="add-customer-button" onClick={() => setIsAddModalOpen(true)}>Thêm Khách Hàng</button>
+                    </div>
                     <div className="table-box">
                         <div className="search-and-pagination-container">
                             <input className="search-input"
@@ -292,7 +298,7 @@ function CustomerMgmt() {
                                 onChange={handleSearch}
                             />
                             <div className="pagination-controls">
-                                <button onClick={prevPage} disabled={currentPage === 1 || totalPages === 0}>Previous</button>
+                                <button onClick={prevPage} disabled={currentPage === 1 || totalPages === 0}>Trước</button>
                                 <input
                                     type="number"
                                     className="page-input"
@@ -303,7 +309,7 @@ function CustomerMgmt() {
                                     max={totalPages}
                                 />
                                 <span> trên {totalPages}</span>
-                                <button onClick={nextPage} disabled={currentPage === totalPages || totalPages === 0}>Next</button>
+                                <button onClick={nextPage} disabled={currentPage === totalPages || totalPages === 0}>Kế</button>
                             </div>
                             <div className="results-info">
                                 <span>
@@ -344,6 +350,9 @@ function CustomerMgmt() {
             </div>
             {selectedCustomer && (
                 <CustomerDetailModal customer={selectedCustomer} onClose={closeModal} onUpdate={handleUpdate} />
+            )}
+            {isAddModalOpen && (
+                <AddCustomerModal onClose={() => setIsAddModalOpen(false)} onAddCustomer={handleAddCustomer} />
             )}
         </div>
     );

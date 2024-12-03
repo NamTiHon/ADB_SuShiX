@@ -10,6 +10,27 @@
     /* gap: 50px; */
 }
 
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.add-customer-button {
+    padding: 10px 20px;
+    background-color: #f09;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: large;
+}
+
+.add-customer-button:hover {
+    background-color: #a31b1b;
+}
+
 .main-content-box {
     flex: 1;
     /* gap: 50px; */
