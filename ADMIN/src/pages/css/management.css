@@ -1,4 +1,4 @@
-.customer-mgmt-page {
+.mgmt-page {
     display: flex;
     flex-direction: column;
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
@@ -29,7 +29,7 @@ h1 {
     font-family: 'Arial', 'Courier', 'monospace';
 }
 
-.add-customer-button {
+.add-button {
     padding: 10px 20px;
     background-color: #f09;
     color: white;
@@ -39,7 +39,7 @@ h1 {
     font-size: large;
 }
 
-.add-customer-button:hover {
+.add-button:hover {
     background-color: #a31b1b;
 }
 
@@ -77,7 +77,7 @@ h1 {
     gap: 10px;
 }
 
-.customer-table {
+.table {
     border: 1px solid #ccc; /* Viền đen */
     border-radius: 10px; /* Độ cong 10px */
     width: 100%; /* Vừa với ô chứa nội dung */
@@ -85,16 +85,16 @@ h1 {
     font-size: small;
 }
 
-.customer-table th, .customer-table td {
+.table th, .table td {
     border: 1px solid #ccc; /* Viền đen cho các ô */
     padding: 10px; /* Khoảng cách bên trong các ô */
     text-align: left; /* Căn trái nội dung */
 }
 
-.customer-table tbody tr {
+.table tbody tr {
     cursor: pointer;
 }
 
-.customer-table tbody tr:hover {
+.table tbody tr:hover {
     background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
 }

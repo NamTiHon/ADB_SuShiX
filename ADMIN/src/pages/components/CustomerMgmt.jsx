@@ -1,17 +1,66 @@
 import { React, useState, useEffect } from "react";
-import '../css/customer-mgmt.css';
-
 import Nav from './Nav';
 import SideBar from './Sidebar';
-import CustomerDetailModal from "../modals/CustomerDetailModal";
+
+import '../css/customer-mgmt.css';
+
 import AddCustomerModal from "../modals/AddCustomerModal";
+import CustomerDetailModal from "../modals/CustomerDetailModal";
 
 function CustomerMgmt() {
     const [searchQuery, setSearchQuery] = useState('');
+
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedCustomer, setSelectedCustomer] = useState(null);
+
     const [pageInput, setPageInput] = useState(1);
+
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const customersPerPage = 10;
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    useEffect(() => {
+        setPageInput(currentPage);
+    }, [currentPage]);
+
+    const handleRowClick = (customer) => {
+        setSelectedCustomer(customer);
+    };
+
+    const closeModal = () => {
+        setSelectedCustomer(null);
+    };
+
+    const handleUpdate = (customer) => {
+        // Implement the update logic here
+        console.log('Update customer:', customer);
+    };
+
+    const handlePageInputChange = (event) => {
+        const value = event.target.value;
+        if (value === '' || (Number(value) > 0 && Number(value) <= totalPages)) {
+            setPageInput(value);
+        }
+    };
+
+    const handlePageInputBlur = () => {
+        const pageNumber = Number(pageInput);
+        if (pageNumber > 0 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        } else {
+            setPageInput(currentPage);
+        }
+    };
+
+    const handleAddCustomer = (newCustomer) => {
+        setCustomers([...customers, newCustomer]);
+    };
+
     const [customers, setCustomers] = useState([
         {
             phone: '0123456789',
@@ -194,57 +243,16 @@ function CustomerMgmt() {
             status: 'Hoạt động'
         }
     ]);
-    const customersPerPage = 10;
-
-    useEffect(() => {
-        setPageInput(currentPage);
-    }, [currentPage]);
-
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const handleRowClick = (customer) => {
-        setSelectedCustomer(customer);
-    };
-
-    const closeModal = () => {
-        setSelectedCustomer(null);
-    };
-
-    const handleUpdate = (customer) => {
-        // Implement the update logic here
-        console.log('Update customer:', customer);
-    };
-
-    const handlePageInputChange = (event) => {
-        const value = event.target.value;
-        if (value === '' || (Number(value) > 0 && Number(value) <= totalPages)) {
-            setPageInput(value);
-        }
-    };
-
-    const handlePageInputBlur = () => {
-        const pageNumber = Number(pageInput);
-        if (pageNumber > 0 && pageNumber <= totalPages) {
-            setCurrentPage(pageNumber);
-        } else {
-            setPageInput(currentPage);
-        }
-    };
-
-    const handleAddCustomer = (newCustomer) => {
-        setCustomers([...customers, newCustomer]);
-    };
 
     const sortedCustomers = customers.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
     const filteredCustomers = sortedCustomers.filter(customer => {
-        const matchesSearch = customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        const matchesSearch =
             customer.phone.includes(searchQuery) ||
-            customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.cccd.includes(searchQuery) ||
+            customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             customer.gender.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.cccd.includes(searchQuery) ||
+            customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
             customer.createdDate.includes(searchQuery) ||
             customer.membershipType.toLowerCase().includes(searchQuery.toLowerCase()) ||
             customer.status.toLowerCase().includes(searchQuery.toLowerCase());
@@ -266,13 +274,12 @@ function CustomerMgmt() {
     const indexOfFirstCustomer = currentPage === 0 ? -1 : indexOfLastCustomer - customersPerPage;
     const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
-    // Handle page change
+    // HANDLE PAGE CHANGE
     const nextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
         }
     };
-
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -286,7 +293,7 @@ function CustomerMgmt() {
                 <SideBar />
                 <div className="main-content-box">
                     <div className="header-container">
-                        <h1>Quản lí khách hàng</h1>
+                        <h1>Quản lý khách hàng</h1>
                         <button className="add-customer-button" onClick={() => setIsAddModalOpen(true)}>Thêm Khách Hàng</button>
                     </div>
                     <div className="table-box">
