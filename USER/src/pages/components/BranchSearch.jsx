@@ -11,6 +11,7 @@ const BranchSearch = () => {
     const [modalBranch, setModalBranch] = useState(null);
     const { selectedBranch, setSelectedBranch } = useBranch();
     const [showOpenOnly, setShowOpenOnly] = useState(false);
+    const [confirmBranch, setConfirmBranch] = useState(null);
 
     const locations = {
         hanoi: {
@@ -148,8 +149,13 @@ const BranchSearch = () => {
     };
 
     const handleBranchSelect = (branch) => {
-        setSelectedBranch(branch); // Update global context
-        localStorage.setItem('selectedBranch', JSON.stringify(branch)); // Persist selection
+        const isOpen = getBranchStatus(branch.openHours);
+        
+        if (!isOpen) {
+            setConfirmBranch(branch);
+        } else {
+            setSelectedBranch(branch);
+        }
     };
 
     const showBranchDetails = (branch) => {
@@ -168,7 +174,16 @@ const BranchSearch = () => {
 
         return currentTime >= open && currentTime < close;
     };
+    const handleConfirmBranch = () => {
+        if (confirmBranch) {
+            setSelectedBranch(confirmBranch);
+            setConfirmBranch(null);
+        }
+    };
 
+    const handleCancelBranch = () => {
+        setConfirmBranch(null);
+    };
     // Add isOpen status when rendering branches
     const renderBranchCard = (branch) => {
         const isOpen = getBranchStatus(branch.openHours);
@@ -222,7 +237,25 @@ const BranchSearch = () => {
             </div>
         );
     };
-
+    const ConfirmClosedBranchModal = ({ branch, onConfirm, onCancel }) => {
+        return (
+            <div className="modal-overlay" onClick={onCancel}>
+                <div className="modal-content" onClick={e => e.stopPropagation()}>
+                    <h3>Xác nhận chọn chi nhánh</h3>
+                    <p>Chi nhánh {branch.name} hiện đang đóng cửa.</p>
+                    <p>Bạn vẫn muốn chọn chi nhánh này?</p>
+                    <div className="modal-actions">
+                        <button className="btn-secondary" onClick={onCancel}>
+                            Hủy bỏ
+                        </button>
+                        <button className="btn-primary" onClick={onConfirm}>
+                            Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
     return (
         <div>
             <Nav />
@@ -274,11 +307,11 @@ const BranchSearch = () => {
                             </select>
                         )}
 
-                        {modalBranch && (
-                            <BranchDetailModal 
-                                branch={modalBranch} 
-                                onClose={() => setModalBranch(null)}
-                                onSelect={() => handleBranchSelect(modalBranch)}
+                        {confirmBranch && (
+                            <ConfirmClosedBranchModal
+                                branch={confirmBranch}
+                                onConfirm={handleConfirmBranch}
+                                onCancel={handleCancelBranch}
                             />
                         )}
                     </div>
