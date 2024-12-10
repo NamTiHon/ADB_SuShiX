@@ -1,5 +1,5 @@
 // BranchSearch.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Add useEffect
 import { useBranch } from '../../context/BranchContext';
 import Nav from './Nav';
 import '../css/branchsearch.css';
@@ -256,6 +256,19 @@ const BranchSearch = () => {
             </div>
         );
     };
+    useEffect(() => {
+        const savedBranch = localStorage.getItem('selectedBranch');
+        if (savedBranch) {
+            setSelectedBranch(JSON.parse(savedBranch));
+        }
+    }, []);
+
+    // Save branch when it changes
+    useEffect(() => {
+        if (selectedBranch) {
+            localStorage.setItem('selectedBranch', JSON.stringify(selectedBranch));
+        }
+    }, [selectedBranch]);
     return (
         <div>
             <Nav />

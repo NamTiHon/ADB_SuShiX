@@ -4,7 +4,11 @@ import React, { createContext, useContext, useState } from 'react';
 const BranchContext = createContext();
 
 export const BranchProvider = ({ children }) => {
-    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [selectedBranch, setSelectedBranch] = useState(() => {
+        // Initialize from localStorage if available
+        const saved = localStorage.getItem('selectedBranch');
+        return saved ? JSON.parse(saved) : null;
+    });
 
     return (
         <BranchContext.Provider value={{ selectedBranch, setSelectedBranch }}>
