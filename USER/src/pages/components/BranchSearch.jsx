@@ -9,7 +9,8 @@ const BranchSearch = () => {
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
     const [modalBranch, setModalBranch] = useState(null);
-    const { setSelectedBranch } = useBranch();
+    const { selectedBranch, setSelectedBranch } = useBranch();
+    const [showOpenOnly, setShowOpenOnly] = useState(false);
 
     const locations = {
         hanoi: {
@@ -155,6 +156,73 @@ const BranchSearch = () => {
         setModalBranch(branch);
     };
 
+    // Function to check if branch is open
+    const getBranchStatus = (openHours) => {
+        const now = new Date();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
+        
+        const [open, close] = openHours.split(' - ').map(time => {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        });
+
+        return currentTime >= open && currentTime < close;
+    };
+
+    // Add isOpen status when rendering branches
+    const renderBranchCard = (branch) => {
+        const isOpen = getBranchStatus(branch.openHours);
+        
+        return (
+            <div key={branch.id} className={`branch-card ${!isOpen ? 'closed' : ''}`}>
+                <div className="branch-image">
+                    <img src={branch.image} alt={branch.name} />
+                    
+                    <div className={`status-badge ${isOpen ? 'open' : 'closed'}`}>
+                        {isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
+                    </div>
+                </div>
+                <div className="branch-info">
+                    <h3>{branch.name}</h3>
+                    <p><i className="fas fa-map-marker-alt"></i> {branch.address}</p>
+                    <p><i className="fas fa-phone"></i> {branch.phone}</p>
+                    <p>
+                        <i className="fas fa-clock"></i> 
+                        <span className={isOpen ? 'time-open' : 'time-closed'}>
+                            {branch.openHours}
+                        </span>
+                    </p>
+                    <div className="branch-features">
+                        {branch.features.map((feature, index) => (
+                            <span key={index} className="feature-tag">{feature}</span>
+                        ))}
+                    </div>
+                    <div className="branch-actions">
+                        <button 
+                            className="btn-primary"
+                            onClick={() => showBranchDetails(branch)}
+                        >
+                            <i className="fas fa-info-circle"></i> Chi tiết
+                        </button>
+                        <button 
+                            className={`select-branch ${branch.id === selectedBranch?.id ? 'selected' : ''}`}
+                            onClick={() => handleBranchSelect(branch)}
+                            disabled={branch.id === selectedBranch?.id}
+                        >
+                            {branch.id === selectedBranch?.id ? 'Chi nhánh hiện tại' : 'Chọn chi nhánh'}
+                        </button>
+                        <button 
+                            className="btn-secondary"
+                            onClick={() => handleGetDirections(branch.address)}
+                        >
+                            <i className="fas fa-map-marked-alt"></i> Chỉ đường
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div>
             <Nav />
@@ -216,53 +284,25 @@ const BranchSearch = () => {
                     </div>
                 </div>
 
+                <div className="status-filter">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={showOpenOnly}
+                            onChange={(e) => setShowOpenOnly(e.target.checked)}
+                        />
+                        Chỉ hiện chi nhánh đang mở cửa
+                    </label>
+                </div>
+
                 <div className="results-info">
                     <span>Tìm thấy {filteredBranches.length} chi nhánh</span>
                 </div>
 
                 <div className="branches-grid">
-                    {filteredBranches.map(branch => (
-                        <div key={branch.id} className="branch-card">
-                            <div className="branch-image">
-                                <img src={branch.image} alt={branch.name} />
-                                <div className="rating">
-                                    <span>{branch.rating}</span>
-                                    <i className="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <div className="branch-info">
-                                <h3>{branch.name}</h3>
-                                <p><i className="fas fa-map-marker-alt"></i> {branch.address}</p>
-                                <p><i className="fas fa-phone"></i> {branch.phone}</p>
-                                <p><i className="fas fa-clock"></i> {branch.openHours}</p>
-                                <div className="branch-features">
-                                    {branch.features.map((feature, index) => (
-                                        <span key={index} className="feature-tag">{feature}</span>
-                                    ))}
-                                </div>
-                                <div className="branch-actions">
-                                    <button 
-                                        className="btn-primary"
-                                        onClick={() => showBranchDetails(branch)}
-                                    >
-                                        <i className="fas fa-info-circle"></i> Chi tiết
-                                    </button>
-                                    <button 
-                                        className="btn-secondary"
-                                        onClick={() => handleBranchSelect(branch)}
-                                    >
-                                        <i className="fas fa-check-circle"></i> Chọn chi nhánh
-                                    </button>
-                                    <button 
-                                        className="btn-secondary"
-                                        onClick={() => handleGetDirections(branch.address)}
-                                    >
-                                        <i className="fas fa-map-marked-alt"></i> Chỉ đường
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                    {filteredBranches
+                        .filter(branch => !showOpenOnly || getBranchStatus(branch.openHours))
+                        .map(renderBranchCard)}
                 </div>
             </div>
         </div>
