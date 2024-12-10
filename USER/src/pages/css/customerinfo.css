@@ -1,0 +1,73 @@
+.header {
+    font-family: 'Arial', sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+
+.info-box {
+    border: 1px solid #ee0000;
+    border-radius: 10px;
+    width: fit-content;
+    height: auto;
+    margin: 20px;
+    position: relative;
+    display: flex;
+    padding: 50px;
+    align-self: center;
+    align-items: center;
+}
+
+.btn-avatar {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.avatar {
+    position: relative;
+    width: 273px;
+    height: 328px;
+    object-fit: cover;
+    box-shadow: 5;
+    background-color: #f1d9d9;
+    margin: 10px;
+    align-self: right;
+}
+
+.textfield-area {
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-textfield {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.textfield {
+    width: 1000px;
+    height: fit-content;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    background-color: #d9d9d9;
+}
+
+.button-list {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,248 @@
+/* src/css/reservation.css */
+.reservation-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.reservation-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #ff0099, #ff4d4d);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,0,153,0.3);
+}
+
+.menu-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.menu-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 1200px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+    margin: 20px 0;
+}
+
+.selected-dishes {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.selected-dish-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-controls button {
+    padding: 2px 8px;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.total-amount {
+    margin-top: 15px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.category-tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+}
+
+.category-tab {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #666;
+    transition: all 0.3s ease;
+    border-radius: 20px;
+}
+
+.category-tab.active {
+    color: white;
+    background: #ff0099;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.menu-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.menu-item-info {
+    padding: 15px;
+}
+
+.menu-item-info h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.description {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    min-height: 40px;
+}
+
+.price {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ff0099;
+    margin-bottom: 15px;
+}
+
+.add-dish-btn {
+    width: 100%;
+    padding: 12px;
+    background: #ff0099;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-dish-btn:hover {
+    background: #e5008a;
+    transform: translateY(-2px);
+}
+
+.close-modal-btn {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s ease;
+}
+
+.close-modal-btn:hover {
+    background: #222;
+}
+
+@media (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .menu-modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+}

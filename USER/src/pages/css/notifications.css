@@ -1,0 +1,82 @@
+/* src/css/notifications.css */
+.notifications-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.notifications-container h2 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.notifications-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.notification-item {
+    display: flex;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.notification-item:hover {
+    background: #f8f8f8;
+}
+
+.notification-item.unread {
+    background: #fff5fa;
+}
+
+.notification-item.unread:hover {
+    background: #ffe6f5;
+}
+
+.notification-icon {
+    width: 50px;
+    height: 50px;
+    background: #ffeaf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.notification-icon i {
+    color: #ff0099;
+    font-size: 20px;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-content h3 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.notification-content p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.notification-time {
+    color: #999;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.notification-time i {
+    font-size: 12px;
+}

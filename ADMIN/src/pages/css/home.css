@@ -1,0 +1,21 @@
+.homePage{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.adminContainer {
+    display: flex;
+    flex: 1;
+    gap: 50px;
+}
+
+.mainContainer {
+    flex: 1;
+}
+
+h1{
+    margin: 50px 0;
+    font-size: 50px;
+    font-family:'Courier New', Courier, monospace;
+}

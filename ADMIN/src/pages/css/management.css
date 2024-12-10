@@ -1,0 +1,100 @@
+.mgmt-page {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
+}
+
+.page-container {
+    display: flex;
+    flex: 1;
+    /* gap: 50px; */
+}
+
+.main-content-box {
+    flex: 1;
+    /* gap: 50px; */
+    margin: 0 100px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    margin: 50px 0;
+    font-size: 50px;
+    font-family: 'Arial', 'Courier', 'monospace';
+}
+
+.add-button {
+    padding: 10px 20px;
+    background-color: #f09;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: large;
+}
+
+.add-button:hover {
+    background-color: #a31b1b;
+}
+
+.table-box {
+    border-radius: 10px;
+    width: 100%;
+    height: fit-content;
+    padding: 30px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+}
+
+.search-and-pagination-container {
+    display: flex;
+    align-items: center;
+    justify-items: space-between;
+    gap: 10px;
+    padding-bottom: 30px;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.search-input {
+    width: 200px;
+    /* flex: 1; */
+    padding: 8px 12px;
+    border: 1px solid #ff0099;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevent wrapping */
+    gap: 10px;
+}
+
+.table {
+    border: 1px solid #ccc; /* Viền đen */
+    border-radius: 10px; /* Độ cong 10px */
+    width: 100%; /* Vừa với ô chứa nội dung */
+    border-collapse: collapse; /* Gộp viền của các ô */
+    font-size: small;
+}
+
+.table th, .table td {
+    border: 1px solid #ccc; /* Viền đen cho các ô */
+    padding: 10px; /* Khoảng cách bên trong các ô */
+    text-align: left; /* Căn trái nội dung */
+}
+
+.table tbody tr {
+    cursor: pointer;
+}
+
+.table tbody tr:hover {
+    background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
+}
