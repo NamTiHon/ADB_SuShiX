@@ -271,3 +271,41 @@
         opacity: 1;
     }
 }
+.branch-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selected-branch-info {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dish-card.unavailable {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.dish-card.unavailable::after {
+  content: 'Không có sẵn tại chi nhánh này';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
