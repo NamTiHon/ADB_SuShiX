@@ -1,5 +1,14 @@
 # ADB_SuShiX
 
+# Cách chạy Backend:
+- Mở terminal trong thư mục SushiAPI
+- chạy npm install express để tải express (nếu chưa có folder node_modules)
+- chạy npm run dev
+- sử dụng postman để test
+- Nhớ kết nối SQL server bằng user 'sa' mật khẩu '123', nếu không giống thì chỉnh lại
+- Chạy script DB_QLSushiX.sql để có csdl và dữ liệu mẫu để test thử
+
+=======
 ## 1. frontend:
 
 Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd vào 1 trong 2 folder để chạy, tránh trường hợp sau này bị nhầm giữa admin và user
@@ -29,4 +38,4 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
     
   2.4. Chạy file **DB_SuShiData.sql** tiếp theo
     
-    
+ 

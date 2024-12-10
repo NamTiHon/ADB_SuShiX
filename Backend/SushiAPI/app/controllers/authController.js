@@ -1,64 +1,51 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { getUserByEmail, createUser, getAllUsers } from '../models/user.js';
+import { userService } from '../services/userService.js';
+import { authService } from '../services/authService.js';
 
-const showAllUsers = (req, res) => {
+// Hiển thị danh sách tất cả user (test)
+export const showAllUsers = async (req, res) => {
     try {
-        const users = getAllUsers();
+        const users = await userService.getAllUsers();
         res.status(200).json({ message: 'List of all users', users });
     } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error('Error fetching users:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
-// Register a new user
-const register = async (req, res) => {
-    const { email, password, name } = req.body;
+// Đăng ký user mới
+export const register = async (req, res) => {
+    const { email, password, name, role } = req.body;
+
     try {
-        // Check if user already exists
-        const existingUser = getUserByEmail(email);
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+        const result = await userService.registerUser(email, password, name, role);
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
         }
 
-        // Hash the password before saving
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = createUser({ email, password: hashedPassword, name });
-        // Respond with the newly created user (without the password)
-        res.status(201).json({ message: 'User created successfully', user: { id: newUser.id, email: newUser.email, name: newUser.name } });
+        res.status(201).json({ message: 'User created successfully', user: result.user });
     } catch (error) {
-        console.error("Error during registration:", error);
+        console.error('Error during registration:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
 
-// Login a user
-const login = async (req, res) => {
+// Đăng nhập user
+export const login = async (req, res) => {
     const { email, password } = req.body;
+
     if (!email || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+        return res.status(400).json({ message: 'Email and password are required' });
     }
 
     try {
-        const user = getUserByEmail(email);
-        if (!user) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+        const result = await authService.loginUser(email, password);
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
         }
 
-        // Compare provided password with hashed password
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
-        }
-
-        // Create and return JWT token
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'Login successful', token });
+        res.json({ message: 'Login successful', token: result.token });
     } catch (error) {
-        console.error("Error during login:", error);
+        console.error('Error during login:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-
-export { register, login, showAllUsers };
