@@ -1,5 +1,6 @@
 // BranchSearch.jsx
 import React, { useState } from 'react';
+import { useBranch } from '../../context/BranchContext';
 import Nav from './Nav';
 import '../css/branchsearch.css';
 
@@ -7,7 +8,8 @@ const BranchSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
-    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [modalBranch, setModalBranch] = useState(null);
+    const { setSelectedBranch } = useBranch();
 
     const locations = {
         hanoi: {
@@ -144,57 +146,13 @@ const BranchSearch = () => {
         }
     };
 
-    const BranchDetailModal = ({ branch, onClose }) => {
-        if (!branch) return null;
-        
-        return (
-            <div className="modal-overlay" onClick={onClose}>
-                <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    <button className="modal-close" onClick={onClose}>
-                        <i className="fas fa-times"></i>
-                    </button>
-                    
-                    <div className="modal-body">
-                        <div className="modal-image">
-                            <img src={branch.image} alt={branch.name} />
-                            <div className="rating">
-                                <span>{branch.rating}</span>
-                                <i className="fas fa-star"></i>
-                            </div>
-                        </div>
-                        
-                        <div className="modal-info">
-                            <h2>{branch.name}</h2>
-                            <div className="info-grid">
-                                <div className="info-item">
-                                    <i className="fas fa-map-marker-alt"></i>
-                                    <p>{branch.address}</p>
-                                </div>
-                                <div className="info-item">
-                                    <i className="fas fa-phone"></i>
-                                    <p>{branch.phone}</p>
-                                </div>
-                                <div className="info-item">
-                                    <i className="fas fa-clock"></i>
-                                    <p>{branch.openHours}</p>
-                                </div>
-                            </div>
-                            
-                            <div className="features-section">
-                                <h3>Tiện ích</h3>
-                                <div className="features-grid">
-                                    {branch.features.map((feature, index) => (
-                                        <div key={index} className="feature-item">
-                                            <span className="feature-tag">{feature}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+    const handleBranchSelect = (branch) => {
+        setSelectedBranch(branch); // Update global context
+        localStorage.setItem('selectedBranch', JSON.stringify(branch)); // Persist selection
+    };
+
+    const showBranchDetails = (branch) => {
+        setModalBranch(branch);
     };
 
     return (
@@ -248,10 +206,11 @@ const BranchSearch = () => {
                             </select>
                         )}
 
-                        {selectedBranch && (
+                        {modalBranch && (
                             <BranchDetailModal 
-                                branch={selectedBranch} 
-                                onClose={() => setSelectedBranch(null)}
+                                branch={modalBranch} 
+                                onClose={() => setModalBranch(null)}
+                                onSelect={() => handleBranchSelect(modalBranch)}
                             />
                         )}
                     </div>
@@ -284,10 +243,15 @@ const BranchSearch = () => {
                                 <div className="branch-actions">
                                     <button 
                                         className="btn-primary"
-                                        onClick={() => setSelectedBranch(branch)}
-                                        
+                                        onClick={() => showBranchDetails(branch)}
                                     >
                                         <i className="fas fa-info-circle"></i> Chi tiết
+                                    </button>
+                                    <button 
+                                        className="btn-secondary"
+                                        onClick={() => handleBranchSelect(branch)}
+                                    >
+                                        <i className="fas fa-check-circle"></i> Chọn chi nhánh
                                     </button>
                                     <button 
                                         className="btn-secondary"
@@ -299,6 +263,65 @@ const BranchSearch = () => {
                             </div>
                         </div>
                     ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Update BranchDetailModal to include selection button
+const BranchDetailModal = ({ branch, onClose, onSelect }) => {
+    if (!branch) return null;
+    
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                <button className="modal-close" onClick={onClose}>
+                    <i className="fas fa-times"></i>
+                </button>
+                
+                <div className="modal-body">
+                    <div className="modal-image">
+                        <img src={branch.image} alt={branch.name} />
+                        <div className="rating">
+                            <span>{branch.rating}</span>
+                            <i className="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div className="modal-info">
+                        <h2>{branch.name}</h2>
+                        <div className="info-grid">
+                            <div className="info-item">
+                                <i className="fas fa-map-marker-alt"></i>
+                                <p>{branch.address}</p>
+                            </div>
+                            <div className="info-item">
+                                <i className="fas fa-phone"></i>
+                                <p>{branch.phone}</p>
+                            </div>
+                            <div className="info-item">
+                                <i className="fas fa-clock"></i>
+                                <p>{branch.openHours}</p>
+                            </div>
+                        </div>
+                        
+                        <div className="features-section">
+                            <h3>Tiện ích</h3>
+                            <div className="features-grid">
+                                {branch.features.map((feature, index) => (
+                                    <div key={index} className="feature-item">
+                                        <span className="feature-tag">{feature}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal-actions">
+                    <button className="btn-primary" onClick={onSelect}>
+                        <i className="fas fa-check-circle"></i> Chọn chi nhánh này
+                    </button>
                 </div>
             </div>
         </div>

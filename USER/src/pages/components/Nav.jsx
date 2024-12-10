@@ -1,32 +1,42 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../../context/UserContext.js';
 import { Link, useNavigate } from 'react-router-dom';
+import { useBranch } from '../../context/BranchContext';
 import '../css/nav.css';
 
 function Nav() {
     const { user } = useContext(UserContext);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+    const { selectedBranch } = useBranch();
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (searchTerm.trim()) {
             navigate('/menu', { state: { searchTerm: searchTerm.trim() } });
-            setSearchTerm(''); // Clear search after submit
+            setSearchTerm('');
         }
     };
 
     return (
         <nav className="navbar">
-            <div className="logo"><a href="/">SuShiX</a></div>
+            <div className="logo"><Link to="/">SuShiX</Link></div>
+            
+            {selectedBranch && (
+                <div className="selected-branch-display">
+                    <i className="fas fa-map-marker-alt"></i>
+                    <span>{selectedBranch.name}</span>
+                </div>
+            )}
+
             <div className="menu">
                 <ul>
-                    <li><a href="/">Trang Chủ</a></li>
+                    <li><Link to="/">Trang Chủ</Link></li>
                     <li className="menu-dropdown">
-                        <a href="/menu">
+                        <Link to="/menu">
                             Thực đơn
                             <i className="fas fa-angle-down"></i>
-                        </a>
+                        </Link>
                         <div className="dropdown-content">
                             <Link to="/menu" state={{ category: 'sushi' }}>Sushi</Link>  
                             <Link to="/menu" state={{ category: 'appetizer' }}>Khai vị</Link>
@@ -39,36 +49,32 @@ function Nav() {
                             <Link to="/menu" state={{ category: 'drinks' }}>Đồ uống</Link>
                         </div>
                     </li>
-
-                    
-                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><Link to="/about">Về chúng tôi</Link></li>
                     <li>
-                        <a href="/notifications">
+                        <Link to="/notifications">
                             Thông báo
                             <i className="fas fa-bell nav-notification-icon"></i>
-                        </a>
+                        </Link>
                     </li>
-
                     <li className="branch-search">
-                        <a href="/branch-search">
-                            Tìm chi nhánh <i className="fas fa-search"></i>
-                        </a>
+                        <Link to="/branch-search">
+                            {selectedBranch ? 'Đổi chi nhánh' : 'Chọn chi nhánh'} 
+                            <i className="fas fa-search"></i>
+                        </Link>
                     </li>
                 </ul>
             </div>
             
             <div className="right-nav">
-                <div className="checkorder">
-                    <a href="/order-tracking" className="checkorder">Kiểm tra đơn hàng</a>
-                </div>
-                <div className="checkorder">
-                    <a href="/check-reservation" className="checkorder">Kiểm tra đặt bàn</a>
-                </div>
-                <div className="cart">
-                    <a href="/cart" className="cart-icon">Giỏ hàng<i className="fas fa-shopping-basket"></i></a>
-                </div>
-                <div className="cart">
-                    <a href="/reservation" className="cart-icon">Đặt bàn<i className="fas fa-table"></i></a>
+                <div className="nav-actions">
+                    <Link to="/order-tracking">Kiểm tra đơn hàng</Link>
+                    <Link to="/check-reservation">Kiểm tra đặt bàn</Link>
+                    <Link to="/cart" className="cart-icon">
+                        Giỏ hàng<i className="fas fa-shopping-basket"></i>
+                    </Link>
+                    <Link to="/reservation" className="cart-icon">
+                        Đặt bàn<i className="fas fa-table"></i>
+                    </Link>
                 </div>
                 {user ? (
                     <div className="user-profile">
