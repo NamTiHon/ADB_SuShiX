@@ -35,7 +35,6 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
                                 <p><strong>Giới tính:</strong> <input type="text" name="gender" value={updatedCustomer.gender} onChange={handleChange} /></p>
                                 <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={updatedCustomer.cccd} onChange={handleChange} /></p>
                                 <p><strong>Email:</strong> <input type="email" name="email" value={updatedCustomer.email} onChange={handleChange} /></p>
-                                <p><strong>Ngày sinh:</strong> <input type="date" name="dateOfBirth" value={updatedCustomer.dateOfBirth} onChange={handleChange} /></p>
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
@@ -44,7 +43,6 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
                                 <p><strong>Giới tính:</strong> {customer.gender}</p>
                                 <p><strong>Số CCCD:</strong> {customer.cccd}</p>
                                 <p><strong>Email:</strong> {customer.email}</p>
-                                <p><strong>Ngày sinh:</strong> {customer.dateOfBirth}</p>
                                 <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                             </>
                         )}

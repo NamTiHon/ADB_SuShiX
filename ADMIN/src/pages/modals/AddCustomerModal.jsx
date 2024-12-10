@@ -3,13 +3,12 @@ import '../css/add-customer-modal.css';
 
 const AddCustomerModal = ({ onClose, onAddCustomer }) => {
     const [newCustomer, setNewCustomer] = useState({
-        name: '',
+        name: 'example',
         gender: 'male', // default to male
-        cccd: '',
-        email: '',
-        dateOfBirth: '',
-        address: '',
-        phoneNumber: ''
+        cccd: '888888888888',
+        email: 'ex@gmail.com',
+        dateOfBirth: '2004-01-01',
+        phone: '0123456879'
     });
 
     const handleChange = (e) => {
@@ -59,7 +58,7 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
                         <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={newCustomer.cccd} onChange={handleChange} minLength="12" maxLength="12" required pattern="\d*" /></p>
                         <p><strong>Email:</strong> <input type="email" name="email" value={newCustomer.email} onChange={handleChange} required /></p>
                         <p><strong>Ngày sinh:</strong> <input type="date" name="dateOfBirth" value={newCustomer.dateOfBirth} onChange={handleChange} required /></p>
-                        <p><strong>Số điện thoại:</strong> <input type="text" name="phoneNumber" value={newCustomer.phoneNumber} onChange={handleChange} required /></p>
+                        <p><strong>Số điện thoại:</strong> <input type="text" name="phoneNumber" value={newCustomer.phone} onChange={handleChange} required /></p>
                         <button type="submit" className="add-button">Thêm</button>
                     </div>
                 </form>

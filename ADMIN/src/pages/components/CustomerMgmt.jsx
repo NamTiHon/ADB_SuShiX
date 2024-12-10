@@ -10,6 +10,8 @@ import CustomerDetailModal from "../modals/CustomerDetailModal";
 function CustomerMgmt() {
     const [searchQuery, setSearchQuery] = useState('');
 
+    const [selectedProperty, setSelectedProperty] = useState('phone');
+
     const [currentPage, setCurrentPage] = useState(1);
 
     const [pageInput, setPageInput] = useState(1);
@@ -247,16 +249,8 @@ function CustomerMgmt() {
     const sortedCustomers = customers.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
     const filteredCustomers = sortedCustomers.filter(customer => {
-        const matchesSearch =
-            customer.phone.includes(searchQuery) ||
-            customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.gender.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.cccd.includes(searchQuery) ||
-            customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.createdDate.includes(searchQuery) ||
-            customer.membershipType.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.status.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesSearch;
+        const value = selectedProperty.split('.').reduce((o, i) => o[i], customer);
+        return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
 
     const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
@@ -298,9 +292,20 @@ function CustomerMgmt() {
                     </div>
                     <div className="table-box">
                         <div className="search-and-pagination-container">
-                            <input className="search-input"
-                                placeholder="Nhập các thuộc tính để tìm kiếm..."
+                            <select className="property-dropdown" value={selectedProperty} onChange={(e) => setSelectedProperty(e.target.value)}>
+                                <option value="phone">Số điện thoại</option>
+                                <option value="name">Họ tên</option>
+                                <option value="gender">Giới tính</option>
+                                <option value="cccd">CCCD</option>
+                                <option value="email">Email</option>
+                                <option value="createdDate">Ngày tạo</option>
+                                <option value="membershipType">Loại TV</option>
+                                <option value="status">Tình trạng</option>
+                            </select>
+                            <input
                                 type="text"
+                                placeholder="Tìm kiếm khách hàng..."
+                                className="search-input"
                                 value={searchQuery}
                                 onChange={handleSearch}
                             />
