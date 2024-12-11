@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/OrderManagement.css';
 import { getOrders } from '../../utils/OrderStorage';
+import Nav from './Nav';
 
 const OrderManagement = () => {
     const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch orders from the storage or API
@@ -16,33 +19,39 @@ const OrderManagement = () => {
     }, []);
 
     return (
-        <div className="order-management">
-            <h2>Quản lý đơn hàng</h2>
-            <table className="orders-table">
-                <thead>
-                    <tr>
-                        <th>Mã đơn hàng</th>
-                        <th>Ngày đặt</th>
-                        <th>Trạng thái</th>
-                        <th>Tổng tiền</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {orders.map(order => (
-                        <tr key={order.orderId}>
-                            <td>{order.orderId}</td>
-                            <td>{order.date}</td>
-                            <td>{order.status}</td>
-                            <td>{order.total?.toLocaleString() || '0'}đ</td>
-                            <td>
-                                <button onClick={() => viewOrderDetails(order.orderId)}>Xem chi tiết</button>
-                                <button onClick={() => cancelOrder(order.orderId)}>Hủy đơn</button>
-                            </td>
+        <div>
+            <Nav />
+            <div className="order-management">
+                <h2>Quản lý đơn hàng</h2>
+                <table className="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                            <th>Hành động</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {orders.map(order => (
+                            <tr key={order.orderId}>
+                                <td>{order.orderId}</td>
+                                <td>{order.date}</td>
+                                <td>{order.status}</td>
+                                <td>{order.total?.toLocaleString() || '0'}đ</td>
+                                <td>
+                                    <button onClick={() => navigate(`/order-details/${order.orderId}`)}>Xem chi tiết</button>
+                                    <button onClick={() => cancelOrder(order.orderId)}>Hủy đơn</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <button onClick={() => navigate('/')} className="back-home-btn">
+                    <i className="fas fa-home"></i> Về trang chủ
+                </button>
+            </div>
         </div>
     );
 };

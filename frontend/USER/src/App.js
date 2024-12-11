@@ -23,6 +23,8 @@ import CheckReservation from './pages/components/CheckReservation';
 import PrivateRoute from './pages/components/PrivateRoute';
 import { BranchProvider } from './context/BranchContext';
 import OrderManagement from './pages/components/OrderManagement';
+import OrderDetails from './pages/components/OrderDetails'; // Import OrderDetails
+
 function App() {
   return (
     <BranchProvider>
@@ -56,6 +58,8 @@ function App() {
               <Route path="/reservation-success" element={<ReservationSuccess />} />
               <Route path="/check-reservation" element={<CheckReservation />} />
               <Route path="/order-management" element={<OrderManagement />} />
+              <Route path="/order-details/:orderId" element={<OrderDetails />} /> {/* Add this route */}
+
             </Routes>
             <MessengerIcon />
           </Router>

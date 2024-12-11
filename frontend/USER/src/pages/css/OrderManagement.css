@@ -49,3 +49,22 @@ button {
 button:hover {
     background-color: #45a049;
 }
+.back-home-btn {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-home-btn i {
+    margin-right: 5px;
+}
+
+.back-home-btn:hover {
+    background-color: #45a049;
+}
