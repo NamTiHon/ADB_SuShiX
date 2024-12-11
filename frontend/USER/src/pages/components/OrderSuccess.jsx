@@ -2,18 +2,26 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderSuccess.css';
-import { getOrder } from '../../utils/OrderStorage';
+import { getOrder, saveOrder } from '../../utils/OrderStorage';
 
 const OrderSuccess = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { formData, total, orderId, shippingFee, discount, appliedCoupon } = location.state || {};
 
-
     useEffect(() => {
         if (location.state?.orderId) {
             const order = getOrder(location.state.orderId);
             console.log('Verified saved order:', order); // Debug log
+
+            // Save the new order to the storage or backend
+            saveOrder({
+                orderId: orderId,
+                date: new Date().toLocaleDateString(),
+                status: 'Pending',
+                total: total,
+                ...formData
+            });
         }
     }, [location.state]);
 
@@ -60,7 +68,7 @@ const OrderSuccess = () => {
                             <i className="fas fa-home"></i>
                             Về trang chủ
                         </button>
-                        <button onClick={() => navigate('/profile')} className="orders-btn">
+                        <button onClick={() => navigate('/order-management')} className="orders-btn">
                             <i className="fas fa-list"></i>
                             Xem đơn hàng
                         </button>

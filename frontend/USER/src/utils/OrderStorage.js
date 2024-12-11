@@ -21,3 +21,13 @@ export const getOrder = (orderId) => {
         return null;
     }
 };
+
+export const getOrders = async () => {
+    try {
+        const orders = JSON.parse(localStorage.getItem('orders') || '{}');
+        return Object.values(orders);
+    } catch (error) {
+        console.error('Error getting orders:', error);
+        return [];
+    }
+};

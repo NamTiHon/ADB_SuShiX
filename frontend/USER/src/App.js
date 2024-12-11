@@ -22,7 +22,7 @@ import TableSelection from './pages/components/TableSelection';
 import CheckReservation from './pages/components/CheckReservation';
 import PrivateRoute from './pages/components/PrivateRoute';
 import { BranchProvider } from './context/BranchContext';
-
+import OrderManagement from './pages/components/OrderManagement';
 function App() {
   return (
     <BranchProvider>
@@ -55,6 +55,7 @@ function App() {
               <Route path="/table-selection" element={<TableSelection />} />
               <Route path="/reservation-success" element={<ReservationSuccess />} />
               <Route path="/check-reservation" element={<CheckReservation />} />
+              <Route path="/order-management" element={<OrderManagement />} />
             </Routes>
             <MessengerIcon />
           </Router>

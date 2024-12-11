@@ -75,6 +75,9 @@ function Nav() {
                     <Link to="/reservation" className="cart-icon">
                         Đặt bàn<i className="fas fa-table"></i>
                     </Link>
+                    <Link to="/order-management" className="cart-icon">
+                        Quản lý đơn hàng<i className="fas fa-tasks"></i>
+                    </Link>
                 </div>
                 {user ? (
                     <div className="user-profile">
