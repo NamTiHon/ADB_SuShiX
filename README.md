@@ -18,7 +18,9 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 - sử dụng postman để test
 - Nhớ kết nối SQL server bằng user 'sa' mật khẩu '123', nếu không giống thì chỉnh lại
 - Chạy script DB_QLSushiX.sql để có csdl và dữ liệu mẫu để test thử.
-  
+
+
+
   2.1. Chạy SQL: thực hiện chạy file **DB_QLSuShiX.sql** trước
   
   2.2. Chạy file **constraint.sql** tiếp theo.
