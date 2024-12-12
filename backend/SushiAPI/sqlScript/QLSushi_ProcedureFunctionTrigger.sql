@@ -1049,5 +1049,27 @@ as
 			 where PDM_ThoiGianDat = @ThoiGianDat)
 go
 
+--Xem thực đơn theo khu vực
+create or alter function uf_XemThucDonTheoKhuVuc
+	(@MaKhuVuc varchar(10))
+	returns table
+as
+	return ( select * from MonAn 
+			 where MA_MaDanhMuc in ( select DM_TD_MaDanhMuc from DanhMuc_ThucDon 
+									 where DM_TD_MaThucDon in (select KV_MaThucDon from KhuVuc	
+															   where KV_MaKhuVuc = @MaKhuVuc)))
+go
+
+--Xem thực đơn theo chi nhánh
+create or alter function uf_XemThucDonTheoChiNhanh
+	(@MaChiNhanh varchar(10))
+	returns table
+as
+	return ( select * from MonAn 
+			 where MA_MaDanhMuc in ( select DM_TD_MaDanhMuc from DanhMuc_ThucDon 
+									 where DM_TD_MaThucDon in (select KV_MaThucDon from KhuVuc join ChiNhanh on KV_MaKhuVuc = CN_MaKhuVuc
+															   where CN_MaChiNhanh = @MaChiNhanh)))
+go
+
 --TRIGGER
 
