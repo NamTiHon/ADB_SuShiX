@@ -134,6 +134,35 @@ set
 	CN_TGDongCua = cast (CN_TGDongCua as time),
 	CN_TGMoCua = cast (CN_TGMoCua as time);
 
+-- Update Mã khu vực cho Chi Nhánh
+update ChiNhanh
+set CN_MaKhuVuc = 'KV001'
+where CN_DiaChi like N'%TP.HCM%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV002'
+where CN_DiaChi like N'%Đà Nẵng%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV003'
+where CN_DiaChi like N'%Hà Nội%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV004'
+where CN_DiaChi like N'%Hải Phòng%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV005'
+where CN_DiaChi like N'%Cần Thơ%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV006'
+where CN_DiaChi like N'%Bình Dương%'
+
+update ChiNhanh
+set CN_MaKhuVuc = 'KV007'
+where CN_DiaChi like N'%Long An%'
+
 -- select * from ChiNhanh
 -- select * from KhuVuc
 -- select * from ThucDon
