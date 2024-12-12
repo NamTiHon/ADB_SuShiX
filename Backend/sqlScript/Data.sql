@@ -128,7 +128,7 @@ go
 
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
 -- 
--- delete from KhachHang
+-- delete from dbo.KhachHang
 update ChiNhanh
 set 
 	CN_TGDongCua = cast (CN_TGDongCua as time),

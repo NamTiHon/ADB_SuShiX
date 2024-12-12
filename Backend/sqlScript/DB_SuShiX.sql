@@ -120,14 +120,14 @@ create table DatTruoc (
 )
 
 -- Bảng Khách hàng:
-create table KhachHang (
-	KH_SDT varchar(12),
-	KH_HoTen nvarchar(50), 
-	KH_CCCD varchar(13),
-	KH_Email varchar(30),
-	KH_GioiTinh nvarchar(3),
-	primary key (KH_SDT)
-);
+--create table KhachHang (
+--	KH_SDT varchar(12),
+--	KH_HoTen nvarchar(50), 
+--	KH_CCCD varchar(13),
+--	KH_Email varchar(30),
+--	KH_GioiTinh nvarchar(3),
+--	primary key (KH_SDT)
+--);
 
 -- Bảng Loại thẻ:
 create table LoaiThe (
@@ -218,15 +218,15 @@ create table LichSuLamViec (
 	primary key (LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau)
 );
 
-CREATE TABLE Users (
-    UserId INT IDENTITY(1,1) PRIMARY KEY, -- Tự động tăng ID cho mỗi user
-    Email NVARCHAR(100) NOT NULL UNIQUE, -- Email phải là duy nhất
-    Password NVARCHAR(MAX) NOT NULL,     -- Lưu mật khẩu đã được mã hóa (hashed password)
-    Name NVARCHAR(100) NOT NULL,         -- Tên người dùng
-    Role NVARCHAR(50) NOT NULL DEFAULT 'customer', -- Vai trò: customer, employee, admin
-    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo tài khoản
-    UpdatedAt DATETIME DEFAULT GETDATE()  -- Thời gian cập nhật tài khoản
-);
+--CREATE TABLE Users (
+--    UserId INT IDENTITY(1,1) PRIMARY KEY, -- Tự động tăng ID cho mỗi user
+--    Email NVARCHAR(100) NOT NULL UNIQUE, -- Email phải là duy nhất
+--    Password NVARCHAR(MAX) NOT NULL,     -- Lưu mật khẩu đã được mã hóa (hashed password)
+--    Name NVARCHAR(100) NOT NULL,         -- Tên người dùng
+--    Role NVARCHAR(50) NOT NULL DEFAULT 'customer', -- Vai trò: customer, employee, admin
+--    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời gian tạo tài khoản
+--    UpdatedAt DATETIME DEFAULT GETDATE()  -- Thời gian cập nhật tài khoản
+--);
 
 go
 -- Xóa database:
