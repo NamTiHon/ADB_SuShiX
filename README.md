@@ -28,23 +28,24 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
 ### **Chuẩn bị database và dữ liệu**
 
-  2.1. Chạy SQL: thực hiện chạy file **DB_QLSuShiX.sql** trước
+  2.1. Chạy SQL: thực hiện chạy file **DB_SuShiX.sql** trước
+   
+  2.2. Insert bảng Khách Hàng vào database bằng cách:
   
-  2.2. Chạy file **constraint.sql** tiếp theo.
+    2.2.1. Nhấn chuột phải vào database DB_SushiX (trong sidebar Object Explorer), chọn task -> import flat file.
+    
+    2.2.2. Ở bước chọn input file: "Chọn vị trí của file khachhang.csv trong máy". Đặt tên bảng là KhachHang, và table schema: dbo
+    
+    2.2.3. Kiểm tra dữ liệu lần nữa, và chọn next. 
+    
+    2.2.4. Ở bảng Modify Columns, chọn primary key là KH_SDT, còn lại allow nulls (trừ KH_CCCD và email); đồng thời **chỉnh sửa datatype của KH_SDT thành varchar(12)**, và thực hiện chọn NEXT
+    
+    2.2.5. Chọn Finish và chờ insert data.
+    
+    2.2.6. Sau khi thành công, kiểm tra trong database DB_SuShiX đã có bảng KhachHang hay chưa. Nếu có rồi, có thể thực hiện chọn select * from KhachHang để kiểm tra dữ liệu lại lần nữa.
+    
   
-  2.3. Insert bảng Khách Hàng vào database bằng cách:
-  
-    2.3.1. Nhấn chuột phải vào database DB_SushiX (trong sidebar Object Explorer), chọn task -> import flat file.
-    
-    2.3.2. Ở bước chọn input file: "Chọn vị trí của file khachhang.csv trong máy". Đặt tên bảng là KhachHang, và table schema: dbo
-    
-    2.3.3. Kiểm tra dữ liệu lần nữa, và chọn next. 
-    
-    2.3.4. Ở bảng Modify Columns, chọn primary key là KH_SDT, còn lại allow nulls (trừ KH_CCCD và email); đồng thời **chỉnh sửa datatype của KH_SDT thành varchar(12)**, và thực hiện chọn NEXT
-    2.3.5. Chọn Finish và chờ insert data.
-    
-    2.3.6. Sau khi thành công, kiểm tra trong database DB_SuShiX đã có bảng KhachHang hay chưa. Nếu có rồi, có thể thực hiện chọn select * from KhachHang để kiểm tra dữ liệu lại lần nữa.
-    
+  2.3. Chạy file **constraint.sql** tiếp theo.
   2.4. Chạy file **DB_SuShiData.sql** tiếp theo
   2.5. Chạy file store prodedure
  
