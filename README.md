@@ -25,14 +25,8 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 - Vào thanh Search ở Start, tìm SQL Server Configuration Management, chọn SQL Server Network Configuration, vào Protocol for SQLEXPRESS, chọn TCP/IP, phần Enabled chọn YES.
 - IP Adress, kéo xuống tìm IPAll, đổi TCP Dynamic Ports = 1433. Nhấn OK
 - Vào lại SQL Server Services, chọn restart SQL Server(SQLEXPRESS).
- 
-### **Chạy backend**  
-- Mở terminal trong thư mục SushiAPI
-- chạy npm install express để tải express (nếu chưa có folder node_modules)
-- chạy npm run dev
-- sử dụng postman để test
-- Chạy script DB_QLSushiX.sql để có csdl và dữ liệu mẫu để test thử.
 
+### **Chuẩn bị database và dữ liệu**
 
   2.1. Chạy SQL: thực hiện chạy file **DB_QLSuShiX.sql** trước
   
@@ -52,5 +46,15 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
     2.3.6. Sau khi thành công, kiểm tra trong database DB_SuShiX đã có bảng KhachHang hay chưa. Nếu có rồi, có thể thực hiện chọn select * from KhachHang để kiểm tra dữ liệu lại lần nữa.
     
   2.4. Chạy file **DB_SuShiData.sql** tiếp theo
+  2.5. Chạy file store prodedure
+ 
+### **Chạy backend**  
+- Mở terminal trong thư mục SushiAPI
+- chạy npm install express để tải express (nếu chưa có folder node_modules)
+- chạy npm run dev
+- sử dụng postman để test
+
+
+
     
  
