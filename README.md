@@ -12,13 +12,26 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
   1.2. nếu muốn chạy user: **cd user** --> **npm install** --> **npm start**.
   
 ## 2. backend:
+
+### **Tạo sa user trong SQL SERVER**
+- Connect vào SQL (dưới trang thái Window Authentication)
+- Nhấp chuột phải vào dòng đầu tiên (SQL Server) => chọn Properities => Chọn Security, chọn SQL Server and Windows Authentication). Nhấn OK
+- Nhấp chuột vào Security ở thanh Object Explorer và vào Logins => nhấp chuột phải vào *sa* và chọn Properities. Tại đây, nhập lại password là 123, và chọn Status là enabled. Nhấn OK.
+- Sau khi thực hiện xong, vào thành Search của chỗ Start, tìm Services và chạy phần Services
+- Tìm SQL SERVER (SQLEXPRESS), nhấn chuột phải và chọn restart.
+- Chạy lại chương trình SQL SEVER, với authentication là SQL Server Authentication, login: sa, password: 123, chọn **Trust server certificate** để kết nối SQL thành công.
+
+### **Kết nối SQL SERVER và backend**
+- Vào thanh Search ở Start, tìm SQL Server Configuration Management, chọn SQL Server Network Configuration, vào Protocol for SQLEXPRESS, chọn TCP/IP, phần Enabled chọn YES.
+- IP Adress, kéo xuống tìm IPAll, đổi TCP Dynamic Ports = 1433. Nhấn OK
+- Vào lại SQL Server Services, chọn restart SQL Server(SQLEXPRESS).
+ 
+### **Chạy backend**  
 - Mở terminal trong thư mục SushiAPI
 - chạy npm install express để tải express (nếu chưa có folder node_modules)
 - chạy npm run dev
 - sử dụng postman để test
-- Nhớ kết nối SQL server bằng user 'sa' mật khẩu '123', nếu không giống thì chỉnh lại
 - Chạy script DB_QLSushiX.sql để có csdl và dữ liệu mẫu để test thử.
-
 
 
   2.1. Chạy SQL: thực hiện chạy file **DB_QLSuShiX.sql** trước
