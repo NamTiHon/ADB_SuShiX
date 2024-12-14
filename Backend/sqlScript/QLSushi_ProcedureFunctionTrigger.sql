@@ -1071,6 +1071,15 @@ as
 															   where CN_MaChiNhanh = @MaChiNhanh)))
 go
 
+--Xem chi tiết phiếu đặt món
+create or alter function uf_XemPhieuDatMon
+	(@MaPhieu varchar(10))
+	returns table
+as
+	return ( select * from MonDuocDat 
+			 where MDD_MaPhieu = @MaPhieu)
+go
+
 --TRIGGER
 --- This is need for trigger
 
