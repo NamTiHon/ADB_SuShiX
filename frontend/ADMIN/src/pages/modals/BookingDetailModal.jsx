@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/customer-detail-modal.css';
+import '../css-modals/booking-detail-modal.css';
 
-const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
+const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedCustomer, setUpdatedCustomer] = useState({ ...customer });
     

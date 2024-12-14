@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/add-staff-modal.css';
+import '../css-modals/add-staff-modal.css';
 
 const AddStaffModal = ({ onClose, onAddStaff }) => {
     const [newStaff, setNewStaff] = useState({

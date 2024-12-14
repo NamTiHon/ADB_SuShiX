@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/staff-detail-modal.css';
+import '../css-modals/staff-detail-modal.css';
 
 const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
