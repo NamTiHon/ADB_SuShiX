@@ -1,0 +1,61 @@
+.rate-order {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rate-order h2 {
+    margin-bottom: 20px;
+}
+
+.rate-order form {
+    display: flex;
+    flex-direction: column;
+}
+
+.rate-order .rating,
+.rate-order .comment {
+    margin-bottom: 20px;
+}
+
+.rate-order .rating select,
+.rate-order .comment textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-btn:hover {
+    background-color: #45a049;
+}
+
+.back-btn {
+    padding: 10px 20px;
+    margin-top: 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-btn i {
+    margin-right: 5px;
+}
+
+.back-btn:hover {
+    background-color: #45a049;
+}

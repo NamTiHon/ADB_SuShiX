@@ -43,6 +43,9 @@ const OrderManagement = () => {
                                 <td>
                                     <button onClick={() => navigate(`/order-details/${order.orderId}`)}>Xem chi tiết</button>
                                     <button onClick={() => cancelOrder(order.orderId)}>Hủy đơn</button>
+                                    {order.status === 'Completed' && (
+                                        <button onClick={() => navigate(`/rate-order/${order.orderId}`)}>Đánh giá đơn hàng</button>
+                                    )}
                                 </td>
                             </tr>
                         ))}
