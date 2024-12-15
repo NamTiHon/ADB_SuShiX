@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import '../css-modals/booking-detail-modal.css';
 
-const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
+const BookingDetailModal = ({ booking, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedCustomer, setUpdatedCustomer] = useState({ ...customer });
-    
-    if (!customer) return null;
+    const [updatedBooking, setUpdatedBooking] = useState({ ...booking });
+
+    if (!booking) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedCustomer((prevCustomer) => ({
-            ...prevCustomer,
+        setUpdatedBooking((prevBooking) => ({
+            ...prevBooking,
             [name]: value,
         }));
     };
 
+    const handleDeleteClick = () => {
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn hủy phiếu đặt này?");
+        if (confirmDelete) {
+            onDelete(booking.bookingId);
+            onClose();
+        }
+    };
+
     const handleSave = () => {
-        onUpdate(updatedCustomer);
+        onUpdate(updatedBooking);
         setIsEditing(false);
     };
 
@@ -24,40 +32,41 @@ const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
         <div className="modal-overlay">
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>X</button>
-                <h2>CHI TIẾT KHÁCH HÀNG</h2>
+                <h2>CHI TIẾT PHIẾU ĐẶT</h2>
                 <div className="modal-sections">
                     <div className="modal-section">
-                        <h3>THÔNG TIN CÁ NHÂN</h3>
-                        
                         {isEditing ? (
                             <>
-                                <p><strong>Họ tên:</strong> <input type="text" name="name" value={updatedCustomer.name} onChange={handleChange} /></p>
-                                <p><strong>Giới tính:</strong> <input type="text" name="gender" value={updatedCustomer.gender} onChange={handleChange} /></p>
-                                <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={updatedCustomer.cccd} onChange={handleChange} /></p>
-                                <p><strong>Email:</strong> <input type="email" name="email" value={updatedCustomer.email} onChange={handleChange} /></p>
+                                <p><strong>Mã phiếu đặt:</strong> <input type="text" name="bookingId" value={updatedBooking.bookingId} onChange={handleChange} /></p>
+                                <p><strong>Mã chi nhánh:</strong> <input type="text" name="bookingId" value={updatedBooking.branchId} onChange={handleChange} /></p>
+                                <p><strong>Ngày tạo:</strong> <input type="text" name="createdDate" value={updatedBooking.createdDate} onChange={handleChange} /></p>
+                                <p><strong>Giờ tạo:</strong> <input type="text" name="createdTime" value={updatedBooking.createdTime} onChange={handleChange} /></p>
+                                <p><strong>Số bàn:</strong> <input type="text" name="tableNumber" value={updatedBooking.tableNumber} onChange={handleChange} /></p>
+                                <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={updatedBooking.numOfCustomers} onChange={handleChange} /></p>
+                                <p><strong>Ngày đến:</strong> <input type="text" name="arrivalDate" value={updatedBooking.arrivalDate} onChange={handleChange} /></p>
+                                <p><strong>Giờ đến:</strong> <input type="text" name="arrivalTime" value={updatedBooking.arrivalTime} onChange={handleChange} /></p>
+                                <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={updatedBooking.comment} onChange={handleChange} /></p>
+                                <p><strong>Tình trạng:</strong> <input type="text" name="status" value={updatedBooking.status} onChange={handleChange} /></p>
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
                             <>
-                                <p><strong>Họ tên:</strong> {customer.name}</p>
-                                <p><strong>Giới tính:</strong> {customer.gender}</p>
-                                <p><strong>Số CCCD:</strong> {customer.cccd}</p>
-                                <p><strong>Email:</strong> {customer.email}</p>
-                                <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
+                                <p><strong>Mã phiếu đặt:</strong> {booking.bookingId}</p>
+                                <p><strong>Mã chi nhánh:</strong> {booking.branchId}</p>
+                                <p><strong>Ngày tạo:</strong> {booking.createdDate}</p>
+                                <p><strong>Giờ tạo:</strong> {booking.createdTime}</p>
+                                <p><strong>Số bàn:</strong> {booking.tableNumber}</p>
+                                <p><strong>Số khách:</strong> {booking.numOfCustomers}</p>
+                                <p><strong>Ngày đến:</strong> {booking.arrivalDate}</p>
+                                <p><strong>Giờ đến:</strong> {booking.arrivalTime}</p>
+                                <p><strong>Ghi chú:</strong> {booking.comment}</p>
+                                <p><strong>Tình trạng:</strong> {booking.status}</p>
+                                <div className="buttons">
+                                    <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
+                                    <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>
+                                </div>
                             </>
                         )}
-                    </div>
-                    <div className="divider"></div>
-                    <div className="modal-section">
-                        <h3>THÔNG TIN THẺ</h3>
-                        <p><strong>Mã thẻ:</strong> {customer.cardId}</p>
-                        <p><strong>Ngày tạo:</strong> {customer.createdDate}</p>
-                        <p><strong>Số năm sử dụng:</strong> {customer.yearsOfUsing}</p>
-                        <p><strong>Điểm:</strong> {customer.points}</p>
-                        <p><strong>Tình trạng thẻ:</strong> {customer.status}</p>
-                        <p><strong>Loại thành viên:</strong> {customer.membershipType}</p>
-                        <p><strong>Số điện thoại:</strong> {customer.phone}</p>
-                        <p><strong>Mã nhân viên tạo thẻ:</strong> {customer.staffId}</p>
                     </div>
                 </div>
             </div>
@@ -65,4 +74,4 @@ const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
     );
 };
 
-export default CustomerDetailModal;
+export default BookingDetailModal;

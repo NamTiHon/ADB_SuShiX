@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css-modals/add-customer-modal.css';
 
-const AddCustomerModal = ({ onClose, onAddCustomer }) => {
+const AddCustomerModal = ({ onClose, onAdd }) => {
     const [newCustomer, setNewCustomer] = useState({
         name: 'example',
         gender: 'male', // default to male
@@ -31,7 +31,7 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
             membershipType: 'Membership',
             staffId: '12345' // Example staff ID, replace with actual logic if needed
         };
-        onAddCustomer(customerWithCardInfo);
+        onAdd(customerWithCardInfo);
         alert('Thêm khách hàng thành công');
         onClose();
     };
