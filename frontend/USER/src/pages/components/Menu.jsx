@@ -125,7 +125,9 @@ const Menu = () => {
     const [selectedCategory, setSelectedCategory] = useState(
         location.state?.category || 'all'
     );
-    
+    const [dishes, setDishes] = useState([]); // New state for dishes
+    const [loading, setLoading] = useState(true); // Add loading state
+    const [error, setError] = useState(null); // Add error state
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const { selectedBranch } = useBranch();
@@ -182,20 +184,86 @@ const Menu = () => {
     const selectedCategoryDescription = categories.find(category => category.id === selectedCategory)?.description;
     // Cập nhật danh sách món ăn khi chi nhánh thay đổi
     useEffect(() => {
-        if (selectedBranch) {
-            const filteredDishes = dishes.filter(dish => 
-                dish.availableAt.includes(Number(selectedBranch.id)) // Chuyển id thành number
-            );
-            setAvailableDishes(filteredDishes);
-        } else {
-            setAvailableDishes(dishes);
-        }
+        const fetchDishes = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('http://localhost:3000/api/dishes');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dishes');
+                }
+                
+                const result = await response.json();
+                console.log('API Response:', result); // Debug log
+    
+                // Safe data transformation
+                const transformedDishes = [];
+                
+                // Handle potential data structures
+                const items = result?.dishes || result || [];
+                
+                if (!Array.isArray(items)) {
+                    throw new Error('Invalid data format');
+                }
+    
+                // Transform with null checks
+                items.forEach(dish => {
+                    if (dish) {
+                        transformedDishes.push({
+                            id: dish?.MA_MaMon?.toString() || '',
+                            name: dish?.MA_TenMon?.toString() || '',
+                            category: (dish?.MA_MaDanhMuc || '').toString().toLowerCase(),
+                            price: Number(dish?.MA_GiaHienTai) || 0,
+                            image: dish?.MA_MaMon ? `/images/${dish.MA_MaMon.toString().toLowerCase()}.jpg` : '',
+                            description: dish?.DM_TenDanhMuc?.toString() || '',
+                            region: dish?.KV_Ten?.toString() || '',
+                            available: Boolean(dish?.MA_CoSan)
+                        });
+                    }
+                });
+    
+                console.log('Transformed:', transformedDishes); // Debug log
+                
+                setDishes(transformedDishes);
+                
+                if (selectedBranch?.region) {
+                    const filtered = transformedDishes.filter(dish => 
+                        dish.region === selectedBranch.region
+                    );
+                    setAvailableDishes(filtered);
+                } else {
+                    setAvailableDishes(transformedDishes);
+                }
+    
+            } catch (err) {
+                console.error('Error:', err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchDishes();
     }, [selectedBranch]);
     return (
         <div>
             <Nav />
             <div className="menu-container">
-                <h1>Thực đơn</h1>
+            <h1>Thực đơn</h1>
+                
+                {loading && (
+                    <div className="loading-state">
+                        <i className="fas fa-spinner fa-spin"></i>
+                        <p>Đang tải thực đơn...</p>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="error-state">
+                        <i className="fas fa-exclamation-circle"></i>
+                        <p>Có lỗi xảy ra: {error}</p>
+                    </div>
+                )}
                 {!selectedBranch && (
                     <div className="branch-warning">
                         <i className="fas fa-exclamation-circle"></i>
