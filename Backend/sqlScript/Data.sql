@@ -230,6 +230,25 @@ values
 ('NV00067788', 'CN002', '2021-04-15', '2023-02-12');
 go
 
+
+-- delete from KhuyenMai
+-- Chạy phần script này sau khi đã thêm data vào các bảng ChiNhanh và LoaiThe
+-- KM_LoaiTheApDung là loại thẻ thấp nhất đủ điều kiện tham gia chương trình khuyến mãi
+insert into
+KhuyenMai(KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
+values
+('KM00000001', 'Mừng Giáng Sinh', 'Giảm giá Noel', 0.2, 'Membership', 'CN001'),
+('KM00000001', 'Chào Năm Mới', 'Happy New Year', 0.15, 'Membership', 'CN002'),
+('KM00000003', 'Hè Rực Rỡ', 'Summer Sale', 0.25, 'Membership', 'CN001'),
+('KM00000004', 'Ngày Nhà Giáo', 'Tri Ân Thầy Cô', 0.3, 'Membership', 'CN003'),
+('KM00000005', 'Black Friday', 'Siêu Giảm Giá', 0.05, 'Silver', 'CN002'),
+('KM00000006', 'Quốc Tế Phụ Nữ', 'Ngày 8/3', 0.1, 'Silver', 'CN001'),
+('KM00000007', 'Ngày Valentine', 'Ưu đãi tình yêu', 0.1, 'Membership', 'CN003'),
+('KM00000008', 'Ngày Quốc Khánh', 'Mừng Quốc Khánh', 0.12, 'Membership', 'CN002'),
+('KM00000009', 'Tri Ân Khách Hàng', 'Khách Hàng Thân Thiết', 0.19, 'Gold', 'CN001'),
+('KM00000010', 'Đón Tết Nguyên Đán', 'Tết Nguyên Đán', 0.12, 'Membership', 'CN003');
+go
+
 update ChiNhanh
 set 
 	CN_TGDongCua = cast (CN_TGDongCua as time),
