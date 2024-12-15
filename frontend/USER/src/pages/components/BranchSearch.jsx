@@ -60,7 +60,7 @@ const BranchSearch = () => {
             rating: 4.5,
             openHours: "10:00 - 22:00",
             image: "/images/branch1.jpg",
-            features: ["Có chỗ đỗ xe", "Wifi miễn phí", "Phòng VIP"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         },
         {
             id: 2,
@@ -71,7 +71,7 @@ const BranchSearch = () => {
             rating: 4.7,
             openHours: "10:00 - 23:00",
             image: "/images/branch2.jpg",
-            features: ["Sân vườn", "Phòng riêng", "Bãi đỗ xe rộng"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         },
         {
             id: 3,
@@ -82,7 +82,7 @@ const BranchSearch = () => {
             rating: 4.8,
             openHours: "09:00 - 22:30",
             image: "/images/branch3.jpg",
-            features: ["View Hồ Gươm", "Bar", "Phòng VIP"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         },
         {
             id: 4,
@@ -93,7 +93,7 @@ const BranchSearch = () => {
             rating: 4.6,
             openHours: "10:30 - 22:00",
             image: "/images/branch4.jpg",
-            features: ["Buffet trưa", "Khu vui chơi trẻ em", "Bãi đỗ xe"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         },
         {
             id: 5,
@@ -104,7 +104,7 @@ const BranchSearch = () => {
             rating: 4.4,
             openHours: "10:00 - 21:30",
             image: "/images/branch5.jpg",
-            features: ["Không gian rộng", "Wifi miễn phí", "Điều hòa"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         },
         {
             id: 6,
@@ -115,7 +115,7 @@ const BranchSearch = () => {
             rating: 4.9,
             openHours: "09:30 - 22:00",
             image: "/images/branch6.jpg",
-            features: ["View thành phố", "Bếp mở", "Phòng hội nghị"]
+            features: ["Bãi giữ xe ô tô", "Bãi giữ xe máy", "Hỗ trợ giao hàng"]
         }
     ];
 
@@ -213,12 +213,7 @@ const BranchSearch = () => {
                         ))}
                     </div>
                     <div className="branch-actions">
-                        <button 
-                            className="btn-primary"
-                            onClick={() => showBranchDetails(branch)}
-                        >
-                            <i className="fas fa-info-circle"></i> Chi tiết
-                        </button>
+                        
                         <button 
                             className={`select-branch ${branch.id === selectedBranch?.id ? 'selected' : ''}`}
                             onClick={() => handleBranchSelect(branch)}
