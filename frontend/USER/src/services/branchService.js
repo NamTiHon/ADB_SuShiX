@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:3000/api';
+
 export const getBranches = async () => {
     try {
         const response = await fetch(`${API_URL}/branches`);
