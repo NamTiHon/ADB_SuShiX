@@ -98,10 +98,7 @@ const Cart = () => {
                                 className="item-checkbox"
                             />
                             <img src={item.image} alt={item.name} className="item-image" />
-                            <div className="item-details">
-                                <h3>{item.name}</h3>
-                                <p className="item-price">{item.price.toLocaleString()}đ</p>
-                            </div>
+                            
                             <div className="quantity-controls">
                                 <button onClick={() => updateQuantity(item.id, -1)}>−</button>
                                 <span>{item.quantity}</span>

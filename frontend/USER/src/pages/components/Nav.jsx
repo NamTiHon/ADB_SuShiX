@@ -31,7 +31,6 @@ function Nav() {
 
             <div className="menu">
                 <ul>
-                    <li><Link to="/">Trang Chủ</Link></li>
                     <li className="menu-dropdown">
                         <Link to="/menu">
                             Thực đơn
@@ -67,16 +66,22 @@ function Nav() {
             
             <div className="right-nav">
                 <div className="nav-actions">
-                    <Link to="/order-tracking">Kiểm tra đơn hàng</Link>
-                    <Link to="/check-reservation">Kiểm tra đặt bàn</Link>
+                <li className="menu-dropdown">
+                    <Link to="#">
+                        Quản lý
+                        <i className="fas fa-angle-down"></i>
+                    </Link>
+                    <div className="dropdown-content">
+                        <Link to="/order-tracking">Kiểm tra đơn hàng</Link>
+                        <Link to="/check-reservation">Kiểm tra đặt bàn</Link>
+                        <Link to="/order-management">Quản lý đơn hàng</Link>
+                    </div>
+                </li>
                     <Link to="/cart" className="cart-icon">
                         Giỏ hàng<i className="fas fa-shopping-basket"></i>
                     </Link>
                     <Link to="/reservation" className="cart-icon">
                         Đặt bàn<i className="fas fa-table"></i>
-                    </Link>
-                    <Link to="/order-management" className="cart-icon">
-                        Quản lý đơn hàng<i className="fas fa-tasks"></i>
                     </Link>
                 </div>
                 {user ? (
