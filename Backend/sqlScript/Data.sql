@@ -265,31 +265,39 @@ set
 
 -- Update Mã khu vực cho Chi Nhánh
 update ChiNhanh
-set CN_MaKhuVuc = 'KV001'
+set 
+CN_MaKhuVuc = 'KV001',
+CN_MaQuanLy = 'NV00000000'
 where CN_DiaChi like N'%TP.HCM%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV002'
+set CN_MaKhuVuc = 'KV002',
+CN_MaQuanLy = 'NV00000001'
 where CN_DiaChi like N'%Đà Nẵng%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV003'
+set CN_MaKhuVuc = 'KV003',
+CN_MaQuanLy = 'NV00000002'
 where CN_DiaChi like N'%Hà Nội%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV004'
+set CN_MaKhuVuc = 'KV004',
+CN_MaQuanLy = 'NV00000003'
 where CN_DiaChi like N'%Hải Phòng%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV005'
+set CN_MaKhuVuc = 'KV005',
+CN_MaQuanLy = 'NV00000004'
 where CN_DiaChi like N'%Cần Thơ%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV006'
+set CN_MaKhuVuc = 'KV006',
+CN_MaQuanLy = 'NV00000006'
 where CN_DiaChi like N'%Bình Dương%'
 
 update ChiNhanh
-set CN_MaKhuVuc = 'KV007'
+set CN_MaKhuVuc = 'KV007',
+CN_MaQuanLy = 'NV00000007'
 where CN_DiaChi like N'%Long An%'
 
 
@@ -320,7 +328,6 @@ where KV_MaKhuVuc = 'KV006'
 update KhuVuc
 set KV_MaThucDon = 'TD007'
 where KV_MaKhuVuc = 'KV007'
-
 
 -- select * from ChiNhanh
 -- select * from KhuVuc
