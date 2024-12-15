@@ -66,6 +66,7 @@ values
 ('DRINK', N'Món nước');
 go
 
+-- delete from DanhMuc_ThucDon
 insert into DanhMuc_ThucDon (DM_TD_MaThucDon, DM_TD_MaDanhMuc)
 values
     ('TD001', 'KV'),
