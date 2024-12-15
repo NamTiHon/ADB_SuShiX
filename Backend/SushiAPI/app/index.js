@@ -4,6 +4,7 @@ import logger from './middleware/logger.js';
 import errorHandler from './middleware/errorHandler.js';
 import dishRoutes from './routes/dishRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import branchRoutes from './routes/branchRoutes.js'
 
 const app = express()
 
@@ -15,7 +16,7 @@ app.use(logger);
 
 app.use('/api/dishes', dishRoutes);
 app.use('/api/auth', authRoutes);
-
+app.use('/api/branches', branchRoutes);
 app.get('/', (req, res) => {
     res.json({msg: "Home Page"})
 });
