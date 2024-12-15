@@ -119,13 +119,14 @@ create table DatTruoc (
 	primary key (DT_MaPhieu)
 )
 
--- Bảng Khách hàng:
+---- Bảng Khách hàng:
 --create table KhachHang (
 --	KH_SDT varchar(12),
 --	KH_HoTen nvarchar(50), 
 --	KH_CCCD varchar(13),
 --	KH_Email varchar(30),
 --	KH_GioiTinh nvarchar(3),
+--	KH_MatKhau nvarchar(20),
 --	primary key (KH_SDT)
 --);
 
@@ -136,17 +137,17 @@ create table LoaiThe (
 );
 
 -- Bảng Thẻ thành viên
-create table TheThanhVien (
-	TTV_MaThe varchar(10),
-	TTV_NgayTao date,
-	TTV_SoNamSuDung int, 
-	TTV_DiemTichLuy int,
-	TTV_TrangThai nvarchar(30),
-	TTV_LoaiThe nvarchar(30),
-	TTV_SDT_KH varchar(12),
-	TTV_MaNhanVien varchar(10), --Nhân viên tạo thẻ
-	primary key (TTV_MaThe)
-);
+--create table TheThanhVien (
+--	TTV_MaThe varchar(10),
+--	TTV_NgayTao date,
+--	TTV_SoNamSuDung int, 
+--	TTV_DiemTichLuy int,
+--	TTV_TrangThai nvarchar(30),
+--	TTV_LoaiThe nvarchar(30),
+--	TTV_SDT_KH varchar(12),
+--	TTV_MaNhanVien varchar(10), --Nhân viên tạo thẻ
+--	primary key (TTV_MaThe)
+--);
 
 -- Bảng Khuyến mãi:
 create table KhuyenMai (
@@ -181,33 +182,33 @@ create table PhieuDanhGia (
 	primary key (DG_MaHoaDon)
 )
 
--- Bảng Nhân viên:
-create table NhanVien (
-	NV_MaNhanVien varchar(10),
-	NV_HoTen nvarchar(50),
-	NV_NgaySinh datetime,
-	NV_GioiTinh nvarchar(3),
-	NV_NgayVaoLam datetime,
-	NV_NgayNghiViec datetime,
-	NV_DiaChi nvarchar(100),
-	NV_SDT varchar(12),
-	NV_SoNha int,
-	NV_TenDuong nvarchar(30),
-	NV_TenPhuong nvarchar(30),
-	NV_TenQuan nvarchar(30),
-	NV_TenThanhPho nvarchar(30),
-	primary key (NV_MaNhanVien)
-);
+---- Bảng Nhân viên:
+--create table NhanVien (
+--	NV_MaNhanVien varchar(10),
+--	NV_HoTen nvarchar(50),
+--	NV_NgaySinh datetime,
+--	NV_GioiTinh nvarchar(3),
+--	NV_NgayVaoLam datetime,
+--	NV_NgayNghiViec datetime,
+--	NV_DiaChi nvarchar(100),
+--	NV_SDT varchar(12),
+--	NV_SoNha int,
+--	NV_TenDuong nvarchar(30),
+--	NV_TenPhuong nvarchar(30),
+--	NV_TenQuan nvarchar(30),
+--	NV_TenThanhPho nvarchar(30),
+--	primary key (NV_MaNhanVien)
+--);
 
--- Bảng Bộ phận của Nhân viên:
-create table BoPhan_NhanVien (
-	BP_NV_MaNhanVien varchar(10),
-	BP_NV_MaChiNhanh varchar(10),
-	BP_NV_TenBoPhan nvarchar(50),
-	BP_NV_ChucVu nvarchar(20),
-	BP_NV_Luong float,
-	primary key (BP_NV_MaNhanVien, BP_NV_MaChiNhanh, BP_NV_TenBoPhan)
-);
+---- Bảng Bộ phận của Nhân viên:
+--create table BoPhan_NhanVien (
+--	BP_NV_MaNhanVien varchar(10),
+--	BP_NV_MaChiNhanh varchar(10),
+--	BP_NV_TenBoPhan nvarchar(50),
+--	BP_NV_ChucVu nvarchar(20),
+--	BP_NV_Luong float,
+--	primary key (BP_NV_MaNhanVien, BP_NV_MaChiNhanh, BP_NV_TenBoPhan)
+--);
 
 -- Bảng Lịch sử làm việc:
 create table LichSuLamViec (
@@ -259,3 +260,6 @@ go
 --	HA_MA_DuongLink nvarchar(100),
 --	primary key (HA_MA_MaMon, HA_MA_DuongLink)
 --)
+-- Xóa database:
+-- use master;
+-- drop database DB_SushiX;

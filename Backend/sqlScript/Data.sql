@@ -65,6 +65,40 @@ values
 ('DRINK', N'Món nước');
 go
 
+insert into DanhMuc_ThucDon (DM_TD_MaDanhMuc, DM_TD_MaThucDon)
+values
+	('TD001', 'KV'),
+    ('TD001', 'SASHIMI'),
+    ('TD001', 'TEMPURA'),
+    ('TD001', 'NIGIRI'),
+    ('TD001', 'DRINK'),
+    ('TD002', 'SASHIMI'),
+    ('TD002', 'NIGIRI'),
+    ('TD002', 'TEMPURA'),
+    ('TD002', 'UDON'),
+    ('TD003', 'KV'),
+    ('TD003', 'SASHIMI'),
+    ('TD003', 'NIGIRI'),
+    ('TD003', 'TEMPURA'),
+    ('TD004', 'HPT'),
+    ('TD004', 'UDON'),
+    ('TD004', 'LUNCH'),
+    ('TD004', 'DRINK'),
+    ('TD005', 'KV'),
+    ('TD005', 'SASHIMI'),
+    ('TD005', 'NIGIRI'),
+    ('TD005', 'DRINK'),
+    ('TD006', 'SASHIMI'),
+    ('TD006', 'LUNCH'),
+    ('TD006', 'HPT'),
+    ('TD006', 'DRINK'),
+    ('TD007', 'NIGIRI'),
+    ('TD007', 'TEMPURA'),
+    ('TD007', 'LUNCH'),
+    ('TD007', 'DRINK');
+
+
+go
 -- delete from MonAn
 insert into
 MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
@@ -126,9 +160,21 @@ values
 ('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, 'KV'); 
 go
 
+
+insert into LoaiThe (LT_TenLoaiThe)
+values
+('Membership'),
+('Gold'),
+('Silver');
+
+go
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
 -- 
--- delete from dbo.KhachHang
+-- delete from KhachHang
+
+-- Bảng NHÂN VIÊN sử dụng file nhanvien.csv
+-- delete from NhanVien
+
 update ChiNhanh
 set 
 	CN_TGDongCua = cast (CN_TGDongCua as time),
@@ -163,11 +209,41 @@ update ChiNhanh
 set CN_MaKhuVuc = 'KV007'
 where CN_DiaChi like N'%Long An%'
 
+
+update KhuVuc
+set KV_MaThucDon = 'TD001'
+where KV_MaKhuVuc = 'KV001'
+
+update KhuVuc
+set KV_MaThucDon = 'TD002'
+where KV_MaKhuVuc = 'KV002'
+
+update KhuVuc
+set KV_MaThucDon = 'TD003'
+where KV_MaKhuVuc = 'KV003'
+
+update KhuVuc
+set KV_MaThucDon = 'TD004'
+where KV_MaKhuVuc = 'KV004'
+
+update KhuVuc
+set KV_MaThucDon = 'TD005'
+where KV_MaKhuVuc = 'KV005'
+
+update KhuVuc
+set KV_MaThucDon = 'TD006'
+where KV_MaKhuVuc = 'KV006'
+
+update KhuVuc
+set KV_MaThucDon = 'TD007'
+where KV_MaKhuVuc = 'KV007'
+
+
 -- select * from ChiNhanh
 -- select * from KhuVuc
 -- select * from ThucDon
 -- select * from DanhMuc
 -- select * from MonAn
--- 
-select *
-from dbo.KhachHang
+-- select * from KhachHang
+-- select * from NhanVien
+-- select * from DanhMuc_ThucDon

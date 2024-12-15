@@ -254,6 +254,3 @@ alter table BoPhan_NhanVien
 alter table LichSuLamViec
 	add constraint C_LSLV_ThoiGian
 	check (LSLV_NgayBatDau < LSLV_NgayKetThuc)
--- Xóa database:
--- use master;
--- drop database DB_SushiX;
