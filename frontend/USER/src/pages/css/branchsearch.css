@@ -27,12 +27,13 @@
     margin: 2rem auto;
 }
 
-.search-input {
+.search-input-b {
     position: relative;
     width: 100%;
+    margin-bottom: 2rem; /* Add bottom margin */
 }
 
-.search-input i {
+.search-input-b i {
     position: absolute;
     left: 1rem;
     top: 50%;
@@ -40,13 +41,14 @@
     color: #666;
 }
 
-.search-input input {
-    width: 100%;
+.search-input-b input {
+    width: 95%;
     padding: 0.8rem 1rem 0.8rem 2.5rem;
     border: 1px solid #ddd;
     border-radius: 20px;
     font-size: 0.95rem;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 1rem; /* Add bottom margin to input */
 }
 
 .district-select {

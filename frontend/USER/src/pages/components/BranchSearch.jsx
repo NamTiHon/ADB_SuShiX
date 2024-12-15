@@ -11,48 +11,11 @@ const BranchSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [district, setDistrict] = useState('');
     const [province, setProvince] = useState('');
-    const [modalBranch, setModalBranch] = useState(null);
     const { selectedBranch, setSelectedBranch } = useBranch();
     const [showOpenOnly, setShowOpenOnly] = useState(false);
     const [confirmBranch, setConfirmBranch] = useState(null);
 
-    const locations = {
-        hanoi: {
-            name: "Hà Nội",
-            districts: [
-                { id: 'dongda', name: 'Đống Đa' },
-                { id: 'caugiay', name: 'Cầu Giấy' },
-                { id: 'hoankiem', name: 'Hoàn Kiếm' },
-                { id: 'longbien', name: 'Long Biên' },
-                { id: 'hadong', name: 'Hà Đông' }
-            ]
-        },
-        hochiminh: {
-            name: "TP. Hồ Chí Minh",
-            districts: [
-                { id: 'district1', name: 'Quận 1' },
-                { id: 'district3', name: 'Quận 3' },
-                { id: 'district5', name: 'Quận 5' },
-                { id: 'phunhuan', name: 'Phú Nhuận' },
-                { id: 'binhtan', name: 'Bình Tân' }
-            ]
-        },
-        danang: {
-            name: "Đà Nẵng",
-            districts: [
-                { id: 'haichau', name: 'Hải Châu' },
-                { id: 'sontra', name: 'Sơn Trà' },
-                { id: 'nguhanhson', name: 'Ngũ Hành Sơn' }
-            ]
-        }
-    };
-    const districts = [
-        { id: 'dongda', name: 'Đống Đa' },
-        { id: 'caugiay', name: 'Cầu Giấy' },
-        { id: 'hoankiem', name: 'Hoàn Kiếm' },
-        { id: 'longbien', name: 'Long Biên' },
-        { id: 'hadong', name: 'Hà Đông' }
-    ];
+  
 
    
     const handleGetDirections = (branchAddress) => {
@@ -87,9 +50,6 @@ const BranchSearch = () => {
         }
     };
 
-    const showBranchDetails = (branch) => {
-        setModalBranch(branch);
-    };
 
     // Function to check if branch is open
     const getBranchStatus = (openHours) => {
@@ -103,16 +63,7 @@ const BranchSearch = () => {
 
         return currentTime >= open && currentTime < close;
     };
-    const handleConfirmBranch = () => {
-        if (confirmBranch) {
-            setSelectedBranch(confirmBranch);
-            setConfirmBranch(null);
-        }
-    };
-
-    const handleCancelBranch = () => {
-        setConfirmBranch(null);
-    };
+  
     // Add isOpen status when rendering branches
     const renderBranchCard = (branch) => {
         const isOpen = getBranchStatus(branch.openHours);
@@ -161,25 +112,7 @@ const BranchSearch = () => {
             </div>
         );
     };
-    const ConfirmClosedBranchModal = ({ branch, onConfirm, onCancel }) => {
-        return (
-            <div className="modal-overlay" onClick={onCancel}>
-                <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    <h3>Xác nhận chọn chi nhánh</h3>
-                    <p>Chi nhánh {branch.name} hiện đang đóng cửa.</p>
-                    <p>Bạn vẫn muốn chọn chi nhánh này?</p>
-                    <div className="modal-actions">
-                        <button className="btn-secondary" onClick={onCancel}>
-                            Hủy bỏ
-                        </button>
-                        <button className="btn-primary" onClick={onConfirm}>
-                            Xác nhận
-                        </button>
-                    </div>
-                </div>
-            </div>
-        );
-    };
+    
     useEffect(() => {
         const fetchBranchData = async () => {
             try {
@@ -262,7 +195,7 @@ const BranchSearch = () => {
                             <p>Tìm chi nhánh SuShiX gần bạn</p>
                         </div>
                         <div className="search-filters">
-                            <div className="search-input">
+                            <div className="search-input-b">
                                 <i className="fas fa-search"></i>
                                 <input
                                     type="text"
@@ -271,28 +204,7 @@ const BranchSearch = () => {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                            <div className="location-filters">
-                                <select 
-                                    value={province}
-                                    onChange={(e) => {
-                                        setProvince(e.target.value);
-                                        setDistrict('');
-                                    }}
-                                    className="filter-select"
-                                >
-                                    {/* ...existing select options... */}
-                                </select>
-
-                                {province && (
-                                    <select 
-                                        value={district}
-                                        onChange={(e) => setDistrict(e.target.value)}
-                                        className="filter-select"
-                                    >
-                                        {/* ...existing select options... */}
-                                    </select>
-                                )}
-                            </div>
+                          
                         </div>
 
                         <div className="status-filter">
