@@ -38,16 +38,22 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
     
     2.2.3. Kiểm tra dữ liệu lần nữa, và chọn next. 
     
-    2.2.4. Ở bảng Modify Columns, chọn primary key là KH_SDT, còn lại allow nulls (trừ KH_CCCD và email); đồng thời **chỉnh sửa datatype của KH_SDT thành varchar(12)**, và thực hiện chọn NEXT
+    2.2.4. Ở bảng Modify Columns, chọn primary key là KH_SDT, đồng thời **chỉnh sửa datatype của KH_SDT thành varchar(12), KH_MatKhau thành varchar(20)**, và thực hiện chọn NEXT
     
     2.2.5. Chọn Finish và chờ insert data.
     
-    2.2.6. Sau khi thành công, kiểm tra trong database DB_SuShiX đã có bảng KhachHang hay chưa. Nếu có rồi, có thể thực hiện chọn select * from KhachHang để kiểm tra dữ liệu lại lần nữa.
-    
+    2.2.6. Sau khi thành công, kiểm tra trong database DB_SuShiX đã có bảng KhachHang hay chưa. Nếu có rồi, có thể thực hiện thay đổi từ nhánh master thành DB_SushiX và chạy select * from KhachHang để kiểm tra dữ liệu lại lần nữa.
+  2.3. Tương tự, insert lần lượt bảng Nhân viên, Bộ phận nhân viên, Thẻ thành viên từ file csv sang database. Đồng thời đổi kiểu dữ liệu:
   
-  2.3. Chạy file **constraint.sql** tiếp theo.
-  2.4. Chạy file **DB_SuShiData.sql** tiếp theo
-  2.5. Chạy file store prodedure
+  - Nhân viên: primary key là NV_MaNhanVien, chỉnh NV_MaNhanVien thành varchar(12), NV_GioiTinh thành nvarchar(3), NV_SDT thành varchar(12)
+ 
+  - Bộ phận nhân viên: primary key là BP_NV_MaNhanVien, BP_NV_MaChiNhanh, BP_NV_TenBoPhan, đổi BP_NV_MaNhanVien thành varchar(12), BP_NV_MaChiNhanh thành varchar(10), BP_NV_Luong thành float
+ 
+  - Thẻ thành viên: đổi new table name thành TheThanhVien, primary key là TTV_MaThe, đổi TTV_MaThe thành varchar(12), TTV_SDT_KH là varchar(12), TTV_MaNhanVien la varchar(12).
+
+  2.4. Chạy file **constraint.sql** tiếp theo.
+  2.5. Chạy file **DB_SuShiData.sql** tiếp theo
+  2.6. Chạy file **QLSushi_ProcedureFunctionTrigger.sql**.
  
 ### **Chạy backend**  
 - Mở terminal trong thư mục SushiAPI
