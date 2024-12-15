@@ -56,6 +56,7 @@ insert into
 DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
 values
 ('KV', N'Khai vị'),
+('SUSHI', N'Sushi'),
 ('SASHIMI', N'Sashimi combo'),
 ('NIGIRI', N'Nigiri'),
 ('TEMPURA', N'Tempura'),
@@ -67,35 +68,48 @@ go
 
 insert into DanhMuc_ThucDon (DM_TD_MaThucDon, DM_TD_MaDanhMuc)
 values
-	('TD001', 'KV'),
+    ('TD001', 'KV'),
     ('TD001', 'SASHIMI'),
     ('TD001', 'TEMPURA'),
     ('TD001', 'NIGIRI'),
     ('TD001', 'DRINK'),
+    ('TD001', 'SUSHI'), -- Bổ sung SUSHI cho TD001
+    ('TD002', 'KV'),
     ('TD002', 'SASHIMI'),
-    ('TD002', 'NIGIRI'),
     ('TD002', 'TEMPURA'),
-    ('TD002', 'UDON'),
+    ('TD002', 'NIGIRI'),
+    ('TD002', 'DRINK'),
+    ('TD002', 'SUSHI'), -- Bổ sung SUSHI cho TD002
     ('TD003', 'KV'),
     ('TD003', 'SASHIMI'),
-    ('TD003', 'NIGIRI'),
     ('TD003', 'TEMPURA'),
-    ('TD004', 'HPT'),
-    ('TD004', 'UDON'),
-    ('TD004', 'LUNCH'),
+    ('TD003', 'NIGIRI'),
+    ('TD003', 'DRINK'),
+    ('TD003', 'SUSHI'), -- Bổ sung SUSHI cho TD003
+    ('TD004', 'KV'),
+    ('TD004', 'SASHIMI'),
+    ('TD004', 'TEMPURA'),
+    ('TD004', 'NIGIRI'),
     ('TD004', 'DRINK'),
+    ('TD004', 'SUSHI'), -- Bổ sung SUSHI cho TD004
     ('TD005', 'KV'),
     ('TD005', 'SASHIMI'),
+    ('TD005', 'TEMPURA'),
     ('TD005', 'NIGIRI'),
     ('TD005', 'DRINK'),
+    ('TD005', 'SUSHI'), -- Bổ sung SUSHI cho TD005
+    ('TD006', 'KV'),
     ('TD006', 'SASHIMI'),
-    ('TD006', 'LUNCH'),
-    ('TD006', 'HPT'),
+    ('TD006', 'TEMPURA'),
+    ('TD006', 'NIGIRI'),
     ('TD006', 'DRINK'),
-    ('TD007', 'NIGIRI'),
+    ('TD006', 'SUSHI'), -- Bổ sung SUSHI cho TD006
+    ('TD007', 'KV'),
+    ('TD007', 'SASHIMI'),
     ('TD007', 'TEMPURA'),
-    ('TD007', 'LUNCH'),
-    ('TD007', 'DRINK');
+    ('TD007', 'NIGIRI'),
+    ('TD007', 'DRINK'),
+    ('TD007', 'SUSHI'); -- Bổ sung SUSHI cho TD007
 
 
 go
@@ -157,7 +171,29 @@ values
 ('MA052', N'Gà xào hành tây', 95.0, 2, 1, 1, 'KV'),
 ('MA053', N'Mực xào chua ngọt', 120.0, 2, 1, 1, 'KV'),
 ('MA054', N'Bánh flan', 40.0, 1, 1, 1, 'KV'),
-('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, 'KV'); 
+('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, 'KV'),
+('MA056', N'Sushi cá hồi đặc biệt', 200.0, 2, 1, 1, 'SUSHI'),
+('MA057', N'Sushi cá ngừ đại dương', 180.0, 2, 1, 1, 'SUSHI'),
+('MA058', N'Sushi tôm hùm', 250.0, 3, 1, 1, 'SUSHI'),
+('MA059', N'Sushi trứng cá tầm', 300.0, 2, 1, 1, 'SUSHI'),
+('MA060', N'Sushi cá chình nướng', 220.0, 2, 1, 1, 'SUSHI'),
+('MA061', N'Sushi cá hồi xông khói', 210.0, 2, 1, 1, 'SUSHI'),
+('MA062', N'Sushi lươn Nhật', 190.0, 2, 1, 1, 'SUSHI'),
+('MA063', N'Sushi bạch tuộc', 170.0, 2, 1, 1, 'SUSHI'),
+('MA064', N'Sushi hàu sống', 230.0, 2, 1, 1, 'SUSHI'),
+('MA065', N'Sushi cá kiếm', 210.0, 2, 1, 1, 'SUSHI'),
+('MA066', N'Sushi cá cam', 200.0, 2, 1, 1, 'SUSHI'),
+('MA067', N'Sushi trứng cá hồi', 240.0, 2, 1, 1, 'SUSHI'),
+('MA068', N'Sushi trứng cút', 150.0, 2, 1, 1, 'SUSHI'),
+('MA069', N'Sushi cá đuối', 180.0, 2, 1, 1, 'SUSHI'),
+('MA070', N'Sushi cá nhám', 220.0, 2, 1, 1, 'SUSHI'),
+('MA071', N'Sushi cá tuyết', 250.0, 2, 1, 1, 'SUSHI'),
+('MA072', N'Sushi cua hoàng đế', 270.0, 3, 1, 1, 'SUSHI'),
+('MA073', N'Sushi cá dưa hấu', 160.0, 2, 1, 1, 'SUSHI'),
+('MA074', N'Sushi sò đỏ', 200.0, 2, 1, 1, 'SUSHI'),
+('MA075', N'Sushi cá bạc má', 180.0, 2, 1, 1, 'SUSHI');
+
+
 go
 
 
