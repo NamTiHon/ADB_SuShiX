@@ -6,7 +6,7 @@
 insert into 
 ChiNhanh (CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang)
 values
-('CN001', N'Chi nhánh 1 TPHCM', N'123 Đường Nguyễn Huệ, Quận 1, TP.HCM', '8:00:00', '22:00:00', '0909123456', 1, 0, 1),
+('CN001', N'Chi nhánh 1 TPHCM', N'123 Đường Nguyễn Huệ, Quận 1, TP.HCM', '00:00:00', '23:59:00', '0909123456', 1, 0, 1),
 ('CN002', N'Chi nhánh 2 TPHCM', N'456 Đường Lý Thường Kiệt, Quận Tân Bình, TP.HCM', '7:00:00', '21:00:00', '0932123456', 0, 1, 1),
 ('CN003', N'Chi nhánh 3 TP HCM', N'789 Đường Phạm Văn Đồng, Quận Thủ Đức, TP.HCM', '7:30:00', '22:00:00', '0915123456', 1, 1, 0),
 ('CN004', N'Chi nhánh 1 Đà Nẵng', N'123 Đường Trần Phú, Quận Hải Châu, Đà Nẵng', '8:00:00', '23:00:00', '0987123456', 1, 0, 1),
@@ -74,30 +74,37 @@ values
     ('TD001', 'TEMPURA'),
     ('TD001', 'NIGIRI'),
     ('TD001', 'DRINK'),
+	('TD001', 'LUNCH'),
     ('TD001', 'SUSHI'), -- Bổ sung SUSHI cho TD001
     ('TD002', 'KV'),
     ('TD002', 'SASHIMI'),
     ('TD002', 'TEMPURA'),
     ('TD002', 'NIGIRI'),
     ('TD002', 'DRINK'),
+	('TD002', 'LUNCH'),
     ('TD002', 'SUSHI'), -- Bổ sung SUSHI cho TD002
+	('TD002', 'HPT'),
     ('TD003', 'KV'),
     ('TD003', 'SASHIMI'),
     ('TD003', 'TEMPURA'),
     ('TD003', 'NIGIRI'),
     ('TD003', 'DRINK'),
+	('TD003', 'LUNCH'),
     ('TD003', 'SUSHI'), -- Bổ sung SUSHI cho TD003
     ('TD004', 'KV'),
     ('TD004', 'SASHIMI'),
     ('TD004', 'TEMPURA'),
     ('TD004', 'NIGIRI'),
     ('TD004', 'DRINK'),
+	('TD004', 'HPT'),
     ('TD004', 'SUSHI'), -- Bổ sung SUSHI cho TD004
     ('TD005', 'KV'),
     ('TD005', 'SASHIMI'),
     ('TD005', 'TEMPURA'),
     ('TD005', 'NIGIRI'),
     ('TD005', 'DRINK'),
+	('TD005', 'HPT'),
+	('TD005', 'LUNCH'),
     ('TD005', 'SUSHI'), -- Bổ sung SUSHI cho TD005
     ('TD006', 'KV'),
     ('TD006', 'SASHIMI'),
@@ -110,6 +117,8 @@ values
     ('TD007', 'TEMPURA'),
     ('TD007', 'NIGIRI'),
     ('TD007', 'DRINK'),
+	('TD007', 'HPT'),
+	('TD007', 'LUNCH'),
     ('TD007', 'SUSHI'); -- Bổ sung SUSHI cho TD007
 
 

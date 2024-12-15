@@ -37,7 +37,7 @@
     color: white;
 }
 
-button {
+.order-management button {
     padding: 5px 10px;
     margin-right: 5px;
     border: none;
@@ -46,7 +46,7 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.order-management button:hover {
     background-color: #45a049;
 }
 .back-home-btn {

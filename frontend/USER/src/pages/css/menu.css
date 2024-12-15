@@ -222,7 +222,7 @@
 }
 
 .menu-search-clear:hover {
-  color: #ff0099;
+  transform: scale(1.1);
 }
 
 /* Add to menu.css */

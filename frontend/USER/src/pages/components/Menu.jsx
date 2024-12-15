@@ -155,18 +155,16 @@ const Menu = () => {
 
     const categories = [
         { id: 'all', name: 'Tất cả', description: 'Tất cả các món ăn trong thực đơn.' },
-        { id: 'sushi', name: 'Sushi', description: 'Sushi là món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với các loại hải sản tươi sống.' },
-        { id: 'appetizer', name: 'Khai vị', description: 'Các món khai vị nhẹ nhàng, kích thích vị giác.' },
-        { id: 'tempura', name: 'Tempura', description: 'Tempura là món chiên giòn đặc trưng của Nhật Bản.' },
-        { id: 'udon', name: 'Udon', description: 'Udon là loại mì dày, dai, thường được ăn với nước dùng nóng.' },
-        { id: 'hotpot', name: 'Lẩu', description: 'Lẩu Nhật Bản với hương vị đậm đà, phong phú.' },
-        { id: 'lunch-set', name: 'Lunch Set', description: 'Các set ăn trưa tiện lợi, đầy đủ dinh dưỡng.' },
-        { id: 'specialty', name: 'Đặc sản', description: 'Các món đặc sản cao cấp, độc đáo.' },
-        { id: 'dessert', name: 'Tráng miệng', description: 'Các món tráng miệng ngọt ngào, hấp dẫn.' },
-        { id: 'drinks', name: 'Đồ uống', description: 'Các loại đồ uống phong phú, đa dạng.' }
+        { id: 'SUSHI', name: 'Sushi', description: 'Sushi là món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với các loại hải sản tươi sống.' },
+        { id: 'KV', name: 'Khai vị', description: 'Các món khai vị nhẹ nhàng, kích thích vị giác.' },
+        { id: 'TEMPURA', name: 'Tempura', description: 'Tempura là món chiên giòn đặc trưng của Nhật Bản.' },
+        { id: 'UDON', name: 'Udon', description: 'Udon là loại mì dày, dai, thường được ăn với nước dùng nóng.' },
+        { id: 'HPT', name: 'Lẩu', description: 'Lẩu Nhật Bản với hương vị đậm đà, phong phú.' },
+        { id: 'LUNCH', name: 'Lunch Set', description: 'Các set ăn trưa tiện lợi, đầy đủ dinh dưỡng.' },
+        { id: 'NIGIRI', name: 'Nigiri', description: 'Nigiri là loại sushi gồm cơm trộn giấm và hải sản tươi sống.' },
+        { id: 'SASHIMI', name: 'Sashimi', description: 'Sashimi là món ăn gồm các lát hải sản tươi sống.' },
+        { id: 'DRINK', name: 'Đồ uống', description: 'Các loại đồ uống phong phú, đa dạng.' }
     ];
-
-    
 
     const filteredDishes = availableDishes.filter(dish => {
         const matchesSearch = searchTerm ? (
@@ -213,10 +211,11 @@ const Menu = () => {
                             id: dish?.MA_MaMon?.toString() || '',
                             name: dish?.MA_TenMon?.toString() || '',
                             category: (dish?.MA_MaDanhMuc || '').toString().toLowerCase(),
-                            price: Number(dish?.MA_GiaHienTai) || 0,
+                            price: (Number(dish?.MA_GiaHienTai) || 0) * 1000,
                             image: dish?.MA_MaMon ? `/images/${dish.MA_MaMon.toString().toLowerCase()}.jpg` : '',
                             description: dish?.DM_TenDanhMuc?.toString() || '',
                             region: dish?.KV_Ten?.toString() || '',
+                            branch: dish?.CN_Ten?.toString() || '',
                             available: Boolean(dish?.MA_CoSan)
                         });
                     }
@@ -225,16 +224,16 @@ const Menu = () => {
                 console.log('Transformed:', transformedDishes); // Debug log
                 
                 setDishes(transformedDishes);
-                
-                if (selectedBranch?.region) {
+
+                if (selectedBranch?.name) {
+                    debugger;
                     const filtered = transformedDishes.filter(dish => 
-                        dish.region === selectedBranch.region
+                        dish.branch === selectedBranch.name
                     );
                     setAvailableDishes(filtered);
                 } else {
                     setAvailableDishes(transformedDishes);
                 }
-    
             } catch (err) {
                 console.error('Error:', err);
                 setError(err.message);
@@ -249,7 +248,7 @@ const Menu = () => {
         <div>
             <Nav />
             <div className="menu-container">
-            <h1>Thực đơn</h1>
+                <h1>Thực đơn</h1>
                 
                 {loading && (
                     <div className="loading-state">
@@ -310,17 +309,22 @@ const Menu = () => {
 
                 <div className="category-container">
                     <div className="category-nav">
-                        {categories.map(category => (
+                        {categories.map((category, index) => (
                             <button
-                                key={category.id}
-                                className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-                                onClick={() => setSelectedCategory(category.id)}
+                                key={`${category.id}-${index}`}
+                                className={`category-btn ${selectedCategory === category.id.toLowerCase() ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(category.id.toLocaleLowerCase())}
                             >
                                 {category.name}
                             </button>
                         ))}
                     </div>
                 </div>
+                {filteredDishes.length === 0 && !loading && !error && (
+                    <div className="no-dishes">
+                        <p>Hiện tại cửa hàng không phục vụ những món này.</p>
+                    </div>
+                )}
 
                 {selectedCategoryDescription && (
                     <div className="category-description">
@@ -338,7 +342,7 @@ const Menu = () => {
                                 <h3>{dish.name}</h3>
                                 <p>{dish.description}</p>
                                 <div className="dish-price">
-                                    {dish.price.toLocaleString()}đ
+                                    {dish.price.toLocaleString('vi-VN')} đ
                                 </div>
                             </div>
                             <button 

@@ -1,5 +1,5 @@
 // src/contexts/BranchContext.jsx
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const BranchContext = createContext();
 
@@ -9,6 +9,14 @@ export const BranchProvider = ({ children }) => {
         const saved = localStorage.getItem('selectedBranch');
         return saved ? JSON.parse(saved) : null;
     });
+
+    useEffect(() => {
+        if (selectedBranch) {
+            localStorage.setItem('selectedBranch', JSON.stringify(selectedBranch));
+        } else {
+            localStorage.removeItem('selectedBranch');
+        }
+    }, [selectedBranch]);
 
     return (
         <BranchContext.Provider value={{ selectedBranch, setSelectedBranch }}>

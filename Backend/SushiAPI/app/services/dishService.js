@@ -7,11 +7,12 @@ export const dishService = {
         try {
             const pool = await conn;
             const result = await pool.request().query(`
-                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc, KV_Ten
+                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc, KV_Ten, CN_Ten
                 FROM MonAn
                 LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
                 LEFT JOIN DanhMuc_ThucDon on MA_MaDanhMuc = DanhMuc_ThucDon.DM_TD_MaDanhMuc
                 LEFT JOIN KhuVuc on KhuVuc.KV_MaThucDon =  DanhMuc_ThucDon.DM_TD_MaThucDon
+                LEFT JOIN ChiNhanh on ChiNhanh.CN_MaKhuVuc = KhuVuc.KV_MaKhuVuc
             `);
             return result.recordset; // Trả về danh sách món
         } catch (error) {
