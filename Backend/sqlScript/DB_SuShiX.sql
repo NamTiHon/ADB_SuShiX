@@ -1,10 +1,10 @@
 ﻿-- Tạo database:
 CREATE DATABASE DB_SushiX ON
     (Name = DB_SushiX_data, 
-    FileName = 'D:\SINHVIEN\1.study\hk1_nam3\CSDL Nang cao\temp\DB_SushiX_data.mdf')
+    FileName = 'D:\Study\Co so du lieu nang cao\DB_SushiX_data.mdf')
 LOG ON
     (Name = DB_SushiX_log,
-    FileName = 'D:\SINHVIEN\1.study\hk1_nam3\CSDL Nang cao\temp\DB_QLSushiX_log.ldf');
+    FileName = 'D:\Study\Co so du lieu nang cao\DB_QLSushiX_log.ldf');
 go
 
 -- Sử dụng database:
