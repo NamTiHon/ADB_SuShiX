@@ -27,7 +27,7 @@ const AddCustomerModal = ({ onClose, onAdd }) => {
             createdDate: new Date().toISOString().split('T')[0],
             yearsOfUsing: 0,
             points: 0,
-            status: 'Active',
+            status: 'Hoạt động',
             membershipType: 'Membership',
             staffId: '12345' // Example staff ID, replace with actual logic if needed
         };

@@ -6,18 +6,18 @@ import '../css/management.css';
 function Management({ columns, initialData, title, AddModal, DetailModal }) {
     const [items, setItems] = useState(initialData);
 
-    const handleAddItem = (newItem) => {
-        setItems(prevItems => {
-            const updatedItems = [...prevItems, newItem];
-            console.log("Updated items aaefsffter adding:", updatedItems);
-            return updatedItems;
-        });
-    };
-
     useEffect(() => {
         setItems(initialData);
         console.log("Initial data set:", initialData);
     }, [initialData]);
+
+    const handleAddItem = (newItem) => {
+        setItems(prevItems => {
+            const updatedItems = [...prevItems, newItem];
+            console.log("Updated items after adding:", updatedItems);
+            return updatedItems;
+        });
+    };
 
     const handleDelete = (bookingId) => {
         setItems(prevItems => prevItems.filter(item => item.bookingId !== bookingId));
