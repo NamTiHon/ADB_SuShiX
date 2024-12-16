@@ -160,7 +160,7 @@ create table KhuyenMai (
 	KM_TenKhuyenMai nvarchar(50),
 	KM_TenSuKien nvarchar(50),
 	KM_TyLeGiamGia float, -- dùng dạng thập phân
-	KM_LoaiTheApDung nvarchar(30),
+	KM_LoaiTheApDung nvarchar(50),
 	KM_MaChiNhanh varchar(10),
 	primary key (KM_MaKhuyenMai)
 );
