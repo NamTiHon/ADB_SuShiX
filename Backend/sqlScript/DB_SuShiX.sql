@@ -132,7 +132,7 @@ create table DatTruoc (
 
 -- Bảng Loại thẻ:
 create table LoaiThe (
-	LT_TenLoaiThe nvarchar(30),
+	LT_TenLoaiThe nvarchar(50),
 	primary key (LT_TenLoaiThe)
 );
 
