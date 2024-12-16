@@ -89,7 +89,7 @@ create table PhieuDatMon (
 	PDM_MaPhieu varchar(10),
 	PDM_ThoiGianDat datetime,
 	PDM_SDT_KH varchar(12),
-	PDM_MaNhanVien varchar(10), -- Nhân viên tạo món
+	PDM_MaNhanVien varchar(12), -- Nhân viên tạo món
 	primary key (PDM_MaPhieu)
 );
 
