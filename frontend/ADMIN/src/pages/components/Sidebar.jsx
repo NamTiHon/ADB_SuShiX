@@ -1,14 +1,14 @@
 import React from 'react';
-import '../css/sidebar.css';
+import '../css/components/sidebar.css';
 
 function SideBar() {
     return (
         <aside className="sideBar">
             <ul>
-                <a href="/staff-mgmt"><li>Quản lý nhân viên</li></a>
-                <a href="/customer-mgmt"><li>Quản lý khách hàng</li></a>
-                <a href="/table-book-mgmt"><li>Danh sách đặt bàn</li></a>
-                <a href="/online-order-mgmt"><li>Danh sách đặt món online</li></a>
+                <a href="/mgmt-staff"><li>Quản lý nhân viên</li></a>
+                <a href="/mgmt-customer"><li>Quản lý khách hàng</li></a>
+                <a href="/mgmt-booking"><li>Danh sách đặt món</li></a>
+                <a href="/mgmt-online-order"><li>Danh sách đặt món online</li></a>
             </ul>
         </aside>
     );

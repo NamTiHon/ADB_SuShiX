@@ -5,7 +5,7 @@ const CustomerContext = createContext();
 export const CustomerProvider = ({ children }) => {
     const [selectedCustomer, setSelectedCustomer] = useState(() => {
         // Initialize from localStorage if available
-        const saved = localStorage.getItem('selectedCustomer');
+        const saved = localStorage.getItem('selected');
         return saved ? JSON.parse(saved) : null;
     });
 

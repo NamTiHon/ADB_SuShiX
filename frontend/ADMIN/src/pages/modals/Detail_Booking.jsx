@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/booking-detail-modal.css';
+import '../css/css-modals/detail-booking.css';
 
-const BookingDetailModal = ({ booking, onClose, onUpdate, onDelete }) => {
+const Detail_Booking = ({ booking, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedBooking, setUpdatedBooking] = useState({ ...booking });
 
@@ -40,7 +40,6 @@ const BookingDetailModal = ({ booking, onClose, onUpdate, onDelete }) => {
                                 <p><strong>Mã phiếu đặt:</strong> <input type="text" name="bookingId" value={updatedBooking.bookingId} onChange={handleChange} /></p>
                                 <p><strong>Mã chi nhánh:</strong> <input type="text" name="bookingId" value={updatedBooking.branchId} onChange={handleChange} /></p>
                                 <p><strong>Ngày tạo:</strong> <input type="text" name="createdDate" value={updatedBooking.createdDate} onChange={handleChange} /></p>
-                                <p><strong>Giờ tạo:</strong> <input type="text" name="createdTime" value={updatedBooking.createdTime} onChange={handleChange} /></p>
                                 <p><strong>Số bàn:</strong> <input type="text" name="tableNumber" value={updatedBooking.tableNumber} onChange={handleChange} /></p>
                                 <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={updatedBooking.numOfCustomers} onChange={handleChange} /></p>
                                 <p><strong>Ngày đến:</strong> <input type="text" name="arrivalDate" value={updatedBooking.arrivalDate} onChange={handleChange} /></p>
@@ -54,7 +53,6 @@ const BookingDetailModal = ({ booking, onClose, onUpdate, onDelete }) => {
                                 <p><strong>Mã phiếu đặt:</strong> {booking.bookingId}</p>
                                 <p><strong>Mã chi nhánh:</strong> {booking.branchId}</p>
                                 <p><strong>Ngày tạo:</strong> {booking.createdDate}</p>
-                                <p><strong>Giờ tạo:</strong> {booking.createdTime}</p>
                                 <p><strong>Số bàn:</strong> {booking.tableNumber}</p>
                                 <p><strong>Số khách:</strong> {booking.numOfCustomers}</p>
                                 <p><strong>Ngày đến:</strong> {booking.arrivalDate}</p>
@@ -74,4 +72,4 @@ const BookingDetailModal = ({ booking, onClose, onUpdate, onDelete }) => {
     );
 };
 
-export default BookingDetailModal;
+export default Detail_Booking;

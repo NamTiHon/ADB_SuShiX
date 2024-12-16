@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/add-booking-modal.css';
+import '../css/css-modals/add-booking.css';
 
-// const bookingInput = [
-//     { id: 'branchId', header: 'Mã chi nhánh', value: 'branchId' },
-//     { id: 'tableNumber', header: 'Bàn số', value: 'tableNumber' },
-//     { id: 'numOfCustomers', header: 'Số khách', value: 'numOfCustomers' },
-//     { id: 'arrivalDate', header: 'Ngày đến', value: 'arrivalDate' },
-//     { id: 'arrivalTime', header: 'Thời gian đến', value: 'arrivalTime' },
-//     { id: 'comment', header: 'Ghi chú', value: 'comment' },
-// ]
-
-const AddBookingModal = ({ onClose, onAdd }) => {
+const Add_Booking = ({ onClose, onAdd }) => {
     const [newBooking, setNewBooking] = useState({
         phone: '0123456789',
         branchId: '123Levanviet',
@@ -31,7 +22,13 @@ const AddBookingModal = ({ onClose, onAdd }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onAdd(newBooking);
+        const bookingWithInfo = {
+            ...newBooking,
+            bookingId: generateBookingId(),
+            createdDate: new Date().toISOString().split('T')[0],
+            status: 'Pending',
+        };
+        onAdd(bookingWithInfo);
         alert('Thêm phiếu đặt thành công');
         onClose();
     };
@@ -49,12 +46,12 @@ const AddBookingModal = ({ onClose, onAdd }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="modal-section">
                             <h3>THÔNG TIN CÁ NHÂN</h3>
-                            <p><strong>Số điện thoại đặt:</strong> <input type="text" name="name" value={newBooking.phone} onChange={handleChange} required /></p>
+                            <p><strong>Số điện thoại:</strong> <input type="text" name="phone" value={newBooking.phone} onChange={handleChange} required /></p>
                             <p><strong>Mã chi nhánh:</strong> <input type="text" name="branchId" value={newBooking.branchId} onChange={handleChange} required /></p>
                             <p><strong>Bàn số:</strong> <input type="text" name="tableNumber" value={newBooking.tableNumber} onChange={handleChange} required /></p>
                             <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={newBooking.numOfCustomers} onChange={handleChange} required /></p>
                             <p><strong>Ngày đến:</strong> <input type="date" name="arrivalDate" value={newBooking.arrivalDate} onChange={handleChange} required /></p>
-                            <p><strong>Thời gian đến:</strong> <input type="time" name="arrivalTime" value={newBooking.arrivalTime} onChange={handleChange} required /></p>
+                            <p><strong>Giờ đến:</strong> <input type="time" name="arrivalTime" value={newBooking.arrivalTime} onChange={handleChange} required /></p>
                             <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={newBooking.comment} onChange={handleChange} required /></p>
                             <button type="submit" className="add-button">Thêm</button>
                         </div>
@@ -65,4 +62,4 @@ const AddBookingModal = ({ onClose, onAdd }) => {
     );
 };
 
-export default AddBookingModal;
+export default Add_Booking;

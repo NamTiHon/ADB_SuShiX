@@ -1,9 +1,9 @@
 import React from "react";
-import '../css/online-order-mgmt.css';
+import '../css/components/mgmt-online-order.css';
 import Nav from './Nav';
 import SideBar from './Sidebar';
 
-function OnlineOrderMgmt() {
+function Mgmt_OnlineOrder() {
     return (
         <div className="online-order-mgmt-page">
             <Nav />
@@ -17,4 +17,4 @@ function OnlineOrderMgmt() {
     );
 }
 
-export default OnlineOrderMgmt;
+export default Mgmt_OnlineOrder;

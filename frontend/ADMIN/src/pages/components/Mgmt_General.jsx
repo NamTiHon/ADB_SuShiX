@@ -1,9 +1,9 @@
 import { React, useState, useEffect, useMemo } from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
-import '../css/management.css';
+import '../css/components/mgmt-general.css';
 
-function Management({ columns, initialData, title, AddModal, DetailModal }) {
+function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
     const [items, setItems] = useState(initialData);
 
     useEffect(() => {
@@ -166,9 +166,9 @@ function Management({ columns, initialData, title, AddModal, DetailModal }) {
                             </thead>
                             <tbody>
                                 {currentItems.map(item => (
-                                    <tr key={item.bookingId} onClick={() => handleRowClick(item)}>
+                                    <tr key={item} onClick={() => handleRowClick(item)}>
                                         {columns.map(column => (
-                                            <td key={`${item.bookingId}-${column.id}`}>
+                                            <td key={`${item}-${column.id}`}>
                                                 {item[column.value]}
                                             </td>
                                         ))}
@@ -180,7 +180,7 @@ function Management({ columns, initialData, title, AddModal, DetailModal }) {
                 </div>
             </div>
             {selectedItem && (
-                <DetailModal booking={selectedItem} onClose={closeModal} onUpdate={handleUpdate} onDelete={handleDelete} />
+                <DetailModal customer={selectedItem} onClose={closeModal} onUpdate={handleUpdate} onDelete={handleDelete} />
             )}
             {isAddModalOpen && (
                 <AddModal onClose={() => setIsAddModalOpen(false)} onAdd={handleAddItem} />
@@ -189,4 +189,4 @@ function Management({ columns, initialData, title, AddModal, DetailModal }) {
     );
 }
 
-export default Management;
+export default Mgmt_General;

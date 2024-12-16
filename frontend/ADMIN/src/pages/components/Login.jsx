@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import '../css/admin-login.css';
+import '../css/components/login.css';
 import Nav from './Nav';
 
 const AdminLogin = () => {

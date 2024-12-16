@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/customer-detail-modal.css';
+import '../css/css-modals/detail-customer.css';
 
-const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
+const Detail_Customer = ({ customer, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedCustomer, setUpdatedCustomer] = useState({ ...customer });
     
@@ -65,4 +65,4 @@ const CustomerDetailModal = ({ customer, onClose, onUpdate }) => {
     );
 };
 
-export default CustomerDetailModal;
+export default Detail_Customer;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/add-customer-modal.css';
+import '../css/css-modals/add-customer.css';
 
-const AddCustomerModal = ({ onClose, onAdd }) => {
+const Add_Customer = ({ onClose, onAdd }) => {
     const [newCustomer, setNewCustomer] = useState({
         name: 'example',
         gender: 'male', // default to male
@@ -67,4 +67,4 @@ const AddCustomerModal = ({ onClose, onAdd }) => {
     );
 };
 
-export default AddCustomerModal;
+export default Add_Customer;
