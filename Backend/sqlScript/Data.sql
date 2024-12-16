@@ -212,17 +212,17 @@ values
 go
 
 
-insert into LoaiThe (LT_TenLoaiThe)
-values
-('Membership'),
-('Gold'),
-('Silver');
+--insert into LoaiThe (LT_TenLoaiThe)
+--values
+--('Membership'),
+--('Gold'),
+--('Silver');
 
-go
+--go
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
 -- 
 -- delete from KhachHang
-
+-- drop table KhachHang
 -- Bảng NHÂN VIÊN sử dụng file nhanvien.csv
 -- delete from NhanVien
 
@@ -262,6 +262,7 @@ values
 ('KM00000009', 'Tri Ân Khách Hàng', 'Khách Hàng Thân Thiết', 0.19, 'Gold', 'CN001'),
 ('KM00000010', 'Đón Tết Nguyên Đán', 'Tết Nguyên Đán', 0.12, 'Membership', 'CN003');
 go
+
 
 update ChiNhanh
 set 
