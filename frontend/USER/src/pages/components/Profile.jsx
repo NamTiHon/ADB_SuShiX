@@ -16,8 +16,7 @@ const Profile = () => {
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [email, setEmail] = useState('');
     const [showPromotionsModal, setShowPromotionsModal] = useState(false);
-    const [showRewardsModal, setShowRewardsModal] = useState(false);
-    const [activeTab, setActiveTab] = useState('vouchers');
+  
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -402,122 +401,7 @@ const handlePasswordConfirm = async () => {
                                     <label>Điểm tích lũy:</label>
                                     <div className="points-info">
                                         <span className="current-points">{user?.points || 0} điểm</span>
-                                        <button 
-                                            onClick={() => setShowRewardsModal(true)} 
-                                            className="points-exchange-btn"
-                                        >
-                                            <i className="fas fa-exchange-alt"></i> Đổi điểm
-                                        </button>
                                     </div>
-                                    {showRewardsModal && (
-                                        <div className="modal-overlay">
-                                            <div className="modal-content rewards-modal">
-                                                <div className="modal-header">
-                                                    <h3>Đổi điểm thưởng</h3>
-                                                    <button 
-                                                        className="close-btn"
-                                                        onClick={() => setShowRewardsModal(false)}
-                                                    >
-                                                        <i className="fas fa-times"></i>
-                                                    </button>
-                                                </div>
-
-                                                <div className="points-info">
-                                                    <span>Điểm hiện có: </span>
-                                                    <span className="current-points">{user?.points || 0} điểm</span>
-                                                </div>
-
-                                                <div className="modal-tabs">
-                                                    <button 
-                                                        className={`tab-btn ${activeTab === 'vouchers' ? 'active' : ''}`}
-                                                        onClick={() => setActiveTab('vouchers')}
-                                                    >
-                                                        Voucher giảm giá
-                                                    </button>
-                                                    <button 
-                                                        className={`tab-btn ${activeTab === 'food' ? 'active' : ''}`}
-                                                        onClick={() => setActiveTab('food')}
-                                                    >
-                                                        Đổi món ăn
-                                                    </button>
-                                                </div>
-
-                                                <div className="rewards-grid">
-                                                    {activeTab === 'vouchers' ? (
-                                                        <>
-                                                            <div className="reward-card">
-                                                                <img src="/voucher-50k.jpg" alt="Voucher 50K" className="reward-image" />
-                                                                <div className="reward-title">Voucher giảm 50.000đ</div>
-                                                                <div className="reward-points">500 điểm</div>
-                                                                <div className="reward-description">
-                                                                    Áp dụng cho đơn hàng từ 200.000đ
-                                                                </div>
-                                                                <button 
-                                                                    className="redeem-btn"
-                                                                    disabled={user?.points < 500}
-                                                                    onClick={() => {
-                                                                        if (window.confirm('Bạn có chắc muốn đổi voucher này?')) {
-                                                                            // Handle redemption
-                                                                            alert('Đổi voucher thành công!');
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    {user?.points >= 500 ? 'Đổi ngay' : 'Không đủ điểm'}
-                                                                </button>
-                                                            </div>
-
-                                                            <div className="reward-card">
-                                                                <img src="/voucher-100k.jpg" alt="Voucher 100K" className="reward-image" />
-                                                                <div className="reward-title">Voucher giảm 100.000đ</div>
-                                                                <div className="reward-points">1000 điểm</div>
-                                                                <div className="reward-description">
-                                                                    Áp dụng cho đơn hàng từ 350.000đ
-                                                                </div>
-                                                                <button 
-                                                                    className="redeem-btn"
-                                                                    disabled={user?.points < 1000}
-                                                                >
-                                                                    {user?.points >= 1000 ? 'Đổi ngay' : 'Không đủ điểm'}
-                                                                </button>
-                                                            </div>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <div className="reward-card">
-                                                                <img src="/food-1.jpg" alt="Món ăn 1" className="reward-image" />
-                                                                <div className="reward-title">Mì Ý sốt bò bằm</div>
-                                                                <div className="reward-points">800 điểm</div>
-                                                                <div className="reward-description">
-                                                                    Đổi ngay món mì Ý đặc biệt
-                                                                </div>
-                                                                <button 
-                                                                    className="redeem-btn"
-                                                                    disabled={user?.points < 800}
-                                                                >
-                                                                    {user?.points >= 800 ? 'Đổi ngay' : 'Không đủ điểm'}
-                                                                </button>
-                                                            </div>
-
-                                                            <div className="reward-card">
-                                                                <img src="/food-2.jpg" alt="Món ăn 2" className="reward-image" />
-                                                                <div className="reward-title">Pizza hải sản</div>
-                                                                <div className="reward-points">1200 điểm</div>
-                                                                <div className="reward-description">
-                                                                    Pizza size M kèm nước ngọt
-                                                                </div>
-                                                                <button 
-                                                                    className="redeem-btn"
-                                                                    disabled={user?.points < 1200}
-                                                                >
-                                                                    {user?.points >= 1200 ? 'Đổi ngay' : 'Không đủ điểm'}
-                                                                </button>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
                                 </div>
                                 <div className="info-item">
                                     <label>Ngày tham gia:</label>
