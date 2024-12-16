@@ -58,7 +58,7 @@ alter table PhieuDatMon
 
 --Bảng Đặt trước
 alter table DatTruoc
-	add constraint FK_DT_MaChiNhanh_CN_MaChiNHanh
+	add constraint FK_DT_MaChiNhanh_CN_MaChiNhanh
 	foreign key (DT_MaChiNhanh)
 	references ChiNhanh(CN_MaChiNhanh)
 
