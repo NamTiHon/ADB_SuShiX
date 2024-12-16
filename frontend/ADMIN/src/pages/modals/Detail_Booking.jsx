@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import '../css/css-modals/detail-booking.css';
 
-const Detail_Booking = ({ booking, onClose, onUpdate, onDelete }) => {
+const Detail_Booking = ({ item, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedBooking, setUpdatedBooking] = useState({ ...booking });
+    const [updatedBooking, setUpdatedBooking] = useState({ ...item });
 
-    if (!booking) return null;
+    if (!item) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -16,9 +16,9 @@ const Detail_Booking = ({ booking, onClose, onUpdate, onDelete }) => {
     };
 
     const handleDeleteClick = () => {
-        const confirmDelete = window.confirm("Bạn có chắc chắn muốn hủy phiếu đặt này?");
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn hủy mục này?");
         if (confirmDelete) {
-            onDelete(booking.bookingId);
+            onDelete(item);
             onClose();
         }
     };
@@ -27,6 +27,18 @@ const Detail_Booking = ({ booking, onClose, onUpdate, onDelete }) => {
         onUpdate(updatedBooking);
         setIsEditing(false);
     };
+
+    const fields = [
+        { label: "Mã phiếu đặt", name: "bookingId", editable: false },
+        { label: "Mã chi nhánh", name: "branchId", editable: true },
+        { label: "Ngày tạo", name: "createdDate", editable: true },
+        { label: "Số bàn", name: "tableNumber", editable: true },
+        { label: "Số khách", name: "numOfCustomers", editable: true },
+        { label: "Ngày đến", name: "arrivalDate", editable: true },
+        { label: "Giờ đến", name: "arrivalTime", editable: true },
+        { label: "Ghi chú", name: "comment", editable: true },
+        { label: "Tình trạng", name: "status", editable: true },
+    ];
 
     return (
         <div className="modal-overlay">
@@ -37,28 +49,30 @@ const Detail_Booking = ({ booking, onClose, onUpdate, onDelete }) => {
                     <div className="modal-section">
                         {isEditing ? (
                             <>
-                                <p><strong>Mã phiếu đặt:</strong> <input type="text" name="bookingId" value={updatedBooking.bookingId} onChange={handleChange} /></p>
-                                <p><strong>Mã chi nhánh:</strong> <input type="text" name="bookingId" value={updatedBooking.branchId} onChange={handleChange} /></p>
-                                <p><strong>Ngày tạo:</strong> <input type="text" name="createdDate" value={updatedBooking.createdDate} onChange={handleChange} /></p>
-                                <p><strong>Số bàn:</strong> <input type="text" name="tableNumber" value={updatedBooking.tableNumber} onChange={handleChange} /></p>
-                                <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={updatedBooking.numOfCustomers} onChange={handleChange} /></p>
-                                <p><strong>Ngày đến:</strong> <input type="text" name="arrivalDate" value={updatedBooking.arrivalDate} onChange={handleChange} /></p>
-                                <p><strong>Giờ đến:</strong> <input type="text" name="arrivalTime" value={updatedBooking.arrivalTime} onChange={handleChange} /></p>
-                                <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={updatedBooking.comment} onChange={handleChange} /></p>
-                                <p><strong>Tình trạng:</strong> <input type="text" name="status" value={updatedBooking.status} onChange={handleChange} /></p>
+                                {fields.map((field) => (
+                                    <p key={field.name}>
+                                        <strong>{field.label}:</strong>
+                                        {field.editable ? (
+                                            <input
+                                                type="text"
+                                                name={field.name}
+                                                value={updatedBooking[field.name]}
+                                                onChange={handleChange}
+                                            />
+                                        ) : (
+                                            <span>{item[field.name]}</span>
+                                        )}
+                                    </p>
+                                ))}
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
                             <>
-                                <p><strong>Mã phiếu đặt:</strong> {booking.bookingId}</p>
-                                <p><strong>Mã chi nhánh:</strong> {booking.branchId}</p>
-                                <p><strong>Ngày tạo:</strong> {booking.createdDate}</p>
-                                <p><strong>Số bàn:</strong> {booking.tableNumber}</p>
-                                <p><strong>Số khách:</strong> {booking.numOfCustomers}</p>
-                                <p><strong>Ngày đến:</strong> {booking.arrivalDate}</p>
-                                <p><strong>Giờ đến:</strong> {booking.arrivalTime}</p>
-                                <p><strong>Ghi chú:</strong> {booking.comment}</p>
-                                <p><strong>Tình trạng:</strong> {booking.status}</p>
+                                {fields.map((field) => (
+                                    <p key={field.name}>
+                                        <strong>{field.label}:</strong> {item[field.name]}
+                                    </p>
+                                ))}
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                                     <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>

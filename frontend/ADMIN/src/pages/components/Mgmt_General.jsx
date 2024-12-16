@@ -1,4 +1,4 @@
-import { React, useState, useEffect, useMemo } from "react";
+import { React, useState, useEffect, } from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import '../css/components/mgmt-general.css';
@@ -8,43 +8,33 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
 
     useEffect(() => {
         setItems(initialData);
-        console.log("Initial data set:", initialData);
     }, [initialData]);
 
-    const handleAddItem = (newItem) => {
-        setItems(prevItems => {
-            const updatedItems = [...prevItems, newItem];
-            console.log("Updated items after adding:", updatedItems);
-            return updatedItems;
-        });
-    };
-
-    const handleDelete = (bookingId) => {
-        setItems(prevItems => prevItems.filter(item => item.bookingId !== bookingId));
-    };
-
-    const [filterField, setFilterField] = useState(columns[0].id);
-
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const [pageInput, setPageInput] = useState(1);
+    useEffect(() => {
+        console.log('Current items:', items);
+    }, [items]);
 
     const [selectedItem, setSelectedItem] = useState(null);
 
-    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
-    const itemsPerPage = 10;
+    const [filterField, setFilterField] = useState(columns[0].id);
 
-    const handleSearch = (e) => {
-        setSearchQuery(e.target.value);
-        setCurrentPage(1);
-    };
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         setPageInput(currentPage);
     }, [currentPage]);
+
+    const [pageInput, setPageInput] = useState(1);
+
+    const itemsPerPage = 10;
+
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
     const handleRowClick = (item) => {
         setSelectedItem(item);
@@ -75,13 +65,16 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         }
     };
 
-    const filteredItems = useMemo(() => {
-        return items.filter(item => {
-            if (!item[filterField]) return false;
-            const value = String(item[filterField]).toLowerCase();
-            return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
-        });
-    }, [initialData, filterField, searchQuery]);
+    const handleAddItem = (newItem) => {
+        setItems([...items, newItem]);
+    };
+
+    // const sortedItems = items.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+
+    const filteredItems = (items || []).filter(item => {
+        const value = filterField.split('.').reduce((o, i) => o[i], item);
+        return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
+    });
 
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
@@ -111,13 +104,13 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
     };
 
     return (
-        <div className="table-book-mgmt-page">
+        <div className="mgmt-page">
             <Nav />
             <div className="page-container">
                 <SideBar />
                 <div className="main-content-box">
                     <div className="header-container">
-                        <h1>{title}</h1>
+                        <h1>Danh sách general</h1>
                         <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm</button>
                     </div>
                     <div className="table-box">
@@ -131,7 +124,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             </select>
                             <input
                                 type="text"
-                                placeholder="Tìm kiếm phiếu đặt..."
+                                placeholder="Tìm kiếm..."
                                 className="search-input"
                                 value={searchQuery}
                                 onChange={handleSearch}
@@ -152,7 +145,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             </div>
                             <div className="results-info">
                                 <span>
-                                    Đang xem {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredItems.length)} trong tổng số {filteredItems.length} kết quả
+                                    Đang xem {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredItems.length)} trong tổng số {filteredItems.length} phiếu đặt
                                 </span>
                             </div>
                         </div>
@@ -166,9 +159,9 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             </thead>
                             <tbody>
                                 {currentItems.map(item => (
-                                    <tr key={item} onClick={() => handleRowClick(item)}>
+                                    <tr key={item.itemId} onClick={() => handleRowClick(item)}>
                                         {columns.map(column => (
-                                            <td key={`${item}-${column.id}`}>
+                                            <td key={`${item.itemId}-${column.id}`}>
                                                 {item[column.value]}
                                             </td>
                                         ))}
@@ -180,7 +173,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                 </div>
             </div>
             {selectedItem && (
-                <DetailModal customer={selectedItem} onClose={closeModal} onUpdate={handleUpdate} onDelete={handleDelete} />
+                <DetailModal item={selectedItem} onClose={closeModal} onUpdate={handleUpdate} />
             )}
             {isAddModalOpen && (
                 <AddModal onClose={() => setIsAddModalOpen(false)} onAdd={handleAddItem} />
