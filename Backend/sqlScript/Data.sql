@@ -75,6 +75,7 @@ values
     ('TD001', 'NIGIRI'),
     ('TD001', 'DRINK'),
 	('TD001', 'LUNCH'),
+	('TD001', 'UDON'),
     ('TD001', 'SUSHI'), -- Bổ sung SUSHI cho TD001
     ('TD002', 'KV'),
     ('TD002', 'SASHIMI'),
@@ -89,6 +90,7 @@ values
     ('TD003', 'TEMPURA'),
     ('TD003', 'NIGIRI'),
     ('TD003', 'DRINK'),
+	('TD003', 'UDON'),
 	('TD003', 'LUNCH'),
     ('TD003', 'SUSHI'), -- Bổ sung SUSHI cho TD003
     ('TD004', 'KV'),
@@ -97,6 +99,7 @@ values
     ('TD004', 'NIGIRI'),
     ('TD004', 'DRINK'),
 	('TD004', 'HPT'),
+	('TD004', 'UDON'),
     ('TD004', 'SUSHI'), -- Bổ sung SUSHI cho TD004
     ('TD005', 'KV'),
     ('TD005', 'SASHIMI'),
@@ -104,6 +107,7 @@ values
     ('TD005', 'NIGIRI'),
     ('TD005', 'DRINK'),
 	('TD005', 'HPT'),
+	('TD005', 'UDON'),
 	('TD005', 'LUNCH'),
     ('TD005', 'SUSHI'), -- Bổ sung SUSHI cho TD005
     ('TD006', 'KV'),
@@ -118,6 +122,7 @@ values
     ('TD007', 'NIGIRI'),
     ('TD007', 'DRINK'),
 	('TD007', 'HPT'),
+	('TD007', 'UDON'),
 	('TD007', 'LUNCH'),
     ('TD007', 'SUSHI'); -- Bổ sung SUSHI cho TD007
 
