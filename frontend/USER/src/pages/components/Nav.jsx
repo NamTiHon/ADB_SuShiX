@@ -34,19 +34,9 @@ function Nav() {
                     <li className="menu-dropdown">
                         <Link to="/menu">
                             Thực đơn
-                            <i className="fas fa-angle-down"></i>
+                           
                         </Link>
-                        <div className="dropdown-content">
-                            <Link to="/menu" state={{ category: 'sushi' }}>Sushi</Link>  
-                            <Link to="/menu" state={{ category: 'appetizer' }}>Khai vị</Link>
-                            <Link to="/menu" state={{ category: 'tempura' }}>Tempura</Link>
-                            <Link to="/menu" state={{ category: 'udon' }}>Udon</Link>
-                            <Link to="/menu" state={{ category: 'hotpot' }}>Lẩu</Link>
-                            <Link to="/menu" state={{ category: 'lunch-set' }}>Lunch Set</Link>
-                            <Link to="/menu" state={{ category: 'specialty' }}>Đặc sản</Link>
-                            <Link to="/menu" state={{ category: 'dessert' }}>Tráng miệng</Link>
-                            <Link to="/menu" state={{ category: 'drinks' }}>Đồ uống</Link>
-                        </div>
+                       
                     </li>
                     <li><Link to="/about">Về chúng tôi</Link></li>
                     <li>
