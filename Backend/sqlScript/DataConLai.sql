@@ -130,7 +130,7 @@ values
 go
 -- delete from MonAn
 insert into
-MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
+MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc)
 values
 ('MA001', N'Sashimi cá hồi', 120.0, 2, 1, 1, 'SASHIMI'),
 ('MA002', N'Sashimi cá ngừ', 100.0, 1, 1, 1, 'SASHIMI'),
