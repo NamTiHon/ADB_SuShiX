@@ -7,7 +7,7 @@ export const userService = {
     getAllUsers: async () => {
         try {
             const pool = await conn;
-            const result = await pool.request().query('SELECT * FROM Users');
+            const result = await pool.request().query('SELECT * FROM KhachHang');
             return result.recordset; // Return list of users
         } catch (error) {
             console.error('Error fetching all users:', error);
@@ -21,7 +21,7 @@ export const userService = {
             const pool = await conn;
             const result = await pool.request()
                 .input('Email', sql.NVarChar(100), email)
-                .query('SELECT * FROM Users WHERE Email = @Email');
+                .query('SELECT * FROM KhachHang WHERE KH_Email = @Email');
             return result.recordset[0]; // Return the first user found
         } catch (error) {
             console.error('Error finding user by email:', error);
@@ -30,7 +30,7 @@ export const userService = {
     },
 
     // Đăng ký user mới
-    registerUser: async (email, password, name, role = 'customer') => {
+    registerUser: async (KH_SDT, KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh, KH_MatKhau) => {
         try {
             // Kiểm tra email đã tồn tại
             const existingUser = await userService.findUserByEmail(email);
@@ -38,19 +38,21 @@ export const userService = {
                 return { success: false, message: 'User already exists' };
             }
 
-            const hashedPassword = await bcrypt.hash(password, 10); // Hash password
+            const hashedPassword = await bcrypt.hash(KH_MatKhau, 10); // Hash password
 
             // Thêm user mới
             const pool = await conn;
             const result = await pool.request()
-                .input('Email', sql.NVarChar(100), email)
-                .input('Password', sql.NVarChar(sql.MAX), hashedPassword)
-                .input('Name', sql.NVarChar(100), name)
-                .input('Role', sql.NVarChar(50), role)
+                .input('KH_SDT', sql.NVarChar(100), KH_SDT)
+                .input('KH_MatKhau', sql.NVarChar(sql.MAX), hashedPassword)
+                .input('KH_HoTen', sql.NVarChar(sql.MAX), KH_HoTen)
+                .input('KH_CCCD', sql.NVarChar(sql.MAX), KH_CCCD)
+                .input('KH_Email', sql.NVarChar(sql.MAX), KH_Email)
+                .input('KH_GioiTinh', sql.NVarChar(sql.MAX), KH_GioiTinh)
                 .query(`
-                    INSERT INTO Users (Email, Password, Name, Role)
-                    OUTPUT INSERTED.*
-                    VALUES (@Email, @Password, @Name, @Role)
+                    INSERT INTO KhachHang (KH_SDT, KH_MatKhau, KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh)
+                    OUTPUT inserted.*
+                    values (@KH_SDT, @KH_MatKhau, @KH_HoTen, @KH_CCCD, @KH_Email, @KH_GioiTinh)
                 `);
 
             return { success: true, user: result.recordset[0] }; // Return new user

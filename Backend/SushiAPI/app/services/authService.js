@@ -10,7 +10,7 @@ export const authService = {
                 return { success: false, message: 'Invalid credentials' };
             }
 
-            const isMatch = await userService.verifyPassword(password, user.Password);
+            const isMatch = await userService.verifyPassword(password, user.KH_MatKhau);
             if (!isMatch) {
                 return { success: false, message: 'Invalid credentials' };
             }
