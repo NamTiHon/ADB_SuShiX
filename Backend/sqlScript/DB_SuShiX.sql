@@ -35,32 +35,13 @@ create table ChiNhanh (
 	primary key (CN_MaChiNhanh)
 );
 
--- Bảng Khu Vực:
+-- Bảng Khu Vực( Bao gồm cả thực đơn theo khu vực):
 create table KhuVuc (
 	KV_MaKhuVuc varchar(10),
 	KV_Ten nvarchar(50),
 	KV_MaThucDon varchar(10),
-	primary key (KV_MaKhuVuc)
-);
-
--- Bảng Thực Đơn
-create table ThucDon (
-	TD_MaThucDon varchar(10),
-	primary key (TD_MaThucDon)
-);
-
--- Bảng Danh mục trong thực đơn
-create table DanhMuc_ThucDon (
-	DM_TD_MaThucDon varchar(10),
-	DM_TD_MaDanhMuc varchar(10),
-	primary key (DM_TD_MaThucDon, DM_TD_MaDanhMuc)
-);
-
--- Bảng Danh mục:
-create table DanhMuc (
-	DM_MaDanhMuc varchar(10),
-	DM_TenDanhMuc nvarchar(50),
-	primary key (DM_MaDanhMuc)
+	KV_MaDanhMuc varchar(10),
+	primary key (KV_MaKhuVuc, KV_MaDanhMuc)
 );
 
 -- Bảng Món ăn:
@@ -84,40 +65,22 @@ create table MonDuocDat (
 	primary key (MDD_MaMon, MDD_MaPhieu)
 );
 
--- Bảng Phiếu đặt món:
+-- Bảng Phiếu đặt món ( dành cho đặt trực tiếp, đặt trước và đặt online):
+-- Có thể chia partition với index dựa vào loại phiếu đựt món
 create table PhieuDatMon (
 	PDM_MaPhieu varchar(10),
 	PDM_ThoiGianDat datetime,
 	PDM_SDT_KH varchar(12),
 	PDM_MaNhanVien varchar(12), -- Nhân viên tạo món
+	PDM_SoBan int, -- Nếu là phiếu đặt trực tiếp hoặc đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_SoLuongKH int, -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_DiaChiGiao nvarchar(100), -- Nếu là phiếu đặt online thì có giá trị vào trường này, không thì là NULL
+	PDM_MaChiNhanh varchar(10), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_ThoiGianDen datetime, -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_GhiChuThem nvarchar(100), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_LoaiPhieu varchar(12), -- Tạo check thuộc một trong ba giá trị: "Đặt trực tiêp", "Đặt trước", "Đặt online"
 	primary key (PDM_MaPhieu)
 );
-
--- Bảng Đặt trực tiếp:
-create table DatTrucTiep (
-	DTT_MaPhieu varchar(10),
-	DTT_SoBan int,
-	DTT_SoLuongKH int,
-	primary key (DTT_MaPhieu)
-);
-
--- Bảng Đặt online:
-create table DatOnline (
-	DO_MaPhieu varchar(10),
-	DO_DiaChiGiao nvarchar(100),
-	primary key (DO_MaPhieu)
-);
-
--- Bảng Đặt trước:
-create table DatTruoc (
-	DT_MaPhieu varchar(10),
-	DT_MaChiNhanh varchar(10),
-	DT_SoBan int, 
-	DT_SoLuongKH int,
-	DT_ThoiGianDen datetime,
-	DT_GhiChuThem nvarchar(100),
-	primary key (DT_MaPhieu)
-)
 
 ---- Bảng Khách hàng:
 --create table KhachHang (
@@ -239,11 +202,11 @@ go
 -- use master;
 -- drop database DB_SushiX;
 
-insert into LoaiThe (LT_TenLoaiThe)
-values
-('Membership'),
-('Gold'),
-('Silver')
+-- insert into LoaiThe (LT_TenLoaiThe)
+-- values
+-- ('Membership'),
+-- ('Gold'),
+-- ('Silver')
 
 -- -- Thêm dữ liệu mẫu vào bảng DanhMuc
 -- INSERT INTO DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
