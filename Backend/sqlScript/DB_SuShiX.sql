@@ -21,7 +21,7 @@ go
 
 -- Bảng Chi Nhánh:
 create table ChiNhanh (
-	CN_MaChiNhanh varchar(10),
+	CN_MaChiNhanh varchar(12),
 	CN_Ten nvarchar(50),
 	CN_DiaChi nvarchar(100),
 	CN_TGMoCua TIME, 
@@ -83,41 +83,46 @@ create table MonDuocDat (
 	MDD_SoLuong int,
 	primary key (MDD_MaMon, MDD_MaPhieu)
 );
-
+drop table PhieuDatMon
 -- Bảng Phiếu đặt món:
 create table PhieuDatMon (
 	PDM_MaPhieu varchar(10),
 	PDM_ThoiGianDat datetime,
 	PDM_SDT_KH varchar(12),
+	PDM_SoBan int,
+	PDM_SoLuongKH int, 
+	PDM_ThoiGianDen datetime,
+	PDM_DiaChiCanGiao nvarchar(100),
+	PDM_MaChiNhanh varchar(10),
 	PDM_MaNhanVien varchar(12), -- Nhân viên tạo món
 	primary key (PDM_MaPhieu)
 );
 
 -- Bảng Đặt trực tiếp:
-create table DatTrucTiep (
-	DTT_MaPhieu varchar(10),
-	DTT_SoBan int,
-	DTT_SoLuongKH int,
-	primary key (DTT_MaPhieu)
-);
+--create table DatTrucTiep (
+--	DTT_MaPhieu varchar(10),
+--	DTT_SoBan int,
+--	DTT_SoLuongKH int,
+--	primary key (DTT_MaPhieu)
+--);
 
--- Bảng Đặt online:
-create table DatOnline (
-	DO_MaPhieu varchar(10),
-	DO_DiaChiGiao nvarchar(100),
-	primary key (DO_MaPhieu)
-);
+---- Bảng Đặt online:
+--create table DatOnline (
+--	DO_MaPhieu varchar(10),
+--	DO_DiaChiGiao nvarchar(100),
+--	primary key (DO_MaPhieu)
+--);
 
--- Bảng Đặt trước:
-create table DatTruoc (
-	DT_MaPhieu varchar(10),
-	DT_MaChiNhanh varchar(10),
-	DT_SoBan int, 
-	DT_SoLuongKH int,
-	DT_ThoiGianDen datetime,
-	DT_GhiChuThem nvarchar(100),
-	primary key (DT_MaPhieu)
-)
+---- Bảng Đặt trước:
+--create table DatTruoc (
+--	DT_MaPhieu varchar(10),
+--	DT_MaChiNhanh varchar(10),
+--	DT_SoBan int, 
+--	DT_SoLuongKH int,
+--	DT_ThoiGianDen datetime,
+--	DT_GhiChuThem nvarchar(100),
+--	primary key (DT_MaPhieu)
+--)
 
 ---- Bảng Khách hàng:
 --create table KhachHang (
@@ -217,7 +222,7 @@ create table PhieuDanhGia (
 
 -- Bảng Lịch sử làm việc:
 create table LichSuLamViec (
-	LSLV_MaNhanVien varchar(10),
+	LSLV_MaNhanVien varchar(12),
 	LSLV_MaChiNhanhCu varchar(10),
 	LSLV_NgayBatDau datetime,
 	LSLV_NgayKetThuc datetime,
@@ -238,6 +243,12 @@ go
 -- Xóa database:
 -- use master;
 -- drop database DB_SushiX;
+
+insert into LoaiThe (LT_TenLoaiThe)
+values
+('Membership'),
+('Gold'),
+('Silver')
 
 -- -- Thêm dữ liệu mẫu vào bảng DanhMuc
 -- INSERT INTO DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)

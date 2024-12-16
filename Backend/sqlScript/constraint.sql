@@ -73,6 +73,7 @@ alter table TheThanhVien
 	foreign key (TTV_SDT_KH)
 	references KhachHang(KH_SDT)
 
+
 alter table TheThanhVien
 	add constraint FK_TTV_MaNhanVien_NV_MaNhanVien
 	foreign key (TTV_MaNhanVien)

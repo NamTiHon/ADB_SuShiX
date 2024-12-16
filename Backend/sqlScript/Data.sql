@@ -212,17 +212,17 @@ values
 go
 
 
-insert into LoaiThe (LT_TenLoaiThe)
-values
-('Membership'),
-('Gold'),
-('Silver');
+--insert into LoaiThe (LT_TenLoaiThe)
+--values
+--('Membership'),
+--('Gold'),
+--('Silver');
 
-go
+--go
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
 -- 
 -- delete from KhachHang
-
+-- drop table KhachHang
 -- Bảng NHÂN VIÊN sử dụng file nhanvien.csv
 -- delete from NhanVien
 
@@ -252,7 +252,7 @@ insert into
 KhuyenMai(KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
 values
 ('KM00000001', 'Mừng Giáng Sinh', 'Giảm giá Noel', 0.2, 'Membership', 'CN001'),
-('KM00000001', 'Chào Năm Mới', 'Happy New Year', 0.15, 'Membership', 'CN002'),
+('KM00000002', 'Chào Năm Mới', 'Happy New Year', 0.15, 'Membership', 'CN002'),
 ('KM00000003', 'Hè Rực Rỡ', 'Summer Sale', 0.25, 'Membership', 'CN001'),
 ('KM00000004', 'Ngày Nhà Giáo', 'Tri Ân Thầy Cô', 0.3, 'Membership', 'CN003'),
 ('KM00000005', 'Black Friday', 'Siêu Giảm Giá', 0.05, 'Silver', 'CN002'),
@@ -262,6 +262,7 @@ values
 ('KM00000009', 'Tri Ân Khách Hàng', 'Khách Hàng Thân Thiết', 0.19, 'Gold', 'CN001'),
 ('KM00000010', 'Đón Tết Nguyên Đán', 'Tết Nguyên Đán', 0.12, 'Membership', 'CN003');
 go
+
 
 update ChiNhanh
 set 

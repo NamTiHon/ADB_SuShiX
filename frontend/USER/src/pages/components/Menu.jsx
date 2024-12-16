@@ -155,15 +155,15 @@ const Menu = () => {
 
     const categories = [
         { id: 'all', name: 'Tất cả', description: 'Tất cả các món ăn trong thực đơn.' },
-        { id: 'SUSHI', name: 'Sushi', description: 'Sushi là món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với các loại hải sản tươi sống.' },
-        { id: 'KV', name: 'Khai vị', description: 'Các món khai vị nhẹ nhàng, kích thích vị giác.' },
-        { id: 'TEMPURA', name: 'Tempura', description: 'Tempura là món chiên giòn đặc trưng của Nhật Bản.' },
-        { id: 'UDON', name: 'Udon', description: 'Udon là loại mì dày, dai, thường được ăn với nước dùng nóng.' },
-        { id: 'HPT', name: 'Lẩu', description: 'Lẩu Nhật Bản với hương vị đậm đà, phong phú.' },
-        { id: 'LUNCH', name: 'Lunch Set', description: 'Các set ăn trưa tiện lợi, đầy đủ dinh dưỡng.' },
-        { id: 'NIGIRI', name: 'Nigiri', description: 'Nigiri là loại sushi gồm cơm trộn giấm và hải sản tươi sống.' },
-        { id: 'SASHIMI', name: 'Sashimi', description: 'Sashimi là món ăn gồm các lát hải sản tươi sống.' },
-        { id: 'DRINK', name: 'Đồ uống', description: 'Các loại đồ uống phong phú, đa dạng.' }
+        { id: 'Sushi', name: 'Sushi', description: 'Sushi là món ăn truyền thống Nhật Bản, gồm cơm trộn giấm kết hợp với các loại hải sản tươi sống.' },
+        { id: 'Khai vị', name: 'Khai vị', description: 'Các món khai vị nhẹ nhàng, kích thích vị giác.' },
+        { id: 'Tempura', name: 'Tempura', description: 'Tempura là món chiên giòn đặc trưng của Nhật Bản.' },
+        { id: 'Udon', name: 'Udon', description: 'Udon là loại mì dày, dai, thường được ăn với nước dùng nóng.' },
+        { id: 'Hotpot', name: 'Lẩu', description: 'Lẩu Nhật Bản với hương vị đậm đà, phong phú.' },
+        { id: 'Lunch set', name: 'Lunch Set', description: 'Các set ăn trưa tiện lợi, đầy đủ dinh dưỡng.' },
+        { id: 'Nigiri', name: 'Nigiri', description: 'Nigiri là loại sushi gồm cơm trộn giấm và hải sản tươi sống.' },
+        { id: 'Sashimi combo', name: 'Sashimi', description: 'Sashimi là món ăn gồm các lát hải sản tươi sống.' },
+        { id: 'Món nước', name: 'Đồ uống', description: 'Các loại đồ uống phong phú, đa dạng.' }
     ];
 
     const filteredDishes = availableDishes.filter(dish => {
@@ -210,7 +210,7 @@ const Menu = () => {
                         transformedDishes.push({
                             id: dish?.MA_MaMon?.toString() || '',
                             name: dish?.MA_TenMon?.toString() || '',
-                            category: (dish?.MA_MaDanhMuc || '').toString().toLowerCase(),
+                            category: (dish?.DM_TenDanhMuc || '').toString().toLowerCase(),
                             price: (Number(dish?.MA_GiaHienTai) || 0) * 1000,
                             image: dish?.MA_MaMon ? `/images/${dish.MA_MaMon.toString().toLowerCase()}.jpg` : '',
                             description: dish?.DM_TenDanhMuc?.toString() || '',

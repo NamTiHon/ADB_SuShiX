@@ -4,8 +4,9 @@ import logger from './middleware/logger.js';
 import errorHandler from './middleware/errorHandler.js';
 import dishRoutes from './routes/dishRoutes.js';
 import authRoutes from './routes/authRoutes.js';
-import branchRoutes from './routes/branchRoutes.js'
-import orderRoutes from './routes/orderRoutes.js'
+import branchRoutes from './routes/branchRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import promotionRoutes from './routes/promotionRoutes.js';
 
 const app = express()
 
@@ -19,8 +20,9 @@ app.use('/api/dishes', dishRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/branches', branchRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/promotions', promotionRoutes);
 app.get('/', (req, res) => {
-    res.json({msg: "Home Page"})
+    res.json({ msg: "Home Page" })
 });
 
 // Error Handler
