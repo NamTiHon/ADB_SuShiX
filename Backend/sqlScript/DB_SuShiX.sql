@@ -217,7 +217,7 @@ create table PhieuDanhGia (
 
 -- Bảng Lịch sử làm việc:
 create table LichSuLamViec (
-	LSLV_MaNhanVien varchar(10),
+	LSLV_MaNhanVien varchar(12),
 	LSLV_MaChiNhanhCu varchar(10),
 	LSLV_NgayBatDau datetime,
 	LSLV_NgayKetThuc datetime,
