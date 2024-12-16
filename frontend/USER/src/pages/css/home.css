@@ -316,8 +316,7 @@ button:hover{
 }
 
 .btn-secondary:hover {
-    background: #4CAF50;
-    color: white;
+    color: rgb(27, 27, 27);
     transform: translateY(-2px);
 }
 
