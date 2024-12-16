@@ -32,6 +32,7 @@ create table ChiNhanh (
 	CN_HoTroGiaoHang BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	CN_MaQuanLy varchar(12), 
 	CN_MaKhuVuc varchar(12),
+	CN_MaHinhAnh varchar(100),
 	primary key (CN_MaChiNhanh)
 );
 
@@ -178,7 +179,7 @@ create table BoPhan_NhanVien (
 -- Bảng Lịch sử làm việc:
 create table LichSuLamViec (
 	LSLV_MaNhanVien varchar(12),
-	LSLV_MaChiNhanhCu varchar(10),
+	LSLV_MaChiNhanhCu varchar(12),
 	LSLV_NgayBatDau datetime,
 	LSLV_NgayKetThuc datetime,
 	primary key (LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau)
