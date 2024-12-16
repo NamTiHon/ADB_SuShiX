@@ -75,10 +75,10 @@ create table PhieuDatMon (
 	PDM_SoBan int, -- Nếu là phiếu đặt trực tiếp hoặc đặt trước thì có giá trị vào trường này, không thì là NULL
 	PDM_SoLuongKH int, -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
 	PDM_DiaChiGiao nvarchar(100), -- Nếu là phiếu đặt online thì có giá trị vào trường này, không thì là NULL
-	PDM_MaChiNhanh varchar(10), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_MaChiNhanh varchar(12), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
 	PDM_ThoiGianDen datetime, -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
 	PDM_GhiChuThem nvarchar(100), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
-	PDM_LoaiPhieu varchar(12), -- Tạo check thuộc một trong ba giá trị: "Đặt trực tiêp", "Đặt trước", "Đặt online"
+	PDM_LoaiPhieu nvarchar(20), -- Tạo check thuộc một trong ba giá trị: "Đặt trực tiêp", "Đặt trước", "Đặt online"
 	primary key (PDM_MaPhieu)
 );
 

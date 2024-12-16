@@ -11,23 +11,6 @@ alter table ChiNhanh
 	foreign key (CN_MaKhuVuc)
 	references KhuVuc(KV_MaKhuVuc)
 
--- Bảng Khu vực:
-alter table KhuVuc
-	add constraint FK_KV_MaThucDon_TD_MaThucDon
-	foreign key (KV_MaThucDon)
-	references ThucDon(TD_MaThucDon)
-
---Bảng Danh mục trong thực đơn
-alter table DanhMuc_ThucDon
-	add constraint FK_DM_TD_MaThucDon_TD_MaThucDon
-	foreign key (DM_TD_MaThucDon)
-	references ThucDon(TD_MaTHucDon)
-
-alter table DanhMuc_ThucDon
-	add constraint FK_DM_TD_MaDanhMuc_DM_MaDanhMuc
-	foreign key (DM_TD_MaDanhMuc)
-	references DanhMuc(DM_MaDanhMuc)
-
 --Bảng Món ăn
 alter table MonAn
 	add constraint FK_MA_MaDanhMuc_DM_MaDanhMuc
@@ -56,10 +39,9 @@ alter table PhieuDatMon
 	foreign key (PDM_MaNhanVien)
 	references NhanVien(NV_MaNhanVien)
 
---Bảng Đặt trước
-alter table DatTruoc
-	add constraint FK_DT_MaChiNhanh_CN_MaChiNhanh
-	foreign key (DT_MaChiNhanh)
+alter table PhieuDatMon
+	add constraint FK_PDM_MaChiNhanh_CN_MaChiNhanh
+	foreign key (PDM_MaChiNhanh)
 	references ChiNhanh(CN_MaChiNhanh)
 
 --Bảng Thẻ thành viên
@@ -152,25 +134,20 @@ alter table MonAn
 -- Bảng món được đặt:
 alter table MonDuocDat
 	add constraint C_MonDuocDat_SoLuong
-	check (MDD_SoLuong >0)
+	check (MDD_SoLuong > 0)
 
--- Bảng Đặt trực tiếp
-alter table DatTrucTiep
-	add constraint C_DTT_SoBan
-	check (DTT_SoBan > 0)
+-- Bảng Phiếu đặt món
+alter table PhieuDatMon
+	add constraint C_PDM_SoBan
+	check (PDM_SoBan > 0)
 
-alter table DatTrucTiep
-	add constraint C_DTT_SoLuongKH
-	check (DTT_SoLuongKH > 0)
+alter table PhieuDatMon
+	add constraint C_PDM_SoLuongKH
+	check (PDM_SoLuongKH > 0)
 
--- Bảng Đặt trước
-alter table DatTruoc
-	add constraint C_DT_SoBan
-	check (DT_SoBan > 0 )
-
-alter table DatTruoc
-	add constraint C_DT_SoLuongKH
-	check (DT_SoLuongKH > 0)
+alter table PhieuDatMon
+	add constraint C_PDM_LoaiPhieu
+	check (PDM_SoLuongKH in (N'Đặt trực tiếp', N'Đặt trước', N'Đặt online'))
 
 -- Bảng khách hàng
 alter table KhachHang
