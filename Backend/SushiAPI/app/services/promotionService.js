@@ -7,7 +7,7 @@ export const promotionService = {
         try {
             const pool = await conn;
             const result = await pool.request().query(`
-                SELECT KM_MaKhuyenMai, KM_TenKhuyenMai, MA_TenMon, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh
+                SELECT KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh
                 FROM KhuyenMai
             `);
             return result.recordset; // Trả về danh sách khuyến mãi
@@ -22,9 +22,9 @@ export const promotionService = {
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('MA_MaMon', sql.VarChar(10), KM_MaKhuyenMai)
+                .input('KM_MaKhuyenMai', sql.VarChar(10), KM_MaKhuyenMai)
                 .query(`
-                    SELECT KM_MaKhuyenMai, KM_TenKhuyenMai, MA_TenMon, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh
+                    SELECT KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh
                     FROM KhuyenMai
                     WHERE KM_MaKhuyenMai = @KM_MaKhuyenMai
                 `);
@@ -37,7 +37,7 @@ export const promotionService = {
     // Thêm một khuyến mãi mới
     addPromotion: async (promotionData) => {
         try {
-            const { KM_MaKhuyenMai, KM_TenKhuyenMai, MA_TenMon, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh } = promotionData;
+            const { KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh } = promotionData;
             const pool = await conn;
             const result = await pool.request()
                 .input('KM_MaKhuyenMai', sql.VarChar(10), KM_MaKhuyenMai)
@@ -47,9 +47,9 @@ export const promotionService = {
                 .input('KM_LoaiTheApDung', sql.NVarChar(50), KM_LoaiTheApDung)
                 .input('KM_MaChiNhanh', sql.VarChar(10), KM_MaChiNhanh)
                 .query(`
-                    INSERT INTO KhuyenMai (KM_MaKhuyenMai, KM_TenKhuyenMai, MA_TenMon, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
+                    INSERT INTO KhuyenMai (KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
                     OUTPUT INSERTED.*
-                    VALUES (@KM_MaKhuyenMai, @KM_TenKhuyenMai, @MA_TenMon, @KM_TenSuKien, @KM_TyLeGiamGia, @KM_LoaiTheApDung, @KM_MaChiNhanh)
+                    VALUES (@KM_MaKhuyenMai, @KM_TenKhuyenMai, @KM_TenSuKien, @KM_TyLeGiamGia, @KM_LoaiTheApDung, @KM_MaChiNhanh)
                 `);
             return result.recordset[0]; // Trả về khuyến mãi vừa thêm
         } catch (error) {
@@ -60,7 +60,7 @@ export const promotionService = {
     // Cập nhật một khuyến mãi theo KM_MaKhuyenMai
     updatePromotion: async (KM_MaKhuyenMai, updates) => {
         try {
-            const { KM_TenKhuyenMai, MA_TenMon, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh } = updates;
+            const { KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh } = updates;
             const pool = await conn;
             const result = await pool.request()
                 .input('KM_MaKhuyenMai', sql.VarChar(10), KM_MaKhuyenMai)
@@ -71,8 +71,8 @@ export const promotionService = {
                 .input('KM_MaChiNhanh', sql.VarChar(10), KM_MaChiNhanh)
                 .query(`
                     UPDATE KhuyenMai
-                    SET KM_TenKhuyenMai = @KM_TenKhuyenMai, KM_TenSuKien = @MKM_TenSuKien,
-                    KM_TyLeGiamGia = @KM_TyLeGiamGia, KM_LoaiTheApDung = @KM_LoaiTheApDung, KM_MaChiNhanh = @ KM_MaChiNhanh
+                    SET KM_TenKhuyenMai = @KM_TenKhuyenMai, KM_TenSuKien = @KM_TenSuKien,
+                    KM_TyLeGiamGia = @KM_TyLeGiamGia, KM_LoaiTheApDung = @KM_LoaiTheApDung, KM_MaChiNhanh = @KM_MaChiNhanh
                     WHERE KM_MaKhuyenMai = @KM_MaKhuyenMai
                     SELECT * FROM KhuyenMai WHERE KM_MaKhuyenMai = @KM_MaKhuyenMai
                 `);
