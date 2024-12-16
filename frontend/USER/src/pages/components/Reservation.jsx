@@ -1,5 +1,5 @@
 // src/pages/components/Reservation.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/reservation.css';
@@ -19,15 +19,16 @@ const categories = [
 ];
 
 const Reservation = () => {
-   
+    const navigate = useNavigate();
+    const [branches, setBranches] = useState([]);
+    const [availableDishes, setAvailableDishes] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
     
     // Filter dishes by category
     const filteredDishes = selectedCategory === 'all' 
-        ? dishes 
-        : dishes.filter(dish => dish.category === selectedCategory);
+        ? availableDishes 
+        : availableDishes.filter(dish => dish.category === selectedCategory);
 
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -44,17 +45,61 @@ const Reservation = () => {
         "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
     ];
 
-    const branches = [
-        { id: 1, name: 'Chi nhánh Quận 1', address: '123 Nguyễn Huệ, Q1' },
-        { id: 2, name: 'Chi nhánh Quận 3', address: '456 Lê Văn Sỹ, Q3' },
-        { id: 3, name: 'Chi nhánh Quận 7', address: '789 Nguyễn Thị Thập, Q7' }
-    ];
+    useEffect(() => {
+        const fetchBranches = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/branches');
+                const data = await response.json();
+                setBranches(data.branches.map(branch => ({
+                    id: branch.CN_MaChiNhanh,
+                    name: branch.CN_Ten,
+                    address: branch.CN_DiaChi
+                })));
+            } catch (error) {
+                console.error('Error fetching branches:', error);
+            }
+        };
+        fetchBranches();
+    }, []);
+
+    useEffect(() => {
+        const fetchDishes = async () => {
+            if (!formData.branch) return;
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/dishes');
+                const result = await response.json();
+                
+                const transformedDishes = result.dishes
+                    .filter(dish => dish.CN_MaChiNhanh === formData.branch)
+                    .map(dish => ({
+                        id: dish.MA_MaMon,
+                        name: dish.MA_TenMon,
+                        price: dish.MA_GiaHienTai * 1000,
+                        category: dish.MA_MaDanhMuc,
+                        description: dish.DM_TenDanhMuc,
+                        image: `/images/${dish.MA_MaMon.toLowerCase()}.jpg`,
+                        available: Boolean(dish.MA_CoSan)
+                    }))
+                    .filter(dish => dish.available);
+
+                setAvailableDishes(transformedDishes);
+            } catch (error) {
+                console.error('Error fetching dishes:', error);
+            }
+        };
+
+        fetchDishes();
+    }, [formData.branch]);
 
     const handleInputChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value,
+            // Reset selected dishes when branch changes
+            selectedDishes: name === 'branch' ? [] : prev.selectedDishes
+        }));
     };
 
     const handleDishSelect = (dish) => {
@@ -151,7 +196,7 @@ const Reservation = () => {
                         </div>
 
                         <div className="form-group">
-                            <label>Chi nhánh</label>
+                            <label>Chọn chi nhánh</label>
                             <select
                                 name="branch"
                                 value={formData.branch}
@@ -261,51 +306,49 @@ const Reservation = () => {
                             )}
 
                             {showMenuModal && (
-                                        <div className="menu-modal">
-                                            <div className="menu-modal-content">
-                                                <h3>Chọn món</h3>
-                                                <div className="category-tabs">
-                                                    {categories.map(category => (
-                                                        <button
-                                                            key={category.id}
-                                                            className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
-                                                            onClick={() => setSelectedCategory(category.id)}
-                                                        >
-                                                            {category.name}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <div className="menu-grid">
-                                                    {filteredDishes.map(dish => (
-                                                        <div key={dish.id} className="menu-item">
-                                                            <img src={dish.image} alt={dish.name} />
-                                                            <div className="menu-item-info">
-                                                                <h4>{dish.name}</h4>
-                                                                <p className="description">{dish.description}</p>
-                                                                <p className="price">{dish.price.toLocaleString()}đ</p>
-                                                                <button 
-                                                                    type="button"
-                                                                    onClick={() => handleDishSelect(dish)}
-                                                                    className="add-dish-btn"
-                                                                >
-                                                                    Thêm vào đơn
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                                <button 
-                                                    type="button" 
-                                                    className="close-modal-btn"
-                                                    onClick={() => setShowMenuModal(false)}
+                                <div className="menu-modal">
+                                    <div className="menu-modal-content">
+                                        <h3>Chọn món tại {branches.find(b => b.id === formData.branch)?.name}</h3>
+                                        <div className="category-tabs">
+                                            {categories.map(category => (
+                                                <button
+                                                    key={category.id}
+                                                    className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
+                                                    onClick={() => setSelectedCategory(category.id)}
                                                 >
-                                                    Đóng
+                                                    {category.name}
                                                 </button>
-                                            </div>
+                                            ))}
                                         </div>
-                                    )}
-    
-
+                                        <div className="menu-grid">
+                                            {filteredDishes.map(dish => (
+                                                <div key={dish.id} className="menu-item">
+                                                    <img src={dish.image} alt={dish.name} />
+                                                    <div className="menu-item-info">
+                                                        <h4>{dish.name}</h4>
+                                                        <p className="description">{dish.description}</p>
+                                                        <p className="price">{dish.price.toLocaleString()}đ</p>
+                                                        <button 
+                                                            type="button"
+                                                            onClick={() => handleDishSelect(dish)}
+                                                            className="add-dish-btn"
+                                                        >
+                                                            Thêm vào đơn
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <button 
+                                            type="button" 
+                                            className="close-modal-btn"
+                                            onClick={() => setShowMenuModal(false)}
+                                        >
+                                            Đóng
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         <button type="submit" className="submit-btn">
