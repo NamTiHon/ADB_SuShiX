@@ -6,17 +6,6 @@ alter table ChiNhanh
 	foreign key (CN_MaQuanLy)
 	references NhanVien(NV_MaNhanVien)
 
-alter table ChiNhanh
-	add constraint FK_CN_MaKhuVuc_KV_MaKhuVuc
-	foreign key (CN_MaKhuVuc)
-	references KhuVuc(KV_MaKhuVuc)
-
---Bảng Món ăn
-alter table MonAn
-	add constraint FK_MA_MaDanhMuc_DM_MaDanhMuc
-	foreign key (MA_MaDanhMuc)
-	references DanhMuc(DM_MaDanhMuc)
-
 --Bảng Món được đặt
 alter table MonDuocDat
 	add constraint FK_MDD_MaMon_MA_MaMon
@@ -85,12 +74,12 @@ alter table PhieuDanhGia
 	references HoaDon(HD_MaHoaDon)
 
 --Bảng Bộ phận của nhân viên
-alter table BoPhanNhanVien
+alter table BoPhan_NhanVien
 	add constraint FK_BP_NV_MaNhanVien_NV_MaNhanVien
 	foreign key (BP_NV_MaNhanVien)
 	references NhanVien(NV_MaNhanVien)
 
-alter table BoPhanNhanVien
+alter table BoPhan_NhanVien
 	add constraint FK_BP_NV_MaChiNhanh_CN_MaChiNhanh
 	foreign key (BP_NV_MaChiNhanh)
 	references ChiNhanh(CN_MaChiNhanh)
@@ -150,10 +139,6 @@ alter table PhieuDatMon
 alter table PhieuDatMon
 	add constraint C_PDM_SoLuongKH
 	check (PDM_SoLuongKH > 0)
-
-alter table PhieuDatMon
-	add constraint C_PDM_LoaiPhieu
-	check (PDM_SoLuongKH in (N'Đặt trực tiếp', N'Đặt trước', N'Đặt online'))
 
 -- Bảng khách hàng
 alter table KhachHang
@@ -232,3 +217,15 @@ alter table BoPhan_NhanVien
 alter table LichSuLamViec
 	add constraint C_LSLV_ThoiGian
 	check (LSLV_NgayBatDau < LSLV_NgayKetThuc)
+
+/*
+declare @sql nvarchar(max) = (
+    select 
+        'alter table ' + quotename(schema_name(schema_id)) + '.' +
+        quotename(object_name(parent_object_id)) +
+        ' drop constraint '+quotename(name) + ';'
+    from sys.foreign_keys
+    for xml path('')
+);
+exec sp_executesql @sql;
+*/
