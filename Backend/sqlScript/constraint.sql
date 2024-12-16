@@ -69,11 +69,6 @@ alter table TheThanhVien
 	references LoaiThe(LT_TenLoaiThe)
 
 alter table TheThanhVien
-	add constraint FK_TTV_SDT_KH_KH_SDT
-	foreign key (TTV_SDT_KH)
-	references KhachHang(KH_SDT)
-
-alter table TheThanhVien
 	add constraint FK_TTV_MaNhanVien_NV_MaNhanVien
 	foreign key (TTV_MaNhanVien)
 	references NhanVien(NV_MaNhanVien)
@@ -102,12 +97,12 @@ alter table PhieuDanhGia
 	references HoaDon(HD_MaHoaDon)
 
 --Bảng Bộ phận của nhân viên
-alter table BoPhan_NhanVien
+alter table BoPhanNhanVien
 	add constraint FK_BP_NV_MaNhanVien_NV_MaNhanVien
 	foreign key (BP_NV_MaNhanVien)
 	references NhanVien(NV_MaNhanVien)
 
-alter table BoPhan_NhanVien
+alter table BoPhanNhanVien
 	add constraint FK_BP_NV_MaChiNhanh_CN_MaChiNhanh
 	foreign key (BP_NV_MaChiNhanh)
 	references ChiNhanh(CN_MaChiNhanh)

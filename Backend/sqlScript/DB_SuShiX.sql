@@ -30,7 +30,7 @@ create table ChiNhanh (
 	CN_BaiDoXeMay BIT,  -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	CN_BaiDoXeOto BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	CN_HoTroGiaoHang BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
-	CN_MaQuanLy varchar(12), 
+	CN_MaQuanLy nvarchar(12), 
 	CN_MaKhuVuc varchar(10),
 	primary key (CN_MaChiNhanh)
 );
@@ -238,6 +238,12 @@ go
 -- Xóa database:
 -- use master;
 -- drop database DB_SushiX;
+
+insert into LoaiThe (LT_TenLoaiThe)
+values
+('Membership'),
+('Gold'),
+('Silver')
 
 -- -- Thêm dữ liệu mẫu vào bảng DanhMuc
 -- INSERT INTO DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
