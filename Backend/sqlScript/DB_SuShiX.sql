@@ -136,6 +136,11 @@ create table LoaiThe (
 	primary key (LT_TenLoaiThe)
 );
 
+INSERT INTO LoaiThe (LT_TenLoaiThe) VALUES
+('Gold'),
+('Silver'),
+('Membership');
+
 -- Bảng Thẻ thành viên
 --create table TheThanhVien (
 --	TTV_MaThe varchar(10),
