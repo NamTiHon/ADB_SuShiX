@@ -246,7 +246,7 @@ begin
 		update KhuVuc
 		set KV_Ten = coalesce(@Ten, KV_Ten),
 			KV_MaThucDon = coalesce(@MaThucDon, KV_MaThucDon),
-			KV_MaDanhMuc = coalesce(@TenDanhMuc, KV_TenDanhMuc)
+			KV_TenDanhMuc = coalesce(@TenDanhMuc, KV_TenDanhMuc)
 		where KV_MaKhuVuc = @MaKhuVuc
 	end
 
@@ -789,7 +789,7 @@ create or alter function uf_DanhSachMonAnTheoKhuVuc
 	(@MaKhuVuc varchar(12))
 	returns table
 as
-	return ( select * from MonAn join KhuVuc on MA_MaDanhMuc = KV_MaDanhMuc
+	return ( select * from MonAn join KhuVuc on MA_TenDanhMuc = KV_TenDanhMuc
 			 where KV_MaKhuVuc = @MaKhuVuc)
 go
 
@@ -799,7 +799,7 @@ create or alter function uf_DanhSachChiNhanhCoMonAn
 	returns table
 as
 	return ( select * from ChiNhanh
-			 where CN_MaKhuVuc = (select KV_MaKhuVuc from KhuVuc join MonAn on MA_MaDanhMuc = KV_MaDanhMuc where MA_MaMon = @MaMonAn))
+			 where CN_MaKhuVuc = (select KV_MaKhuVuc from KhuVuc join MonAn on MA_TenDanhMuc = KV_TenDanhMuc where MA_MaMon = @MaMonAn))
 go
 
 --Xem danh sách chi nhánh trong một khu vực
@@ -862,7 +862,7 @@ create or alter function uf_XemThucDonTheoKhuVuc
 	returns table
 as
 	return ( select * from MonAn 
-			 where MA_MaDanhMuc in ( select KV_MaDanhMuc from KhuVuc
+			 where MA_TenDanhMuc in ( select KV_TenDanhMuc from KhuVuc
 									 where KV_MaKhuVuc = @MaKhuVuc))
 go
 
@@ -872,7 +872,7 @@ create or alter function uf_XemThucDonTheoChiNhanh
 	returns table
 as
 	return ( select * from MonAn 
-			 where MA_MaDanhMuc in ( select KV_MaDanhMuc from KhuVuc join ChiNhanh on KV_MaKhuVuc = CN_MaKhuVuc
+			 where MA_TenDanhMuc in ( select KV_TenDanhMuc from KhuVuc join ChiNhanh on KV_MaKhuVuc = CN_MaKhuVuc
 									 where CN_MaChiNhanh = @MaChiNhanh))
 go
 
