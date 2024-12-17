@@ -1,6 +1,15 @@
-﻿--STORE PROCEDURE
+﻿use DB_SushiX
+go
+
+--CREATE OR ALTER PROCEDURE sp_Test
+--AS
+--BEGIN
+--    SELECT 'Hello World';
+--END;
+
+--STORE PROCEDURE
 --Thêm món ăn của nhà hàng
-create or alter proc sp_ThemMonAn
+create or alter procedure sp_ThemMonAn
 	@MaMon varchar(12), 
 	@TenMon nvarchar(50), 
 	@Gia float,
@@ -888,3 +897,30 @@ go
 --TRIGGER
 --- This is need for trigger
 
+/*
+DECLARE @ProcedureName NVARCHAR(MAX);
+DECLARE @SQL NVARCHAR(MAX);
+
+-- Tạo CURSOR để lấy tất cả các stored procedures trong database hiện tại
+DECLARE proc_cursor CURSOR FOR
+SELECT QUOTENAME(SCHEMA_NAME(schema_id)) + '.' + QUOTENAME(name) AS ProcedureName
+FROM sys.procedures;
+
+-- Mở CURSOR và lặp qua từng procedure
+OPEN proc_cursor;
+FETCH NEXT FROM proc_cursor INTO @ProcedureName;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    -- Tạo câu lệnh DROP PROCEDURE
+    SET @SQL = 'DROP PROCEDURE ' + @ProcedureName + ';';
+    PRINT @SQL; -- In câu lệnh DROP để kiểm tra trước khi chạy
+    EXEC sp_executesql @SQL; -- Thực thi lệnh xóa
+
+    FETCH NEXT FROM proc_cursor INTO @ProcedureName;
+END;
+
+-- Đóng và giải phóng CURSOR
+CLOSE proc_cursor;
+DEALLOCATE proc_cursor;
+*/
