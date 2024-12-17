@@ -8,6 +8,7 @@ CREATE OR ALTER PROCEDURE usp_ThemMonAn
 	@MaMon varchar(12), 
 	@TenMon nvarchar(50), 
 	@Gia float,
+	@HoTroGiaoHang BIT,
 	@KhauPhan int,
 	@CoSan BIT,
 	@TenDanhMuc varchar(20)
