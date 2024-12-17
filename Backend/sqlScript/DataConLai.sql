@@ -28,195 +28,161 @@ values
 ('CN020', N'Chi nhánh 1 Long An', N'123 Đường Quốc Lộ 1A, Tân An, Long An', '7:00:00', '22:30:00', '997123456', 0, 1, 1);
 
 -- delete from KhuVuc
-insert into 
-KhuVuc (KV_MaKhuVuc, KV_Ten)
+insert into KhuVuc (KV_MaKhuVuc, KV_Ten, KV_MaThucDon, KV_TenDanhMuc)
 values
-('KV001', N'Khu vực TP.HCM'),
-('KV002', N'Khu vực Đà Nẵng'),
-('KV003', N'Khu vực Hà Nội'),
-('KV004', N'Khu vực Hải Phòng'),
-('KV005', N'Khu vực Cần Thơ'),
-('KV006', N'Khu vực Bình Dương'),
-('KV007', N'Khu vực Long An');
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Khai vị'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Sashimi combo'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Tempura'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Nigiri'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Món nước'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Lunch set'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Udon'),
+    ('KV001', N'Khu vực TP.HCM', 'TD001', N'Sushi'),
 
--- delete from ThucDon
-insert into 
-ThucDon (TD_MaThucDon)
-values
-('TD001'),
-('TD002'),
-('TD003'),
-('TD004'),
-('TD005'),
-('TD006'),
-('TD007');
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Khai vị'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Sashimi combo'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Tempura'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Nigiri'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Món nước'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Lunch set'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Sushi'),
+    ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Hotpot'),
 
--- delete from DanhMuc
-insert into
-DanhMuc (DM_MaDanhMuc, DM_TenDanhMuc)
-values
-('KV', N'Khai vị'),
-('SUSHI', N'Sushi'),
-('SASHIMI', N'Sashimi combo'),
-('NIGIRI', N'Nigiri'),
-('TEMPURA', N'Tempura'),
-('UDON', N'Udon'),
-('HPT', N'Hotpot'),
-('LUNCH', N'Lunch set'),
-('DRINK', N'Món nước');
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Khai vị'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Sashimi combo'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Tempura'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Nigiri'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Món nước'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Udon'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Lunch set'),
+    ('KV003', N'Khu vực Hà Nội', 'TD003', N'Sushi'),
+
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Khai vị'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Sashimi combo'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Tempura'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Nigiri'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Món nước'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Hotpot'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Udon'),
+    ('KV004', N'Khu vực Hải Phòng', 'TD004', N'Sushi'),
+
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Khai vị'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Sashimi combo'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Tempura'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Nigiri'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Món nước'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Hotpot'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Udon'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Lunch set'),
+    ('KV005', N'Khu vực Cần Thơ', 'TD005', N'Sushi'),
+
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Khai vị'),
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Sashimi combo'),
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Tempura'),
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Nigiri'),
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Món nước'),
+    ('KV006', N'Khu vực Bình Dương', 'TD006', N'Sushi'),
+
+    ('KV007', N'Khu vực Long An', 'TD007', N'Khai vị'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Sashimi combo'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Tempura'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Nigiri'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Món nước'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Hotpot'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Udon'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Lunch set'),
+    ('KV007', N'Khu vực Long An', 'TD007', N'Sushi')
+
 go
 
--- delete from DanhMuc_ThucDon
-insert into DanhMuc_ThucDon (DM_TD_MaThucDon, DM_TD_MaDanhMuc)
-values
-    ('TD001', 'KV'),
-    ('TD001', 'SASHIMI'),
-    ('TD001', 'TEMPURA'),
-    ('TD001', 'NIGIRI'),
-    ('TD001', 'DRINK'),
-	('TD001', 'LUNCH'),
-	('TD001', 'UDON'),
-    ('TD001', 'SUSHI'), -- Bổ sung SUSHI cho TD001
-    ('TD002', 'KV'),
-    ('TD002', 'SASHIMI'),
-    ('TD002', 'TEMPURA'),
-    ('TD002', 'NIGIRI'),
-    ('TD002', 'DRINK'),
-	('TD002', 'LUNCH'),
-    ('TD002', 'SUSHI'), -- Bổ sung SUSHI cho TD002
-	('TD002', 'HPT'),
-    ('TD003', 'KV'),
-    ('TD003', 'SASHIMI'),
-    ('TD003', 'TEMPURA'),
-    ('TD003', 'NIGIRI'),
-    ('TD003', 'DRINK'),
-	('TD003', 'UDON'),
-	('TD003', 'LUNCH'),
-    ('TD003', 'SUSHI'), -- Bổ sung SUSHI cho TD003
-    ('TD004', 'KV'),
-    ('TD004', 'SASHIMI'),
-    ('TD004', 'TEMPURA'),
-    ('TD004', 'NIGIRI'),
-    ('TD004', 'DRINK'),
-	('TD004', 'HPT'),
-	('TD004', 'UDON'),
-    ('TD004', 'SUSHI'), -- Bổ sung SUSHI cho TD004
-    ('TD005', 'KV'),
-    ('TD005', 'SASHIMI'),
-    ('TD005', 'TEMPURA'),
-    ('TD005', 'NIGIRI'),
-    ('TD005', 'DRINK'),
-	('TD005', 'HPT'),
-	('TD005', 'UDON'),
-	('TD005', 'LUNCH'),
-    ('TD005', 'SUSHI'), -- Bổ sung SUSHI cho TD005
-    ('TD006', 'KV'),
-    ('TD006', 'SASHIMI'),
-    ('TD006', 'TEMPURA'),
-    ('TD006', 'NIGIRI'),
-    ('TD006', 'DRINK'),
-    ('TD006', 'SUSHI'), -- Bổ sung SUSHI cho TD006
-    ('TD007', 'KV'),
-    ('TD007', 'SASHIMI'),
-    ('TD007', 'TEMPURA'),
-    ('TD007', 'NIGIRI'),
-    ('TD007', 'DRINK'),
-	('TD007', 'HPT'),
-	('TD007', 'UDON'),
-	('TD007', 'LUNCH'),
-    ('TD007', 'SUSHI'); -- Bổ sung SUSHI cho TD007
-
-
-go
 -- delete from MonAn
 insert into
 MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc)
 values
-('MA001', N'Sashimi cá hồi', 120.0, 2, 1, 1, 'SASHIMI'),
-('MA002', N'Sashimi cá ngừ', 100.0, 1, 1, 1, 'SASHIMI'),
-('MA003', N'Sashimi lươn', 130.0, 2, 1, 1, 'SASHIMI'),
-('MA004', N'Sashimi tôm', 110.0, 2, 1, 1, 'SASHIMI'),
-('MA005', N'Sashimi cá trích', 100.0, 1, 1, 0, 'SASHIMI'),
-('MA006', N'Sashimi cá mực', 90.0, 2, 1, 0, 'SASHIMI'),
-('MA007', N'Sashimi cá hồi nướng', 160.0, 2, 1, 0, 'SASHIMI'),
-('MA008', N'Sashimi cá ngừ nướng', 150.0, 2, 1, 0, 'SASHIMI'),
-('MA009', N'Nigiri cá hồi', 80.0, 1, 1, 1, 'NIGIRI'),
-('MA010', N'Nigiri cá ngừ', 85.0, 1, 1, 1, 'NIGIRI'),
-('MA011', N'Nigiri tôm', 90.0, 1, 1, 1, 'NIGIRI'),
-('MA012', N'Nigiri lươn', 95.0, 1, 1, 1, 'NIGIRI'),
-('MA013', N'Nigiri cá trích', 75.0, 1, 1, 0, 'NIGIRI'),
-('MA014', N'Nigiri cá mực', 85.0, 1, 1, 0, 'NIGIRI'),
-('MA015', N'Nigiri tôm nướng', 145.0, 2, 1, 0, 'NIGIRI'),
-('MA016', N'Nigiri cá ngừ nướng', 130.0, 2, 0, 0, 'NIGIRI'),
-('MA017', N'Nigiri cá hồi nướng', 150.0, 2, 1, 1, 'NIGIRI'),
-('MA018', N'Nigiri lươn nướng', 135.0, 2, 1, 1, 'NIGIRI'),
-('MA019', N'Udon thịt bò', 65.0, 2, 1, 0, 'UDON'),
-('MA020', N'Udon gà', 60.0, 2, 1, 0, 'UDON'),
-('MA021', N'Udon tôm', 70.0, 2, 1, 0, 'UDON'),
-('MA022', N'Udon hải sản', 85.0, 2, 1, 0, 'UDON'),
-('MA023', N'Udon chay', 50.0, 2, 1, 0, 'UDON'),
-('MA024', N'Udon rau củ', 55.0, 2, 1, 0, 'UDON'),
-('MA025', N'Tempura tôm', 90.0, 2, 1, 1, 'TEMPURA'),
-('MA026', N'Tempura rau củ', 70.0, 2, 1, 1, 'TEMPURA'),
-('MA027', N'Tempura cá', 80.0, 2, 1, 1, 'TEMPURA'),
-('MA028', N'Hotpot cá hồi', 150.0, 2, 1, 1, 'HPT'),
-('MA029', N'Hotpot tôm', 120.0, 2, 1, 1, 'HPT'),
-('MA030', N'Hotpot gà', 100.0, 2, 1, 1, 'HPT'),
-('MA031', N'Hotpot rau củ', 75.0, 2, 1, 1, 'HPT'),
-('MA032', N'Lunch set tôm', 130.0, 2, 1, 1, 'LUNCH'),
-('MA033', N'Lunch set gà', 110.0, 2, 1, 1, 'LUNCH'),
-('MA034', N'Lunch set thịt bò', 120.0, 2, 1, 1, 'LUNCH'),
-('MA035', N'Lunch set chay', 90.0, 2, 1, 1, 'LUNCH'),
-('MA036', N'Drink nước cam', 20.0, 1, 1, 1, 'DRINK'),
-('MA037', N'Drink trà xanh', 25.0, 1, 1, 1, 'DRINK'),
-('MA038', N'Drink soda', 30.0, 1, 1, 1, 'DRINK'),
-('MA039', N'Drink nước dừa', 40.0, 1, 1, 1, 'DRINK'),
-('MA040', N'Drink sinh tố', 45.0, 1, 1, 1, 'DRINK'),
-('MA041', N'Cháo vịt', 80.0, 2, 1, 1, 'KV'),
-('MA042', N'Canh ngao', 40.0, 1, 1, 1, 'KV'),
-('MA043', N'Bánh canh cua', 70.0, 2, 1, 1, 'KV'),
-('MA044', N'Bánh cuốn', 60.0, 1, 1, 1, 'KV'),
-('MA045', N'Phở gà', 55.0, 2, 1, 1, 'KV'),
-('MA046', N'Gỏi đu đủ', 50.0, 1, 1, 1, 'KV'),
-('MA047', N'Chả cá Lã Vọng', 150.0, 2, 1, 1, 'KV'),
-('MA048', N'Bánh tôm Hồ Tây', 100.0, 1, 1, 1, 'KV'),
-('MA049', N'Bún chả Hà Nội', 75.0, 2, 1, 1, 'KV'),
-('MA050', N'Nem rán', 40.0, 1, 1, 1, 'KV'),
-('MA051', N'Cơm rang dưa bò', 85.0, 2, 1, 1, 'KV'),
-('MA052', N'Gà xào hành tây', 95.0, 2, 1, 1, 'KV'),
-('MA053', N'Mực xào chua ngọt', 120.0, 2, 1, 1, 'KV'),
-('MA054', N'Bánh flan', 40.0, 1, 1, 1, 'KV'),
-('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, 'KV'),
-('MA056', N'Sushi cá hồi đặc biệt', 200.0, 2, 1, 1, 'SUSHI'),
-('MA057', N'Sushi cá ngừ đại dương', 180.0, 2, 1, 1, 'SUSHI'),
-('MA058', N'Sushi tôm hùm', 250.0, 3, 1, 1, 'SUSHI'),
-('MA059', N'Sushi trứng cá tầm', 300.0, 2, 1, 1, 'SUSHI'),
-('MA060', N'Sushi cá chình nướng', 220.0, 2, 1, 1, 'SUSHI'),
-('MA061', N'Sushi cá hồi xông khói', 210.0, 2, 1, 1, 'SUSHI'),
-('MA062', N'Sushi lươn Nhật', 190.0, 2, 1, 1, 'SUSHI'),
-('MA063', N'Sushi bạch tuộc', 170.0, 2, 1, 1, 'SUSHI'),
-('MA064', N'Sushi hàu sống', 230.0, 2, 1, 1, 'SUSHI'),
-('MA065', N'Sushi cá kiếm', 210.0, 2, 1, 1, 'SUSHI'),
-('MA066', N'Sushi cá cam', 200.0, 2, 1, 1, 'SUSHI'),
-('MA067', N'Sushi trứng cá hồi', 240.0, 2, 1, 1, 'SUSHI'),
-('MA068', N'Sushi trứng cút', 150.0, 2, 1, 1, 'SUSHI'),
-('MA069', N'Sushi cá đuối', 180.0, 2, 1, 1, 'SUSHI'),
-('MA070', N'Sushi cá nhám', 220.0, 2, 1, 1, 'SUSHI'),
-('MA071', N'Sushi cá tuyết', 250.0, 2, 1, 1, 'SUSHI'),
-('MA072', N'Sushi cua hoàng đế', 270.0, 3, 1, 1, 'SUSHI'),
-('MA073', N'Sushi cá dưa hấu', 160.0, 2, 1, 1, 'SUSHI'),
-('MA074', N'Sushi sò đỏ', 200.0, 2, 1, 1, 'SUSHI'),
-('MA075', N'Sushi cá bạc má', 180.0, 2, 1, 1, 'SUSHI');
-
+	('MA001', N'Sashimi cá hồi', 120.0, 2, 1, 1, N'Sashimi combo'),
+    ('MA002', N'Sashimi cá ngừ', 100.0, 1, 1, 1, N'Sashimi combo'),
+    ('MA003', N'Sashimi lươn', 130.0, 2, 1, 1, N'Sashimi combo'),
+    ('MA004', N'Sashimi tôm', 110.0, 2, 1, 1, N'Sashimi combo'),
+    ('MA005', N'Sashimi cá trích', 100.0, 1, 1, 0, N'Sashimi combo'),
+    ('MA006', N'Sashimi cá mực', 90.0, 2, 1, 0, N'Sashimi combo'),
+    ('MA007', N'Sashimi cá hồi nướng', 160.0, 2, 1, 0, N'Sashimi combo'),
+    ('MA008', N'Sashimi cá ngừ nướng', 150.0, 2, 1, 0, N'Sashimi combo'),
+    ('MA009', N'Nigiri cá hồi', 80.0, 1, 1, 1, N'Nigiri'),
+    ('MA010', N'Nigiri cá ngừ', 85.0, 1, 1, 1, N'Nigiri'),
+    ('MA011', N'Nigiri tôm', 90.0, 1, 1, 1, N'Nigiri'),
+    ('MA012', N'Nigiri lươn', 95.0, 1, 1, 1, N'Nigiri'),
+    ('MA013', N'Nigiri cá trích', 75.0, 1, 1, 0, N'Nigiri'),
+    ('MA014', N'Nigiri cá mực', 85.0, 1, 1, 0, N'Nigiri'),
+    ('MA015', N'Nigiri tôm nướng', 145.0, 2, 1, 0, N'Nigiri'),
+    ('MA016', N'Nigiri cá ngừ nướng', 130.0, 2, 0, 0, N'Nigiri'),
+    ('MA017', N'Nigiri cá hồi nướng', 150.0, 2, 1, 1, N'Nigiri'),
+    ('MA018', N'Nigiri lươn nướng', 135.0, 2, 1, 1, N'Nigiri'),
+    ('MA019', N'Udon thịt bò', 65.0, 2, 1, 0, N'Udon'),
+    ('MA020', N'Udon gà', 60.0, 2, 1, 0, N'Udon'),
+    ('MA021', N'Udon tôm', 70.0, 2, 1, 0, N'Udon'),
+    ('MA022', N'Udon hải sản', 85.0, 2, 1, 0, N'Udon'),
+    ('MA023', N'Udon chay', 50.0, 2, 1, 0, N'Udon'),
+    ('MA024', N'Udon rau củ', 55.0, 2, 1, 0, N'Udon'),
+    ('MA025', N'Tempura tôm', 90.0, 2, 1, 1, N'Tempura'),
+    ('MA026', N'Tempura rau củ', 70.0, 2, 1, 1, N'Tempura'),
+    ('MA027', N'Tempura cá', 80.0, 2, 1, 1, N'Tempura'),
+    ('MA028', N'Hotpot cá hồi', 150.0, 2, 1, 1, N'Hotpot'),
+    ('MA029', N'Hotpot tôm', 120.0, 2, 1, 1, N'Hotpot'),
+    ('MA030', N'Hotpot gà', 100.0, 2, 1, 1, N'Hotpot'),
+    ('MA031', N'Hotpot rau củ', 75.0, 2, 1, 1, N'Hotpot'),
+    ('MA032', N'Lunch set tôm', 130.0, 2, 1, 1, N'Lunch set'),
+    ('MA033', N'Lunch set gà', 110.0, 2, 1, 1, N'Lunch set'),
+    ('MA034', N'Lunch set thịt bò', 120.0, 2, 1, 1, N'Lunch set'),
+    ('MA035', N'Lunch set chay', 90.0, 2, 1, 1, N'Lunch set'),
+    ('MA036', N'Drink nước cam', 20.0, 1, 1, 1, N'Món nước'),
+    ('MA037', N'Drink trà xanh', 25.0, 1, 1, 1, N'Món nước'),
+    ('MA038', N'Drink soda', 30.0, 1, 1, 1, N'Món nước'),
+    ('MA039', N'Drink nước dừa', 40.0, 1, 1, 1, N'Món nước'),
+    ('MA040', N'Drink sinh tố', 45.0, 1, 1, 1, N'Món nước'),
+    ('MA041', N'Cháo vịt', 80.0, 2, 1, 1, N'Khai vị'),
+    ('MA042', N'Canh ngao', 40.0, 1, 1, 1, N'Khai vị'),
+    ('MA043', N'Bánh canh cua', 70.0, 2, 1, 1, N'Khai vị'),
+    ('MA044', N'Bánh cuốn', 60.0, 1, 1, 1, N'Khai vị'),
+    ('MA045', N'Phở gà', 55.0, 2, 1, 1, N'Khai vị'),
+    ('MA046', N'Gỏi đu đủ', 50.0, 1, 1, 1, N'Khai vị'),
+    ('MA047', N'Chả cá Lã Vọng', 150.0, 2, 1, 1, N'Khai vị'),
+    ('MA048', N'Bánh tôm Hồ Tây', 100.0, 1, 1, 1, N'Khai vị'),
+    ('MA049', N'Bún chả Hà Nội', 75.0, 2, 1, 1, N'Khai vị'),
+    ('MA050', N'Nem rán', 40.0, 1, 1, 1, N'Khai vị'),
+    ('MA051', N'Cơm rang dưa bò', 85.0, 2, 1, 1, N'Khai vị'),
+    ('MA052', N'Gà xào hành tây', 95.0, 2, 1, 1, N'Khai vị'),
+    ('MA053', N'Mực xào chua ngọt', 120.0, 2, 1, 1, N'Khai vị'),
+    ('MA054', N'Bánh flan', 40.0, 1, 1, 1, N'Khai vị'),
+    ('MA055', N'Gỏi cuốn', 30.0, 1, 1, 1, N'Khai vị'),
+    ('MA056', N'Sushi cá hồi đặc biệt', 200.0, 2, 1, 1, N'Sushi'),
+    ('MA057', N'Sushi cá ngừ đại dương', 180.0, 2, 1, 1, N'Sushi'),
+    ('MA058', N'Sushi tôm hùm', 250.0, 3, 1, 1, N'Sushi'),
+    ('MA059', N'Sushi trứng cá tầm', 300.0, 2, 1, 1, N'Sushi'),
+    ('MA060', N'Sushi cá chình nướng', 220.0, 2, 1, 1, N'Sushi'),
+    ('MA061', N'Sushi cá hồi xông khói', 210.0, 2, 1, 1, N'Sushi'),
+    ('MA062', N'Sushi lươn Nhật', 190.0, 2, 1, 1, N'Sushi'),
+	('MA063', N'Sushi bạch tuộc', 170.0, 2, 1, 1, N'Sushi'),
+    ('MA064', N'Sushi hàu sống', 230.0, 2, 1, 1, N'Sushi'),
+    ('MA065', N'Sushi cá kiếm', 210.0, 2, 1, 1, N'Sushi'),
+    ('MA066', N'Sushi cá cam', 200.0, 2, 1, 1, N'Sushi'),
+    ('MA067', N'Sushi trứng cá hồi', 240.0, 2, 1, 1, N'Sushi'),
+    ('MA068', N'Sushi trứng cút', 150.0, 2, 1, 1, N'Sushi'),
+    ('MA069', N'Sushi cá đuối', 180.0, 2, 1, 1, N'Sushi'),
+    ('MA070', N'Sushi cá nhám', 220.0, 2, 1, 1, N'Sushi'),
+    ('MA071', N'Sushi cá tuyết', 250.0, 2, 1, 1, N'Sushi'),
+    ('MA072', N'Sushi cua hoàng đế', 270.0, 3, 1, 1, N'Sushi'),
+    ('MA073', N'Sushi cá dưa hấu', 160.0, 2, 1, 1, N'Sushi'),
+    ('MA074', N'Sushi sò đỏ', 200.0, 2, 1, 1, N'Sushi'),
+    ('MA075', N'Sushi cá bạc má', 180.0, 2, 1, 1, N'Sushi');
 
 go
 
 
---insert into LoaiThe (LT_TenLoaiThe)
---values
---('Membership'),
---('Gold'),
---('Silver');
+insert into LoaiThe (LT_TenLoaiThe)
+values
+('Membership'),
+('Gold'),
+('Silver');
 
 --go
 -- Bảng KHÁCH HÀNG sử dụng file khachhang.csv
@@ -228,118 +194,36 @@ go
 
 -- delete from LichSuLamViec
 -- Chạy phần script này sau khi đã thêm data vào các bảng NhanVien và ChiNhanh
-insert into
-LichSuLamViec(LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau, LSLV_NgayKetThuc)
-values
-('NV00001234', 'CN003', '2019-10-01', '2020-01-12'),
-('NV00006423', 'CN004', '2023-01-23', '2023-06-20'),
-('NV00031236', 'CN010', '2019-07-08', '2021-12-02'),
-('NV00022013', 'CN003', '2023-10-01', '2024-01-12'),
-('NV00054302', 'CN004', '2022-06-13', '2023-02-28'),
-('NV00054329', 'CN012', '2021-09-07', '2022-04-21'),
-('NV00007653', 'CN002', '2022-04-01', '2023-02-11'),
-('NV00044325', 'CN007', '2021-05-23', '2022-03-30'),
-('NV00071234', 'CN006', '2019-12-29', '2021-11-10'),
-('NV00055434', 'CN001', '2020-07-22', '2021-06-09'),
-('NV00067788', 'CN002', '2021-04-15', '2023-02-12');
-go
+
 
 
 -- delete from KhuyenMai
 -- Chạy phần script này sau khi đã thêm data vào các bảng ChiNhanh và LoaiThe
 -- KM_LoaiTheApDung là loại thẻ thấp nhất đủ điều kiện tham gia chương trình khuyến mãi
+
 insert into
 KhuyenMai(KM_MaKhuyenMai, KM_TenKhuyenMai, KM_TenSuKien, KM_TyLeGiamGia, KM_LoaiTheApDung, KM_MaChiNhanh)
 values
-('KM00000001', 'Mừng Giáng Sinh', 'Giảm giá Noel', 0.2, 'Membership', 'CN001'),
-('KM00000002', 'Chào Năm Mới', 'Happy New Year', 0.15, 'Membership', 'CN002'),
-('KM00000003', 'Hè Rực Rỡ', 'Summer Sale', 0.25, 'Membership', 'CN001'),
-('KM00000004', 'Ngày Nhà Giáo', 'Tri Ân Thầy Cô', 0.3, 'Membership', 'CN003'),
-('KM00000005', 'Black Friday', 'Siêu Giảm Giá', 0.05, 'Silver', 'CN002'),
-('KM00000006', 'Quốc Tế Phụ Nữ', 'Ngày 8/3', 0.1, 'Silver', 'CN001'),
-('KM00000007', 'Ngày Valentine', 'Ưu đãi tình yêu', 0.1, 'Membership', 'CN003'),
-('KM00000008', 'Ngày Quốc Khánh', 'Mừng Quốc Khánh', 0.12, 'Membership', 'CN002'),
-('KM00000009', 'Tri Ân Khách Hàng', 'Khách Hàng Thân Thiết', 0.19, 'Gold', 'CN001'),
-('KM00000010', 'Đón Tết Nguyên Đán', 'Tết Nguyên Đán', 0.12, 'Membership', 'CN003');
+('KM00000001', N'Mừng Giáng Sinh', N'Giảm giá Noel', 0.2, 'Membership', 'CN001'),
+('KM00000002', N'Chào Năm Mới', N'Happy New Year', 0.15, 'Membership', 'CN002'),
+('KM00000003', N'Hè Rực Rỡ', N'Summer Sale', 0.25, 'Membership', 'CN001'),
+('KM00000004', N'Ngày Nhà Giáo', N'Tri Ân Thầy Cô', 0.3, 'Membership', 'CN003'),
+('KM00000005', N'Black Friday', N'Siêu Giảm Giá', 0.05, 'Silver', 'CN002'),
+('KM00000006', N'Quốc Tế Phụ Nữ', N'Ngày 8/3', 0.1, 'Silver', 'CN001'),
+('KM00000007', N'Ngày Valentine', N'Ưu đãi tình yêu', 0.1, 'Membership', 'CN003'),
+('KM00000008', N'Ngày Quốc Khánh', N'Mừng Quốc Khánh', 0.12, 'Membership', 'CN002'),
+('KM00000009',N'Tri Ân Khách Hàng', N'Khách Hàng Thân Thiết', 0.19, 'Gold', 'CN001'),
+('KM00000010', N'Đón Tết Nguyên Đán', N'Tết Nguyên Đán', 0.12, 'Membership', 'CN003');
 go
 
 
-update ChiNhanh
-set 
-	CN_TGDongCua = cast (CN_TGDongCua as time),
-	CN_TGMoCua = cast (CN_TGMoCua as time);
-
--- Update Mã khu vực cho Chi Nhánh
-update ChiNhanh
-set 
-CN_MaKhuVuc = 'KV001',
-CN_MaQuanLy = 'NV00000000'
-where CN_DiaChi like N'%TP.HCM%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV002',
-CN_MaQuanLy = 'NV00000001'
-where CN_DiaChi like N'%Đà Nẵng%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV003',
-CN_MaQuanLy = 'NV00000002'
-where CN_DiaChi like N'%Hà Nội%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV004',
-CN_MaQuanLy = 'NV00000003'
-where CN_DiaChi like N'%Hải Phòng%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV005',
-CN_MaQuanLy = 'NV00000004'
-where CN_DiaChi like N'%Cần Thơ%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV006',
-CN_MaQuanLy = 'NV00000006'
-where CN_DiaChi like N'%Bình Dương%'
-
-update ChiNhanh
-set CN_MaKhuVuc = 'KV007',
-CN_MaQuanLy = 'NV00000007'
-where CN_DiaChi like N'%Long An%'
-
-
-update KhuVuc
-set KV_MaThucDon = 'TD001'
-where KV_MaKhuVuc = 'KV001'
-
-update KhuVuc
-set KV_MaThucDon = 'TD002'
-where KV_MaKhuVuc = 'KV002'
-
-update KhuVuc
-set KV_MaThucDon = 'TD003'
-where KV_MaKhuVuc = 'KV003'
-
-update KhuVuc
-set KV_MaThucDon = 'TD004'
-where KV_MaKhuVuc = 'KV004'
-
-update KhuVuc
-set KV_MaThucDon = 'TD005'
-where KV_MaKhuVuc = 'KV005'
-
-update KhuVuc
-set KV_MaThucDon = 'TD006'
-where KV_MaKhuVuc = 'KV006'
-
-update KhuVuc
-set KV_MaThucDon = 'TD007'
-where KV_MaKhuVuc = 'KV007'
-
+-- select * from BoPhan_NhanVien
 -- select * from ChiNhanh
 -- select * from KhuVuc
--- select * from ThucDon
--- select * from DanhMuc
+-- select * from KhuyenMai
+-- select * from LichSuLamViec
+-- select * from LoaiThe
 -- select * from MonAn
 -- select * from KhachHang
 -- select * from NhanVien
--- select * from DanhMuc_ThucDon
+-- select * from TheThanhVien

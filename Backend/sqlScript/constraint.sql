@@ -153,15 +153,15 @@ alter table LoaiThe
 -- Bảng Thẻ Thành Viên
 alter table TheThanhVien
 	add constraint C_TTV_SoNamSuDung
-	check (TTV_SoNamSuDung > 0)
+	check (TTV_SoNamSuDung >= 0)
 
 alter table TheThanhVien
 	add constraint C_TTV_DiemTichLuy
-	check (TTV_DiemTichLuy > 0)
+	check (TTV_DiemTichLuy >= 0)
 
 alter table TheThanhVien
 	add constraint C_TTV_TrangThai
-	check (TTV_TrangThai in (N'Mở', N'Đóng'))
+	check (TTV_TrangThai in (N'Available', N'Locked'))
 
 -- Khuyến mãi
 alter table KhuyenMai

@@ -36,15 +36,17 @@ create table ChiNhanh (
 	primary key (CN_MaChiNhanh)
 );
 
+-- drop table KhuVuc
 -- Bảng Khu Vực( Bao gồm cả thực đơn theo khu vực):
 create table KhuVuc (
 	KV_MaKhuVuc varchar(12),
 	KV_Ten nvarchar(50),
 	KV_MaThucDon varchar(12),
-	KV_TenDanhMuc varchar(20),
+	KV_TenDanhMuc nvarchar(20),
 	primary key (KV_MaKhuVuc, KV_TenDanhMuc)
 );
 
+-- drop table MonAn
 -- Bảng Món ăn:
 create table MonAn (
 	MA_MaMon varchar(12),
@@ -53,7 +55,7 @@ create table MonAn (
 	MA_KhauPhan int,
 	MA_CoSan BIT, --dùng để lưu giá trị: 0 là không có, 1 là có
 	MA_HoTroGiaoHang BIT,
-	MA_TenDanhMuc varchar(20),
+	MA_TenDanhMuc nvarchar(20),
 	MA_HinhAnh varchar(100),
 	primary key (MA_MaMon)
 );
