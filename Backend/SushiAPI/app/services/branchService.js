@@ -49,22 +49,18 @@ export const branchService = {
             const {CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc } = brachData;
             const pool = await conn;
             const result = await pool.request()
-                .input('CN_MaChiNhanh', sql.VarChar(10), CN_MaChiNhanh)
-                .input('CN_Ten', sql.NVarChar(50), CN_Ten)
-                .input('CN_DiaChi', sql.NVarChar(100), CN_DiaChi)
-                .input('CN_TGMoCua', sql.Time, CN_TGMoCua)
-                .input('CN_TGDongCua', sql.Time, CN_TGDongCua)
-                .input('CN_SDT', sql.VarChar(12), CN_SDT)
-                .input('CN_BaiDoXeMay', sql.Bit, CN_BaiDoXeMay)
-                .input('CN_BaiDoXeOto', sql.Bit, CN_BaiDoXeOto)
-                .input('CN_HoTroGiaoHang', sql.Bit, CN_HoTroGiaoHang)
-                .input('CN_MaQuanLy', sql.VarChar(10), CN_MaQuanLy)
-                .input('CN_MaKhuVuc', sql.VarChar(10), CN_MaKhuVuc)
-                .query(`
-                    insert into ChiNhanh (CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc)
-                    output inserted.*
-                    values (@CN_MaChiNhanh, @CN_Ten, CN_DiaChi, @CN_TGMoCua, @CN_TGDongCua, @CN_SDT, @CN_BaiDoXeMay, @CN_BaiDoXeOto, @CN_HoTroGiaoHang, @CN_MaQuanLy, @CN_MaKhuVuc)
-                `);
+                .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .input('Ten', sql.NVarChar(50), CN_Ten)
+                .input('DiaChi', sql.NVarChar(100), CN_DiaChi)
+                .input('TGMoCua', sql.Time, CN_TGMoCua)
+                .input('TGDongCua', sql.Time, CN_TGDongCua)
+                .input('SDT', sql.VarChar(12), CN_SDT)
+                .input('BaiDoXeMay', sql.Bit, CN_BaiDoXeMay)
+                .input('BaiDoXeOto', sql.Bit, CN_BaiDoXeOto)
+                .input('HoTroGiaoHang', sql.Bit, CN_HoTroGiaoHang)
+                .input('MaQuanLy', sql.VarChar(12), CN_MaQuanLy)
+                .input('MaKhuVuc', sql.VarChar(12), CN_MaKhuVuc)
+                .execute('sp_ThemChiNhanh')
                 return result.recordset[0]; // Trả về chi nhánh đã thêm
         } 
         catch (error){
@@ -116,11 +112,8 @@ export const branchService = {
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('CN_MaChiNhanh', sql.VarChar(10), CN_MaChiNhanh)
-                .query(`
-                    delete from ChiNhanh
-                    where CN_MaChiNhanh = @CN_MaChiNhanh
-                `);
+                .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .execute('sp_XoaChiNhanh')
             return result.rowsAffected[0] > 0; // Trả về true nếu có chi nhánh bị xóa
         } 
         catch (error){
