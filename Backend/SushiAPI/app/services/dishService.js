@@ -7,12 +7,8 @@ export const dishService = {
         try {
             const pool = await conn;
             const result = await pool.request().query(`
-                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc, KV_Ten, CN_Ten
+                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc
                 FROM MonAn
-                LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
-                LEFT JOIN DanhMuc_ThucDon on MA_MaDanhMuc = DanhMuc_ThucDon.DM_TD_MaDanhMuc
-                LEFT JOIN KhuVuc on KhuVuc.KV_MaThucDon =  DanhMuc_ThucDon.DM_TD_MaThucDon
-                LEFT JOIN ChiNhanh on ChiNhanh.CN_MaKhuVuc = KhuVuc.KV_MaKhuVuc
             `);
             return result.recordset; // Trả về danh sách món
         } catch (error) {
@@ -28,9 +24,8 @@ export const dishService = {
             const result = await pool.request()
                 .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
                 .query(`
-                    SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc, DM_TenDanhMuc
+                    SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc
                     FROM MonAn
-                    LEFT JOIN DanhMuc ON MonAn.MA_MaDanhMuc = DanhMuc.DM_MaDanhMuc
                     WHERE MA_MaMon = @MA_MaMon
                 `);
             return result.recordset[0]; // Trả về undefined nếu không tìm thấy món
@@ -43,21 +38,18 @@ export const dishService = {
     // Thêm một món mới
     addDish: async (dishData) => {
         try {
-            const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = dishData;
+            const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc } = dishData;
             const pool = await conn;
             const result = await pool.request()
-                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
-                .input('MA_TenMon', sql.NVarChar(50), MA_TenMon)
-                .input('MA_GiaHienTai', sql.Float, MA_GiaHienTai)
-                .input('MA_KhauPhan', sql.Int, MA_KhauPhan)
-                .input('MA_CoSan', sql.Bit, MA_CoSan)
-                .input('MA_HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
-                .input('MA_MaDanhMuc', sql.VarChar(10), MA_MaDanhMuc)
-                .query(`
-                    INSERT INTO MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
-                    OUTPUT INSERTED.*
-                    VALUES (@MA_MaMon, @MA_TenMon, @MA_GiaHienTai, @MA_KhauPhan, @MA_CoSan, @MA_HoTroGiaoHang, @MA_MaDanhMuc)
-                `);
+                .input('MaMon', sql.VarChar(12), MA_MaMon)
+                .input('TenMon', sql.NVarChar(50), MA_TenMon)
+                .input('GiaHienTai', sql.Float, MA_GiaHienTai)
+                .input('KhauPhan', sql.Int, MA_KhauPhan)
+                .input('CoSan', sql.Bit, MA_CoSan)
+                .input('HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
+                .input('TenDanhMuc', sql.NVarChar(20), MA_TenDanhMuc)
+                .execute('sp_ThemMonAn')
+
             return result.recordset[0]; // Trả về món vừa thêm
         } catch (error) {
             console.error('Error adding dish:', error);
@@ -68,23 +60,18 @@ export const dishService = {
     // Cập nhật một món theo MA_MaMon
     updateDish: async (MA_MaMon, updates) => {
         try {
-            const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc } = updates;
+            const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc } = updates;
             const pool = await conn;
             const result = await pool.request()
-                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
+                .input('MA_MaMon', sql.VarChar(12), MA_MaMon)
                 .input('MA_TenMon', sql.NVarChar(50), MA_TenMon)
                 .input('MA_GiaHienTai', sql.Float, MA_GiaHienTai)
                 .input('MA_KhauPhan', sql.Int, MA_KhauPhan)
                 .input('MA_CoSan', sql.Bit, MA_CoSan)
                 .input('MA_HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
-                .input('MA_MaDanhMuc', sql.VarChar(10), MA_MaDanhMuc)
-                .query(`
-                    UPDATE MonAn
-                    SET MA_TenMon = @MA_TenMon, MA_GiaHienTai = @MA_GiaHienTai, MA_KhauPhan = @MA_KhauPhan,
-                        MA_CoSan = @MA_CoSan, MA_HoTroGiaoHang = @MA_HoTroGiaoHang, MA_MaDanhMuc = @MA_MaDanhMuc
-                    WHERE MA_MaMon = @MA_MaMon
-                    SELECT * FROM MonAn WHERE MA_MaMon = @MA_MaMon
-                `);
+                .input('MA_TenDanhMuc', sql.NVarChar(20), MA_TenDanhMuc)
+                .execute('sp_ChinhSuaThongTinMonAn')
+
             return result.recordset[0]; // Trả về món vừa cập nhật
         } catch (error) {
             console.error('Error updating dish:', error);
@@ -98,7 +85,7 @@ export const dishService = {
             const pool = await conn;
             await pool.request()
                 .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
-                .query('DELETE FROM MonAn WHERE MA_MaMon = @MA_MaMon');
+                .execute('sp_XoaMonAn')
             return { success: true };
         } catch (error) {
             console.error('Error deleting dish:', error);

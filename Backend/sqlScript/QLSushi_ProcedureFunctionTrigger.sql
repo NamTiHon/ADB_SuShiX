@@ -281,12 +281,12 @@ create or alter proc sp_TaoPhieuDatMon
 	@ThoiGianDat datetime,
 	@SDT_KH varchar(12),
 	@MaNhanVien varchar(12),
-	@SoBan int, 
-	@SoLuongKH int,
-	@DiaChiGiao nvarchar(100),
-	@MaChiNhanh varchar(12),
-	@ThoiGianDen datetime,
-	@GhiChuThem nvarchar(100)
+	@SoBan int = NULL, 
+	@SoLuongKH int = NULL,
+	@DiaChiGiao nvarchar(100) = NULL,
+	@MaChiNhanh varchar(12) = NULL,
+	@ThoiGianDen datetime = NULL,
+	@GhiChuThem nvarchar(100) = NULL
 as
 begin 
 	if not exists(select * from KhachHang where KH_SDT = @SDT_KH)
@@ -295,13 +295,13 @@ begin
 		return
 	end
 
-	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	if @MaChiNhanh is not null and not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh) -- Kiểm tra nếu đây là phiếu đặt trước
 	begin
 		print(N'Chi nhánh này không tồn tại.')
 		return
 	end
 
-	if not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
+	if not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien) 
 	begin
 		print(N'Nhân viên này không tồn tại.')
 		return
@@ -327,30 +327,30 @@ go
 --Chỉnh sửa thông tin phiếu đặt món
 create or alter proc sp_ChinhSuaThongTinDatMon
 	@MaPhieu varchar(12),
-	@ThoiGianDat datetime,
-	@SDT_KH varchar(12),
-	@MaNhanVien varchar(12),
-	@SoBan int, 
-	@SoLuongKH int,
-	@DiaChiGiao nvarchar(100),
-	@MaChiNhanh varchar(12),
-	@ThoiGianDen datetime,
-	@GhiChuThem nvarchar(100)
+	@ThoiGianDat datetime = NULL,
+	@SDT_KH varchar(12) = NULL,
+	@MaNhanVien varchar(12) = NULL,
+	@SoBan int = NULL, 
+	@SoLuongKH int = NULL,
+	@DiaChiGiao nvarchar(100) = NULL,
+	@MaChiNhanh varchar(12) = NULL,
+	@ThoiGianDen datetime = NULL,
+	@GhiChuThem nvarchar(100) = NULL
 as
 begin 
-	if not exists(select * from KhachHang where KH_SDT = @SDT_KH)
+	if @SDT_KH is not null and not exists(select * from KhachHang where KH_SDT = @SDT_KH)
 	begin
 		print(N'Khách hàng không tồn tại.')
 		return
 	end
 
-	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	if @MaChiNhanh is not null and not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
 	begin
 		print(N'Chi nhánh này không tồn tại.')
 		return
 	end
 
-	if not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
+	if @MaNhanVien is not null and not exists(select * from NhanVien where NV_MaNhanVien = @MaNhanVien)
 	begin
 		print(N'Nhân viên này không tồn tại.')
 		return
@@ -784,6 +784,7 @@ end
 
 go
 --FUNCTION
+-- Xem danh sách các món ăn có ở khu vực X
 create or alter function uf_DanhSachMonAnTheoKhuVuc
 	(@MaKhuVuc varchar(12))
 	returns table
