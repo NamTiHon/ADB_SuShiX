@@ -85,7 +85,7 @@ create table PhieuDatMon (
 	primary key (PDM_MaPhieu)
 );
 
-
+--drop table KhachHang
 -- Bảng Khách hàng:
 create table KhachHang (
 	KH_SDT varchar(12),
@@ -93,7 +93,7 @@ create table KhachHang (
 	KH_CCCD varchar(13),
 	KH_Email varchar(30),
 	KH_GioiTinh nvarchar(3),
-	KH_MatKhau nvarchar(20),
+	KH_MatKhau varchar(100),
 	primary key (KH_SDT)
 );
 
