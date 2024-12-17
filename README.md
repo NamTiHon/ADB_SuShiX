@@ -36,7 +36,7 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
   2.3. Chạy file **DataConlai.sql** để nhập những data ban đầu --> **DataKhachhang.sql** --> **DataNhanvien.sql** --> **DataBophanNhanvien.sql** --> **DataThethanhvien.sql** --> **UpdateData.sql**
 
-  2.4. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** tiếp theo
+  2.4. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
  
 ### **Chạy backend**  
 - Mở terminal trong thư mục SushiAPI
