@@ -114,3 +114,22 @@ set statistics IO on;
 set statistics time off;
 set statistics IO off;
 */
+
+/*
+-- Tìm ra toàn bộ loại index trong database
+USE DB_SushiX
+GO
+ 
+SELECT
+            so.name AS TableName
+            , si.name AS IndexName
+            , si.type_desc AS IndexType
+FROM
+            sys.indexes si
+            JOIN sys.objects so ON si.[object_id] = so.[object_id]
+WHERE
+            so.type = 'U'    --Only get indexes for User Created Tables
+            AND si.name IS NOT NULL
+ORDER BY
+            so.name, si.type 
+*/
