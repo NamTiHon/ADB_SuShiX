@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const orderService = {
     //Lập phiếu đặt món mới
     makeOrder: async (orderData) => {
-        const { PDM_SDT_KH, PDM_MaNhanVien } = orderData
+        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_DiaChiCanGiao , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
@@ -18,10 +18,16 @@ export const orderService = {
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('MaPhieu', sql.VarChar(10), PDM_MaPhieu)
+                .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
                 .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
                 .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
-                .input('MaNhanVien', sql.VarChar(10), PDM_MaNhanVien)
+                .input('SoBan', sql.Int, PDM_SoBan)
+                .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
+                .input('ThoiGianDen', sql.DateTime, PDM_ThoiGianDen)
+                .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
+                .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
+                .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
+                .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
                 .execute('sp_TaoPhieuDatMon')
 
             const OrderID = result.output.PDM_MaPhieu
@@ -49,9 +55,9 @@ export const orderService = {
             try {
                 const pool = await conn;
                 const result = await pool.request()
-                    .input('MaMon', sql.DateTime, MDD_MaMon)
-                    .input('MaPhieu', sql.VarChar(10), MaPhieu)
-                    .input('SoLuong', sql.DateTime, MDD_SoLuong)
+                    .input('MaMon', sql.VarChar(12), MDD_MaMon)
+                    .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                    .input('SoLuong', sql.Int, MDD_SoLuong)
                     .execute('sp_ThemMonDuocDat')
 
                 // Trả về kết quả thành công
@@ -76,9 +82,9 @@ export const orderService = {
             try {
                 const pool = await conn;
                 const result = await pool.request()
-                    .input('MaMon', sql.DateTime, MaMon)
-                    .input('MaPhieu', sql.VarChar(10), MaPhieu)
-                    .input('SoLuong', sql.DateTime, update_SoLuong)
+                    .input('MaMon', sql.VarChar(12), MaMon)
+                    .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                    .input('SoLuong', sql.Int, update_SoLuong)
                     .execute('sp_ThayDoiSoLuongMon')
 
                 // Trả về kết quả thành công
@@ -103,8 +109,8 @@ export const orderService = {
             try {
                 const pool = await conn;
                 await pool.request()
-                    .input('MaMon', sql.DateTime, MaMon)
-                    .input('MaPhieu', sql.VarChar(10), MaPhieu)
+                    .input('MaMon', sql.VarChar(12), MaMon)
+                    .input('MaPhieu', sql.VarChar(12), MaPhieu)
                     .execute('sp_HuyMon')
                 return { success: true }
 
@@ -119,7 +125,7 @@ export const orderService = {
         try {
             const pool = await conn;
             await pool.request()
-                .input('MaPhieu', sql.VarChar(10), MaPhieu)
+                .input('MaPhieu', sql.VarChar(12), MaPhieu)
                 .execute('sp_HuyPhieuDatMon')
             return { success: true }
 
@@ -135,7 +141,7 @@ export const orderService = {
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('MaPhieu', sql.VarChar(10), MaPhieu)
+                .input('MaPhieu', sql.VarChar(12), MaPhieu)
                 .query(`
                     SELECT * 
                     FROM dbo.uf_XemPhieuDatMon(@MaPhieu)
