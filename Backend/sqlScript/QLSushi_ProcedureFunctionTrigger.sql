@@ -30,12 +30,12 @@ go
 --Chỉnh sửa thông tin món ăn
 create or alter proc sp_ChinhSuaThongTinMonAn
 	@MaMon varchar(12), 
-	@TenMon nvarchar(50), 
-	@Gia float,
-	@KhauPhan int,
-	@CoSan BIT,
-	@HoTroGiaoHang BIT,
-	@TenDanhMuc varchar(20)
+	@TenMon nvarchar(50) = NULL, 
+	@Gia float = NULL,
+	@KhauPhan int = NULL,
+	@CoSan BIT = NULL,
+	@HoTroGiaoHang BIT = NULL,
+	@TenDanhMuc varchar(20) = NULL
 as
 begin
 	if not exists(select * from MonAn where MA_MaMon = @MaMon)
@@ -132,25 +132,25 @@ go
 --Chỉnh sửa thông tin chi nhánh
 create or alter proc sp_ChinhSuaThongTinChiNhanh
 	@MaChiNhanh varchar(12),
-	@Ten nvarchar(50),
-	@DiaChi nvarchar(100),
-	@TGMoCua time, 
-	@TGDongCua time,
-	@SDT varchar(12),
-	@BaiDoXeMay BIT,  -- dùng để lưu giá trị bool: 0 là không có, 1 là có
-	@BaiDoXeOto BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
-	@HoTroGiaoHang BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
-	@MaQuanLy varchar(12), 
-	@MaKhuVuc varchar(12)
+	@Ten nvarchar(50) = NULL,
+	@DiaChi nvarchar(100) = NULL,
+	@TGMoCua time = NULL, 
+	@TGDongCua time = NULL,
+	@SDT varchar(12) = NULL,
+	@BaiDoXeMay BIT = NULL,  -- dùng để lưu giá trị bool: 0 là không có, 1 là có
+	@BaiDoXeOto BIT = NULL, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
+	@HoTroGiaoHang BIT = NULL, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
+	@MaQuanLy varchar(12) = NULL, 
+	@MaKhuVuc varchar(12) = NULL
 as
 begin
-	if not exists(select * from NhanVien where NV_MaNhanVien = @MaQuanLy)
+	if @MaChiNhanh is not null and not exists(select * from NhanVien where NV_MaNhanVien = @MaQuanLy)
 	begin
 		print(N'Nhân viên quản lí này không tồn tại.')
 		return
 	end
 
-	if not exists(select * from KhuVuc where KV_MaKhuVuc = @MaKhuVuc)
+	if @MaKhuVuc is not null and not exists(select * from KhuVuc where KV_MaKhuVuc = @MaKhuVuc)
 	begin
 		print(N'Khu vực này không tồn tại.')
 		return
@@ -231,9 +231,9 @@ go
 --Điều chỉnh thông tin khu vực nếu có thay đổi
 create or alter proc sp_ChinhSuaThongTinKhuVuc
 	@MaKhuVuc varchar(12),
-	@Ten nvarchar(50),
-	@MaThucDon varchar(12),
-	@TenDanhMuc varchar(20)
+	@Ten nvarchar(50) = NULL,
+	@MaThucDon varchar(12) = NULL,
+	@TenDanhMuc varchar(20) = NULL
 as
 begin
 	if not exists(select * from KhuVuc where KV_MaKhuVuc = @MaKhuVuc)
@@ -529,10 +529,10 @@ go
 --Cập nhật thông tin thẻ thàng viên
 create or alter proc sp_CapNhatThongTinTheThanhVien
 	@MaThe varchar(12),
-	@SoNamSuDung int,
-	@DiemTichLuy int,
-	@TrangThai nvarchar(30),
-	@LoaiThe nvarchar(30)
+	@SoNamSuDung int = NULL,
+	@DiemTichLuy int = NULL,
+	@TrangThai nvarchar(30) = NULL,
+	@LoaiThe nvarchar(30) = NULL
 as
 begin 
 	if not exists(select * from TheThanhVien where TTV_MaThe = @MaThe)
@@ -619,10 +619,10 @@ go
 --Chỉnh sửa thông tin khách hàng
 create or alter proc sp_ChinhSuaThongTinKhachHang
 	@SDT varchar(12),
-	@HoTen nvarchar(50), 
-	@CCCD varchar(13),
-	@Email varchar(30),
-	@GioiTinh nvarchar(3)
+	@HoTen nvarchar(50) = NULL, 
+	@CCCD varchar(13) = NULL,
+	@Email varchar(30) = NULL,
+	@GioiTinh nvarchar(3) = NULL
 as
 begin
 	if not exists(select * from KhachHang where KH_SDT = @SDT)
@@ -715,10 +715,10 @@ go
 --Thay đổi bộ phận và/hoặc chi nhánh nhân viên nếu có thay đổi về nơi làm việc và/hoặc chức vụ tại nhà hàng
 create or alter proc sp_ThayDoiBoPhanNhanVien
 	@MaNhanVien varchar(12),
-	@MaChiNhanh varchar(12),
-	@TenBoPhan nvarchar(50),
-	@ChucVu nvarchar(20),
-	@Luong float
+	@MaChiNhanh varchar(12) = NULL,
+	@TenBoPhan nvarchar(50) = NULL,
+	@ChucVu nvarchar(20) = NULL,
+	@Luong float = NULL
 as
 begin
 	if not exists(select * from BoPhan_NhanVien where BP_NV_MaNhanVien = @MaNhanVien)
@@ -727,7 +727,7 @@ begin
 		return
 	end
 
-	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	if @MaChiNhanh is not null and not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
 	begin
 		print(N'Không tồn tại chi nhánh này.')
 		return
