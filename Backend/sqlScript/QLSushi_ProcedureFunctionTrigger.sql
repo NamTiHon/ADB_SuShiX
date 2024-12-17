@@ -7,7 +7,7 @@ create or alter proc sp_ThemMonAn
 	@KhauPhan int,
 	@CoSan BIT,
 	@HoTroGiaoHang BIT,
-	@MaDanhMuc varchar(12)
+	@TenDanhMuc varchar(20)
 as
 begin
 	if exists(select * from MonAn where MA_MaMon = @MaMon)
@@ -17,9 +17,9 @@ begin
 	end
 	else
 	begin
-		insert into MonAn(MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_MaDanhMuc)
+		insert into MonAn(MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc)
 			values
-			(@MaMon, @TenMon, @Gia, @KhauPhan, @CoSan, @HoTroGiaoHang, @MaDanhMuc)
+			(@MaMon, @TenMon, @Gia, @KhauPhan, @CoSan, @HoTroGiaoHang, @TenDanhMuc)
 	end
 
 	print(N'Đã thêm món ăn')
@@ -35,7 +35,7 @@ create or alter proc sp_ChinhSuaThongTinMonAn
 	@KhauPhan int,
 	@CoSan BIT,
 	@HoTroGiaoHang BIT,
-	@MaDanhMuc varchar(12)
+	@TenDanhMuc varchar(20)
 as
 begin
 	if not exists(select * from MonAn where MA_MaMon = @MaMon)
@@ -51,7 +51,7 @@ begin
 			MA_KhauPhan = coalesce(@KhauPhan, MA_KhauPhan),
 			MA_CoSan = coalesce(@CoSan, MA_CoSan), 
 			MA_HoTroGiaoHang = coalesce(@HoTroGiaoHang, MA_HoTroGiaoHang),
-			MA_MaDanhMuc =  coalesce(@MaDanhMuc, MA_MaDanhMuc)
+			MA_TenDanhMuc =  coalesce(@TenDanhMuc, MA_TenDanhMuc)
 		where MA_MaMon = @MaMon
 	end
 
@@ -208,7 +208,7 @@ create or alter proc sp_ThemKhuVuc
 	@MaKhuVuc varchar(12),
 	@Ten nvarchar(50),
 	@MaThucDon varchar(12),
-	@MaDanhMuc varchar(12)
+	@TenDanhMuc varchar(20)
 as
 begin
 	if exists(select * from KhuVuc where KV_MaKhuVuc = @MaKhuVuc)
@@ -218,9 +218,9 @@ begin
 	end
 	else
 	begin
-		insert into KhuVuc(KV_MAKhuVuc, KV_Ten, KV_MaThucDon, KV_MaDanhMuc)
+		insert into KhuVuc(KV_MAKhuVuc, KV_Ten, KV_MaThucDon, KV_TenDanhMuc)
 			values
-			(@MaKhuVuc, @Ten, @MaThucDon, @MaDanhMuc)
+			(@MaKhuVuc, @Ten, @MaThucDon, @TenDanhMuc)
 	end
 
 	print(N'Đã thêm khu vực')
@@ -233,7 +233,7 @@ create or alter proc sp_ChinhSuaThongTinKhuVuc
 	@MaKhuVuc varchar(12),
 	@Ten nvarchar(50),
 	@MaThucDon varchar(12),
-	@MaDanhMuc varchar(12)
+	@TenDanhMuc varchar(20)
 as
 begin
 	if not exists(select * from KhuVuc where KV_MaKhuVuc = @MaKhuVuc)
@@ -246,7 +246,7 @@ begin
 		update KhuVuc
 		set KV_Ten = coalesce(@Ten, KV_Ten),
 			KV_MaThucDon = coalesce(@MaThucDon, KV_MaThucDon),
-			KV_MaDanhMuc = coalesce(@MaDanhMuc, KV_MaDanhMuc)
+			KV_MaDanhMuc = coalesce(@TenDanhMuc, KV_TenDanhMuc)
 		where KV_MaKhuVuc = @MaKhuVuc
 	end
 
