@@ -372,7 +372,6 @@ begin
 			PDM_ThoiGianDen = coalesce(@ThoiGianDen, PDM_ThoiGianDen),
 			PDM_DiaChiCanGiao = coalesce(@DiaChiGiao, PDM_DiaChiCanGiao),
 			PDM_MaChiNhanh = coalesce(@MaChiNhanh, PDM_MaChiNhanh),
-			PDM_MaNhanVien = coalesce(@MaNhanVien, PDM_MaNhanVien), -- Nhân viên tạo món
 			PDM_GhiChuThem = coalesce(@GhiChuThem, PDM_GhiChuThem)
 		where PDM_MaPhieu = @MaPhieu
 	end
