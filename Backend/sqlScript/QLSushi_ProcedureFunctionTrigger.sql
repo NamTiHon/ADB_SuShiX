@@ -1,24 +1,18 @@
 ﻿use DB_SushiX
 go
 
---CREATE OR ALTER PROCEDURE sp_Test
---AS
---BEGIN
---    SELECT 'Hello World';
---END;
 
 --STORE PROCEDURE
 --Thêm món ăn của nhà hàng
-create or alter procedure sp_ThemMonAn
+CREATE OR ALTER PROCEDURE usp_ThemMonAn
 	@MaMon varchar(12), 
 	@TenMon nvarchar(50), 
 	@Gia float,
 	@KhauPhan int,
 	@CoSan BIT,
-	@HoTroGiaoHang BIT,
 	@TenDanhMuc varchar(20)
-as
-begin
+AS
+BEGIN
 	if exists(select * from MonAn where MA_MaMon = @MaMon)
 	begin
 		print(N'Món ăn này đã tồn tại')
@@ -32,12 +26,12 @@ begin
 	end
 
 	print(N'Đã thêm món ăn')
-end;
+END;
 
 go
 
 --Chỉnh sửa thông tin món ăn
-create or alter proc sp_ChinhSuaThongTinMonAn
+CREATE OR ALTER PROCEDURE usp_ChinhSuaThongTinMonAn
 	@MaMon varchar(12), 
 	@TenMon nvarchar(50) = NULL, 
 	@Gia float = NULL,
@@ -45,8 +39,8 @@ create or alter proc sp_ChinhSuaThongTinMonAn
 	@CoSan BIT = NULL,
 	@HoTroGiaoHang BIT = NULL,
 	@TenDanhMuc varchar(20) = NULL
-as
-begin
+AS
+BEGIN
 	if not exists(select * from MonAn where MA_MaMon = @MaMon)
 	begin
 		print(N'Món ăn không tồn tại.')
@@ -65,12 +59,12 @@ begin
 	end
 
 	print(N'Đã thay đổi món ăn')
-end;
+END;
 
 go
 
 --Loại bỏ món ăn khỏi nhà hàng
-create or alter proc sp_XoaMonAn
+create or alter proc usp_XoaMonAn
 	@MaMon varchar(12)
 as 
 begin
@@ -95,7 +89,7 @@ end;
 go
 
 --Thêm chi nhánh 
-create or alter proc sp_ThemChiNhanh
+create or alter proc usp_ThemChiNhanh
 	@MaChiNhanh varchar(12),
 	@Ten nvarchar(50),
 	@DiaChi nvarchar(100),
@@ -139,7 +133,7 @@ end;
 go 
 
 --Chỉnh sửa thông tin chi nhánh
-create or alter proc sp_ChinhSuaThongTinChiNhanh
+create or alter proc usp_ChinhSuaThongTinChiNhanh
 	@MaChiNhanh varchar(12),
 	@Ten nvarchar(50) = NULL,
 	@DiaChi nvarchar(100) = NULL,
@@ -192,7 +186,7 @@ end;
 go 
 
 ---Xóa chi nhánh
-create or alter proc sp_XoaChiNhanh
+create or alter proc usp_XoaChiNhanh
 	@MaChiNhanh varchar(12)
 as
 begin
@@ -213,7 +207,7 @@ end;
 go
 
 --Thêm thực đơn khu vực mới
-create or alter proc sp_ThemKhuVuc
+create or alter proc usp_ThemKhuVuc
 	@MaKhuVuc varchar(12),
 	@Ten nvarchar(50),
 	@MaThucDon varchar(12),
@@ -238,7 +232,7 @@ end;
 go
 
 --Điều chỉnh thông tin khu vực nếu có thay đổi
-create or alter proc sp_ChinhSuaThongTinKhuVuc
+create or alter proc usp_ChinhSuaThongTinKhuVuc
 	@MaKhuVuc varchar(12),
 	@Ten nvarchar(50) = NULL,
 	@MaThucDon varchar(12) = NULL,
@@ -265,7 +259,7 @@ end;
 go
 
 --Xóa khu vực khỏi phạm vi kinh doanh của nhà hàng
-create or alter proc sp_XoaKhuVuc
+create or alter proc usp_XoaKhuVuc
 	@MaKhuVuc varchar(12)
 as
 begin
@@ -285,7 +279,7 @@ end;
 go
 
 --Tạo phiếu đặt món
-create or alter proc sp_TaoPhieuDatMon
+create or alter proc usp_TaoPhieuDatMon
 	@MaPhieu varchar(12),
 	@ThoiGianDat datetime,
 	@SDT_KH varchar(12),
@@ -334,7 +328,7 @@ end;
 go
 
 --Chỉnh sửa thông tin phiếu đặt món
-create or alter proc sp_ChinhSuaThongTinDatMon
+create or alter proc usp_ChinhSuaThongTinDatMon
 	@MaPhieu varchar(12),
 	@ThoiGianDat datetime = NULL,
 	@SDT_KH varchar(12) = NULL,
@@ -391,7 +385,7 @@ end;
 go
 
 --Hủy phiếu đặt món
-create or alter proc sp_HuyPhieuDatMon
+create or alter proc usp_HuyPhieuDatMon
 	@MaPhieu varchar(12)
 as
 begin 
@@ -417,7 +411,7 @@ end;
 go
 
 --Thêm món ăn mới vào phiếu đặt món( nếu có yêu cầu thêm)
-create or alter proc sp_ThemMonDuocDat
+create or alter proc usp_ThemMonDuocDat
 	@MaMon varchar(12),
 	@MaPhieu varchar(12),
 	@SoLuong int
@@ -447,7 +441,7 @@ end;
 go
 
 --Thay đổi thông tin số lượng của món đã có trong phiếu đặt món
-create or alter proc sp_ThayDoiSoLuongMon
+create or alter proc usp_ThayDoiSoLuongMon
 	@MaMon varchar(12),
 	@MaPhieu varchar(12),
 	@SoLuong int
@@ -477,7 +471,7 @@ end;
 go
 
 --Hủy món ăn có trong phiếu đặt món
-create or alter proc sp_HuyMon
+create or alter proc usp_HuyMon
 	@MaMon varchar(12),
 	@MaPhieu varchar(12)
 as
@@ -498,7 +492,7 @@ end;
 go
 
 --Tạo thẻ thành viên cho khách hàng mới
-create or alter proc sp_TaoTheThanhVien
+create or alter proc usp_TaoTheThanhVien
 	@MaThe varchar(12),
 	@NgayTao date,
 	@LoaiThe nvarchar(30),
@@ -536,7 +530,7 @@ end;
 go
 
 --Cập nhật thông tin thẻ thàng viên
-create or alter proc sp_CapNhatThongTinTheThanhVien
+create or alter proc usp_CapNhatThongTinTheThanhVien
 	@MaThe varchar(12),
 	@SoNamSuDung int = NULL,
 	@DiemTichLuy int = NULL,
@@ -571,7 +565,7 @@ end;
 go
 
 --Tạo hóa đơn theo phiếu đặt món
-create or alter proc sp_TaoHoaDon
+create or alter proc usp_TaoHoaDon
 	@MaHoaDon varchar(12),
 	@SoTienGiam float,
 	@TongTruocGiam float, 
@@ -602,7 +596,7 @@ end
 go
 
 --Thêm khách hàng mới
-create or alter proc sp_ThemKhachHang
+create or alter proc usp_ThemKhachHang
 	@SDT varchar(12),
 	@HoTen nvarchar(50), 
 	@CCCD varchar(13),
@@ -626,7 +620,7 @@ end
 
 go
 --Chỉnh sửa thông tin khách hàng
-create or alter proc sp_ChinhSuaThongTinKhachHang
+create or alter proc usp_ChinhSuaThongTinKhachHang
 	@SDT varchar(12),
 	@HoTen nvarchar(50) = NULL, 
 	@CCCD varchar(13) = NULL,
@@ -652,7 +646,7 @@ end
 
 go
 --Thêm nhân viên mới vào danh sách nhân viên của nhà hàng
-create or alter proc sp_ThemNhanVien
+create or alter proc usp_ThemNhanVien
 	@MaNhanVien varchar(12),
 	@HoTen nvarchar(50),
 	@NgaySinh datetime,
@@ -685,7 +679,7 @@ end
 go
 
 --Thêm bộ phận, chức vụ cho nhân viên theo chi nhánh
-create or alter proc sp_ThemBoPhanNhanVien
+create or alter proc usp_ThemBoPhanNhanVien
 	@MaNhanVien varchar(12),
 	@MaChiNhanh varchar(12),
 	@TenBoPhan nvarchar(50),
@@ -722,7 +716,7 @@ end
 go
 
 --Thay đổi bộ phận và/hoặc chi nhánh nhân viên nếu có thay đổi về nơi làm việc và/hoặc chức vụ tại nhà hàng
-create or alter proc sp_ThayDoiBoPhanNhanVien
+create or alter proc usp_ThayDoiBoPhanNhanVien
 	@MaNhanVien varchar(12),
 	@MaChiNhanh varchar(12) = NULL,
 	@TenBoPhan nvarchar(50) = NULL,
@@ -758,7 +752,7 @@ end
 	
 go
 --Bổ sung lịch sử làm việc của nhân viên tại nhà hàng nếu có thay đổi về nơi làm việc và/hoặc chức vụ tại nhà hàng
-create or alter proc sp_BoSungLichSuLamViec
+create or alter proc usp_BoSungLichSuLamViec
 	@MaNhanVien varchar(12),
 	@MaChiNhanhCu varchar(12),
 	@NgayBatDau datetime,
