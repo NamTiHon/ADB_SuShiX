@@ -83,25 +83,13 @@ update KhuVuc
 set KV_MaThucDon = 'TD007'
 where KV_MaKhuVuc = 'KV007'
 
-insert into ChiNhanh (CN_MaHinhAnh) values 
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'),
-('https://s.pro.vn/fEvt'), 
-('https://s.pro.vn/fEvt')
+
+--Update Hình Ảnh Chi Nhánh
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/sKP8'
+where CN_MaChiNhanh = 'CN001'
+
+--Update Hình ảnh Món ăn
+update MonAn
+set MA_HinhAnh = 'https://s.pro.vn/sKP8'
+where MA_MaMon = 'MA001'

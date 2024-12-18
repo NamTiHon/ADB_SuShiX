@@ -805,7 +805,7 @@ as
 	CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
      CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
 	from ChiNhanh join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc
-	group by CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten, CN_TGMoCua, CN_TGDongCua )
+	group by CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten, CN_TGMoCua, CN_TGDongCua, CN_MaHinhAnh )
 
 go 
 

@@ -180,7 +180,6 @@ values
     ('MA073', N'Sushi cá dưa hấu', 160.0, 2, 1, 1, N'Sushi'),
     ('MA074', N'Sushi sò đỏ', 200.0, 2, 1, 1, N'Sushi'),
     ('MA075', N'Sushi cá bạc má', 180.0, 2, 1, 1, N'Sushi');
-
 go
 
 
@@ -233,3 +232,4 @@ go
 -- select * from KhachHang
 -- select * from NhanVien
 -- select * from TheThanhVien
+
