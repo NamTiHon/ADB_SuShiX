@@ -41,14 +41,23 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
                                     <p key={field.name}>
                                         <strong>{field.label}:</strong>
                                         {field.editable ? (
-                                            <input
-                                                type="text"
-                                                name={field.name}
-                                                value={updatedBranch[field.name]}
-                                                onChange={handleChange}
-                                            />
+                                            typeof item[field.name] === 'boolean' ? (
+                                                <input
+                                                    type="checkbox"
+                                                    name={field.name}
+                                                    checked={updatedBranch[field.name]}
+                                                    onChange={(e) => handleChange({ target: { name: field.name, value: e.target.checked } })}
+                                                />
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    name={field.name}
+                                                    value={updatedBranch[field.name]}
+                                                    onChange={handleChange}
+                                                />
+                                            )
                                         ) : (
-                                            <span>{item[field.name]}</span>
+                                            <span>{typeof item[field.name] === 'boolean' ? (item[field.name] ? 'Có' : 'Không') : item[field.name]}</span>
                                         )}
                                     </p>
                                 ))}
@@ -58,12 +67,12 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
                             <>
                                 {fields.map((field) => (
                                     <p key={field.name}>
-                                        <strong>{field.label}:</strong> {item[field.name]}
+                                        <strong>{field.label}:</strong> {typeof item[field.name] === 'boolean' ? (item[field.name] ? 'Có' : 'Không') : item[field.name]}
                                     </p>
                                 ))}
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
-                                    <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>
+                                    <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Xoá</button>
                                 </div>
                             </>
                         )}

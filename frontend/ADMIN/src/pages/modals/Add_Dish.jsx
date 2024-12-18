@@ -3,20 +3,21 @@ import '../css/css-modals/add-booking.css';
 
 const Add_Dish = ({ onClose, onAdd }) => {
     const [newDish, setNewDish] = useState({
-        phone: '0123456789',
-        branchId: '123Levanviet',
-        tableNumber: '1',
-        numOfCustomers: '1',
-        arrivalDate: '2021-08-01',
-        arrivalTime: '10:00',
-        comment: 'example',
+        dishName: 'asw',
+        currentPrice: '123',
+        portion: '1',
+        available: false,
+        hasDelivery: false,
+        categoryId: '0122',
+        image: 'asw.jpg'
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        const newValue = e.target.type === 'checkbox' ? e.target.checked : value;
         setNewDish((prevDish) => ({
             ...prevDish,
-            [name]: value,
+            [name]: newValue,
         }));
     };
 
@@ -45,14 +46,14 @@ const Add_Dish = ({ onClose, onAdd }) => {
                     <h2>THÊM MÓN ĂN</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="modal-section">
-                            <h3>THÔNG TIN CÁ NHÂN</h3>
-                            <p><strong>Số điện thoại:</strong> <input type="text" name="phone" value={newDish.phone} onChange={handleChange} required /></p>
-                            <p><strong>Mã chi nhánh:</strong> <input type="text" name="branchId" value={newDish.branchId} onChange={handleChange} required /></p>
-                            <p><strong>Bàn số:</strong> <input type="text" name="tableNumber" value={newDish.tableNumber} onChange={handleChange} required /></p>
-                            <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={newDish.numOfCustomers} onChange={handleChange} required /></p>
-                            <p><strong>Ngày đến:</strong> <input type="date" name="arrivalDate" value={newDish.arrivalDate} onChange={handleChange} required /></p>
-                            <p><strong>Giờ đến:</strong> <input type="time" name="arrivalTime" value={newDish.arrivalTime} onChange={handleChange} required /></p>
-                            <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={newDish.comment} onChange={handleChange} required /></p>
+                            <h3>THÔNG TIN MÓN ĂN</h3>
+                            <p><strong>Tên món ăn:</strong> <input type="text" name="dishName" value={newDish.dishName} onChange={handleChange} required /></p>
+                            <p><strong>Giá hiện tại:</strong> <input type="text" name="currentPrice" value={newDish.currentPrice} onChange={handleChange} required /></p>
+                            <p><strong>Phần ăn:</strong> <input type="text" name="portion" value={newDish.portion} onChange={handleChange} required /></p>
+                            <p><strong>Có sẵn:</strong> <input type="checkbox" name="available" checked={newDish.available} onChange={handleChange} /></p>
+                            <p><strong>Có giao hàng:</strong> <input type="checkbox" name="hasDelivery" checked={newDish.hasDelivery} onChange={handleChange} /></p>
+                            <p><strong>Mã danh mục:</strong> <input type="text" name="categoryId" value={newDish.categoryId} onChange={handleChange} required /></p>
+                            <p><strong>Hình ảnh:</strong> <input type="text" name="image" value={newDish.image} onChange={handleChange} required /></p>
                             <button type="submit" className="add-button">Thêm</button>
                         </div>
                     </form>

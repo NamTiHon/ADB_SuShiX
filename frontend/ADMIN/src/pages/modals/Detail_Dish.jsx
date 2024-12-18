@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import '../css/css-modals/detail-booking.css';
 
 const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
-    const dish = item;
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedDish, setUpdatedDish] = useState({ ...dish });
+    const [updatedItem, setUpdatedItem] = useState({ ...item });
 
-    if (!dish) return null;
+    if (!item) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedDish((prevDish) => ({
-            ...prevDish,
+        setUpdatedItem((prevItem) => ({
+            ...prevItem,
             [name]: value,
         }));
     };
@@ -19,13 +18,13 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
     const handleDeleteClick = () => {
         const confirmDelete = window.confirm("Bạn có chắc chắn muốn hủy phiếu đặt này?");
         if (confirmDelete) {
-            onDelete(dish.dishId);
+            onDelete(item);
             onClose();
         }
     };
 
     const handleSave = () => {
-        onUpdate(updatedDish);
+        onUpdate(updatedItem);
         setIsEditing(false);
     };
 
@@ -42,49 +41,38 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
                                     <p key={field.name}>
                                         <strong>{field.label}:</strong>
                                         {field.editable ? (
-                                            <input
-                                                type="text"
-                                                name={field.name}
-                                                value={updatedDish[field.name]}
-                                                onChange={handleChange}
-                                            />
+                                            typeof item[field.name] === 'boolean' ? (
+                                                <input
+                                                    type="checkbox"
+                                                    name={field.name}
+                                                    checked={updatedItem[field.name]}
+                                                    onChange={(e) => handleChange({ target: { name: field.name, value: e.target.checked } })}
+                                                />
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    name={field.name}
+                                                    value={updatedItem[field.name]}
+                                                    onChange={handleChange}
+                                                />
+                                            )
                                         ) : (
-                                            <span>{dish[field.name]}</span>
+                                            <span>{typeof item[field.name] === 'boolean' ? (item[field.name] ? 'Có' : 'Không') : item[field.name]}</span>
                                         )}
                                     </p>
                                 ))}
-
-                                {/* <p><strong>Mã phiếu đặt:</strong> <input type="text" name="dishId" value={updatedDish.dishId} onChange={handleChange} /></p>
-                                <p><strong>Mã chi nhánh:</strong> <input type="text" name="branchId" value={updatedDish.branchId} onChange={handleChange} /></p>
-                                <p><strong>Ngày tạo:</strong> <input type="text" name="createdDate" value={updatedDish.createdDate} onChange={handleChange} /></p>
-                                <p><strong>Số bàn:</strong> <input type="text" name="tableNumber" value={updatedDish.tableNumber} onChange={handleChange} /></p>
-                                <p><strong>Số khách:</strong> <input type="text" name="numOfCustomers" value={updatedDish.numOfCustomers} onChange={handleChange} /></p>
-                                <p><strong>Ngày đến:</strong> <input type="text" name="arrivalDate" value={updatedDish.arrivalDate} onChange={handleChange} /></p>
-                                <p><strong>Giờ đến:</strong> <input type="text" name="arrivalTime" value={updatedDish.arrivalTime} onChange={handleChange} /></p>
-                                <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={updatedDish.comment} onChange={handleChange} /></p>
-                                <p><strong>Tình trạng:</strong> <input type="text" name="status" value={updatedDish.status} onChange={handleChange} /></p> */}
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
                             <>
-                                {/* <p><strong>Mã phiếu đặt:</strong> {dish.dishId}</p>
-                                <p><strong>Mã chi nhánh:</strong> {dish.branchId}</p>
-                                <p><strong>Ngày tạo:</strong> {dish.createdDate}</p>
-                                <p><strong>Số bàn:</strong> {dish.tableNumber}</p>
-                                <p><strong>Số khách:</strong> {dish.numOfCustomers}</p>
-                                <p><strong>Ngày đến:</strong> {dish.arrivalDate}</p>
-                                <p><strong>Giờ đến:</strong> {dish.arrivalTime}</p>
-                                <p><strong>Ghi chú:</strong> {dish.comment}</p>
-                                <p><strong>Tình trạng:</strong> {dish.status}</p> */}
                                 {fields.map((field) => (
                                     <p key={field.name}>
-                                        <strong>{field.label}:</strong> {dish[field.name]}
+                                        <strong>{field.label}:</strong> {typeof item[field.name] === 'boolean' ? (item[field.name] ? 'Có' : 'Không') : item[field.name]}
                                     </p>
                                 ))}
-
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
-                                    <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>
+                                    <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Xoá</button>
                                 </div>
                             </>
                         )}
