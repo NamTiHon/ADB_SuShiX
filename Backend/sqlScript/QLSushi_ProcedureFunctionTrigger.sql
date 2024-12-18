@@ -801,7 +801,7 @@ create or alter function uf_XemToanBoChiNhanh ()
 returns table
 as
 	return 
-	(select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten,
+	(select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten, CN_MaHinhAnh, 
 	CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
      CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
 	from ChiNhanh join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc

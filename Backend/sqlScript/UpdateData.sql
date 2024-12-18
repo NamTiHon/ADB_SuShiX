@@ -82,3 +82,26 @@ where KV_MaKhuVuc = 'KV006'
 update KhuVuc
 set KV_MaThucDon = 'TD007'
 where KV_MaKhuVuc = 'KV007'
+
+insert into ChiNhanh (CN_MaHinhAnh) values 
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'),
+('https://s.pro.vn/fEvt'), 
+('https://s.pro.vn/fEvt')
