@@ -1,4 +1,3 @@
-// src/pages/components/Profile.jsx
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,44 +7,26 @@ import '../css/profile.css';
 const Profile = () => {
     const { user, setUser, logout } = useContext(UserContext);
     const navigate = useNavigate();
-    const [previewUrl, setPreviewUrl] = useState(user?.avatar || '/default-avatar.png');
+    const [previewUrl, setPreviewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
     const fileInputRef = useRef(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
-        fullName: user?.KH_HoTen || '',
-        email: user?.email || '',
-        phone: user?.KH_SDT || '',
-        address: user?.KH_DiaChi || '',
-        idCard: user?.KH_CCCD || '',
-        gender: user?.KH_GioiTinh || '',
+        KH_HoTen: '',
+        KH_Email: '',
+        KH_SDT: '',
+        KH_CCCD: '',
+        KH_GioiTinh: '',
+        TTV_NgayTao: '',
+        TTV_LoaiThe: '',
+        TTV_DiemTichLuy: ''
     });
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
-    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-    const [email, setEmail] = useState('');
     const [showPromotionsModal, setShowPromotionsModal] = useState(false);
-  
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setPreviewUrl(reader.result);
-            };
-            reader.readAsDataURL(file);
-            setUser({
-                ...user,
-                avatar: reader.result
-            });
-        }
-    };
-
+    const email = user.email;
     const handleInputChange = (e) => {
         setEditedUser({
             ...editedUser,
@@ -55,169 +36,92 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            // Save to localStorage
-            localStorage.setItem('userProfile', JSON.stringify(editedUser));
-    
-            // If using an API, add this:
-            /*
-            const response = await fetch('/api/profile/update', {
+            // Save user data to backend
+            const response = await fetch(`http://localhost:3000/api/auth/${email}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(editedUser)
             });
-            
+
             if (!response.ok) {
                 throw new Error('Failed to update profile');
             }
-            */
-    
-            setUser(editedUser);
+
+            const updatedUser = await response.json();
             setIsEditing(false);
+            alert('Cập nhật thông tin thành công');
         } catch (error) {
             console.error('Error saving profile:', error);
-            // Handle error (show error message to user)
+            setError('Cập nhật thông tin thất bại, vui lòng thử lại.');
         }
     };
-    
-    // Load saved profile on component mount
-    useEffect(() => {
-        const savedProfile = localStorage.getItem('userProfile');
-        if (savedProfile) {
-            const parsedProfile = JSON.parse(savedProfile);
-            setUser(parsedProfile);
-            setEditedUser(parsedProfile);
-        }
-    }, []);
 
     const handleCancel = () => {
-        setEditedUser({...user});
+        setEditedUser({ ...user });
         setIsEditing(false);
     };
 
-    const renderField = (label, field, type = "text") => {
-        return (
-            <div className="info-item">
-                <label>{label}:</label>
-                {isEditing ? (
-                    <input
-                        type={type}
-                        name={field}
-                        value={editedUser[field] || ''}
-                        onChange={handleInputChange}
-                        className="edit-input"
-                    />
-                ) : (
-                    <span>{user[field]}</span>
-                )}
-            </div>
-        );
-    };
-    const handleLogoutClick = () => {
-        setShowLogoutModal(true);
-    };
-
-    const handleLogoutConfirm = () => {
-        logout();
-        setShowLogoutModal(false);
-        navigate('/');
-    };
-
-    const handleLogoutCancel = () => {
-        setShowLogoutModal(false);
-    };
-
-
-    // Add handler functions
-const handleForgotPasswordClick = () => {
-    setShowForgotPasswordModal(true);
-};
-
-const handleForgotPasswordSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        // API call to send reset password email
-        // const response = await fetch('/api/forgot-password', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ email })
-        // });
-        alert('Liên kết đặt lại mật khẩu đã được gửi đến email của bạn');
-        setShowForgotPasswordModal(false);
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
-    }
-};
-
-const handlePasswordClick = () => {
-    setShowPasswordModal(true);
-};
-
-const handlePasswordCancel = () => {
-    setShowPasswordModal(false);
-};
-
-const handlePasswordConfirm = async () => {
-    // Validate passwords
-    if (newPassword !== confirmPassword) {
-        setError('Mật khẩu mới không khớp');
-        return;
-    }
-    
-    try {
-        const response = await fetch('http://your-api/change-password', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                oldPassword,
-                newPassword
-            })
-        });
-
-        if (response.ok) {
-            setShowPasswordModal(false);
-            // Reset fields
-            setOldPassword('');
-            setNewPassword('');
-            setConfirmPassword('');
-            setError('');
-            alert('Thay đổi mật khẩu thành công');
-        } else {
-            const data = await response.json();
-            setError(data.message || 'Mật khẩu cũ không đúng');
-        }
-    } catch (err) {
-        setError('Đã xảy ra lỗi, vui lòng thử lại');
-    }
-};
-
-useEffect(() => {
     const fetchUserDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/auth/${email}`);
-            const data = await response.json();
-            if (response.ok) {
-                setUser(data); // Cập nhật thông tin người dùng trong context
-                setEditedUser(data); // Cập nhật thông tin người dùng trong state
-                setPreviewUrl(data.avatar || '/default-avatar.png'); // Cập nhật URL ảnh đại diện
-            } else {
-                setError(data.message || 'Không thể lấy thông tin người dùng');
+            const response = await fetch(`http://localhost:3000/api/auth/${email}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user details');
             }
-        } catch (err) {
-            setError('Có lỗi xảy ra. Vui lòng thử lại sau.');
+
+            const userDetails = await response.json();
+            setEditedUser(userDetails.user);
+            console.log('User details:', userDetails);
+            console.log('Edited user:', editedUser);
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            setError('Không thể tải thông tin người dùng.');
         }
     };
 
-    if (email) {
+    useEffect(() => {
         fetchUserDetails();
-    }
-}, [email, setUser]);
+    }, []);
 
+    const handleChangePassword = async () => {
+        if (newPassword !== confirmPassword) {
+            setError('Mật khẩu mới và xác nhận mật khẩu không khớp.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/profile/change-password', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ oldPassword, newPassword })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to change password');
+            }
+
+            alert('Đổi mật khẩu thành công');
+            setShowPasswordModal(false);
+        } catch (error) {
+            console.error('Error changing password:', error);
+            setError('Đổi mật khẩu thất bại, vui lòng thử lại.');
+        }
+    };
+    const handleLogout = () => {
+        logout();
+        navigate('/'); // Điều hướng về trang đăng nhập sau khi đăng xuất
+    };
     return (
         <div>
             <Nav />
@@ -226,166 +130,17 @@ useEffect(() => {
                     <div className="profile-sidebar">
                         <div className="avatar-container">
                             <img src={previewUrl} alt="Avatar" className="avatar" />
-                            <input 
-                                type="file"
-                                ref={fileInputRef}
-                                onChange={handleImageChange}
-                                accept="image/*"
-                                style={{ display: 'none' }}
-                            />
-                            <button onClick={() => fileInputRef.current.click()} className="change-avatar-btn">
-                                Thay đổi ảnh
+                            <button onClick={() => setShowPromotionsModal(true)} className="promotions-btn">
+                                Ưu đãi của bạn
+                            </button>
+                            <button onClick={() => setShowPasswordModal(true)} className="change-password-btn">
+                                Đổi mật khẩu
                             </button>
                         </div>
 
-
-                        <button onClick={handlePasswordClick} className="password-btn">
-                            <i className="fas fa-key"></i>
-                            Thay đổi mật khẩu
-                        </button>
-
-                        {showPasswordModal && (
-                            <div className="modal-overlay">
-                                <div className="modal-content">
-                                    <h3>Thay đổi mật khẩu</h3>
-                                    {error && <div className="error-message">{error}</div>}
-                                    <div className="password-inputs">
-                                        <input 
-                                            type="password" 
-                                            placeholder="Mật khẩu cũ"
-                                            value={oldPassword}
-                                            onChange={(e) => setOldPassword(e.target.value)}
-                                        />
-                                        <input 
-                                            type="password" 
-                                            placeholder="Mật khẩu mới"
-                                            value={newPassword}
-                                            onChange={(e) => setNewPassword(e.target.value)}
-                                        />
-                                        <input 
-                                            type="password" 
-                                            placeholder="Xác nhận mật khẩu mới"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                        />
-                                    </div>
-                                    <div className="modal-actions">
-                                        <button 
-                                            onClick={handlePasswordConfirm} 
-                                            className="confirm-btn"
-                                            disabled={!oldPassword || !newPassword || !confirmPassword}
-                                        >
-                                            Xác nhận
-                                        </button>
-                                        <button onClick={handlePasswordCancel} className="cancel-btn">
-                                            Hủy
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                        <button onClick={handleLogoutClick} className="logout-btn">
-                            <i className="fas fa-sign-out-alt"></i>
+                        <button onClick={handleLogout} className="logout-btn">
                             Đăng xuất
                         </button>
-
-                        {showLogoutModal && (
-                            <div className="modal-overlay">
-                                <div className="modal-content">
-                                    <h3>Xác nhận đăng xuất</h3>
-                                    <p>Bạn có chắc chắn muốn đăng xuất?</p>
-                                    <div className="modal-actions">
-                                        <button onClick={handleLogoutConfirm} className="confirm-btn">
-                                            Xác nhận
-                                        </button>
-                                        <button onClick={handleLogoutCancel} className="cancel-btn">
-                                            Hủy
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        <button onClick={handleForgotPasswordClick} className="forgot-password-btn">
-                            <i className="fas fa-key"></i>
-                            Quên mật khẩu
-                        </button>
-
-                        {showForgotPasswordModal && (
-                            <div className="modal-overlay">
-                                <div className="modal-content">
-                                    <h3>Quên mật khẩu</h3>
-                                    <p>Nhập email để nhận liên kết đặt lại mật khẩu</p>
-                                    <form onSubmit={handleForgotPasswordSubmit}>
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Nhập email của bạn"
-                                            className="forgot-password-input"
-                                            required
-                                        />
-                                        <div className="modal-actions">
-                                            <button type="submit" className="confirm-btn">
-                                                Gửi
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                onClick={() => setShowForgotPasswordModal(false)} 
-                                                className="cancel-btn"
-                                            >
-                                                Hủy
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        )}
-
-                        
-
-                        <button onClick={() => setShowPromotionsModal(true)} className="promotions-btn">
-                            <i className="fas fa-gift"></i>
-                            Ưu đãi của tôi
-                        </button>
-                        {showPromotionsModal && (
-                            <div className="modal-overlay">
-                                <div className="modal-content promotions-modal">
-                                    <div className="modal-header">
-                                        <h3>Ưu đãi của tôi</h3>
-                                        <button 
-                                            className="close-btn"
-                                            onClick={() => setShowPromotionsModal(false)}
-                                        >
-                                            <i className="fas fa-times"></i>
-                                        </button>
-                                    </div>
-
-                                    <div className="promotions-grid">
-                                        <div className="promotion-card">
-                                            <span className="promotion-status status-valid">Còn hiệu lực</span>
-                                            <div className="promotion-discount">Giảm 20%</div>
-                                            <div className="promotion-code">WELCOME20</div>
-                                            <div className="promotion-expiry">Hết hạn: 31/12/2024</div>
-                                            <div className="promotion-terms">
-                                                Áp dụng cho đơn hàng từ 500.000đ
-                                            </div>
-                                            <button 
-                                                className="copy-btn"
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText('WELCOME20');
-                                                    alert('Đã sao chép mã');
-                                                }}
-                                            >
-                                                <i className="fas fa-copy"></i> Sao chép mã
-                                            </button>
-                                        </div>
-                                        
-                                        {/* Add more promotion cards here */}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     <div className="profile-content">
@@ -393,51 +148,200 @@ useEffect(() => {
                             <h2>Thông tin cá nhân</h2>
                             {!isEditing ? (
                                 <button onClick={() => setIsEditing(true)} className="edit-btn">
-                                    <i className="fas fa-edit"></i> Chỉnh sửa
+                                    Chỉnh sửa
                                 </button>
                             ) : (
                                 <div className="edit-actions">
                                     <button onClick={handleSave} className="save-btn">
-                                        <i className="fas fa-save"></i> Lưu
+                                        Lưu
                                     </button>
                                     <button onClick={handleCancel} className="cancel-btn">
-                                        <i className="fas fa-times"></i> Hủy
+                                        Hủy
                                     </button>
                                 </div>
                             )}
                         </div>
-                        
+
                         <div className="profile-info">
                             <div className="info-group">
-                                {renderField("Họ và tên", "fullName")}
-                                {renderField("Email", "email", "email")}
-                                {renderField("Số điện thoại", "phone", "tel")}
-                                {renderField("Địa chỉ", "address")}
-                                {renderField("Ngày sinh", "birthDate", "date")}
-                                {renderField("CCCD", "idCard")}
-                                {renderField("Giới tính", "gender")}
-                            </div>
-
-                            <div className="membership-info">
-                                <h3>Thông tin thành viên</h3>
                                 <div className="info-item">
-                                    <label>Hạng thành viên:</label>
-                                    <span className="member-tier">{user?.TTV_LoaiThe}</span>
+                                    <label>Họ và tên:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            name="KH_HoTen"
+                                            value={editedUser.KH_HoTen || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.KH_HoTen}</span>
+                                    )}
+                                </div>
+                                <div className="info-item">
+                                    <label>Email:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="email"
+                                            name="KH_Email"
+                                            value={editedUser.KH_Email || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.KH_Email}</span>
+                                    )}
+                                </div>
+                                <div className="info-item">
+                                    <label>Số điện thoại:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="tel"
+                                            name="KH_SDT"
+                                            value={editedUser.KH_SDT || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.KH_SDT}</span>
+                                    )}
+                                </div>
+                                <div className="info-item">
+                                    <label>CCCD:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            name="KH_CCCD"
+                                            value={editedUser.KH_CCCD || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.KH_CCCD}</span>
+                                    )}
+                                </div>
+                                <div className="info-item">
+                                    <label>Giới tính:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            name="KH_GioiTinh"
+                                            value={editedUser.KH_GioiTinh || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.KH_GioiTinh}</span>
+                                    )}
+                                </div>
+                                <div className="info-item">
+                                    <label>Loại thẻ:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            name="TTV_LoaiThe"
+                                            value={editedUser.TTV_LoaiThe || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.TTV_LoaiThe}</span>
+                                    )}
                                 </div>
                                 <div className="info-item">
                                     <label>Điểm tích lũy:</label>
-                                    <div className="points-info">
-                                        <span className="current-points">{user?.TTV_DiemTichLuy || 0} điểm</span>
-                                    </div>
+                                    {isEditing ? (
+                                        <input
+                                            type="number"
+                                            name="TTV_DiemTichLuy"
+                                            value={editedUser.TTV_DiemTichLuy || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.TTV_DiemTichLuy}</span>
+                                    )}
                                 </div>
                                 <div className="info-item">
-                                    <label>Ngày tham gia:</label>
-                                    <span>{user?.TTV_NgayTao}</span>
+                                    <label>Ngày tạo thẻ:</label>
+                                    {isEditing ? (
+                                        <input
+                                            type="date"
+                                            name="TTV_NgayTao"
+                                            value={editedUser.TTV_NgayTao || ''}
+                                            onChange={handleInputChange}
+                                            className="edit-input"
+                                        />
+                                    ) : (
+                                        <span>{editedUser.TTV_NgayTao}</span>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {showPromotionsModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content promotions-modal">
+                            <div className="modal-header">
+                                <h3>Ưu đãi của bạn</h3>
+                                <button 
+                                    className="close-btn"
+                                    onClick={() => setShowPromotionsModal(false)}
+                                >
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div className="promotions-grid">
+                                <div className="promotion-card">
+                                    <span className="promotion-status status-valid">Còn hiệu lực</span>
+                                    <div className="promotion-discount">Giảm 20%</div>
+                                    <div className="promotion-code">WELCOME20</div>
+                                </div>
+                                {/* Thêm các thẻ ưu đãi khác nếu cần */}
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {showPasswordModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content password-modal">
+                            <div className="modal-header">
+                                <h3>Đổi mật khẩu</h3>
+                                <button 
+                                    className="close-btn"
+                                    onClick={() => setShowPasswordModal(false)}
+                                >
+                                    <i className="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                <label>Mật khẩu cũ:</label>
+                                <input
+                                    type="password"
+                                    value={oldPassword}
+                                    onChange={(e) => setOldPassword(e.target.value)}
+                                />
+                                <label>Mật khẩu mới:</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                                <label>Xác nhận mật khẩu mới:</label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                                {error && <div className="error-message">{error}</div>}
+                                <button onClick={handleChangePassword} className="save-btn">
+                                    Đổi mật khẩu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

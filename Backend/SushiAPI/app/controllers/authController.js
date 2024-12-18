@@ -12,15 +12,14 @@ export const showAllUsers = async (req, res) => {
     }
 };
 
-export const findUserByEmail = async (req, res) => {
-    const { email } = req.body;
+export const UserByEmail = async (req, res) => {
+    const { email } = req.params;
 
     try {
         const user = await userService.findUserByEmail(email);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         res.json({ message: 'User found', user });
     } catch (error) {
         console.error('Error finding user:', error);
@@ -62,6 +61,23 @@ export const login = async (req, res) => {
         res.json({ message: 'Login successful', token: result.token, email: result.email });
     } catch (error) {
         console.error('Error during login:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+// Update user
+export const updateUser = async (req, res) => {
+    const { email, name, role } = req.body;
+
+    try {
+        const result = await userService.updateUser(email, name, role);
+        if (!result.success) {
+            return res.status(400).json({ message: result.message });
+        }
+
+        res.json({ message: 'User updated successfully', user: result.user });
+    } catch (error) {
+        console.error('Error updating user:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };

@@ -102,8 +102,6 @@ create table LoaiThe (
 	LT_TenLoaiThe nvarchar(30),
 	primary key (LT_TenLoaiThe)
 );
-
-
 -- Bảng Thẻ thành viên
 create table TheThanhVien (
 	TTV_MaThe varchar(12),
