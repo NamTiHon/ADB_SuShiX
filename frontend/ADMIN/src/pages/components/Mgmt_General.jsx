@@ -81,7 +81,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
 
     const sortedItems = items.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
-    const filteredItems = (items || []).filter(item => {
+    const filteredItems = (sortedItems || []).filter(item => {
         const value = filterField.split('.').reduce((o, i) => o[i], item);
         return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
