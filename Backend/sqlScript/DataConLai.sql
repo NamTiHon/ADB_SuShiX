@@ -1,7 +1,12 @@
-﻿-- sp_help ChiNhanh;
+﻿use DB_SushiX
+go
+
+-- sp_help ChiNhanh;
 -- delete from ChiNhanh
 -- ALTER TABLE ChiNhanh ALTER COLUMN CN_TGMoCua TIME;
 -- ALTER TABLE ChiNhanh ALTER COLUMN CN_TGDongCua TIME;
+
+
 
 insert into 
 ChiNhanh (CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang)

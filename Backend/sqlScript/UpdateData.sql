@@ -1,4 +1,7 @@
-﻿insert into
+﻿use DB_SushiX
+go
+
+insert into
 LichSuLamViec(LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau, LSLV_NgayKetThuc)
 values
 ('NV00001234', 'CN003', '2019-10-01', '2020-01-12'),

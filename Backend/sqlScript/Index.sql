@@ -1,4 +1,7 @@
-﻿/*
+﻿use DB_SushiX
+go
+
+/*
 DECLARE @SQL NVARCHAR(MAX) = N'';
 
 -- Tạo danh sách lệnh DROP INDEX cho tất cả các Non-Clustered Index
