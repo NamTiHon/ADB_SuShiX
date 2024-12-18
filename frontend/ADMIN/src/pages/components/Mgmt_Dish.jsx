@@ -1,6 +1,4 @@
 import { React, useState, useEffect } from "react";
-import Nav from './Nav';
-import SideBar from './Sidebar';
 import Mgmt_General from './Mgmt_General';
 import '../css/components/mgmt-booking.css';
 import AddModal from "../modals/Add_Dish";
@@ -17,11 +15,11 @@ const columns = [
     { id: 'image', header: 'Hình ảnh', value: 'image', editable: true, visible: true }
 ];
 
-const dishes = [
-    { dishId: '1', dishName: 'Sushi', currentPrice: 10, portion: '1 roll', available: true, hasDelivery: true, categoryId: 'A1', image: 'sushi.jpg' },
+const initData = [
+    { dishId: '1', dishName: 'Sushi', currentPrice: 10, portion: '1 roll', available: true, hasDelivery: false, categoryId: 'A1', image: 'sushi.jpg' },
     { dishId: '2', dishName: 'Ramen', currentPrice: 12, portion: '1 bowl', available: true, hasDelivery: true, categoryId: 'A2', image: 'ramen.jpg' },
     { dishId: '3', dishName: 'Tempura', currentPrice: 15, portion: '1 plate', available: true, hasDelivery: true, categoryId: 'A3', image: 'tempura.jpg' },
-    { dishId: '4', dishName: 'Sashimi', currentPrice: 20, portion: '1 plate', available: true, hasDelivery: true, categoryId: 'A4', image: 'sashimi.jpg' },
+    { dishId: '4', dishName: 'Sashimi', currentPrice: 20, portion: '1 plate', available: false, hasDelivery: false, categoryId: 'A4', image: 'sashimi.jpg' },
     { dishId: '5', dishName: 'Takoyaki', currentPrice: 8, portion: '6 pieces', available: true, hasDelivery: true, categoryId: 'A5', image: 'takoyaki.jpg' },
     { dishId: '6', dishName: 'Okonomiyaki', currentPrice: 10, portion: '1 pancake', available: true, hasDelivery: true, categoryId: 'A6', image: 'okonomiyaki.jpg' },
     { dishId: '7', dishName: 'Udon', currentPrice: 11, portion: '1 bowl', available: true, hasDelivery: true, categoryId: 'A7', image: 'udon.jpg' },
@@ -31,6 +29,17 @@ const dishes = [
 ];
 
 function Mgmt_Dish() {
+    const [dishes, setDishes] = useState([]);
+
+    useEffect(() => {
+        const modifiedData = initData.map(dish => ({
+            ...dish,
+            available: dish.available ? "Có" : "Không",
+            hasDelivery: dish.hasDelivery ? "Có" : "Không"
+        }));
+        setDishes(modifiedData);
+    }, []);
+
     return (
         <Mgmt_General
             columns={columns}

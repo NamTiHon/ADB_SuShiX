@@ -18,7 +18,7 @@ const columns = [
     { id: 'regionId', header: 'Mã khu vực', value: 'regionId', editable: true, visible: true }
 ];
 
-const branches = [
+const initData = [
     { id: 1, name: 'Branch 1', address: '123 Main St', openingTime: '08:00', closingTime: '22:00', phone: '123-456-7890', isMotorPark: true, isCarPark: false, hasDelivery: true, managerId: 101, regionId: 1 },
     { id: 2, name: 'Branch 2', address: '456 Elm St', openingTime: '09:00', closingTime: '21:00', phone: '234-567-8901', isMotorPark: true, isCarPark: true, hasDelivery: false, managerId: 102, regionId: 2 },
     { id: 3, name: 'Branch 3', address: '789 Oak St', openingTime: '07:00', closingTime: '23:00', phone: '345-678-9012', isMotorPark: false, isCarPark: true, hasDelivery: true, managerId: 103, regionId: 3 },
@@ -32,6 +32,18 @@ const branches = [
 ];
 
 function Mgmt_Branch() {
+    const [branches, setBranches] = useState([]);
+
+    useEffect(() => {
+        const modifiedData = initData.map(dish => ({
+            ...dish,
+            isCarPark: dish.isCarPark ? "Có"    : "Không",
+            isMotorPark: dish.isMotorPark ? "Có" : "Không",
+            hasDelivery: dish.hasDelivery ? "Có" : "Không"
+        }));
+        setBranches(modifiedData);
+    }, []);
+
     return (
         <Mgmt_General
             columns={columns}

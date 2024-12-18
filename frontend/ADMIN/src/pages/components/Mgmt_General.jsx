@@ -155,7 +155,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             </div>
                             <div className="results-info">
                                 <span>
-                                    Đang xem {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredItems.length)} trong tổng số {filteredItems.length} phiếu đặt
+                                    Đang xem {indexOfFirstItem + 1} - {Math.min(indexOfLastItem, filteredItems.length)} trong tổng số {filteredItems.length}
                                 </span>
                             </div>
                         </div>
