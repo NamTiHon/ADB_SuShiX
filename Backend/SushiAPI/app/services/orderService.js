@@ -4,9 +4,46 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 
 export const orderService = {
-    //Lập phiếu đặt món mới
-    makeOrder: async (orderData) => {
-        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_DiaChiCanGiao , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
+    //Lập phiếu đặt trực tiếp
+    makeDirectOrder: async (orderData) => {
+        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH, PDM_MaNhanVien } = orderData
+
+        const now = dayjs();
+        const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
+
+        const uuid = uuidv4();
+        const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
+
+
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
+                .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
+                .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
+                .input('SoBan', sql.Int, PDM_SoBan)
+                .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
+                .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
+                .execute('sp_TaoPhieuDatMon')
+
+            const OrderID = result.output.PDM_MaPhieu
+
+            // Trả về kết quả thành công
+            return {
+                success: true,
+                message: 'Direct order created successfully',
+                OrderID
+            };
+
+        } catch (error) {
+            console.error('Error create order:', error);
+            throw new Error('Failed to create order.');
+        }
+    },
+
+    //Lập phiếu đặt trước
+    makeReserveOrder: async (orderData) => {
+        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
@@ -24,7 +61,6 @@ export const orderService = {
                 .input('SoBan', sql.Int, PDM_SoBan)
                 .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
                 .input('ThoiGianDen', sql.DateTime, PDM_ThoiGianDen)
-                .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
                 .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
                 .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
@@ -35,7 +71,7 @@ export const orderService = {
             // Trả về kết quả thành công
             return {
                 success: true,
-                message: 'Order created successfully',
+                message: 'Reserve order created successfully',
                 OrderID
             };
 
@@ -44,6 +80,84 @@ export const orderService = {
             throw new Error('Failed to create order.');
         }
     },
+
+    //Lập phiếu đặt trước
+    makeOnlineOrder: async (orderData) => {
+        const { PDM_SDT_KH, PDM_MaNhanVien, PDM_DiaChiCanGiao, PDM_GhiChuThem } = orderData
+
+        const now = dayjs();
+        const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
+    
+        const uuid = uuidv4();
+        const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
+    
+    
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
+                .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
+                .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
+                .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
+                .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
+                .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
+                .execute('sp_TaoPhieuDatMon')
+    
+            const OrderID = result.output.PDM_MaPhieu
+    
+            // Trả về kết quả thành công
+            return {
+                success: true,
+                message: 'Online order created successfully',
+                OrderID
+            };
+    
+        } catch (error) {
+            console.error('Error create order:', error);
+            throw new Error('Failed to create order.');
+        }
+    },
+
+    //Lập phiếu đặt món mới
+    // makeOrder: async (orderData) => {
+    //     const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_DiaChiCanGiao , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
+
+    //     const now = dayjs();
+    //     const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
+
+    //     const uuid = uuidv4();
+    //     const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
+
+
+    //     try {
+    //         const pool = await conn;
+    //         const result = await pool.request()
+    //             .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
+    //             .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
+    //             .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
+    //             .input('SoBan', sql.Int, PDM_SoBan)
+    //             .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
+    //             .input('ThoiGianDen', sql.DateTime, PDM_ThoiGianDen)
+    //             .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
+    //             .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
+    //             .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
+    //             .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
+    //             .execute('sp_TaoPhieuDatMon')
+
+    //         const OrderID = result.output.PDM_MaPhieu
+
+    //         // Trả về kết quả thành công
+    //         return {
+    //             success: true,
+    //             message: 'Order created successfully',
+    //             OrderID
+    //         };
+
+    //     } catch (error) {
+    //         console.error('Error create order:', error);
+    //         throw new Error('Failed to create order.');
+    //     }
+    // },
 
     //Đặt món cho phiếu đặt món
     orderDishes: async (MaPhieu, dishes) => {

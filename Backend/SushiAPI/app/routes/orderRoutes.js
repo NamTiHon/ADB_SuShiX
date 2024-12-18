@@ -3,8 +3,10 @@ import { orderController } from '../controllers/orderController.js';
 
 const router = express.Router();
 
-router.post('/', orderController.makeOrder);
-router.post('/:MaPhieu', orderController.orderDishes);
+router.post('/direct', orderController.makeDirectOrder);
+router.post('/reserve', orderController.makeReserveOrder);
+router.post('/online', orderController.makeOnlineOrder);
+// router.post('/:MaPhieu', orderController.orderDishes);
 router.put('/:MaPhieu', orderController.updateDishes);
 router.delete('/:MaPhieu', orderController.deleteDishes);
 router.delete('/:MaPhieu', orderController.deleteOrder);

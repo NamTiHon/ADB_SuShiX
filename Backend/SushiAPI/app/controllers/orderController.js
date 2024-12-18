@@ -2,16 +2,49 @@ import { orderService } from '../services/orderService.js';
 
 export const orderController = {
 
-    // @desc   Tạo phiếu đặt món mới
+    // @desc   Tạo phiếu đặt món trực tiếp
     // @route  POST /api/order
-    makeOrder: async (req, res) => {
+    makeDirectOrder: async (req, res) => {
         try {
-            const order = await orderService.makeOrder(req.body);
+            const order = await orderService.makeDirectOrder(req.body);
             res.status(200).json({ message: 'Order maked successfully', order });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     },
+
+    // @desc   Tạo phiếu đặt trước
+    // @route  POST /api/order
+    makeReserveOrder: async (req, res) => {
+        try {
+            const order = await orderService.makeReserveOrder(req.body);
+            res.status(200).json({ message: 'Order maked successfully', order });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // @desc   Tạo phiếu đặt online
+    // @route  POST /api/order
+    makeOnlineOrder: async (req, res) => {
+        try {
+            const order = await orderService.makeOnlineOrder(req.body);
+            res.status(200).json({ message: 'Order maked successfully', order });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    // @desc   Tạo phiếu đặt món mới
+    // @route  POST /api/order
+    // makeOrder: async (req, res) => {
+    //     try {
+    //         const order = await orderService.makeOrder(req.body);
+    //         res.status(200).json({ message: 'Order maked successfully', order });
+    //     } catch (error) {
+    //         res.status(500).json({ message: error.message });
+    //     }
+    // },
 
     // @desc   Thêm món ăn vào phiếu đặt món
     // @route  POST /api/order/:MaPhieu
