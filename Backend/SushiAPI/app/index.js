@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import branchRoutes from './routes/branchRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import promotionRoutes from './routes/promotionRoutes.js';
+import billRoutes from './routes/billRoutes.js';
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/branches', branchRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/promotions', promotionRoutes);
+app.use('/api/bills', billRoutes);
 app.get('/', (req, res) => {
     res.json({ msg: "Home Page" })
 });

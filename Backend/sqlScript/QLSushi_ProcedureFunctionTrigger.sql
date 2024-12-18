@@ -924,6 +924,55 @@ as
 			 where MDD_MaPhieu = @MaPhieu)
 go
 
+-- Stored Procedure cho hóa đơn
+CREATE OR ALTER PROCEDURE usp_LayTatCaHoaDon
+AS
+BEGIN
+    SELECT * FROM HoaDon;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE usp_LayHoaDonTheoMa
+    @HD_MaHoaDon VARCHAR(12)
+AS
+BEGIN
+    SELECT * 
+    FROM HoaDon
+    WHERE HD_MaHoaDon = @HD_MaHoaDon;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE usp_CapNhatHoaDon
+    @HD_MaHoaDon VARCHAR(12),
+    @HD_SoTienGiam FLOAT,
+    @HD_TongTruocGiam FLOAT,
+    @HD_TongTienThanhToan FLOAT,
+    @HD_MaPhieu VARCHAR(12)
+AS
+BEGIN
+    UPDATE HoaDon
+    SET HD_SoTienGiam = @HD_SoTienGiam,
+        HD_TongTruocGiam = @HD_TongTruocGiam,
+        HD_TongTienThanhToan = @HD_TongTienThanhToan,
+        HD_MaPhieu = @HD_MaPhieu
+    WHERE HD_MaHoaDon = @HD_MaHoaDon;
+
+    SELECT * FROM HoaDon WHERE HD_MaHoaDon = @HD_MaHoaDon;
+END
+
+GO
+
+CREATE OR ALTER PROCEDURE usp_XoaHoaDon
+    @HD_MaHoaDon VARCHAR(12)
+AS
+BEGIN
+    DELETE FROM HoaDon
+    WHERE HD_MaHoaDon = @HD_MaHoaDon;
+END
+
+GO
 --TRIGGER
 --- This is need for trigger
 
