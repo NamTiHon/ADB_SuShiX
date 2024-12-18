@@ -128,6 +128,7 @@ const BranchSearch = () => {
                     address: branch.CN_DiaChi,
                     district: branch.CN_MaKhuVuc,
                     phone: branch.CN_SDT,
+                    image: branch.CN_MaHinhAnh,
                     openHours: `${branch.CN_TGMoCua.slice(0,5)} - ${branch.CN_TGDongCua.slice(0,5)}`,
                     features: [
                         branch.CN_BaiDoXeOto && "Bãi giữ xe ô tô",

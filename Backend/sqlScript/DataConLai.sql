@@ -1,7 +1,12 @@
-﻿-- sp_help ChiNhanh;
+﻿use DB_SushiX
+go
+
+-- sp_help ChiNhanh;
 -- delete from ChiNhanh
 -- ALTER TABLE ChiNhanh ALTER COLUMN CN_TGMoCua TIME;
 -- ALTER TABLE ChiNhanh ALTER COLUMN CN_TGDongCua TIME;
+
+
 
 insert into 
 ChiNhanh (CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang)
@@ -175,7 +180,6 @@ values
     ('MA073', N'Sushi cá dưa hấu', 160.0, 2, 1, 1, N'Sushi'),
     ('MA074', N'Sushi sò đỏ', 200.0, 2, 1, 1, N'Sushi'),
     ('MA075', N'Sushi cá bạc má', 180.0, 2, 1, 1, N'Sushi');
-
 go
 
 
@@ -228,3 +232,4 @@ go
 -- select * from KhachHang
 -- select * from NhanVien
 -- select * from TheThanhVien
+

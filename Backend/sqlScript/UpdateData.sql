@@ -1,4 +1,7 @@
-﻿insert into
+﻿use DB_SushiX
+go
+
+insert into
 LichSuLamViec(LSLV_MaNhanVien, LSLV_MaChiNhanhCu, LSLV_NgayBatDau, LSLV_NgayKetThuc)
 values
 ('NV00001234', 'CN003', '2019-10-01', '2020-01-12'),
@@ -79,3 +82,65 @@ where KV_MaKhuVuc = 'KV006'
 update KhuVuc
 set KV_MaThucDon = 'TD007'
 where KV_MaKhuVuc = 'KV007'
+
+
+--Update Hình Ảnh Chi Nhánh
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/sKP8'
+where CN_MaChiNhanh = 'CN001'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/GjWq'
+where CN_MaChiNhanh = 'CN002'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/QMcC'
+where CN_MaChiNhanh = 'CN003'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/diGY'
+where CN_MaChiNhanh = 'CN004'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/F5PF'
+where CN_MaChiNhanh = 'CN005'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/Acs2'
+where CN_MaChiNhanh = 'CN006'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/lQGN'
+where CN_MaChiNhanh = 'CN007'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/vbqn'
+where CN_MaChiNhanh = 'CN008'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/pTQ3'
+where CN_MaChiNhanh = 'CN009'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/2wC6'
+where CN_MaChiNhanh = 'CN010'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/xQaB'
+where CN_MaChiNhanh = 'CN011'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/DsJI'
+where CN_MaChiNhanh = 'CN012'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/RMwx'
+where CN_MaChiNhanh = 'CN013'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/xuoo'
+where CN_MaChiNhanh = 'CN014'
+--Update Hình ảnh Món ăn
+update MonAn
+set MA_HinhAnh = 'https://s.pro.vn/sKP8'
+where MA_MaMon = 'MA001'

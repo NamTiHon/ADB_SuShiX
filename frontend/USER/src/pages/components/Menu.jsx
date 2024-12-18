@@ -212,7 +212,7 @@ const Menu = () => {
                             name: dish?.MA_TenMon?.toString() || '',
                             category: (dish?.MA_TenDanhMuc || '').toString().toLowerCase(),
                             price: (Number(dish?.MA_GiaHienTai) || 0) * 1000,
-                            image: dish?.MA_MaMon ? `/images/${dish.MA_MaMon.toString().toLowerCase()}.jpg` : '',
+                            image: dish?.MA_HinhAnh,
                             description: dish?.MA_TenDanhMuc?.toString() || '',
                             region: dish?.KV_Ten?.toString() || '',
                             branch: dish?.CN_Ten?.toString() || '',

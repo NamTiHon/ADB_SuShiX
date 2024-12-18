@@ -95,7 +95,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     position: relative;
-    padding-bottom: 16px;
+    
 }
 .branch-card.closed {
     opacity: 0.8;
@@ -587,7 +587,7 @@
 
 .branch-info {
     padding: 0;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
 .branch-info h3 {
@@ -704,4 +704,7 @@
 
 @keyframes spin {
     100% { transform: rotate(360deg); }
+}
+.branch-card{
+    gap: 20px;
 }
