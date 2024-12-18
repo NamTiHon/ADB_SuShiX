@@ -9,11 +9,8 @@ export const branchService = {
             const pool = await conn; // conn là đối tượng kết nối đến cơ sở dữ liệu 
             // Gửi truy vấn đến cơ sở dữ liệu
             const result = await pool.request().query(`
-                select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten,
-                CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
-                CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
-                from ChiNhanh left join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc
-            `);
+                select * from dbo.uf_XemToanBoChiNhanh();
+            `)
             return result.recordset;
         }
         catch (error) {
@@ -29,11 +26,7 @@ export const branchService = {
             const result = await pool.request()
                 .input('CN_MaChiNhanh', sql.VarChar(10), CN_MaChiNhanh)
                 .query (`
-                    select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten,
-                    CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
-                    CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
-                    from ChiNhanh left join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc
-                    where CN_MaChiNhanh = @CN_MaChiNhanh
+                    select * from dbo.uf_XemChiNhanh(@CN_MaChiNhanh);
                 `);
             return result.recordset[0]; // trả về undefined nếu không tìm thấy món
         }
