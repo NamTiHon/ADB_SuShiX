@@ -14,6 +14,12 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         console.log('Current items:', items);
     }, [items]);
 
+    const fields = columns.map(column => ({
+        label: column.header,
+        name: column.value,
+        editable: column.editable
+    }));
+
     const [selectedItem, setSelectedItem] = useState(null);
 
     const [searchQuery, setSearchQuery] = useState('');
@@ -49,6 +55,10 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         console.log('Update item:', item);
     };
 
+    const handleDeleteItem = (itemToDelete) => {
+        setItems(items.filter(item => item !== itemToDelete));
+    };
+
     const handlePageInputChange = (event) => {
         const value = event.target.value;
         if (value === '' || (Number(value) > 0 && Number(value) <= totalPages)) {
@@ -69,7 +79,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         setItems([...items, newItem]);
     };
 
-    // const sortedItems = items.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+    const sortedItems = items.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
     const filteredItems = (items || []).filter(item => {
         const value = filterField.split('.').reduce((o, i) => o[i], item);
@@ -110,13 +120,13 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                 <SideBar />
                 <div className="main-content-box">
                     <div className="header-container">
-                        <h1>Danh sách general</h1>
+                        <h1>{title}</h1>
                         <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm</button>
                     </div>
                     <div className="table-box">
                         <div className="search-and-pagination-container">
                             <select className="property-dropdown" value={filterField} onChange={(e) => setFilterField(e.target.value)}>
-                                {columns.map(column => (
+                                {columns.filter(column => column.visible).map(column => (
                                     <option key={column.id} value={column.value}>
                                         {column.header}
                                     </option>
@@ -152,7 +162,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    {columns.map(column => (
+                                    {columns.filter(column => column.visible).map(column => (
                                         <th key={column.id}>{column.header}</th>
                                     ))}
                                 </tr>
@@ -160,7 +170,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             <tbody>
                                 {currentItems.map(item => (
                                     <tr key={item.itemId} onClick={() => handleRowClick(item)}>
-                                        {columns.map(column => (
+                                        {columns.filter(column => column.visible).map(column => (
                                             <td key={`${item.itemId}-${column.id}`}>
                                                 {item[column.value]}
                                             </td>
@@ -173,10 +183,20 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                 </div>
             </div>
             {selectedItem && (
-                <DetailModal item={selectedItem} onClose={closeModal} onUpdate={handleUpdate} />
+                <DetailModal 
+                    item={selectedItem}
+                    onClose={closeModal}
+                    onUpdate={handleUpdate}
+                    onDelete={handleDeleteItem}
+                    fields={fields}
+                />
             )}
             {isAddModalOpen && (
-                <AddModal onClose={() => setIsAddModalOpen(false)} onAdd={handleAddItem} />
+                <AddModal
+                    onClose={() => setIsAddModalOpen(false)}
+                    onAdd={handleAddItem}
+                    fields = {fields}
+                />
             )}
         </div>
     );

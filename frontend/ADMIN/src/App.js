@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Login from './pages/components/Login';
 import Home from './pages/components/Home';
+import Mgmt_Branch from './pages/components/Mgmt_Branch';
+import Mgmt_Dish from './pages/components/Mgmt_Dish';
 import Mgmt_Staff from './pages/components/Mgmt_Staff';
 import Mgmt_Customer from './pages/components/Mgmt_Customer';
 import Mgmt_Booking from './pages/components/Mgmt_Booking';
@@ -15,6 +17,8 @@ function App() {
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Home />} />
+                    <Route path="/mgmt-branch" element={<Mgmt_Branch />} />
+                    <Route path="/mgmt-dish" element={<Mgmt_Dish />} />
                     <Route path="/mgmt-staff" element={<Mgmt_Staff />} />
                     <Route path="/mgmt-customer" element={<Mgmt_Customer />} />
                     <Route path="/mgmt-booking" element={<Mgmt_Booking />} />

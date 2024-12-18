@@ -1,22 +1,20 @@
 import { React, useState, useEffect } from "react";
-import Nav from './Nav';
-import SideBar from './Sidebar';
 import Mgmt_General from './Mgmt_General';
 import '../css/components/mgmt-booking.css';
 import AddModal from "../modals/Add_Booking";
-import Detail_Booking from "../modals/Detail_Booking";
+import DetailModal from "../modals/Detail_Booking";
 
 const columns = [
-    { id: 'bookingId', header: 'Mã phiếu đặt', value: 'bookingId' },
-    { id: 'phone', header: 'Số điện thoại', value: 'phone' },
-    { id: 'createdDate', header: 'Ngày tạo', value: 'createdDate' },
-    { id: 'branchId', header: 'Chi nhánh', value: 'branchId' },
-    { id: 'tableNumber', header: 'Số bàn', value: 'tableNumber' },
-    { id: 'numOfCustomers', header: 'Số khách', value: 'numOfCustomers' },
-    { id: 'arrivalDate', header: 'Ngày đến', value: 'arrivalDate' },
-    { id: 'arrivalTime', header: 'Giờ đến', value: 'arrivalTime' },
-    { id: 'comment', header: 'Ghi chú', value: 'comment' },
-    { id: 'status', header: 'Trạng thái', value: 'status' }
+    { id: 'bookingId', header: 'Mã phiếu đặt', value: 'bookingId', editable: false, visible: true },
+    { id: 'phone', header: 'Số điện thoại', value: 'phone', editable: false, visible: true },
+    { id: 'createdDate', header: 'Ngày tạo', value: 'createdDate', editable: false, visible: true },
+    { id: 'branchId', header: 'Chi nhánh', value: 'branchId', editable: true, visible: true },
+    { id: 'tableNumber', header: 'Số bàn', value: 'tableNumber', editable: true, visible: true },
+    { id: 'numOfCustomers', header: 'Số khách', value: 'numOfCustomers', editable: true, visible: true },
+    { id: 'arrivalDate', header: 'Ngày đến', value: 'arrivalDate', editable: true, visible: true },
+    { id: 'arrivalTime', header: 'Giờ đến', value: 'arrivalTime', editable: true, visible: true },
+    { id: 'comment', header: 'Ghi chú', value: 'comment', editable: true, visible: true },
+    { id: 'status', header: 'Trạng thái', value: 'status', editable: false, visible: true }
 ];
 
 const bookings = [
@@ -32,13 +30,17 @@ const bookings = [
     { bookingId: '10', phone: '0901234567', createdDate: '2023-10-10', branchId: 'B010', tableNumber: 1, numOfCustomers: 2, arrivalDate: '2023-10-10', arrivalTime: '19:15', comment: 'Quick bite', status: 'Confirmed' }
 ];
 
+const initdata = bookings.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
+
 function Mgmt_Booking() {
     return (
         <Mgmt_General
             columns={columns}
             initialData={bookings}
+            title={'Danh sách đặt món'}
             AddModal={AddModal}
-            DetailModal={Detail_Booking} />
+            DetailModal={DetailModal}
+        />
     );
 }
 

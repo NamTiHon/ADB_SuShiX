@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/css-modals/detail-booking.css';
 
-const Detail_Booking = ({ item, onClose, onUpdate, onDelete }) => {
+const Detail_Booking = ({ item, onClose, onUpdate, onDelete, fields }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedBooking, setUpdatedBooking] = useState({ ...item });
 
@@ -16,7 +16,7 @@ const Detail_Booking = ({ item, onClose, onUpdate, onDelete }) => {
     };
 
     const handleDeleteClick = () => {
-        const confirmDelete = window.confirm("Bạn có chắc chắn muốn hủy mục này?");
+        const confirmDelete = window.confirm("Bạn có chắc chắn muốn xoá?");
         if (confirmDelete) {
             onDelete(item);
             onClose();
@@ -27,18 +27,6 @@ const Detail_Booking = ({ item, onClose, onUpdate, onDelete }) => {
         onUpdate(updatedBooking);
         setIsEditing(false);
     };
-
-    const fields = [
-        { label: "Mã phiếu đặt", name: "bookingId", editable: false },
-        { label: "Mã chi nhánh", name: "branchId", editable: true },
-        { label: "Ngày tạo", name: "createdDate", editable: true },
-        { label: "Số bàn", name: "tableNumber", editable: true },
-        { label: "Số khách", name: "numOfCustomers", editable: true },
-        { label: "Ngày đến", name: "arrivalDate", editable: true },
-        { label: "Giờ đến", name: "arrivalTime", editable: true },
-        { label: "Ghi chú", name: "comment", editable: true },
-        { label: "Tình trạng", name: "status", editable: true },
-    ];
 
     return (
         <div className="modal-overlay">

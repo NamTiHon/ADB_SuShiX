@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/css-modals/add-booking.css';
 
-const Add_Booking = ({ onClose, onAdd }) => {
+const Add_Booking = ({ onClose, onAdd, fields }) => {
     const [newBooking, setNewBooking] = useState({
         phone: '0123456789',
         branchId: '123Levanviet',
