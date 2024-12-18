@@ -210,10 +210,10 @@ const Menu = () => {
                         transformedDishes.push({
                             id: dish?.MA_MaMon?.toString() || '',
                             name: dish?.MA_TenMon?.toString() || '',
-                            category: (dish?.DM_TenDanhMuc || '').toString().toLowerCase(),
+                            category: (dish?.MA_TenDanhMuc || '').toString().toLowerCase(),
                             price: (Number(dish?.MA_GiaHienTai) || 0) * 1000,
                             image: dish?.MA_MaMon ? `/images/${dish.MA_MaMon.toString().toLowerCase()}.jpg` : '',
-                            description: dish?.DM_TenDanhMuc?.toString() || '',
+                            description: dish?.MA_TenDanhMuc?.toString() || '',
                             region: dish?.KV_Ten?.toString() || '',
                             branch: dish?.CN_Ten?.toString() || '',
                             available: Boolean(dish?.MA_CoSan)

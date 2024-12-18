@@ -7,8 +7,7 @@ export const dishService = {
         try {
             const pool = await conn;
             const result = await pool.request().query(`
-                SELECT MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc
-                FROM MonAn
+                select * from dbo.uf_MonAnTheoChiNhanh();
             `);
             return result.recordset; // Trả về danh sách món
         } catch (error) {

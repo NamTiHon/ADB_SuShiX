@@ -38,6 +38,7 @@ values
     ('KV001', N'Khu vực TP.HCM', 'TD001', N'Lunch set'),
     ('KV001', N'Khu vực TP.HCM', 'TD001', N'Udon'),
     ('KV001', N'Khu vực TP.HCM', 'TD001', N'Sushi'),
+	('KV001', N'Khu vực TP.HCM', 'TD001', N'Hotpot'),
 
     ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Khai vị'),
     ('KV002', N'Khu vực Đà Nẵng', 'TD002', N'Sashimi combo'),

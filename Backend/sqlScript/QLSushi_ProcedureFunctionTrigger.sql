@@ -797,6 +797,31 @@ as
 			 where KV_MaKhuVuc = @MaKhuVuc)
 go
 
+create or alter function uf_XemToanBoChiNhanh ()
+returns table
+as
+	return 
+	(select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten,
+	CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
+     CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
+	from ChiNhanh join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc
+	group by CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten, CN_TGMoCua, CN_TGDongCua )
+
+go 
+
+create or alter function uf_XemThongTinChiNhanhBangMaChiNhanh 
+	(@MaChiNhanh varchar(12))
+returns table
+as
+	return 
+	(select CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten,
+	CONVERT(VARCHAR(8), CN_TGMoCua, 108) AS CN_TGMoCua,
+     CONVERT(VARCHAR(8), CN_TGDongCua, 108) AS CN_TGDongCua
+	from ChiNhanh join KhuVuc on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc
+	where ChiNhanh.CN_MaChiNhanh = @MaChiNhanh
+	group by CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_MaQuanLy, CN_MaKhuVuc, KV_Ten, CN_TGMoCua, CN_TGDongCua )
+
+go
 --Xem danh sách chi nhánh có món ăn X
 create or alter function uf_DanhSachChiNhanhCoMonAn
 	(@MaMonAn varchar(12))
@@ -804,6 +829,16 @@ create or alter function uf_DanhSachChiNhanhCoMonAn
 as
 	return ( select * from ChiNhanh
 			 where CN_MaKhuVuc = (select KV_MaKhuVuc from KhuVuc join MonAn on MA_TenDanhMuc = KV_TenDanhMuc where MA_MaMon = @MaMonAn))
+go
+
+create or alter function uf_MonAnTheoChiNhanh()
+returns table
+as 
+	return (
+		select MonAn.*, KhuVuc.KV_Ten, CN_Ten
+		from MonAn join KhuVuc on MonAn.MA_TenDanhMuc = KhuVuc.KV_TenDanhMuc
+		join ChiNhanh on KhuVuc.KV_MaKhuVuc = ChiNhanh.CN_MaKhuVuc )
+
 go
 
 --Xem danh sách chi nhánh trong một khu vực
