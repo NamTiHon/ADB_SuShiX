@@ -12,6 +12,22 @@ export const showAllUsers = async (req, res) => {
     }
 };
 
+export const findUserByEmail = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await userService.findUserByEmail(email);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json({ message: 'User found', user });
+    } catch (error) {
+        console.error('Error finding user:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 // Đăng ký user mới
 export const register = async (req, res) => {
     const { email, password, name, role } = req.body;
@@ -43,7 +59,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ message: result.message });
         }
 
-        res.json({ message: 'Login successful', token: result.token });
+        res.json({ message: 'Login successful', token: result.token, email: result.email });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Server error', error: error.message });

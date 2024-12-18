@@ -17,7 +17,7 @@ export const authService = {
 
             // Tạo token
             const token = generateToken(user);
-            return { success: true, token };
+            return { success: true, token, email: user.KH_Email};
         } catch (error) {
             console.error('Error during login:', error);
             throw new Error('Failed to login user');

@@ -21,7 +21,11 @@ export const userService = {
             const pool = await conn;
             const result = await pool.request()
                 .input('Email', sql.NVarChar(100), email)
-                .query('SELECT * FROM KhachHang WHERE KH_Email = @Email');
+                .query(`
+                    SELECT KhachHang.* , TheThanhVien.TTV_LoaiThe, TheThanhVien.TTV_DiemTichLuy, TheThanhVien.TTV_NgayTao
+                    FROM KhachHang join TheThanhVien on KhachHang.KH_SDT = TheThanhVien.TTV_SDT_KH
+                    WHERE KH_Email = @Email
+                `);
             return result.recordset[0]; // Return the first user found
         } catch (error) {
             console.error('Error finding user by email:', error);

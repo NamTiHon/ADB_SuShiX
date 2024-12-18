@@ -15,21 +15,28 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const from = location.state?.from || '/';
 
-    const users = [
-        { email: 'user1@gmail.com', password: 'user123', name: 'User One' },
-        { email: 'admin@gmail.com', password: 'admin123', name: 'Admin' },
-        { email: 'test@gmail.com', password: 'test123' }
-    ];
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = users.find(u => u.email === email && u.password === password);
-        
-        if (user) {
-            setUser(user); // UserContext will handle localStorage
-            navigate(from, { replace: true }); // Navigate to original route
-        } else {
-            setError('Email hoặc mật khẩu không chính xác');
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                // Lưu thông tin người dùng vào context hoặc localStorage
+                setUser(data); // Giả sử bạn có hàm setUser để lưu thông tin người dùng
+                console.log (data);
+                navigate(from, { replace: true }); // Điều hướng đến trang ban đầu
+            } else {
+                setError(data.message || 'Email hoặc mật khẩu không chính xác');
+            }
+        } catch (err) {
+            setError('Có lỗi xảy ra. Vui lòng thử lại sau.');
         }
     };
 

@@ -11,7 +11,14 @@ const Profile = () => {
     const [previewUrl, setPreviewUrl] = useState(user?.avatar || '/default-avatar.png');
     const fileInputRef = useRef(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [editedUser, setEditedUser] = useState({...user});
+    const [editedUser, setEditedUser] = useState({
+        fullName: user?.KH_HoTen || '',
+        email: user?.email || '',
+        phone: user?.KH_SDT || '',
+        address: user?.KH_DiaChi || '',
+        idCard: user?.KH_CCCD || '',
+        gender: user?.KH_GioiTinh || '',
+    });
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [email, setEmail] = useState('');
@@ -189,7 +196,27 @@ const handlePasswordConfirm = async () => {
     }
 };
 
+useEffect(() => {
+    const fetchUserDetails = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/auth/${email}`);
+            const data = await response.json();
+            if (response.ok) {
+                setUser(data); // Cập nhật thông tin người dùng trong context
+                setEditedUser(data); // Cập nhật thông tin người dùng trong state
+                setPreviewUrl(data.avatar || '/default-avatar.png'); // Cập nhật URL ảnh đại diện
+            } else {
+                setError(data.message || 'Không thể lấy thông tin người dùng');
+            }
+        } catch (err) {
+            setError('Có lỗi xảy ra. Vui lòng thử lại sau.');
+        }
+    };
 
+    if (email) {
+        fetchUserDetails();
+    }
+}, [email, setUser]);
 
     return (
         <div>
@@ -395,17 +422,17 @@ const handlePasswordConfirm = async () => {
                                 <h3>Thông tin thành viên</h3>
                                 <div className="info-item">
                                     <label>Hạng thành viên:</label>
-                                    <span className="member-tier">{user?.membershipTier}</span>
+                                    <span className="member-tier">{user?.TTV_LoaiThe}</span>
                                 </div>
                                 <div className="info-item">
                                     <label>Điểm tích lũy:</label>
                                     <div className="points-info">
-                                        <span className="current-points">{user?.points || 0} điểm</span>
+                                        <span className="current-points">{user?.TTV_DiemTichLuy || 0} điểm</span>
                                     </div>
                                 </div>
                                 <div className="info-item">
                                     <label>Ngày tham gia:</label>
-                                    <span>{user?.joinDate}</span>
+                                    <span>{user?.TTV_NgayTao}</span>
                                 </div>
                             </div>
                         </div>
