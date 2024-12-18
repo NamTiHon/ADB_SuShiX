@@ -89,6 +89,57 @@ update ChiNhanh
 set CN_MaHinhAnh = 'https://s.pro.vn/sKP8'
 where CN_MaChiNhanh = 'CN001'
 
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/GjWq'
+where CN_MaChiNhanh = 'CN002'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/QMcC'
+where CN_MaChiNhanh = 'CN003'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/diGY'
+where CN_MaChiNhanh = 'CN004'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/F5PF'
+where CN_MaChiNhanh = 'CN005'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/Acs2'
+where CN_MaChiNhanh = 'CN006'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/lQGN'
+where CN_MaChiNhanh = 'CN007'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/vbqn'
+where CN_MaChiNhanh = 'CN008'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/pTQ3'
+where CN_MaChiNhanh = 'CN009'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/2wC6'
+where CN_MaChiNhanh = 'CN010'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://short.com.vn/xQaB'
+where CN_MaChiNhanh = 'CN011'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/DsJI'
+where CN_MaChiNhanh = 'CN012'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/RMwx'
+where CN_MaChiNhanh = 'CN013'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.pro.vn/xuoo'
+where CN_MaChiNhanh = 'CN014'
 --Update Hình ảnh Món ăn
 update MonAn
 set MA_HinhAnh = 'https://s.pro.vn/sKP8'
