@@ -1,6 +1,12 @@
 ﻿-- Tạo khóa ngoại và ràng buộc:
 -- Tạo khóa ngoại:
 -- Bảng Chi Nhánh:
+
+use DB_SushiX 
+go
+
+
+
 alter table ChiNhanh
 	add constraint FK_CN_MaQuanLy_NV_NhanVien
 	foreign key (CN_MaQuanLy)
