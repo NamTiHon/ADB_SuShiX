@@ -75,7 +75,7 @@ const CustomerChart = () => {
                     <option value="yearly">Năm</option>
                 </select>
             </div>
-            <BarChart width={800} height={400} data={getChartData()}>
+            <BarChart width={500} height={400} data={getChartData()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="period" />
                 <YAxis />
