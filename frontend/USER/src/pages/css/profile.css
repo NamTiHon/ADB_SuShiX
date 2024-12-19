@@ -631,3 +631,32 @@
     font-style: italic;
     color: #666;
 }
+/* Update avatar container spacing */
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Reduce from 15px */
+    margin-bottom: 10px; /* Add bottom margin */
+}
+
+/* Update button styles */
+.promotions-btn,
+.change-password-btn {
+    width: 100%;
+    padding: 10px; /* Reduce from 12px */
+    margin-top: 5px; /* Reduce from 10px/20px */
+}
+
+.logout-btn {
+    width: 87%;
+    padding: 10px; /* Reduce from 12px */
+    margin: 10px auto; /* Reduce from 20px */
+}
+
+/* Add hover states */
+.promotions-btn:hover,
+.change-password-btn:hover,
+.logout-btn:hover {
+    transform: translateY(-1px); /* Reduce hover lift */
+}
