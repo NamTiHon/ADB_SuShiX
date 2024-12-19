@@ -142,27 +142,27 @@ set CN_MaHinhAnh = 'https://s.pro.vn/xuoo'
 where CN_MaChiNhanh = 'CN014'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/9YyN'
 where CN_MaChiNhanh = 'CN015'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/16VM'
 where CN_MaChiNhanh = 'CN016'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/GPHE'
 where CN_MaChiNhanh = 'CN017'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/JOuD'
 where CN_MaChiNhanh = 'CN018'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/lm81'
 where CN_MaChiNhanh = 'CN019'
 
 update ChiNhanh 
-set CN_MaHinhAnh = ''
+set CN_MaHinhAnh = 'https://s.net.vn/EMlb'
 where CN_MaChiNhanh = 'CN020'
 
 --Update Hình ảnh Món ăn
