@@ -21,29 +21,59 @@ const columns = [
     { id: 'membershipType', header: 'Loại thành viên', value: 'membershipType', editable: true, visible: true },
     { id: 'staffCreatorId', header: 'Mã nhân viên tạo', value: 'staffCreatorId', editable: true, visible: false },
 ];
-const initCustomers = [
-    { phone: '0123456789', name: 'Nguyễn Văn Trung Thế A', cccd: '123456789', email: 'nguyenvantrungthea@example.com', gender: 'Nam', cardId: 'CARD001', createdDate: '2023-01-01', yearsOfUsing: 1, points: 100, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF001' },
-    { phone: '0987654321', name: 'Trần Thị B', cccd: '987654321', email: 'tranthib@example.com', gender: 'Nữ', cardId: 'CARD002', createdDate: '2023-02-01', yearsOfUsing: 2, points: 200, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF002' },
-    { phone: '0123987654', name: 'Lê Văn C', cccd: '123498765', email: 'levanc@example.com', gender: 'Nam', cardId: 'CARD003', createdDate: '2023-03-01', yearsOfUsing: 3, points: 300, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF003' },
-    { phone: '0987123456', name: 'Phạm Thị D', cccd: '987612345', email: 'phamthid@example.com', gender: 'Nữ', cardId: 'CARD004', createdDate: '2023-04-01', yearsOfUsing: 4, points: 400, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF004' },
-    { phone: '0123678945', name: 'Hoàng Văn E', cccd: '123467894', email: 'hoangvane@example.com', gender: 'Nam', cardId: 'CARD005', createdDate: '2023-05-01', yearsOfUsing: 5, points: 500, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF005' },
-    { phone: '0987345612', name: 'Đỗ Thị F', cccd: '987634561', email: 'dothif@example.com', gender: 'Nữ', cardId: 'CARD006', createdDate: '2023-06-01', yearsOfUsing: 6, points: 600, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF006' },
-    { phone: '0123456781', name: 'Ngô Văn G', cccd: '123456781', email: 'ngovang@example.com', gender: 'Nam', cardId: 'CARD007', createdDate: '2023-07-01', yearsOfUsing: 7, points: 700, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF007' },
-    { phone: '0987654322', name: 'Vũ Thị H', cccd: '987654322', email: 'vuthih@example.com', gender: 'Nữ', cardId: 'CARD008', createdDate: '2023-08-01', yearsOfUsing: 8, points: 800, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF008' },
-    { phone: '0123456782', name: 'Nguyễn Thị I', cccd: '123456782', email: 'nguyenthiI@example.com', gender: 'Nữ', cardId: 'CARD009', createdDate: '2023-09-01', yearsOfUsing: 9, points: 900, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF009' },
-    { phone: '0987654323', name: 'Phạm Văn J', cccd: '987654323', email: 'phamvanj@example.com', gender: 'Nam', cardId: 'CARD010', createdDate: '2023-10-01', yearsOfUsing: 10, points: 1000, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF010' },
-    { phone: '0123456783', name: 'Lê Thị K', cccd: '123456783', email: 'lethik@example.com', gender: 'Nữ', cardId: 'CARD011', createdDate: '2023-11-01', yearsOfUsing: 11, points: 1100, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF011' },
-    { phone: '0987654324', name: 'Trần Văn L', cccd: '987654324', email: 'tranvanl@example.com', gender: 'Nam', cardId: 'CARD012', createdDate: '2023-12-01', yearsOfUsing: 12, points: 1200, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF012' },
-    { phone: '0123456784', name: 'Hoàng Thị M', cccd: '123456784', email: 'hoangthim@example.com', gender: 'Nữ', cardId: 'CARD013', createdDate: '2024-01-01', yearsOfUsing: 13, points: 1300, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF013' },
-    { phone: '0987654325', name: 'Đỗ Văn N', cccd: '987654325', email: 'dovann@example.com', gender: 'Nam', cardId: 'CARD014', createdDate: '2024-02-01', yearsOfUsing: 14, points: 1400, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF014' },
-    { phone: '0123456785', name: 'Ngô Thị O', cccd: '123456785', email: 'ngothio@example.com', gender: 'Nữ', cardId: 'CARD015', createdDate: '2024-03-01', yearsOfUsing: 15, points: 1500, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF015' },
-    { phone: '0987654326', name: 'Vũ Văn P', cccd: '987654326', email: 'vuvanp@example.com', gender: 'Nam', cardId: 'CARD016', createdDate: '2024-04-01', yearsOfUsing: 16, points: 1600, status: 'Hoạt động', membershipType: 'Silver', staffCreatorId: 'STAFF016' },
-    { phone: '0123456786', name: 'Phạm Thị Q', cccd: '123456786', email: 'phamthiq@example.com', gender: 'Nữ', cardId: 'CARD017', createdDate: '2024-05-01', yearsOfUsing: 17, points: 1700, status: 'Hoạt động', membershipType: 'Membership', staffCreatorId: 'STAFF017' },
-    { phone: '0987654327', name: 'Nguyễn Văn R', cccd: '987654327', email: 'nguyenvanr@example.com', gender: 'Nam', cardId: 'CARD018', createdDate: '2024-06-01', yearsOfUsing: 18, points: 1800, status: 'Hoạt động', membershipType: 'Gold', staffCreatorId: 'STAFF018' }
-];
-
 function Mgmt_Customer() {
-    const customers = initCustomers.sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate));
+    const [customers, setCustomers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchCustomers = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch customers');
+                }
+                const result = await response.json();
+                console.log('Raw API Response:', result); // Debug log
+    
+                // Ensure we have an array to work with
+                const customersArray = Array.isArray(result) ? result : 
+                Array.isArray(result.data) ? result.data :
+                Array.isArray(result.customers) ? result.customers : [];
+
+                console.log('Customers Array:', customersArray);
+    
+                const transformedCustomers = result.filter(customer => customer !== null).map(customer => {
+                    console.log('Processing customer:', customer); // Debug individual customer
+                    return {
+                        phone: customer?.KH_SDT || '',
+                        name: customer?.KH_HoTen || '',
+                        cccd: customer?.KH_CCCD || '',
+                        email: customer?.KH_Email || '',
+                        gender: customer?.KH_GioiTinh || '',
+                        card_id: customer?.TTV_MaThe || '',
+                        createDate: customer?.TTV_NgayTao ? new Date(customer.TTV_NgayTao).toLocaleDateString() : '',
+                        yearsOfUsing: customer?.TTV_SoNamSuDung || 0,
+                        points: customer?.TTV_DiemTichLuy || 0,
+                        status: customer?.TTV_TrangThai === "Available" ? "Hoạt động" : "Đã khóa",
+                        membershipType: customer?.TTV_LoaiThe || '',
+                        staffCreatorID: customer?.TTV_MaNhanVien || ''
+                    };
+                });
+                
+                console.log('Transformed Customers:', transformedCustomers); // Debug transformed data
+                setCustomers(transformedCustomers);
+            } catch (err) {
+                setError(err.message);
+                console.error('Error details:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+    
+        fetchCustomers();
+    }, []);
+
 
     return (
         <Mgmt_General

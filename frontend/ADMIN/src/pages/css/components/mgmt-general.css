@@ -6,14 +6,14 @@
 
 .page-container {
     display: flex;
-    flex: 1;
+    /* flex: 1; */
     /* gap: 50px; */
 }
 
 .main-content-box {
     flex: 1;
     /* gap: 50px; */
-    margin: 0 100px;
+    /* margin: 0 100px; */
 }
 
 .header-container {
@@ -97,4 +97,12 @@ h1 {
 
 .table tbody tr:hover {
     background-color: #f0f0f0; /* Optional: Add a hover effect for better UX */
+}
+
+.table-image {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    align-items: center;
+    border-radius: 4px;
 }

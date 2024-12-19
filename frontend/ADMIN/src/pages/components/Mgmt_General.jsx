@@ -172,7 +172,19 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                     <tr key={item.itemId} onClick={() => handleRowClick(item)}>
                                         {columns.filter(column => column.visible).map(column => (
                                             <td key={`${item.itemId}-${column.id}`}>
-                                                {item[column.value]}
+                                                {column.id === 'image' ? (
+                                                    <img 
+                                                        src={item[column.value]} 
+                                                        alt="Product"
+                                                        className="table-image"
+                                                        onError={(e) => {
+                                                            e.target.src = 'default-image-path.jpg';
+                                                            e.target.onerror = null;
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    item[column.value]
+                                                )}
                                             </td>
                                         ))}
                                     </tr>

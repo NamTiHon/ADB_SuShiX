@@ -24,7 +24,7 @@ const AdminLogin = () => {
         if (email === adminCredentials.email && password === adminCredentials.password) {
             // Store admin session securely
             localStorage.setItem('adminAuth', true);
-            navigate(from, { replace: true });
+            navigate('/home');
         } else {
             setError('Email hoặc mật khẩu không chính xác');
         }
@@ -36,9 +36,6 @@ const AdminLogin = () => {
             <div className="login-container">
                 <div className="login-form">
                     <div className="back-arrow">
-                        <Link to="/">
-                            <i className="fas fa-arrow-left"></i>
-                        </Link>
                     </div>
                     <h2>Đăng nhập</h2>
                     {error && <div className="error-message">{error}</div>}

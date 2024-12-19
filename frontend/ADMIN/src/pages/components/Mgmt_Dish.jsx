@@ -11,34 +11,50 @@ const columns = [
     { id: 'portion', header: 'Phần ăn', value: 'portion', editable: true, visible: true },
     { id: 'available', header: 'Có sẵn', value: 'available', editable: true, visible: false },
     { id: 'hasDelivery', header: 'Có giao hàng', value: 'hasDelivery', editable: true, visible: false },
-    { id: 'categoryId', header: 'Mã danh mục', value: 'categoryId', editable: true, visible: true },
+    { id: 'categoryId', header: 'Tên danh mục', value: 'categoryId', editable: true, visible: true },
     { id: 'image', header: 'Hình ảnh', value: 'image', editable: true, visible: true }
 ];
 
-const initData = [
-    { dishId: '1', dishName: 'Sushi', currentPrice: 10, portion: '1 roll', available: true, hasDelivery: false, categoryId: 'A1', image: 'sushi.jpg' },
-    { dishId: '2', dishName: 'Ramen', currentPrice: 12, portion: '1 bowl', available: true, hasDelivery: true, categoryId: 'A2', image: 'ramen.jpg' },
-    { dishId: '3', dishName: 'Tempura', currentPrice: 15, portion: '1 plate', available: true, hasDelivery: true, categoryId: 'A3', image: 'tempura.jpg' },
-    { dishId: '4', dishName: 'Sashimi', currentPrice: 20, portion: '1 plate', available: false, hasDelivery: false, categoryId: 'A4', image: 'sashimi.jpg' },
-    { dishId: '5', dishName: 'Takoyaki', currentPrice: 8, portion: '6 pieces', available: true, hasDelivery: true, categoryId: 'A5', image: 'takoyaki.jpg' },
-    { dishId: '6', dishName: 'Okonomiyaki', currentPrice: 10, portion: '1 pancake', available: true, hasDelivery: true, categoryId: 'A6', image: 'okonomiyaki.jpg' },
-    { dishId: '7', dishName: 'Udon', currentPrice: 11, portion: '1 bowl', available: true, hasDelivery: true, categoryId: 'A7', image: 'udon.jpg' },
-    { dishId: '8', dishName: 'Onigiri', currentPrice: 5, portion: '1 piece', available: true, hasDelivery: true, categoryId: 'A8', image: 'onigiri.jpg' },
-    { dishId: '9', dishName: 'Miso Soup', currentPrice: 4, portion: '1 bowl', available: true, hasDelivery: true, categoryId: 'A9', image: 'misosoup.jpg' },
-    { dishId: '10', dishName: 'Yakitori', currentPrice: 7, portion: '2 skewers', available: true, hasDelivery: true, categoryId: 'A10', image: 'yakitori.jpg' }
-];
 
 function Mgmt_Dish() {
     const [dishes, setDishes] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const modifiedData = initData.map(dish => ({
-            ...dish,
-            available: dish.available ? "Có" : "Không",
-            hasDelivery: dish.hasDelivery ? "Có" : "Không"
-        }));
-        setDishes(modifiedData);
+        const fetchDishes = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/dishes');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dishes');
+                }
+                const data = await response.json();
+
+                const transformedDishes = data.dishes.map(dish => ({
+                    dishId: dish.MA_MaMon,
+                    dishName: dish.MA_TenMon,
+                    currentPrice: dish.MA_GiaHienTai,
+                    portion: dish.MA_KhauPhan,
+                    available: dish.MA_CoSan ? "Có" : "Không",
+                    hasDelivery: dish.MA_HoTroGiaoHang ? "Có" : "Không",
+                    categoryId: dish.MA_TenDanhMuc,
+                    image: dish.MA_HinhAnh
+                }));
+
+                setDishes(transformedDishes);
+            } catch (err) {
+                setError(err.message);
+                console.error('Error fetching dishes:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDishes();
     }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <Mgmt_General
