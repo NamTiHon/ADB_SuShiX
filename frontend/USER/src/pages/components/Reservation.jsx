@@ -4,20 +4,32 @@ import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/reservation.css';
 import { UserContext } from '../../context/UserContext';
-import { dishes } from './Menu'; // Import dishes array
 
+
+const categoryNameMapping = {
+    'Khai vị': 'appetizer',
+    'Sushi': 'sushi',
+    'Tempura': 'tempura',
+    'Udon': 'udon',
+    'Lẩu': 'hotpot',
+    'Lunch Set': 'lunch-set',
+    'Đặc sản': 'specialty',
+    'Tráng miệng': 'dessert',
+    'Đồ uống': 'drinks'
+};
 const categories = [
     { id: 'all', name: 'Tất cả' },
-    { id: 'sushi', name: 'Sushi' },
-    { id: 'appetizer', name: 'Khai vị' },
-    { id: 'tempura', name: 'Tempura' },
-    { id: 'udon', name: 'Udon' },
-    { id: 'hotpot', name: 'Lẩu' },
-    { id: 'lunch-set', name: 'Lunch Set' },
-    { id: 'specialty', name: 'Đặc sản' },
-    { id: 'dessert', name: 'Tráng miệng' },
-    { id: 'drinks', name: 'Đồ uống' }
+    { id: 'Sushi', name: 'Sushi' },
+    { id: 'Khai vị', name: 'Khai vị' },
+    { id: 'Tempura', name: 'Tempura' },
+    { id: 'Udon', name: 'Udon' },
+    { id: 'Hotpot', name: 'Lẩu' },
+    { id: 'Lunch set', name: 'Lunch Set' },
+    { id: 'Nigiri', name: 'Nigiri' },
+    { id: 'Sashimi combo', name: 'Sashimi' },
+    { id: 'Món nước', name: 'Đồ uống' }
 ];
+
 
 const Reservation = () => {
     const { user } = useContext(UserContext);
@@ -27,12 +39,19 @@ const Reservation = () => {
     const [availableDishes, setAvailableDishes] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [customerPhone, setCustomerPhone] = useState('');
-    
+    const [isLoading, setIsLoading] = useState(false);
     // Filter dishes by category
-    const filteredDishes = selectedCategory === 'all' 
-        ? availableDishes 
-        : availableDishes.filter(dish => dish.category === selectedCategory);
-
+    const filteredDishes = React.useMemo(() => {
+        const dishes = selectedCategory === 'all' 
+            ? availableDishes 
+            : availableDishes.filter(dish => dish.category === selectedCategory);
+    
+        // Add unique index to each dish
+        return dishes.map((dish, index) => ({
+            ...dish,
+            uniqueKey: `${dish.id}-${index}`
+        }));
+    }, [selectedCategory, availableDishes]);
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
@@ -89,53 +108,71 @@ const Reservation = () => {
                 setBranches(data.branches.map(branch => ({
                     id: branch.CN_MaChiNhanh,
                     name: branch.CN_Ten,
-                    address: branch.CN_DiaChi
+                    address: branch.CN_DiaChi,
+                    region: branch.KV_Ten // Add region field
                 })));
+                console.log('Branches with regions:', data.branches);
             } catch (error) {
                 console.error('Error fetching branches:', error);
             }
         };
         fetchBranches();
     }, []);
-
     useEffect(() => {
         const fetchDishes = async () => {
-            if (!formData.branch) return;
+            if (!formData.branch) {
+                setAvailableDishes([]);
+                return;
+            }
             
+            setIsLoading(true);
             try {
                 const response = await fetch('http://localhost:3000/api/dishes');
                 const result = await response.json();
+    
+                const selectedBranch = branches.find(b => b.id === formData.branch);
                 
-                const transformedDishes = result.dishes
-                    .filter(dish => dish.CN_MaChiNhanh === formData.branch)
+                const branchFiltered = result.dishes.filter(dish => 
+                    dish.KV_Ten === selectedBranch?.region
+                );
+    
+                const transformedDishes = branchFiltered
                     .map(dish => ({
                         id: dish.MA_MaMon,
                         name: dish.MA_TenMon,
                         price: dish.MA_GiaHienTai * 1000,
-                        category: dish.MA_MaDanhMuc,
-                        description: dish.DM_TenDanhMuc,
-                        image: `/images/${dish.MA_MaMon.toLowerCase()}.jpg`,
+                        category: dish.MA_TenDanhMuc, // Use exact category name
+                        description: categories.find(c => c.id === dish.MA_TenDanhMuc)?.description,
+                        image: dish.MA_HinhAnh || `/images/menu/${dish.MA_MaMon.toLowerCase()}.jpg`,
                         available: Boolean(dish.MA_CoSan)
                     }))
                     .filter(dish => dish.available);
-
+    
                 setAvailableDishes(transformedDishes);
             } catch (error) {
                 console.error('Error fetching dishes:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
-
+    
         fetchDishes();
-    }, [formData.branch]);
-
+    }, [formData.branch, branches]);
+    
+    // Update handleInputChange
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value,
-            // Reset selected dishes when branch changes
+            // Clear selected dishes when branch changes
             selectedDishes: name === 'branch' ? [] : prev.selectedDishes
         }));
+        
+        if (name === 'branch') {
+            setAvailableDishes([]); // Clear dishes immediately
+            setIsLoading(true);
+        }
     };
 
     const handleDishSelect = (dish) => {
@@ -375,6 +412,7 @@ const Reservation = () => {
                                                     key={category.id}
                                                     className={`category-tab ${selectedCategory === category.id ? 'active' : ''}`}
                                                     onClick={() => setSelectedCategory(category.id)}
+                                                    type="button"
                                                 >
                                                     {category.name}
                                                 </button>
@@ -382,7 +420,7 @@ const Reservation = () => {
                                         </div>
                                         <div className="menu-grid">
                                             {filteredDishes.map(dish => (
-                                                <div key={dish.id} className="menu-item">
+                                                <div key={dish.uniqueKey} className="menu-item">
                                                     <img src={dish.image} alt={dish.name} />
                                                     <div className="menu-item-info">
                                                         <h4>{dish.name}</h4>
