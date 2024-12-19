@@ -13,7 +13,10 @@ const Checkout = () => {
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [couponError, setCouponError] = useState('');
-
+    const [branches, setBranches] = useState([]);
+    const [branchLoading, setBranchLoading] = useState(true);
+    const [branchError, setBranchError] = useState('');
+    
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -35,11 +38,38 @@ const Checkout = () => {
         }
     }, [user]);
 
-    const branches = [
-        { id: 1, name: 'Chi nhánh Quận 1', address: '123 Nguyễn Huệ, Q1' },
-        { id: 2, name: 'Chi nhánh Quận 3', address: '456 Lê Văn Sỹ, Q3' },
-        { id: 3, name: 'Chi nhánh Quận 7', address: '789 Nguyễn Thị Thập, Q7' }
-    ];
+    const fetchBranches = async () => {
+        try {
+            setBranchLoading(true);
+            const response = await fetch('http://localhost:3000/api/branches', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            if (!response.ok) throw new Error('Failed to fetch branches');
+            
+            const data = await response.json();
+            // Format branch data to only include required fields
+            const simplifiedBranches = (data.branches || []).map(branch => ({
+                CN_MaChiNhanh: branch.CN_MaChiNhanh,
+                CN_Ten: branch.CN_Ten || 'Chưa có tên',
+                CN_DiaChi: branch.CN_DiaChi || 'Chưa có địa chỉ'
+            }));
+            
+            setBranches(simplifiedBranches);
+            
+        } catch (error) {
+            console.error('Branch fetch error:', error);
+            setBranchError('Không thể tải danh sách chi nhánh');
+            setBranches([]);
+        } finally {
+            setBranchLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchBranches();
+    }, []);
 
     const paymentMethods = [
         { id: 'cash', name: 'Tiền mặt', icon: '💵' },
@@ -56,11 +86,19 @@ const Checkout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const selectedBranch = branches.find(b => b.CN_MaChiNhanh === formData.branch);
+        
+        if (!selectedBranch) {
+            alert('Vui lòng chọn chi nhánh');
+            return;
+        }
+    
         navigate('/order-confirmation', {
             state: {
                 formData: {
                     ...formData,
-                    email: user.email
+                    email: user.email,
+                    branch: selectedBranch
                 },
                 cartItems,
                 total,
@@ -153,19 +191,30 @@ const Checkout = () => {
 
                             <div className="form-group">
                                 <label>Chọn chi nhánh</label>
-                                <select
-                                    name="branch"
-                                    value={formData.branch}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="">Chọn chi nhánh</option>
-                                    {branches.map(branch => (
-                                        <option key={branch.id} value={branch.id}>
-                                            {branch.name} - {branch.address}
-                                        </option>
-                                    ))}
-                                </select>
+                                {branchLoading ? (
+                                    <div className="loading">Đang tải chi nhánh...</div>
+                                ) : branchError ? (
+                                    <div className="error-message">{branchError}</div>
+                                ) : branches && branches.length > 0 ? (
+                                    <select
+                                        name="branch"
+                                        value={formData.branch}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="">Chọn chi nhánh</option>
+                                        {branches.map(branch => (
+                                            <option 
+                                                key={branch.CN_MaChiNhanh} 
+                                                value={branch.CN_MaChiNhanh}
+                                            >
+                                                {`${branch.CN_DiaChi} (${branch.CN_Ten})`}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <div className="error-message">Không có chi nhánh nào</div>
+                                )}
                             </div>
 
                             <div className="form-group">
