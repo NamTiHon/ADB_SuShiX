@@ -140,7 +140,328 @@ where CN_MaChiNhanh = 'CN013'
 update ChiNhanh 
 set CN_MaHinhAnh = 'https://s.pro.vn/xuoo'
 where CN_MaChiNhanh = 'CN014'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/9YyN'
+where CN_MaChiNhanh = 'CN015'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/16VM'
+where CN_MaChiNhanh = 'CN016'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/GPHE'
+where CN_MaChiNhanh = 'CN017'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/JOuD'
+where CN_MaChiNhanh = 'CN018'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/lm81'
+where CN_MaChiNhanh = 'CN019'
+
+update ChiNhanh 
+set CN_MaHinhAnh = 'https://s.net.vn/EMlb'
+where CN_MaChiNhanh = 'CN020'
+
 --Update Hình ảnh Món ăn
 update MonAn
-set MA_HinhAnh = 'https://s.pro.vn/sKP8'
-where MA_MaMon = 'MA001'
+set MA_HinhAnh = 'https://s.net.vn/ikdS'
+where MA_MaMon = 'MA001';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/38cD'
+where MA_MaMon = 'MA002';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/snJ3'
+where MA_MaMon = 'MA003';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/JqQ4'
+where MA_MaMon = 'MA004';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/oGxN'
+where MA_MaMon = 'MA005';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/D33v'
+where MA_MaMon = 'MA006';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Fbeh'
+where MA_MaMon = 'MA007';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/0d8k'
+where MA_MaMon = 'MA008';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/4Hqc'
+where MA_MaMon = 'MA009';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/wl9I'
+where MA_MaMon = 'MA010';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/8kdE'
+where MA_MaMon = 'MA011';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/EZfd'
+where MA_MaMon = 'MA012';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/1jDh'
+where MA_MaMon = 'MA013';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/jiaA'
+where MA_MaMon = 'MA014';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/61xQ'
+where MA_MaMon = 'MA015';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/AApM'
+where MA_MaMon = 'MA016';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/L8gh'
+where MA_MaMon = 'MA017';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/dTJo'
+where MA_MaMon = 'MA018';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/vGTm'
+where MA_MaMon = 'MA019';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/3r3w'
+where MA_MaMon = 'MA020';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/qS0K'
+where MA_MaMon = 'MA021';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/A6fY'
+where MA_MaMon = 'MA022';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/ox7A'
+where MA_MaMon = 'MA023';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/R7O2'
+where MA_MaMon = 'MA024';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/VxPq'
+where MA_MaMon = 'MA025';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/7I6B'
+where MA_MaMon = 'MA026';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/J5jC'
+where MA_MaMon = 'MA027';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/6iKQ'
+where MA_MaMon = 'MA028';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/K23R'
+where MA_MaMon = 'MA029';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/JpPp'
+where MA_MaMon = 'MA030';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/teeg'
+where MA_MaMon = 'MA031';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/3ej0'
+where MA_MaMon = 'MA032';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Tg21'
+where MA_MaMon = 'MA033';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/DgWe'
+where MA_MaMon = 'MA034';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/BD5y'
+where MA_MaMon = 'MA035';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/kZHe'
+where MA_MaMon = 'MA036';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/oIzY'
+where MA_MaMon = 'MA037';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/alen'
+where MA_MaMon = 'MA038';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Og9l'
+where MA_MaMon = 'MA039';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/wAzL'
+where MA_MaMon = 'MA040';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/6zi0'
+where MA_MaMon = 'MA041';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/WGw2'
+where MA_MaMon = 'MA042';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/MGOZ'
+where MA_MaMon = 'MA043';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/vo9k'
+where MA_MaMon = 'MA044';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Cfsd'
+where MA_MaMon = 'MA045';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/l23v'
+where MA_MaMon = 'MA046';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/DE9L'
+where MA_MaMon = 'MA047';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/n1KZ'
+where MA_MaMon = 'MA048';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/lvhN'
+where MA_MaMon = 'MA049';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/jPpl'
+where MA_MaMon = 'MA050';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/1Kee'
+where MA_MaMon = 'MA051';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/DPKP'
+where MA_MaMon = 'MA052';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/MQpI'
+where MA_MaMon = 'MA053';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/ib8I'
+where MA_MaMon = 'MA054';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/QUcb'
+where MA_MaMon = 'MA055';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/z8tI'
+where MA_MaMon = 'MA056';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/GMqt'
+where MA_MaMon = 'MA057';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Baam'
+where MA_MaMon = 'MA058';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/ybtE'
+where MA_MaMon = 'MA059';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/1I7y'
+where MA_MaMon = 'MA060';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/v3X8'
+where MA_MaMon = 'MA061';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/sMP9'
+where MA_MaMon = 'MA062';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/BJWk'
+where MA_MaMon = 'MA063';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Nbq8'
+where MA_MaMon = 'MA064';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/foLp'
+where MA_MaMon = 'MA065';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/mi0w'
+where MA_MaMon = 'MA066';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/O4V5'
+where MA_MaMon = 'MA067';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/7awi'
+where MA_MaMon = 'MA068';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/fTFe'
+where MA_MaMon = 'MA069';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/ECaZ'
+where MA_MaMon = 'MA070';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/u9Us'
+where MA_MaMon = 'MA071';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/a0Tc'
+where MA_MaMon = 'MA072';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/7LpB'
+where MA_MaMon = 'MA073';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/rYz7'
+where MA_MaMon = 'MA074';
+
+update MonAn
+set MA_HinhAnh = 'https://s.net.vn/Tmv1'
+where MA_MaMon = 'MA075';
