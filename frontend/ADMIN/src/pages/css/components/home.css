@@ -1,16 +1,16 @@
-.homePage{
+.home-page {
     display: flex;
     flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.adminContainer {
+.page-container {
     display: flex;
     flex: 1;
     gap: 50px;
 }
 
-.mainContainer {
+.main-content-box {
     flex: 1;
 }
 
