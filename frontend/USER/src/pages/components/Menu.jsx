@@ -7,116 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useBranch } from '../../context/BranchContext'; // Thêm import này
 
-export const dishes = [
-    {
-        id: 1,
-        name: 'Salmon Sushi',
-        category: 'sushi',
-        price: 150000,
-        image: '/images/salmon-sushi.jpg',
-        description: 'Cá hồi tươi với cơm sushi',
-        availableAt: [1, 2, 3]
-    },
-    {
-        id: 2,
-        name: 'California Roll',
-        category: 'sushi',
-        price: 120000,
-        image: '/images/california-roll.jpg',
-        description: 'Sushi cuộn với cua, bơ và dưa chuột',
-        availableAt: [1, 3]
-    },
-    {
-        id: 3,
-        name: 'Miso Soup',
-        category: 'appetizer',
-        price: 45000,
-        image: '/images/miso-soup.jpg',
-        description: 'Súp miso truyền thống Nhật Bản',
-        availableAt: [1, 3, 4, 5, 6]
-    },
-    {
-        id: 4,
-        name: 'Tempura Moriawase',
-        category: 'tempura',
-        price: 180000,
-        image: '/images/tempura-moriawase.jpg',
-        description: 'Tổng hợp tempura hải sản và rau củ',
-        availableAt: [1, 3, 4, 5, 7]
-    },
-    {
-        id: 5,
-        name: 'Kitsune Udon',
-        category: 'udon',
-        price: 95000,
-        image: '/images/kitsune-udon.jpg',
-        description: 'Mì udon với đậu phụ chiên',
-        availableAt: [3, 4, 5, 6, 7]
-    },
-    {
-        id: 6,
-        name: 'Shabu Shabu',
-        category: 'hotpot',
-        price: 350000,
-        image: '/images/shabu-shabu.jpg',
-        description: 'Lẩu shabu shabu với thịt bò cắt lát mỏng',
-        availableAt: [1, 4, 2, 6, 7]
-    },
-    {
-        id: 7,
-        name: 'Bento Box',
-        category: 'lunch-set',
-        price: 165000,
-        image: '/images/bento-box.jpg',
-        description: 'Set ăn trưa với cơm, tempura và sashimi',
-        availableAt: [1, 4, 5, 7, 8]
-    },
-    {
-        id: 8,
-        name: 'Wagyu Steak',
-        category: 'specialty',
-        price: 850000,
-        image: '/images/wagyu-steak.jpg',
-        description: 'Thịt bò wagyu cao cấp',
-        availableAt: [3, 4, 5, 6, 8]
-    },
-    {
-        id: 9,
-        name: 'Matcha Ice Cream',
-        category: 'dessert',
-        price: 55000,
-        image: '/images/matcha-ice-cream.jpg',
-        description: 'Kem trà xanh Nhật Bản',
-        availableAt: [1, 4, 5, 6, 7]
-    },
-    {
-        id: 10,
-        name: 'Sake',
-        category: 'drinks',
-        price: 180000,
-        image: '/images/sake.jpg',
-        description: 'Rượu sake truyền thống',
-        availableAt: [3, 4, 5, 1, 7]
-    },
-    {
-        id: 11,
-        name: 'Dragon Roll',
-        category: 'sushi',
-        price: 165000,
-        image: '/images/dragon-roll.jpg',
-        description: 'Sushi cuộn lươn với bơ',
-        availableAt: [3, 4, 5, 6, 2]
-    },
-    {
-        id: 12,
-        name: 'Gyoza',
-        category: 'appetizer',
-        price: 75000,
-        image: '/images/gyoza.jpg',
-        description: 'Bánh xếp Nhật chiên giòn',
-        availableAt: [3, 4, 5, 6, 7]
-    }
-];
+
 const Menu = () => {
     
     const { addToCart } = useCart();
@@ -129,7 +20,7 @@ const Menu = () => {
     const [loading, setLoading] = useState(true); // Add loading state
     const [error, setError] = useState(null); // Add error state
     const [searchTerm, setSearchTerm] = useState('');
-    const [isSearching, setIsSearching] = useState(false);
+    const [setIsSearching] = useState(false);
     const { selectedBranch } = useBranch();
     const [availableDishes, setAvailableDishes] = useState(dishes);
     const handleSearch = (e) => {

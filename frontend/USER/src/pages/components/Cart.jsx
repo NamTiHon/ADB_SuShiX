@@ -1,6 +1,5 @@
 // src/pages/components/Cart.jsx
 import React, { useContext, useState } from 'react'; // Add useState import
-import { UserContext } from '../../context/UserContext';
 import Nav from './Nav';
 import '../css/cart.css';
 import { CartContext } from '../../context/CartContext';

@@ -1,6 +1,5 @@
 // src/pages/components/OrderTracking.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/orderTracking.css';
 import { getOrder } from '../../utils/OrderStorage';
@@ -9,7 +8,7 @@ const OrderTracking = () => {
     const [orderId, setOrderId] = useState('');
     const [order, setOrder] = useState(null);
     const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [setIsLoading] = useState(false);
     const calculateSubtotal = (items) => {
         if (!items || !Array.isArray(items)) return 0;
         return items.reduce((sum, item) => sum + ((item?.price || 0) * (item?.quantity || 0)), 0);
@@ -35,12 +34,6 @@ const OrderTracking = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const handleClear = () => {
-        setOrderId('');
-        setOrder(null);
-        setError('');
     };
 
     return (

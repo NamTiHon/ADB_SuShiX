@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/reservation.css';
-import { dishes } from './Menu'; // Import dishes array
 
 const categories = [
     { id: 'all', name: 'Tất cả' },

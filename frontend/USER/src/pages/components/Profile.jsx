@@ -5,10 +5,9 @@ import Nav from './Nav';
 import '../css/profile.css';
 
 const Profile = () => {
-    const { user, setUser, logout } = useContext(UserContext);
+    const { user,logout } = useContext(UserContext);
     const navigate = useNavigate();
-    const [previewUrl, setPreviewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
-    const fileInputRef = useRef(null);
+    const [previewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
         KH_HoTen: '',
