@@ -41,7 +41,7 @@ add file (
 alter database DB_SushiX
 add file (
 	name = 'Partition_data5',
-	filename = 'C:\Users\ANH TU\Documents\Third Year\HK I\Advance Database\Project\Database\Partition_data5.ndf'
+	filename = 'D:\Partition_data5.ndf'
 ) to filegroup FG_Partition_5
 
 alter database DB_SushiX
