@@ -1,8 +1,8 @@
 import React from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
-import RevenueChart from "./RevenueChart";
-import CustomerChart from "./CustomerChart";
+import Chart_Revenue from "./Chart_Revenue";
+import Chart_Customer from "./Chart_Customer";
 import '../css/components/home.css';
 
 function Home(){
@@ -13,11 +13,10 @@ function Home(){
                 <SideBar />
                 <div className="main-content-box">
                     <h1>Chào mừng, Admin!</h1>
-                    <RevenueChart />
-                    <CustomerChart />
+                    <Chart_Revenue />
+                    <Chart_Customer />
                 </div>
             </div>
-            
         </div>
     );
 }

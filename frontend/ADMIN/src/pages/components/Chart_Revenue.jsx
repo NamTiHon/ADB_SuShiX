@@ -81,7 +81,7 @@ const RevenueChart = () => {
                 <YAxis />
                 <Tooltip />
                 {/* <Legend /> */}
-                <Bar dataKey="revenue" fill="#f09" />
+                <Bar dataKey="revenue" fill="#99ccff" />
             </BarChart>
         </div>
     );

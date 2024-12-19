@@ -81,7 +81,7 @@ const CustomerChart = () => {
                 <YAxis />
                 <Tooltip />
                 {/* <Legend /> */}
-                <Bar dataKey="customers" fill="#f09" />
+                <Bar dataKey="customers" fill="#ffcc66" />
             </BarChart>
         </div>
     );
