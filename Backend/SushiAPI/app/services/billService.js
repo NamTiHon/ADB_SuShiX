@@ -62,12 +62,13 @@ export const billService = {
         const { MaHoaDon, SoTienGiam, TongTruocGiam, MaPhieu } = billData;
         try {
             const pool = await conn;
-            await pool.request()
+            const response = await pool.request()
                 .input('MaHoaDon', sql.VarChar(12), MaHoaDon)
                 .input('SoTienGiam', sql.Float, SoTienGiam)
                 .input('TongTruocGiam', sql.Float, TongTruocGiam)
                 .input('MaPhieu', sql.VarChar(12), MaPhieu)
                 .execute('usp_TaoHoaDon');
+            console.log('Bill created:', response);
             return { success: true, message: 'Hóa đơn đã được tạo thành công.' };
         } catch (error) {
             console.error('Error creating bill:', error);

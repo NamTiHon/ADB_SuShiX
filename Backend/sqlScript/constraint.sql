@@ -178,7 +178,7 @@ alter table KhuyenMai
 -- Hóa đơn:
 alter table HoaDon
 	add constraint C_HD_Tien
-	check ( HD_SoTienGiam > 0 and HD_SoTienGiam < HD_TongTruocGiam  and HD_SoTienGiam < HD_TongTienThanhToan)
+	check ( HD_SoTienGiam >= 0 and HD_SoTienGiam < HD_TongTruocGiam  and HD_SoTienGiam < HD_TongTienThanhToan)
 
 -- Bảng Phiếu đánh giá:
 alter table PhieuDanhGia
