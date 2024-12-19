@@ -58,12 +58,14 @@
 }
 
 .dish-card {
-  background: white;
+  flex-direction: column;
+  border: 1px solid #eee;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
 }
+
 
 .dish-card:hover {
   transform: translateY(-5px);
@@ -308,4 +310,90 @@
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 4px;
+}
+.dishes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 25px 0;
+}
+
+.dish-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.dish-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.dish-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+
+.dish-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.dish-card:hover .dish-image img {
+  transform: scale(1.08);
+}
+
+.dish-info {
+  padding: 20px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.95), white);
+}
+
+.dish-info h3 {
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.dish-info p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.dish-price {
+  color: #ff0099;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 15px 0;
+}
+
+.add-to-cart-btn {
+  width: calc(100% - 30px);
+  margin: 10px 15px 15px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #ff0099, #ff4d4d);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 0, 153, 0.2);
+}
+
+.add-to-cart-btn:hover {
+  background: linear-gradient(45deg, #ff0099, #ff1a1a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 0, 153, 0.3);
 }
