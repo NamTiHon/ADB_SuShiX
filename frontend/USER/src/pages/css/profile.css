@@ -448,3 +448,94 @@
 .change-password-btn i {
     font-size: 16px;
 }
+/* Password Change Modal Styles */
+.password-modal {
+    max-width: 400px;
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.password-modal .modal-header {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.password-modal .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.password-modal label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: left;
+}
+
+.password-modal input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.password-modal input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    outline: none;
+}
+
+.password-modal .error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.password-modal .save-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.password-modal .save-btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+.password-modal .save-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Animation */
+.password-modal {
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
