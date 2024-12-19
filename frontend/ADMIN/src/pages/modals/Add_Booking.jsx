@@ -21,7 +21,6 @@ const Add_Booking = ({ onClose, onAdd }) => {
         });
     };
 
-
     const [newBooking, setNewBooking] = useState({
         phone: '0123456789',
         branchId: '123Levanviet',

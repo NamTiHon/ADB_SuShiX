@@ -36,18 +36,6 @@ const bookings = [
 
 const initialData = bookings.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
 
-// function Mgmt_Booking() {
-//     return (
-//         <Mgmt_General
-//             columns={columns}
-//             initialData={bookings}
-//             title={'Danh sách đặt món'}
-//             AddModal={AddModal}
-//             DetailModal={DetailModal}
-//         />
-//     );
-// }
-
 function Mgmt_Booking() {
     const [items, setItems] = useState(initialData);
 

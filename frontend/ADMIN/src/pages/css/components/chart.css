@@ -1,0 +1,57 @@
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0px 10px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.date-range {
+    font-size: 14px;
+    color: #666;
+}
+
+.date-range input {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 8px;
+}
+
+.view-selector {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-selector:hover {
+    border-color: #8884d8;
+    box-shadow: 0 0 5px rgba(136, 132, 216, 0.3);
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        width: 95%;
+        padding: 10px;
+    }
+}
