@@ -126,3 +126,19 @@ h3 {
 .save-button:hover {
     background-color: #c93c91;
 }
+
+.work-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.work-history-table th, .work-history-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.work-history-table th {
+    background-color: #f4f4f4;
+}

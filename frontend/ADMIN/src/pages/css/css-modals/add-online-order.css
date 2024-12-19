@@ -68,3 +68,22 @@ button.secondary {
     background-color: #6c757d;
     color: #fff;
 }
+
+.work-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    justify-self: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.work-history-table th, .work-history-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.work-history-table th {
+    background-color: #f4f4f4;
+}

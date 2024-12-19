@@ -90,13 +90,26 @@ const Add_OnlineOrder = ({ onClose, onAdd }) => {
                                     <button type="button" className="add-button" onClick={handleAddDish}>Thêm món</button>
                                 </div>
 
-                                <ul>
-                                    {preOrderedDishes.map((dish, index) => (
-                                        <li key={index}>
-                                            {dish.dishName} - Số lượng: {dish.quantity}
-                                        </li>
-                                    ))}
-                                </ul>
+                                {preOrderedDishes.length !== 0 && (
+                                    <table className="work-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {preOrderedDishes
+                                                .map((dish, index) => (
+                                                    <tr key={index}>
+                                                        {/* <td>{dish.dishId}</td> */}
+                                                        <td>{dish.dishName}</td>
+                                                        <td>{dish.quantity}</td>
+                                                    </tr>
+                                                ))}
+                                        </tbody>
+                                    </table>
+                                )}
                             </div>
                             <button type="submit" className="add-button">Thêm</button>
                         </div>
