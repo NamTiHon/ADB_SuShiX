@@ -909,8 +909,7 @@ create or alter function uf_XemPhieuDatMon
 	(@MaPhieu varchar(12))
 	returns table
 as
-	return ( select * from MonDuocDat 
-			 where MDD_MaPhieu = @MaPhieu)
+	return ( select * from MonDuocDat join PhieuDatMon on MDD_MaPhieu = PDM_MaPhieu)
 go
 
 -- Stored Procedure cho hóa đơn

@@ -101,11 +101,11 @@ export const orderController = {
     getOrder: async (req, res) => {
         try {
             const PDM_MaPhieu = req.params.MAPhieu;
-            const updatedOrder = await dishService.updateDish(PDM_MaPhieu, req.body);
-            if (!updatedOrder) {
+            const order = await orderService.getOrder(PDM_MaPhieu);
+            if (!order) {
                 return res.status(404).json({ message: `Cannot find order with MaPhieu: ${PDM_MaPhieu}` });
             }
-            res.status(200).json({ message: 'Order retrieved successfully', dish: updatedOrder });
+            res.status(200).json({ message: 'Order retrieved successfully', order });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
