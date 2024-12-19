@@ -13,8 +13,10 @@ function Home(){
                 <SideBar />
                 <div className="main-content-box">
                     <h1>Chào mừng, Admin!</h1>
-                    <Chart_Revenue />
-                    <Chart_Customer />
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <Chart_Revenue />
+                        <Chart_Customer />
+                    </div>
                 </div>
             </div>
         </div>
