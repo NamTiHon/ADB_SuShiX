@@ -75,7 +75,7 @@ const Add_Booking = ({ onClose, onAdd }) => {
                             <p><strong>Ngày đến:</strong> <input type="date" name="arrivalDate" value={newBooking.arrivalDate} onChange={handleChange} required /></p>
                             <p><strong>Giờ đến:</strong> <input type="time" name="arrivalTime" value={newBooking.arrivalTime} onChange={handleChange} required /></p>
                             <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={newBooking.comment} onChange={handleChange} required /></p>
-                            <h3>MÓN ĂN ĐẶT TRƯỚC</h3>
+                            <h3>MÓN ĐẶT TRỰC TIẾP</h3>
                             <div>
                                 <div>
                                     <input
@@ -93,7 +93,7 @@ const Add_Booking = ({ onClose, onAdd }) => {
                                         onChange={handleDishChange}
                                         min="0"
                                     />
-                                    <button type="button" onClick={handleAddDish}>Thêm món</button>
+                                    <button type="button" className='add-button' onClick={handleAddDish}>Thêm món</button>
                                 </div>
 
                                 <ul>

@@ -130,7 +130,7 @@ function Mgmt_OnlineOrder() {
                 <div className="main-content-box">
                     <div className="header-container">
                         <h1>Danh sách đặt online</h1>
-                        <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm Phiếu Đặt Online</button>
+                        <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm</button>
                     </div>
                     <div className="table-box">
                         <div className="search-and-pagination-container">

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/css-modals/detail-booking.css';
 
 const Detail_Booking = ({ item, onClose, onUpdate, onDelete, fields }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedBooking, setUpdatedBooking] = useState({ ...item });
+
+    useEffect(() => {
+        setUpdatedBooking({ ...item });
+    }, [item]);
 
     if (!item) return null;
 
@@ -39,7 +43,7 @@ const Detail_Booking = ({ item, onClose, onUpdate, onDelete, fields }) => {
                             <>
                                 {fields.map((field) => (
                                     <p key={field.name}>
-                                        <strong>{field.label}:</strong>
+                                        <strong>{field.label}: </strong>
                                         {field.editable ? (
                                             <input
                                                 type="text"
@@ -62,14 +66,25 @@ const Detail_Booking = ({ item, onClose, onUpdate, onDelete, fields }) => {
                                     </p>
                                 ))}
                                 <div>
-                                    <strong>Các món đặt trước:</strong>
-                                        <ul>
-                                            {item.preOrderedDishes.map((dish) => (
-                                                <li key={dish}>
-                                                    {dish.dishName} - Số lượng: {dish.quantity}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    <strong>CÁC MÓN ĐƯỢC ĐẶT:</strong>
+                                    <table className="work-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {item.preOrderedDishes
+                                                .map((dish, index) => (
+                                                    <tr key={index}>
+                                                        {/* <td>{dish.dishId}</td> */}
+                                                        <td>{dish.dishName}</td>
+                                                        <td>{dish.quantity}</td>
+                                                    </tr>
+                                                ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>

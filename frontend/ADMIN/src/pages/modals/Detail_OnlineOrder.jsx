@@ -68,14 +68,25 @@ const Detail_OnlineOrder = ({ booking, onClose, onUpdate, onDelete }) => {
                                     </p>
                                 ))}
                                 <div>
-                                    <strong>Các món đặt trước:</strong>
-                                    <ul>
-                                        {booking.preOrderedDishes.map((dish) => (
-                                            <li key={dish}>
-                                                {dish.dishName} - Số lượng: {dish.quantity}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <strong>CÁC MÓN ĐƯỢC ĐẶT:</strong>
+                                    <table className="work-history-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Tên món</th>
+                                                <th>Số lượng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {booking.preOrderedDishes
+                                                .map((dish, index) => (
+                                                    <tr key={index}>
+                                                        {/* <td>{dish.dishId}</td> */}
+                                                        <td>{dish.dishName}</td>
+                                                        <td>{dish.quantity}</td>
+                                                    </tr>
+                                                ))}
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>

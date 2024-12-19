@@ -87,7 +87,7 @@ const Add_OnlineOrder = ({ onClose, onAdd }) => {
                                         onChange={handleDishChange}
                                         min="0"
                                     />
-                                    <button type="button" onClick={handleAddDish}>Thêm món</button>
+                                    <button type="button" className="add-button" onClick={handleAddDish}>Thêm món</button>
                                 </div>
 
                                 <ul>
