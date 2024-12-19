@@ -1,9 +1,11 @@
 // src/pages/components/Reservation.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import '../css/reservation.css';
+import { UserContext } from '../../context/UserContext';
 import { dishes } from './Menu'; // Import dishes array
+
 
 const categories = [
     { id: 'all', name: 'Tất cả' },
@@ -19,10 +21,13 @@ const categories = [
 ];
 
 const Reservation = () => {
+    const { user } = useContext(UserContext);
+    console.log(user);
     const navigate = useNavigate();
     const [branches, setBranches] = useState([]);
     const [availableDishes, setAvailableDishes] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [customerPhone, setCustomerPhone] = useState('');
     
     // Filter dishes by category
     const filteredDishes = selectedCategory === 'all' 
@@ -44,6 +49,38 @@ const Reservation = () => {
         "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
         "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00"
     ];
+
+    useEffect(() => {
+        if (customerPhone) {
+            setFormData(prev => ({
+                ...prev,
+                phone: customerPhone
+            }));
+            console.log('Setting phone:', customerPhone); 
+        }
+    }, [customerPhone]);
+
+    useEffect(() => {
+        const fetchCustomerPhone = async () => {
+            if (user?.email) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/auth/${user.email}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCustomerPhone(data.user.KH_SDT);
+                        setFormData(prev => ({
+                            ...prev,
+                            phone: data.user.KH_SDT
+                        }));
+                    }
+                } catch (error) {
+                    console.error('Error fetching customer phone:', error);
+                }
+            }
+        };
+
+        fetchCustomerPhone();
+    }, [user]);
 
     useEffect(() => {
         const fetchBranches = async () => {
@@ -137,28 +174,51 @@ const Reservation = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Generate reservation ID
         const reservationId = Math.random().toString(36).substr(2, 9).toUpperCase();
+        const now = new Date();
         const reservation = {
-            ...formData,
-            id: reservationId,
-            status: 'pending',
-            createdAt: new Date().toISOString()
+            PDM_MaPhieu: reservationId,
+            PDM_SDT_KH: formData.phone,
+            PDM_SoBan: 1, // Assuming 1 table per reservation
+            PDM_SoLuongKH: parseInt(formData.guests, 10),
+            PDM_ThoiGianDen: `${formData.date} ${formData.time}:00`,
+            PDM_MaChiNhanh: formData.branch,
+            PDM_MaNhanVien: 'NV00000000', // Assuming a default employee ID
+            PDM_GhiChuThem: formData.note,
+            fullName: formData.name,
         };
     
-        // Save to localStorage
-        const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
-        reservations[reservationId] = reservation;
-        localStorage.setItem('reservations', JSON.stringify(reservations));
+        try {
+            console.log('Creating reservation:', reservation);
+            const response = await fetch('http://localhost:3000/api/order/reserve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reservation)
+            });
     
-        // Pass reservation data with ID to table selection
-        navigate('/table-selection', { 
-            state: { reservationData: reservation } // Change this line only
-        });
+            if (!response.ok) {
+                throw new Error('Failed to create reservation');
+            }
+    
+            const result = await response.json();
+            // Save to localStorage
+            const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
+            reservations[reservationId] = reservation;
+            localStorage.setItem('reservations', JSON.stringify(reservations));
+    
+            // Pass reservation data with ID to table selection
+            navigate('/table-selection', { 
+                state: { reservationData: reservation}
+            });
+        } catch (error) {
+            console.error('Error creating reservation:', error);
+        }
     };
-
     const totalAmount = formData.selectedDishes.reduce(
         (sum, dish) => sum + (dish.price * dish.quantity), 
         0
@@ -192,6 +252,7 @@ const Reservation = () => {
                                 value={formData.phone}
                                 onChange={handleInputChange}
                                 required
+                                readOnly={!!customerPhone}
                             />
                         </div>
 

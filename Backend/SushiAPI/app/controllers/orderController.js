@@ -111,4 +111,19 @@ export const orderController = {
             res.status(500).json({ message: error.message });
         }
     },
+
+    updateReservation: async (req, res) => {
+        try {
+            const { PDM_MaPhieu } = req.params;
+            const { PDM_SoBan } = req.body;
+            
+            console.log('Updating reservation:', { PDM_MaPhieu, PDM_SoBan }); // Debug log
+    
+            const result = await orderService.updateTableOrder({ PDM_MaPhieu, PDM_SoBan });
+            res.status(200).json(result);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
+    }
 };

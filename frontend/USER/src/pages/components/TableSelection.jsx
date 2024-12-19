@@ -1,4 +1,3 @@
-// src/pages/components/TableSelection.jsx
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Nav from './Nav';
@@ -7,45 +6,64 @@ import '../css/tableSelection.css';
 const TableSelection = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { reservationData } = location.state || {};
+    const { reservationData} = location.state || {};
     const [selectedTable, setSelectedTable] = useState(null);
 
-    const tables = [
-        { id: 1, seats: 2, isAvailable: true, position: 'window' },
-        { id: 2, seats: 4, isAvailable: true, position: 'window' },
-        { id: 3, seats: 6, isAvailable: true, position: 'center' },
-        { id: 4, seats: 4, isAvailable: false, position: 'center' },
-        { id: 5, seats: 8, isAvailable: true, position: 'private' },
-        { id: 6, seats: 2, isAvailable: true, position: 'bar' },
-    ];
+    const tables = Array.from({ length: 30 }, (_, index) => ({
+        id: index + 1,
+        seats: (index % 4 + 1) * 2, // 2, 4, 6, 8 seats
+        isAvailable: index % 5 !== 0, // Every 5th table is unavailable
+        position: ['Vị trí gần cửa sổ', 'Vị trí trung tâm', 'Khu vực riêng tư', 'Khu vực gần quầy bar'][index % 4]
+    }));
 
     const handleTableSelect = (table) => {
-        if (table.isAvailable && table.seats >= reservationData.guests) {
+        if (table.isAvailable && table.seats >= reservationData.PDM_SoLuongKH) {
             setSelectedTable(table);
         }
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         if (!selectedTable) return;
     
-        // Create final reservation object with table info
-        const finalReservation = {
-            ...reservationData,
-            tableId: selectedTable.id,
-            tablePosition: selectedTable.position
-        };
+        try {
+            console.log('Sending update request for:', {
+                PDM_MaPhieu: reservationData.PDM_MaPhieu,
+                PDM_SoBan: selectedTable.id
+            });
+            // Update reservation with selected table
+            const response = await fetch(`http://localhost:3000/api/order/table/${reservationData.PDM_MaPhieu}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    PDM_SoBan: selectedTable.id
+                })
+            });
+            console.log(response);
+            if (!response.ok) {
+                throw new Error('Failed to update table reservation');
+            }
+            const finalReservation = {
+                ...reservationData,
+                PDM_SoBan: selectedTable.id,
+                tablePosition: selectedTable.position
+            };
+
+            // Update localStorage
+            const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
+            reservations[finalReservation.PDM_MaPhieu] = finalReservation;
+            localStorage.setItem('reservations', JSON.stringify(reservations));
     
-        // Get existing reservations from localStorage
-        const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
-        
-        // Save this reservation with its ID as key
-        reservations[finalReservation.id] = finalReservation;
-        localStorage.setItem('reservations', JSON.stringify(reservations));
-    
-        // Navigate to success page with reservation data
-        navigate('/reservation-success', { 
-            state: { reservation: finalReservation }
-        });
+            // Navigate to success page
+            navigate('/reservation-success', {
+                state: { reservation: finalReservation }
+            });
+            console.log('Reservation updated successfully:', finalReservation);
+        } catch (error) {
+            console.error('Error updating reservation:', error);
+            alert('Không thể cập nhật vị trí bàn. Vui lòng thử lại.');
+        }
     };
 
     return (
@@ -55,9 +73,9 @@ const TableSelection = () => {
                 <div className="table-selection-content">
                     <h2>Chọn bàn</h2>
                     <p className="selection-info">
-                        Số người: {reservationData?.guests} | 
-                        Ngày: {reservationData?.date} | 
-                        Giờ: {reservationData?.time}
+                        Số người: {reservationData?.PDM_SoLuongKH} | 
+                        Ngày: {reservationData?.PDM_ThoiGianDen.split(' ')[0]} | 
+                        Giờ: {reservationData?.PDM_ThoiGianDen.split(' ')[1]}
                     </p>
 
                     <div className="floor-plan">
@@ -68,7 +86,7 @@ const TableSelection = () => {
                                     className={`table ${
                                         table.isAvailable ? 'available' : 'unavailable'
                                     } ${selectedTable?.id === table.id ? 'selected' : ''}
-                                    ${table.seats >= reservationData?.guests ? '' : 'too-small'}`}
+                                    ${table.seats >= reservationData?.PDM_SoLuongKH ? '' : 'too-small'}`}
                                     onClick={() => handleTableSelect(table)}
                                 >
                                     <div className="table-content">

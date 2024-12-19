@@ -43,13 +43,10 @@ export const orderService = {
 
     //Lập phiếu đặt trước
     makeReserveOrder: async (orderData) => {
-        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
+        const { PDM_MaPhieu, PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH ,  PDM_ThoiGianDen , PDM_MaChiNhanh ,PDM_MaNhanVien, PDM_GhiChuThem } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
-
-        const uuid = uuidv4();
-        const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
 
 
         try {
@@ -64,7 +61,7 @@ export const orderService = {
                 .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
                 .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
-                .execute('sp_TaoPhieuDatMon')
+                .execute('usp_TaoPhieuDatMon')
 
             const OrderID = result.output.PDM_MaPhieu
 
@@ -83,25 +80,21 @@ export const orderService = {
 
     //Lập phiếu đặt trước
     makeOnlineOrder: async (orderData) => {
-        const { PDM_SDT_KH, PDM_MaNhanVien, PDM_DiaChiCanGiao, PDM_GhiChuThem } = orderData
+        const { PDM_MaPhieu, PDM_SDT_KH, PDM_MaNhanVien, PDM_DiaChiCanGiao, PDM_GhiChuThem } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
-    
-        const uuid = uuidv4();
-        const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
     
     
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
                 .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
                 .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
                 .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
                 .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
-                .execute('sp_TaoPhieuDatMon')
+                .execute('usp_TaoPhieuDatMon')
     
             const OrderID = result.output.PDM_MaPhieu
     
@@ -117,6 +110,31 @@ export const orderService = {
             throw new Error('Failed to create order.');
         }
     },
+    updateTableOrder: async (orderData) => {
+        const { PDM_MaPhieu, PDM_SoBan } = orderData;
+
+        try {
+            const pool = await conn;
+            await pool.request()
+                .input('PDM_MaPhieu', sql.VarChar(12), PDM_MaPhieu)
+                .input('PDM_SoBan', sql.Int, PDM_SoBan)
+                .query('UPDATE PhieuDatMon SET PDM_SoBan = @PDM_SoBan WHERE PDM_MaPhieu = @PDM_MaPhieu');
+
+            return {
+                success: true,
+                message: 'Reservation updated successfully',
+                data: {
+                    PDM_MaPhieu,
+                    PDM_SoBan
+                }
+            };
+
+        } catch (error) {
+            console.error('Error updating reservation:', error);
+            throw new Error('Failed to update reservation.');
+        }
+    },
+
 
     //Lập phiếu đặt món mới
     // makeOrder: async (orderData) => {
@@ -172,7 +190,7 @@ export const orderService = {
                     .input('MaMon', sql.VarChar(12), MDD_MaMon)
                     .input('MaPhieu', sql.VarChar(12), MaPhieu)
                     .input('SoLuong', sql.Int, MDD_SoLuong)
-                    .execute('sp_ThemMonDuocDat')
+                    .execute('usp_ThemMonDuocDat')
 
                 // Trả về kết quả thành công
                 return {
@@ -199,7 +217,7 @@ export const orderService = {
                     .input('MaMon', sql.VarChar(12), MaMon)
                     .input('MaPhieu', sql.VarChar(12), MaPhieu)
                     .input('SoLuong', sql.Int, update_SoLuong)
-                    .execute('sp_ThayDoiSoLuongMon')
+                    .execute('usp_ThayDoiSoLuongMon')
 
                 // Trả về kết quả thành công
                 return {
@@ -240,7 +258,7 @@ export const orderService = {
             const pool = await conn;
             await pool.request()
                 .input('MaPhieu', sql.VarChar(12), MaPhieu)
-                .execute('sp_HuyPhieuDatMon')
+                .execute('usp_HuyPhieuDatMon')
             return { success: true }
 
         } catch (error) {
