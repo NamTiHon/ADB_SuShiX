@@ -59,11 +59,6 @@ const OrderManagement = () => {
     );
 };
 
-const viewOrderDetails = (orderId) => {
-    // Implement view order details functionality
-    console.log(`Viewing details for order ${orderId}`);
-};
-
 const cancelOrder = (orderId) => {
     // Implement cancel order functionality
     console.log(`Cancelling order ${orderId}`);

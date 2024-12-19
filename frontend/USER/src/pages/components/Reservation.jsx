@@ -6,7 +6,6 @@ import '../css/reservation.css';
 import { UserContext } from '../../context/UserContext';
 import { dishes } from './Menu'; // Import dishes array
 
-
 const categories = [
     { id: 'all', name: 'Tất cả' },
     { id: 'sushi', name: 'Sushi' },

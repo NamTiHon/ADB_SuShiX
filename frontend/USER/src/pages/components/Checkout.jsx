@@ -13,7 +13,13 @@ const Checkout = () => {
     const [couponCode, setCouponCode] = useState('');
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [couponError, setCouponError] = useState('');
-
+    const [branches, setBranches] = useState([]);
+    const [branchLoading, setBranchLoading] = useState(true);
+    const [branchError, setBranchError] = useState('');
+    const [userCoupons, setUserCoupons] = useState([]);
+    const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
+    const [showCouponList, setShowCouponList] = useState(false);
+    
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -35,11 +41,62 @@ const Checkout = () => {
         }
     }, [user]);
 
-    const branches = [
-        { id: 1, name: 'Chi nhánh Quận 1', address: '123 Nguyễn Huệ, Q1' },
-        { id: 2, name: 'Chi nhánh Quận 3', address: '456 Lê Văn Sỹ, Q3' },
-        { id: 3, name: 'Chi nhánh Quận 7', address: '789 Nguyễn Thị Thập, Q7' }
-    ];
+    const fetchBranches = async () => {
+        try {
+            setBranchLoading(true);
+            const response = await fetch('http://localhost:3000/api/branches', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            if (!response.ok) throw new Error('Failed to fetch branches');
+            
+            const data = await response.json();
+            // Format branch data to only include required fields
+            const simplifiedBranches = (data.branches || []).map(branch => ({
+                CN_MaChiNhanh: branch.CN_MaChiNhanh,
+                CN_Ten: branch.CN_Ten || 'Chưa có tên',
+                CN_DiaChi: branch.CN_DiaChi || 'Chưa có địa chỉ'
+            }));
+            
+            setBranches(simplifiedBranches);
+            
+        } catch (error) {
+            console.error('Branch fetch error:', error);
+            setBranchError('Không thể tải danh sách chi nhánh');
+            setBranches([]);
+        } finally {
+            setBranchLoading(false);
+        }
+    };
+    useEffect(() => {
+        fetchBranches();
+    }, []);
+
+    const fetchUserCoupons = async () => {
+        try {
+            setIsLoadingCoupons(true);
+            const response = await fetch(`http://localhost:3000/api/promotions`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch coupons');
+            
+            const data = await response.json();
+            setUserCoupons(data.promotions || []);
+        } catch (error) {
+            console.error('Error fetching coupons:', error);
+        } finally {
+            setIsLoadingCoupons(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserCoupons();
+    }, []);
 
     const paymentMethods = [
         { id: 'cash', name: 'Tiền mặt', icon: '💵' },
@@ -56,11 +113,19 @@ const Checkout = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const selectedBranch = branches.find(b => b.CN_MaChiNhanh === formData.branch);
+        
+        if (!selectedBranch) {
+            alert('Vui lòng chọn chi nhánh');
+            return;
+        }
+    
         navigate('/order-confirmation', {
             state: {
                 formData: {
                     ...formData,
-                    email: user.email
+                    email: user.email,
+                    branch: selectedBranch
                 },
                 cartItems,
                 total,
@@ -71,23 +136,24 @@ const Checkout = () => {
         });
     };
     const validateCoupon = (code) => {
-        // Mock coupon database - in real app this would come from backend
-        const coupons = {
-          'WELCOME200': { discount: 200000, minOrder: 500000 },
-          'SAVE50K': { discount: 50000, minOrder: 200000 },
-        };
-      
-        const coupon = coupons[code];
+        const coupon = userCoupons.find(c => c.KM_MaKhuyenMai === code);
+        
         if (!coupon) {
-          return { valid: false, message: 'Mã giảm giá không hợp lệ' };
+            return { valid: false, message: 'Mã giảm giá không hợp lệ' };
         }
-      
-        if (total < coupon.minOrder) {
-          return { valid: false, message: `Đơn hàng tối thiểu ${coupon.minOrder.toLocaleString()}đ` };
+    
+        if (new Date(coupon.KM_NgayKetThuc) < new Date()) {
+            return { valid: false, message: 'Mã giảm giá đã hết hạn' };
         }
-      
-        return { valid: true, coupon };
-      };
+    
+        return { 
+            valid: true, 
+            coupon: {
+                discount: coupon.KM_TyLeGiamGia, // Store as decimal (e.g., 0.1 for 10%)
+                code: coupon.KM_MaKhuyenMai
+            }
+        };
+    };
     const handleApplyCoupon = () => {
         setCouponError('');
         const result = validateCoupon(couponCode.trim().toUpperCase());
@@ -103,12 +169,42 @@ const Checkout = () => {
     };
     const calculateDiscount = () => {
         if (!appliedCoupon) return 0;
-        
-        if (typeof appliedCoupon.discount === 'number') {
-          return appliedCoupon.discount;  // Fixed amount discount
-        }
-        return Math.floor(total * appliedCoupon.discount); // Percentage discount
-      };
+        return Math.floor(total * appliedCoupon.discount); // Always calculate as percentage
+    };
+
+    const CouponList = () => (
+        <div className="modal-overlay" onClick={() => setShowCouponList(false)}>
+            <div className="coupon-list">
+                <div className="coupon-list-header">
+                    <h4>Mã giảm giá của bạn</h4>
+                    <button onClick={() => setShowCouponList(false)}>✕</button>
+                </div>
+                {isLoadingCoupons ? (
+                    <div>Đang tải...</div>
+                ) : userCoupons.length === 0 ? (
+                    <div>Không có mã giảm giá</div>
+                ) : (
+                    userCoupons.map(coupon => (
+                        <div 
+                            key={coupon.KM_MaKhuyenMai} 
+                            className="coupon-item"
+                            onClick={() => {
+                                setCouponCode(coupon.KM_MaKhuyenMai);
+                                setShowCouponList(false);
+                            }}
+                        >
+                            <div className="coupon-code">{coupon.KM_MaKhuyenMai}</div>
+                            <div className="coupon-details">
+                                <div>{coupon.KM_TenKhuyenMai}</div>
+                                <div>Giảm {Math.round(coupon.KM_TyLeGiamGia * 100)}%</div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+
     return (
         <div>
             <Nav />
@@ -153,19 +249,30 @@ const Checkout = () => {
 
                             <div className="form-group">
                                 <label>Chọn chi nhánh</label>
-                                <select
-                                    name="branch"
-                                    value={formData.branch}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="">Chọn chi nhánh</option>
-                                    {branches.map(branch => (
-                                        <option key={branch.id} value={branch.id}>
-                                            {branch.name} - {branch.address}
-                                        </option>
-                                    ))}
-                                </select>
+                                {branchLoading ? (
+                                    <div className="loading">Đang tải chi nhánh...</div>
+                                ) : branchError ? (
+                                    <div className="error-message">{branchError}</div>
+                                ) : branches && branches.length > 0 ? (
+                                    <select
+                                        name="branch"
+                                        value={formData.branch}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="">Chọn chi nhánh</option>
+                                        {branches.map(branch => (
+                                            <option 
+                                                key={branch.CN_MaChiNhanh} 
+                                                value={branch.CN_MaChiNhanh}
+                                            >
+                                                {`${branch.CN_DiaChi} (${branch.CN_Ten})`}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <div className="error-message">Không có chi nhánh nào</div>
+                                )}
                             </div>
 
                             <div className="form-group">
@@ -200,12 +307,20 @@ const Checkout = () => {
                                     />
                                     <button 
                                     type="button"
+                                    onClick={() => setShowCouponList(true)}
+                                    className="view-coupons-btn"
+                                    >
+                                    Xem mã giảm giá
+                                    </button>
+                                    <button 
+                                    type="button"
                                     onClick={handleApplyCoupon}
                                     className="apply-coupon-btn"
                                     >
                                     Áp dụng
                                     </button>
                                 </div>
+                                {showCouponList && <CouponList />}
                                 {couponError && <div className="error-message">{couponError}</div>}
                             </div>
 
@@ -217,8 +332,8 @@ const Checkout = () => {
                                 </div>
                                 {appliedCoupon && (
                                     <div className="summary-item discount">
-                                    <span>Giảm giá:</span>
-                                    <span>-{calculateDiscount().toLocaleString()}đ</span>
+                                        <span>Giảm giá ({Math.round(appliedCoupon.discount * 100)}%):</span>
+                                        <span>-{calculateDiscount().toLocaleString()}đ</span>
                                     </div>
                                 )}
                                 <div className="summary-item">

@@ -7,13 +7,12 @@ import '../css/branchsearch.css';
 const BranchSearch = () => {
     const [branchData, setBranchData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [district, setDistrict] = useState('');
-    const [province, setProvince] = useState('');
+    const [district] = useState('');
     const { selectedBranch, setSelectedBranch } = useBranch();
     const [showOpenOnly, setShowOpenOnly] = useState(false);
-    const [confirmBranch, setConfirmBranch] = useState(null);
+    const [setConfirmBranch] = useState(null);
 
   
 

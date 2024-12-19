@@ -74,8 +74,12 @@ const OrderConfirmation = () => {
                 status: 'preparing',
                 orderDate: new Date().toISOString(),
                 estimatedDelivery: new Date(Date.now() + 2 * 3600000).toISOString(),
-                branch: formData.branch,
-                branchName: getBranchName(formData.branch),
+                branch: {
+                    id: formData.branch.CN_MaChiNhanh,
+                    name: formData.branch.CN_Ten,
+                    address: formData.branch.CN_DiaChi
+                },
+                branchName: `${formData.branch.CN_DiaChi} (${formData.branch.CN_Ten})`,
                 trackingUrl: `http://sushix.com/tracking/${orderId}`
             };
 
@@ -114,9 +118,8 @@ const OrderConfirmation = () => {
         
     };
 
-    if (!formData || !cartItems) {
-        navigate('/cart');
-        return null;
+    if (!formData?.branch?.CN_MaChiNhanh) {
+        throw new Error('Vui lòng chọn chi nhánh');
     }
 
     return (
@@ -147,7 +150,12 @@ const OrderConfirmation = () => {
                             </div>
                             <div className="info-item">
                                 <label>Chi nhánh:</label>
-                                <span>{formData.branch}</span>
+                                <span>
+                                    {formData.branch ? 
+                                        `${formData.branch.CN_DiaChi} (${formData.branch.CN_Ten})` : 
+                                        'Chưa chọn chi nhánh'
+                                    }
+                                </span>
                             </div>
                             <div className="info-item">
                                 <label>Phương thức thanh toán:</label>

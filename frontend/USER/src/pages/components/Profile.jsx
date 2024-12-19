@@ -5,10 +5,9 @@ import Nav from './Nav';
 import '../css/profile.css';
 
 const Profile = () => {
-    const { user, setUser, logout } = useContext(UserContext);
+    const { user,logout } = useContext(UserContext);
     const navigate = useNavigate();
-    const [previewUrl, setPreviewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
-    const fileInputRef = useRef(null);
+    const [previewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
     const [isEditing, setIsEditing] = useState(false);
     const [editedUser, setEditedUser] = useState({
         KH_HoTen: '',
@@ -20,12 +19,16 @@ const Profile = () => {
         TTV_LoaiThe: '',
         TTV_DiemTichLuy: ''
     });
+    const [promotions, setPromotions] = useState([]);
+    const [loadingPromotions, setLoadingPromotions] = useState(false);
+    const [promotionError, setPromotionError] = useState('');
     const [showPromotionsModal, setShowPromotionsModal] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [originalUser, setOriginalUser] = useState({});
     const email = user.email;
     const handleInputChange = (e) => {
         setEditedUser({
@@ -36,7 +39,6 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            // Save user data to backend
             const response = await fetch(`http://localhost:3000/api/auth/${email}`, {
                 method: 'PUT',
                 headers: {
@@ -45,12 +47,14 @@ const Profile = () => {
                 },
                 body: JSON.stringify(editedUser)
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to update profile');
             }
-
+    
             const updatedUser = await response.json();
+            setOriginalUser(updatedUser.user); // Update original data after successful save
+            setEditedUser(updatedUser.user);
             setIsEditing(false);
             alert('Cập nhật thông tin thành công');
         } catch (error) {
@@ -60,8 +64,9 @@ const Profile = () => {
     };
 
     const handleCancel = () => {
-        setEditedUser({ ...user });
+        setEditedUser({...originalUser}); // Restore from original data
         setIsEditing(false);
+        setError('');
     };
 
     const fetchUserDetails = async () => {
@@ -72,15 +77,14 @@ const Profile = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to fetch user details');
             }
-
+    
             const userDetails = await response.json();
             setEditedUser(userDetails.user);
-            console.log('User details:', userDetails);
-            console.log('Edited user:', editedUser);
+            setOriginalUser(userDetails.user); // Store original data
         } catch (error) {
             console.error('Error fetching user details:', error);
             setError('Không thể tải thông tin người dùng.');
@@ -91,6 +95,41 @@ const Profile = () => {
         fetchUserDetails();
     }, []);
 
+    const fetchPromotions = async () => {
+        setLoadingPromotions(true);
+        setPromotionError('');
+        try {
+            const response = await fetch('http://localhost:3000/api/promotions', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+    
+            if (!response.ok) throw new Error('Failed to fetch promotions');
+            
+            const data = await response.json();
+            
+            // Add future end dates to all promotions
+            const futurePromotions = data.promotions.map(promo => ({
+                ...promo,
+                // Set end date to 1 month from now
+                KM_NgayKetThuc: new Date(Date.now() + 30*24*60*60*1000).toISOString()
+            }));
+    
+            setPromotions(futurePromotions);
+        } catch (error) {
+            console.error('Error fetching promotions:', error);
+            setPromotionError('Không thể tải khuyến mãi');
+            setPromotions([]);
+        } finally {
+            setLoadingPromotions(false);
+        }
+    };
+    useEffect(() => {
+        if (showPromotionsModal) {
+            fetchPromotions();
+        }
+    }, [showPromotionsModal]);
     const handleChangePassword = async () => {
         if (newPassword !== confirmPassword) {
             setError('Mật khẩu mới và xác nhận mật khẩu không khớp.');
@@ -285,20 +324,54 @@ const Profile = () => {
                         <div className="modal-content promotions-modal">
                             <div className="modal-header">
                                 <h3>Ưu đãi của bạn</h3>
-                                <button 
-                                    className="close-btn"
-                                    onClick={() => setShowPromotionsModal(false)}
-                                >
+                                <button className="close-btn" onClick={() => setShowPromotionsModal(false)}>
                                     <i className="fas fa-times"></i>
                                 </button>
                             </div>
                             <div className="promotions-grid">
-                                <div className="promotion-card">
-                                    <span className="promotion-status status-valid">Còn hiệu lực</span>
-                                    <div className="promotion-discount">Giảm 20%</div>
-                                    <div className="promotion-code">WELCOME20</div>
-                                </div>
-                                {/* Thêm các thẻ ưu đãi khác nếu cần */}
+                                {loadingPromotions ? (
+                                    <div className="loading">
+                                        <i className="fas fa-spinner fa-spin"></i>
+                                        <span>Đang tải ưu đãi...</span>
+                                    </div>
+                                ) : promotionError ? (
+                                    <div className="error-message">
+                                        <i className="fas fa-exclamation-circle"></i>
+                                        {promotionError}
+                                    </div>
+                                ) : !promotions || promotions.length === 0 ? (
+                                    <div className="no-promotions">
+                                        <i className="fas fa-ticket-alt"></i>
+                                        <p>Không có ưu đãi nào</p>
+                                    </div>
+                                ) : (
+                                    Array.isArray(promotions) && promotions.map(promotion => (
+                                        <div key={promotion?.KM_MaKhuyenMai || Math.random()} className="promotion-card">
+                                            <div className="promotion-content">
+                                                <div className="promotion-header">
+                                                    <span className="promotion-name">{promotion?.KM_TenKhuyenMai || 'Chưa có tên'}</span>
+                                                    <span className={`promotion-status ${new Date(promotion?.KM_NgayKetThuc) > new Date() ? 'status-valid' : 'status-expired'}`}>
+                                                        {new Date(promotion?.KM_NgayKetThuc) > new Date() ? 'Còn hiệu lực' : 'Hết hạn'}
+                                                    </span>
+                                                </div>
+                                                <div className="promotion-body">
+                                                    <div className="promotion-discount">
+                                                        <span className="discount-value">{Math.round(promotion?.KM_TyLeGiamGia * 100) || 0}%</span>
+                                                        <span className="discount-label">Giảm</span>
+                                                    </div>
+                                                    <div className="promotion-details">
+                                                        <div className="promotion-code">Mã: {promotion?.KM_MaKhuyenMai || 'N/A'}</div>
+                                                        <p className="promotion-event">Sự kiện: {promotion?.KM_TenSuKien || 'Chưa có'}</p>
+                                                        <p className="promotion-type">Loại thẻ: {promotion?.KM_LoaiTheApDung || 'Tất cả'}</p>
+                                                        <p className="promotion-branch">Chi nhánh: {promotion?.KM_MaChiNhanh || 'Tất cả'}</p>
+                                                       
+                                                        <div className="promotion-desc">{promotion?.KM_MoTa || 'Không có mô tả'}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>
