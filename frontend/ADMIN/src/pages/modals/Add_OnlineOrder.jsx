@@ -69,7 +69,7 @@ const Add_OnlineOrder = ({ onClose, onAdd }) => {
                             <p><strong>Số điện thoại:</strong> <input type="text" name="phone" value={newOrder.phone} onChange={handleChange} required /></p>
                             <p><strong>Điểm đến:</strong> <input type="text" name="address" value={newOrder.destination} onChange={handleChange} required /></p>
                             <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={newOrder.comment} onChange={handleChange} required /></p>
-                            <h3>MÓN ĂN ĐẶT TRƯỚC</h3>
+                            <h3>MÓN ĂN ĐƯỢC ĐẶT</h3>
                             <div>
                                 <div>
                                     <input
