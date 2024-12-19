@@ -19,7 +19,8 @@ const Checkout = () => {
     const [userCoupons, setUserCoupons] = useState([]);
     const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
     const [showCouponList, setShowCouponList] = useState(false);
-    
+    const [customerPhone, setCustomerPhone] = useState('');
+
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -41,6 +42,37 @@ const Checkout = () => {
         }
     }, [user]);
 
+    useEffect(() => {
+        if (customerPhone) {
+            setFormData(prev => ({
+                ...prev,
+                phone: customerPhone
+            }));
+            console.log('Setting phone:', customerPhone); 
+        }
+    }, [customerPhone]);
+    
+    useEffect(() => {
+        const fetchCustomerPhone = async () => {
+            if (user?.email) {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/auth/${user.email}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setCustomerPhone(data.user.KH_SDT);
+                        setFormData(prev => ({
+                            ...prev,
+                            phone: data.user.KH_SDT
+                        }));
+                    }
+                } catch (error) {
+                    console.error('Error fetching customer phone:', error);
+                }
+            }
+        };
+    
+        fetchCustomerPhone();
+    }, [user]);
     const fetchBranches = async () => {
         try {
             setBranchLoading(true);
@@ -232,6 +264,7 @@ const Checkout = () => {
                                     value={formData.phone}
                                     onChange={handleInputChange}
                                     required
+                                    readOnly={!!customerPhone}
                                 />
                             </div>
 

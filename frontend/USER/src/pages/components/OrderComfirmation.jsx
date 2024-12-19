@@ -6,6 +6,7 @@ import Nav from './Nav';
 import '../css/orderConfirmation.css';
 import { saveOrder } from '../../utils/OrderStorage';
 import { CartContext } from '../../context/CartContext';
+import { createOnlineOrder, addOrderedDishes } from '../../services/orderService';
 
 const OrderConfirmation = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,11 +30,7 @@ const OrderConfirmation = () => {
         setIsSubmitting(true);
         try {
             // Generate better order ID
-            const date = new Date();
-            const dateStr = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-            const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
-            const orderId = `SX${dateStr}${randomStr}`;
-
+            const orderId = `SX${Math.floor(Math.random() * 100000).toString().padStart(5, '0')}`;
             // Calculate final total with proper validation
             const subtotal = total || 0;
             const discountAmount = discount || 0;
@@ -47,6 +44,25 @@ const OrderConfirmation = () => {
 
             if (!cartItems?.length) {
                 throw new Error('Giỏ hàng trống');
+            }
+            const orderData = {
+                PDM_MaPhieu: orderId,
+                PDM_SDT_KH: formData.phone,
+                PDM_MaNhanVien: "NV00000000", // Default or get from context
+                PDM_DiaChiCanGiao: formData.address,
+                PDM_GhiChuThem: formData.notes || ''
+            };
+            console.log(orderData);
+            const response = await createOnlineOrder(orderData);
+
+            for (const item of cartItems) {
+                const dishData = {
+                    MDD_MaMon: item.id,
+                    MDD_SoLuong: item.quantity
+                };
+                console.log(dishData);
+                const response = await addOrderedDishes(orderId, dishData);
+                console.log(response);
             }
 
             const orderDetails = {

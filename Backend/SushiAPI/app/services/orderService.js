@@ -89,20 +89,18 @@ export const orderService = {
         try {
             const pool = await conn;
             const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
                 .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
                 .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
                 .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
                 .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
                 .execute('usp_TaoPhieuDatMon')
-    
-            const OrderID = result.output.PDM_MaPhieu
-    
+            console.log(result);
             // Trả về kết quả thành công
             return {
                 success: true,
                 message: 'Online order created successfully',
-                OrderID
             };
     
         } catch (error) {
@@ -178,20 +176,18 @@ export const orderService = {
     // },
 
     //Đặt món cho phiếu đặt món
-    orderDishes: async (MaPhieu, dishes) => {
-
-        for (const item of dishes) {
-
-            const { MDD_MaMon, MDD_SoLuong } = item
-
+    orderDishes: async (item) => {
+            const { MDD_MaMon, MDD_MaPhieu, MDD_SoLuong } = item;
+            console.log (item);
             try {
                 const pool = await conn;
                 const result = await pool.request()
                     .input('MaMon', sql.VarChar(12), MDD_MaMon)
-                    .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                    .input('MaPhieu', sql.VarChar(12), MDD_MaPhieu)
                     .input('SoLuong', sql.Int, MDD_SoLuong)
                     .execute('usp_ThemMonDuocDat')
 
+                console.log(result);
                 // Trả về kết quả thành công
                 return {
                     success: true,
@@ -202,7 +198,6 @@ export const orderService = {
                 console.error('Error order dish:', error);
                 throw new Error('Failed to order dish.');
             }
-        }
     },
 
     // Thay đổi thông tin phiếu đặt món

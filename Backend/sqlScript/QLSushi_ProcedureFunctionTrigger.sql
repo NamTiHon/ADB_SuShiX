@@ -418,12 +418,6 @@ create or alter proc usp_ThemMonDuocDat
 	@SoLuong int
 as
 begin 
-	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
-	begin
-		print(N'Phiếu đặt món không tồn tại.')
-		return
-	end
-
 	if exists(select * from MonDuocDat where MDD_MaMon = @MaMon) and exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Món ăn này đã được đặt rồi.')

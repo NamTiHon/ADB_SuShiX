@@ -50,8 +50,7 @@ export const orderController = {
     // @route  POST /api/order/:MaPhieu
     orderDishes: async (req, res) => {
         try {
-            const PDM_MaPhieu = req.params.MAPhieu;
-            const order = await orderService.orderDishes(PDM_MaPhieu, req.body);
+            const order = await orderService.orderDishes(req.body);
             res.status(200).json({ message: 'Order dishes successfully', order });
         } catch (error) {
             res.status(500).json({ message: error.message });
