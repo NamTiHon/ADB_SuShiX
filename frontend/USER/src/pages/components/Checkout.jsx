@@ -16,6 +16,9 @@ const Checkout = () => {
     const [branches, setBranches] = useState([]);
     const [branchLoading, setBranchLoading] = useState(true);
     const [branchError, setBranchError] = useState('');
+    const [userCoupons, setUserCoupons] = useState([]);
+    const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
+    const [showCouponList, setShowCouponList] = useState(false);
     
     const [formData, setFormData] = useState({
         fullName: '',
@@ -71,6 +74,30 @@ const Checkout = () => {
         fetchBranches();
     }, []);
 
+    const fetchUserCoupons = async () => {
+        try {
+            setIsLoadingCoupons(true);
+            const response = await fetch(`http://localhost:3000/api/promotions`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch coupons');
+            
+            const data = await response.json();
+            setUserCoupons(data.promotions || []);
+        } catch (error) {
+            console.error('Error fetching coupons:', error);
+        } finally {
+            setIsLoadingCoupons(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserCoupons();
+    }, []);
+
     const paymentMethods = [
         { id: 'cash', name: 'Tiền mặt', icon: '💵' },
         { id: 'momo', name: 'Ví MoMo', icon: '🌸' },
@@ -109,23 +136,24 @@ const Checkout = () => {
         });
     };
     const validateCoupon = (code) => {
-        // Mock coupon database - in real app this would come from backend
-        const coupons = {
-          'WELCOME200': { discount: 200000, minOrder: 500000 },
-          'SAVE50K': { discount: 50000, minOrder: 200000 },
-        };
-      
-        const coupon = coupons[code];
+        const coupon = userCoupons.find(c => c.KM_MaKhuyenMai === code);
+        
         if (!coupon) {
-          return { valid: false, message: 'Mã giảm giá không hợp lệ' };
+            return { valid: false, message: 'Mã giảm giá không hợp lệ' };
         }
-      
-        if (total < coupon.minOrder) {
-          return { valid: false, message: `Đơn hàng tối thiểu ${coupon.minOrder.toLocaleString()}đ` };
+    
+        if (new Date(coupon.KM_NgayKetThuc) < new Date()) {
+            return { valid: false, message: 'Mã giảm giá đã hết hạn' };
         }
-      
-        return { valid: true, coupon };
-      };
+    
+        return { 
+            valid: true, 
+            coupon: {
+                discount: coupon.KM_TyLeGiamGia, // Store as decimal (e.g., 0.1 for 10%)
+                code: coupon.KM_MaKhuyenMai
+            }
+        };
+    };
     const handleApplyCoupon = () => {
         setCouponError('');
         const result = validateCoupon(couponCode.trim().toUpperCase());
@@ -141,12 +169,42 @@ const Checkout = () => {
     };
     const calculateDiscount = () => {
         if (!appliedCoupon) return 0;
-        
-        if (typeof appliedCoupon.discount === 'number') {
-          return appliedCoupon.discount;  // Fixed amount discount
-        }
-        return Math.floor(total * appliedCoupon.discount); // Percentage discount
-      };
+        return Math.floor(total * appliedCoupon.discount); // Always calculate as percentage
+    };
+
+    const CouponList = () => (
+        <div className="modal-overlay" onClick={() => setShowCouponList(false)}>
+            <div className="coupon-list">
+                <div className="coupon-list-header">
+                    <h4>Mã giảm giá của bạn</h4>
+                    <button onClick={() => setShowCouponList(false)}>✕</button>
+                </div>
+                {isLoadingCoupons ? (
+                    <div>Đang tải...</div>
+                ) : userCoupons.length === 0 ? (
+                    <div>Không có mã giảm giá</div>
+                ) : (
+                    userCoupons.map(coupon => (
+                        <div 
+                            key={coupon.KM_MaKhuyenMai} 
+                            className="coupon-item"
+                            onClick={() => {
+                                setCouponCode(coupon.KM_MaKhuyenMai);
+                                setShowCouponList(false);
+                            }}
+                        >
+                            <div className="coupon-code">{coupon.KM_MaKhuyenMai}</div>
+                            <div className="coupon-details">
+                                <div>{coupon.KM_TenKhuyenMai}</div>
+                                <div>Giảm {Math.round(coupon.KM_TyLeGiamGia * 100)}%</div>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    );
+
     return (
         <div>
             <Nav />
@@ -249,12 +307,20 @@ const Checkout = () => {
                                     />
                                     <button 
                                     type="button"
+                                    onClick={() => setShowCouponList(true)}
+                                    className="view-coupons-btn"
+                                    >
+                                    Xem mã giảm giá
+                                    </button>
+                                    <button 
+                                    type="button"
                                     onClick={handleApplyCoupon}
                                     className="apply-coupon-btn"
                                     >
                                     Áp dụng
                                     </button>
                                 </div>
+                                {showCouponList && <CouponList />}
                                 {couponError && <div className="error-message">{couponError}</div>}
                             </div>
 
@@ -266,8 +332,8 @@ const Checkout = () => {
                                 </div>
                                 {appliedCoupon && (
                                     <div className="summary-item discount">
-                                    <span>Giảm giá:</span>
-                                    <span>-{calculateDiscount().toLocaleString()}đ</span>
+                                        <span>Giảm giá ({Math.round(appliedCoupon.discount * 100)}%):</span>
+                                        <span>-{calculateDiscount().toLocaleString()}đ</span>
                                     </div>
                                 )}
                                 <div className="summary-item">
