@@ -1,7 +1,27 @@
 import React, { useState } from 'react';
 import '../css/css-modals/add-booking.css';
 
-const Add_Booking = ({ onClose, onAdd, fields }) => {
+const Add_Booking = ({ onClose, onAdd }) => {
+    const [preOrderedDishes, setPreOrderedDishes] = useState([]);
+    const [currentDish, setCurrentDish] = useState({ dishName: '', quantity: 0 });
+
+    // Add handleAddDish function
+    const handleAddDish = () => {
+        if (currentDish.dishName && currentDish.quantity > 0) {
+            setPreOrderedDishes([...preOrderedDishes, { ...currentDish }]);
+            setCurrentDish({ dishName: '', quantity: 0 });
+        }
+    };
+
+    // Add handleDishChange function
+    const handleDishChange = (e) => {
+        setCurrentDish({
+            ...currentDish,
+            [e.target.name]: e.target.value
+        });
+    };
+
+
     const [newBooking, setNewBooking] = useState({
         phone: '0123456789',
         branchId: '123Levanviet',
@@ -10,6 +30,7 @@ const Add_Booking = ({ onClose, onAdd, fields }) => {
         arrivalDate: '2021-08-01',
         arrivalTime: '10:00',
         comment: 'example',
+        preOrderedDishes: [],
     });
 
     const handleChange = (e) => {
@@ -27,6 +48,7 @@ const Add_Booking = ({ onClose, onAdd, fields }) => {
             bookingId: generateBookingId(),
             createdDate: new Date().toISOString().split('T')[0],
             status: 'Pending',
+            preOrderedDishes: preOrderedDishes,
         };
         onAdd(bookingWithInfo);
         alert('Thêm phiếu đặt thành công');
@@ -53,6 +75,35 @@ const Add_Booking = ({ onClose, onAdd, fields }) => {
                             <p><strong>Ngày đến:</strong> <input type="date" name="arrivalDate" value={newBooking.arrivalDate} onChange={handleChange} required /></p>
                             <p><strong>Giờ đến:</strong> <input type="time" name="arrivalTime" value={newBooking.arrivalTime} onChange={handleChange} required /></p>
                             <p><strong>Ghi chú:</strong> <input type="text" name="comment" value={newBooking.comment} onChange={handleChange} required /></p>
+                            <h3>MÓN ĂN ĐẶT TRƯỚC</h3>
+                            <div>
+                                <div>
+                                    <input
+                                        type="text"
+                                        name="dishName"
+                                        placeholder="Tên món"
+                                        value={currentDish.dishName}
+                                        onChange={handleDishChange}
+                                    />
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        placeholder="Số lượng"
+                                        value={currentDish.quantity}
+                                        onChange={handleDishChange}
+                                        min="0"
+                                    />
+                                    <button type="button" onClick={handleAddDish}>Thêm món</button>
+                                </div>
+
+                                <ul>
+                                    {preOrderedDishes.map((dish, index) => (
+                                        <li key={index}>
+                                            {dish.dishName} - Số lượng: {dish.quantity}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                             <button type="submit" className="add-button">Thêm</button>
                         </div>
                     </form>

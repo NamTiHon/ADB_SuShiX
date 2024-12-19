@@ -514,7 +514,7 @@ function StaffMgmt() {
                 <div className="main-content-box">
                     <div className="header-container">
                         <h1>Quản lý nhân viên</h1>
-                        <button className="add-staff-button" onClick={() => setIsAddModalOpen(true)}>Thêm Nhân Viên</button>
+                        {/* <button className="add-staff-button" onClick={() => setIsAddModalOpen(true)}>Thêm Nhân Viên</button> */}
                     </div>
                     <div className="table-box">
                         <div className="search-and-pagination-container">
@@ -552,7 +552,7 @@ function StaffMgmt() {
                                 </span>
                             </div>
                         </div>
-                        <table className="customer-table">
+                        <table className="staff-table">
                             <thead>
                                 <tr>
                                     {columns.map(column => (

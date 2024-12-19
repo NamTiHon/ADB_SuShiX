@@ -14,20 +14,19 @@ function Mgmt_OnlineOrder() {
         { id: 'orderTime', header: 'Giờ đặt hàng', value: 'orderTime' },
         { id: 'destination', header: 'Điểm đến', value: 'destination' },
         { id: 'comment', header: 'Ghi chú', value: 'comment' },
-        { id: 'status', header: 'Trạng thái', value: 'status' }
     ];
 
     const [orders, setOrders] = useState([
-        { orderId: '1', name: 'John Doe', phone: '123456789', orderDate: '2023-10-01', orderTime: '18:00', destination: 'B001', comment: 'Birthday party', status: 'Confirmed' },
-        { orderId: '2', name: 'Jane Smith', phone: '987654321', orderDate: '2023-10-02', orderTime: '19:00', destination: 'B002', comment: 'Anniversary', status: 'Pending' },
-        { orderId: '3', name: 'Alice Johnson', phone: '555555555', orderDate: '2023-10-03', orderTime: '20:00', destination: 'B003', comment: 'Business meeting', status: 'Cancelled' },
-        { orderId: '4', name: 'Bob Brown', phone: '444444444', orderDate: '2023-10-04', orderTime: '17:00', destination: 'B004', comment: 'Family dinner', status: 'Confirmed' },
-        { orderId: '5', name: 'Charlie Davis', phone: '333333333', orderDate: '2023-10-05', orderTime: '18:30', destination: 'B005', comment: 'Friends gathering', status: 'Pending' },
-        { orderId: '6', name: 'Diana Evans', phone: '222222222', orderDate: '2023-10-06', orderTime: '19:30', destination: 'B006', comment: 'Solo dining', status: 'Confirmed' },
-        { orderId: '7', name: 'Evan Foster', phone: '111111111', orderDate: '2023-10-07', orderTime: '20:30', destination: 'B007', comment: 'Date night', status: 'Cancelled' },
-        { orderId: '8', name: 'Fiona Green', phone: '666666666', orderDate: '2023-10-08', orderTime: '21:00', destination: 'B008', comment: 'Team outing', status: 'Confirmed' },
-        { orderId: '9', name: 'George Harris', phone: '777777777', orderDate: '2023-10-09', orderTime: '18:45', destination: 'B009', comment: 'Casual dinner', status: 'Pending' },
-        { orderId: '10', name: 'Hannah White', phone: '888888888', orderDate: '2023-10-10', orderTime: '19:15', destination: 'B010', comment: 'Quick bite', status: 'Confirmed' }
+        { orderId: '1', name: 'John Doe', phone: '123456789', orderDate: '2023-10-01', orderTime: '18:00', destination: 'B001', comment: 'Birthday party', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 2 }, { dishId: 'D002', dishName: 'Tempura', quantity: 1 }] },
+        { orderId: '2', name: 'Jane Smith', phone: '987654321', orderDate: '2023-10-02', orderTime: '19:00', destination: 'B002', comment: 'Anniversary', preOrderedDishes: [{ dishId: 'D003', dishName: 'Ramen', quantity: 1 }, { dishId: 'D004', dishName: 'Gyoza', quantity: 1 }] },
+        { orderId: '3', name: 'Alice Johnson', phone: '555555555', orderDate: '2023-10-03', orderTime: '20:00', destination: 'B003', comment: 'Business meeting', preOrderedDishes: [{ dishId: 'D005', dishName: 'Sashimi', quantity: 3 }, { dishId: 'D006', dishName: 'Miso Soup', quantity: 2 }] },
+        { orderId: '4', name: 'Bob Brown', phone: '444444444', orderDate: '2023-10-04', orderTime: '17:00', destination: 'B004', comment: 'Family dinner', preOrderedDishes: [{ dishId: 'D007', dishName: 'Udon', quantity: 2 }, { dishId: 'D008', dishName: 'Katsu', quantity: 3 }] },
+        { orderId: '5', name: 'Charlie Davis', phone: '333333333', orderDate: '2023-10-05', orderTime: '18:30', destination: 'B005', comment: 'Friends gathering', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 4 }, { dishId: 'D002', dishName: 'Tempura', quantity: 2 }, { dishId: 'D003', dishName: 'Ramen', quantity: 3 }] },
+        { orderId: '6', name: 'Diana Evans', phone: '222222222', orderDate: '2023-10-06', orderTime: '19:30', destination: 'B006', comment: 'Solo dining', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 1 }] },
+        { orderId: '7', name: 'Evan Foster', phone: '111111111', orderDate: '2023-10-07', orderTime: '20:30', destination: 'B007', comment: 'Date night', preOrderedDishes: [{ dishId: 'D002', dishName: 'Tempura', quantity: 2 }, { dishId: 'D005', dishName: 'Sashimi', quantity: 1 }] },
+        { orderId: '8', name: 'Fiona Green', phone: '666666666', orderDate: '2023-10-08', orderTime: '21:00', destination: 'B008', comment: 'Team outing', preOrderedDishes: [{ dishId: 'D003', dishName: 'Ramen', quantity: 3 }, { dishId: 'D004', dishName: 'Gyoza', quantity: 2 }, { dishId: 'D001', dishName: 'Sushi', quantity: 4 }] },
+        { orderId: '9', name: 'George Harris', phone: '777777777', orderDate: '2023-10-09', orderTime: '18:45', destination: 'B009', comment: 'Casual dinner', preOrderedDishes: [{ dishId: 'D007', dishName: 'Udon', quantity: 2 }, { dishId: 'D008', dishName: 'Katsu', quantity: 2 }, { dishId: 'D006', dishName: 'Miso Soup', quantity: 1 }] },
+        { orderId: '10', name: 'Hannah White', phone: '888888888', orderDate: '2023-10-10', orderTime: '19:15', destination: 'B010', comment: 'Quick bite', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 2 }, { dishId: 'D002', dishName: 'Tempura', quantity: 1 }] }
     ]);
 
     useEffect(() => {

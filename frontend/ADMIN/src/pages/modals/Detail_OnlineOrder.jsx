@@ -36,7 +36,6 @@ const Detail_OnlineOrder = ({ booking, onClose, onUpdate, onDelete }) => {
         { id: 'orderTime', header: 'Giờ đặt hàng', value: 'orderTime' },
         { id: 'destination', header: 'Điểm đến', value: 'destination' },
         { id: 'comment', header: 'Ghi chú', value: 'comment' },
-        { id: 'status', header: 'Trạng thái', value: 'status' }
     ];
 
     return (
@@ -68,6 +67,16 @@ const Detail_OnlineOrder = ({ booking, onClose, onUpdate, onDelete }) => {
                                         <strong>{column.header}:</strong> {booking[column.value]}
                                     </p>
                                 ))}
+                                <div>
+                                    <strong>Các món đặt trước:</strong>
+                                    <ul>
+                                        {booking.preOrderedDishes.map((dish) => (
+                                            <li key={dish}>
+                                                {dish.dishName} - Số lượng: {dish.quantity}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                                     <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>

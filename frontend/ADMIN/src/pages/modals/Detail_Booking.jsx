@@ -61,6 +61,16 @@ const Detail_Booking = ({ item, onClose, onUpdate, onDelete, fields }) => {
                                         <strong>{field.label}:</strong> {item[field.name]}
                                     </p>
                                 ))}
+                                <div>
+                                    <strong>Các món đặt trước:</strong>
+                                        <ul>
+                                            {item.preOrderedDishes.map((dish) => (
+                                                <li key={dish}>
+                                                    {dish.dishName} - Số lượng: {dish.quantity}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                </div>
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                                     <button className="cancel-button" onClick={() => { setIsEditing(false); handleDeleteClick(); }}>Hủy phiếu đặt</button>
