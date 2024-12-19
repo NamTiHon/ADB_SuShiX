@@ -29,6 +29,7 @@ const Profile = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [originalUser, setOriginalUser] = useState({});
     const email = user.email;
     const handleInputChange = (e) => {
         setEditedUser({
@@ -39,7 +40,6 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            // Save user data to backend
             const response = await fetch(`http://localhost:3000/api/auth/${email}`, {
                 method: 'PUT',
                 headers: {
@@ -48,12 +48,14 @@ const Profile = () => {
                 },
                 body: JSON.stringify(editedUser)
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to update profile');
             }
-
+    
             const updatedUser = await response.json();
+            setOriginalUser(updatedUser.user); // Update original data after successful save
+            setEditedUser(updatedUser.user);
             setIsEditing(false);
             alert('Cập nhật thông tin thành công');
         } catch (error) {
@@ -63,8 +65,9 @@ const Profile = () => {
     };
 
     const handleCancel = () => {
-        setEditedUser({ ...user });
+        setEditedUser({...originalUser}); // Restore from original data
         setIsEditing(false);
+        setError('');
     };
 
     const fetchUserDetails = async () => {
@@ -75,15 +78,14 @@ const Profile = () => {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to fetch user details');
             }
-
+    
             const userDetails = await response.json();
             setEditedUser(userDetails.user);
-            console.log('User details:', userDetails);
-            console.log('Edited user:', editedUser);
+            setOriginalUser(userDetails.user); // Store original data
         } catch (error) {
             console.error('Error fetching user details:', error);
             setError('Không thể tải thông tin người dùng.');
