@@ -80,7 +80,7 @@ export const orderService = {
 
     //Lập phiếu đặt trước
     makeOnlineOrder: async (orderData) => {
-        const { PDM_MaPhieu, PDM_SDT_KH, PDM_MaNhanVien, PDM_DiaChiCanGiao, PDM_GhiChuThem } = orderData
+        const { PDM_MaPhieu, PDM_SDT_KH, PDM_MaNhanVien, PDM_DiaChiCanGiao, PDM_MaChiNhanh, PDM_GhiChuThem } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
@@ -93,6 +93,7 @@ export const orderService = {
                 .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
                 .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
+                .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
                 .input('DiaChiGiao', sql.NVarChar(100), PDM_DiaChiCanGiao)
                 .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
                 .execute('usp_TaoPhieuDatMon')

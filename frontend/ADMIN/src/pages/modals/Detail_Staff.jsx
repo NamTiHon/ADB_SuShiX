@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/staff-detail-modal.css';
+import '../css/css-modals/detail-staff.css'
 
-const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
+const Detail_Staff = ({ staff, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedStaff, setUpdatedStaff] = useState({ ...staff });
     const [isWorkHistoryVisible, setIsWorkHistoryVisible] = useState(false);
@@ -32,7 +32,7 @@ const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
 
                         {isEditing ? (
                             <>
-                                <p><strong>ID:</strong> {updatedStaff.staffID}</p>
+                                <p><strong>Mã nhân viên:</strong> {updatedStaff.staffId}</p>
                                 <p><strong>Họ tên:</strong> <input type="text" name="name" value={updatedStaff.name} onChange={handleChange} /></p>
                                 <p><strong>Ngày sinh:</strong> <input type="date" name="dateOfBirth" value={updatedStaff.dateOfBirth} onChange={handleChange} /></p>
                                 <p><strong>Giới tính:</strong> <input type="text" name="gender" value={updatedStaff.gender} onChange={handleChange} /></p>
@@ -41,8 +41,8 @@ const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
                                 <p><strong>Ngày nghỉ việc:</strong> <input type="date" name="resignationDate" value={updatedStaff.resignationDate} onChange={handleChange} /></p>
                                 <p><strong>Phòng ban:</strong> <input type="text" name="workingDepartment" value={updatedStaff.workingDepartment} onChange={handleChange} /></p>
                                 <p><strong>Chức vụ:</strong> <input type="text" name="position" value={updatedStaff.position} onChange={handleChange} /></p>
-                                <p><strong>Địa Chỉ</strong></p>
-                                <p><strong>Số điện thoại:</strong> <input type="text" name="address.phoneNumber" value={updatedStaff.address.phoneNumber} onChange={handleChange} /></p>
+                                <p><strong><h3>ĐỊA CHỈ</h3></strong></p>
+                                <p><strong>Số điện thoại:</strong> <input type="text" name="address.phoneNumber" value={updatedStaff.address.phone} onChange={handleChange} /></p>
                                 <p><strong>Số nhà:</strong> <input type="text" name="address.homeNumber" value={updatedStaff.address.homeNumber} onChange={handleChange} /></p>
                                 <p><strong>Đường:</strong> <input type="text" name="address.street" value={updatedStaff.address.street} onChange={handleChange} /></p>
                                 <p><strong>Phường:</strong> <input type="text" name="address.ward" value={updatedStaff.address.ward} onChange={handleChange} /></p>
@@ -52,7 +52,7 @@ const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
                             </>
                         ) : (
                             <>
-                                <p><strong>ID:</strong> {staff.staffID}</p>
+                                <p><strong>Mã nhân viên:</strong> {staff.staffId}</p>
                                 <p><strong>Họ tên:</strong> {staff.name}</p>
                                 <p><strong>Ngày sinh:</strong> {staff.dateOfBirth}</p>
                                 <p><strong>Giới tính:</strong> {staff.gender}</p>
@@ -61,8 +61,8 @@ const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
                                 <p><strong>Ngày nghỉ việc:</strong> {staff.resignationDate}</p>
                                 <p><strong>Phòng ban:</strong> {staff.workingDepartment}</p>
                                 <p><strong>Chức vụ:</strong> {staff.position}</p>
-                                <p><strong>Địa Chỉ</strong></p>
-                                <p><strong>Số điện thoại:</strong> {staff.address.phoneNumber}</p>
+                                <p><strong><h3>ĐỊA CHỈ</h3></strong></p>
+                                <p><strong>Số điện thoại:</strong> {staff.address.phone}</p>
                                 <p><strong>Số nhà:</strong> {staff.address.homeNumber}</p>
                                 <p><strong>Đường:</strong> {staff.address.street}</p>
                                 <p><strong>Phường:</strong> {staff.address.ward}</p>
@@ -108,4 +108,4 @@ const StaffDetailModal = ({ staff, onClose, onUpdate }) => {
     );
 };
 
-export default StaffDetailModal;
+export default Detail_Staff;

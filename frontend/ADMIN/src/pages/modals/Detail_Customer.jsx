@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import '../css-modals/booking-detail-modal.css';
+import '../css/css-modals/detail-customer.css';
 
-const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
+const Detail_Customer = ({ item, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedCustomer, setUpdatedCustomer] = useState({ ...customer });
+    const [updatedCustomer, setUpdatedCustomer] = useState({ ...item });
     
-    if (!customer) return null;
+    if (!item) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -39,10 +39,10 @@ const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
                             </>
                         ) : (
                             <>
-                                <p><strong>Họ tên:</strong> {customer.name}</p>
-                                <p><strong>Giới tính:</strong> {customer.gender}</p>
-                                <p><strong>Số CCCD:</strong> {customer.cccd}</p>
-                                <p><strong>Email:</strong> {customer.email}</p>
+                                <p><strong>Họ tên:</strong> {item.name}</p>
+                                <p><strong>Giới tính:</strong> {item.gender}</p>
+                                <p><strong>Số CCCD:</strong> {item.cccd}</p>
+                                <p><strong>Email:</strong> {item.email}</p>
                                 <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                             </>
                         )}
@@ -50,14 +50,14 @@ const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
                     <div className="divider"></div>
                     <div className="modal-section">
                         <h3>THÔNG TIN THẺ</h3>
-                        <p><strong>Mã thẻ:</strong> {customer.cardId}</p>
-                        <p><strong>Ngày tạo:</strong> {customer.createdDate}</p>
-                        <p><strong>Số năm sử dụng:</strong> {customer.yearsOfUsing}</p>
-                        <p><strong>Điểm:</strong> {customer.points}</p>
-                        <p><strong>Tình trạng thẻ:</strong> {customer.status}</p>
-                        <p><strong>Loại thành viên:</strong> {customer.membershipType}</p>
-                        <p><strong>Số điện thoại:</strong> {customer.phone}</p>
-                        <p><strong>Mã nhân viên tạo thẻ:</strong> {customer.staffId}</p>
+                        <p><strong>Mã thẻ:</strong> {item.cardId}</p>
+                        <p><strong>Ngày tạo:</strong> {item.createdDate}</p>
+                        <p><strong>Số năm sử dụng:</strong> {item.yearsOfUsing}</p>
+                        <p><strong>Điểm:</strong> {item.points}</p>
+                        <p><strong>Tình trạng thẻ:</strong> {item.status}</p>
+                        <p><strong>Loại thành viên:</strong> {item.membershipType}</p>
+                        <p><strong>Số điện thoại:</strong> {item.phone}</p>
+                        <p><strong>Mã nhân viên tạo thẻ:</strong> {item.staffId}</p>
                     </div>
                 </div>
             </div>
@@ -65,4 +65,4 @@ const BookingDetailModal = ({ customer, onClose, onUpdate }) => {
     );
 };
 
-export default CustomerDetailModal;
+export default Detail_Customer;

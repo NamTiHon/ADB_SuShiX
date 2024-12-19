@@ -2,21 +2,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import Login from './pages/components/Login';
 import Home from './pages/components/Home';
-import StaffMgmt from './pages/components/StaffMgmt';
-import CustomerMgmt from './pages/components/CustomerMgmt';
-import TableBookMgmt from './pages/components/TableBookMgmt';
-import OnlineOrderMgmt from './pages/components/OnlineOrderMgmt';
+import Mgmt_Branch from './pages/components/Mgmt_Branch';
+import Mgmt_Dish from './pages/components/Mgmt_Dish';
+import Mgmt_Staff from './pages/components/Mgmt_Staff';
+import Mgmt_Customer from './pages/components/Mgmt_Customer';
+import Mgmt_Booking from './pages/components/Mgmt_Booking';
+import Mgmt_OnlineOrder from './pages/components/Mgmt_OnlineOrder';
 
 function App() {
     return (
             <Router>
                 <Routes>
+                    <Route path="/login" element={<Login />} />
                     <Route path="/" element={<Home />} />
-                    <Route path="/staff-mgmt" element={<StaffMgmt />} />
-                    <Route path="/customer-mgmt" element={<CustomerMgmt />} />
-                    <Route path="/table-book-mgmt" element={<TableBookMgmt />} />
-                    <Route path="/online-order-mgmt" element={<OnlineOrderMgmt />} />
+                    <Route path="/mgmt-branch" element={<Mgmt_Branch />} />
+                    <Route path="/mgmt-dish" element={<Mgmt_Dish />} />
+                    <Route path="/mgmt-staff" element={<Mgmt_Staff />} />
+                    <Route path="/mgmt-customer" element={<Mgmt_Customer />} />
+                    <Route path="/mgmt-booking" element={<Mgmt_Booking />} />
+                    <Route path="/mgmt-online-order" element={<Mgmt_OnlineOrder />} />
                 </Routes>
             </Router>
     );

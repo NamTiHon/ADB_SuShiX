@@ -45,9 +45,8 @@ export const getBillById = async (req, res) => {
 
 // Tạo hóa đơn
 export const createBill = async (req, res) => {
-    const { MaHoaDon, SoTienGiam, TongTruocGiam, MaPhieu } = req.body;
     try {
-        const result = await billService.createBill({ MaHoaDon, SoTienGiam, TongTruocGiam, MaPhieu });
+        const result = await billService.createBill(req.body);
         res.status(201).json(result);
     } catch (error) {
         console.error('Error creating bill:', error);

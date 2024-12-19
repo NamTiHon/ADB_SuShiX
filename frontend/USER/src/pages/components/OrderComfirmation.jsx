@@ -6,7 +6,7 @@ import Nav from './Nav';
 import '../css/orderConfirmation.css';
 import { saveOrder } from '../../utils/OrderStorage';
 import { CartContext } from '../../context/CartContext';
-import { createOnlineOrder, addOrderedDishes } from '../../services/orderService';
+import { createOnlineOrder, addOrderedDishes, createBill } from '../../services/orderService';
 
 const OrderConfirmation = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,7 +30,7 @@ const OrderConfirmation = () => {
         setIsSubmitting(true);
         try {
             // Generate better order ID
-            const orderId = `SX${Math.floor(Math.random() * 100000).toString().padStart(5, '0')}`;
+            const orderId = `SX${Math.floor(Math.random() * 10000000).toString().padStart(5, '0')}`;
             // Calculate final total with proper validation
             const subtotal = total || 0;
             const discountAmount = discount || 0;
@@ -50,6 +50,7 @@ const OrderConfirmation = () => {
                 PDM_SDT_KH: formData.phone,
                 PDM_MaNhanVien: "NV00000000", // Default or get from context
                 PDM_DiaChiCanGiao: formData.address,
+                PDM_MaChiNhanh: formData.branch.CN_MaChiNhanh,
                 PDM_GhiChuThem: formData.notes || ''
             };
             console.log(orderData);
@@ -64,6 +65,15 @@ const OrderConfirmation = () => {
                 const response = await addOrderedDishes(orderId, dishData);
                 console.log(response);
             }
+
+            const billData = {
+                MaHoaDon: `HD${orderId.substring(3)}`, // Generate bill ID from order ID
+                SoTienGiam: discount || 0,
+                TongTruocGiam: subtotal + shipping,
+                MaPhieu: orderId
+            };
+            console.log(billData);
+            await createBill(billData);
 
             const orderDetails = {
                 orderId,

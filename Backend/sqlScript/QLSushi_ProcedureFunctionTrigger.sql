@@ -418,6 +418,7 @@ create or alter proc usp_ThemMonDuocDat
 	@SoLuong int
 as
 begin 
+
 	if exists(select * from MonDuocDat where MDD_MaMon = @MaMon) and exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
 	begin
 		print(N'Món ăn này đã được đặt rồi.')
@@ -567,13 +568,7 @@ create or alter proc usp_TaoHoaDon
 	@MaPhieu varchar(12)
 as
 begin
-	if not exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
-	begin
-		print(N'Phiếu đặt món không hợp lệ.')
-		return
-	end
-
-	if not exists(select * from HoaDon where HD_MaHoaDon = @MaHoaDon)
+	if exists(select * from HoaDon where HD_MaHoaDon = @MaHoaDon)
 	begin
 		print(N'Mã hóa đơn này đã tồn tại.')
 		return

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../css-modals/add-customer-modal.css';
+import '../css/css-modals/add-customer.css';
 
-const AddCustomerModal = ({ onClose, onAddCustomer }) => {
+const Add_Customer = ({ onClose, onAdd }) => {
     const [newCustomer, setNewCustomer] = useState({
         name: 'example',
         gender: 'male', // default to male
@@ -27,11 +27,11 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
             createdDate: new Date().toISOString().split('T')[0],
             yearsOfUsing: 0,
             points: 0,
-            status: 'Active',
+            status: 'Hoạt động',
             membershipType: 'Membership',
             staffId: '12345' // Example staff ID, replace with actual logic if needed
         };
-        onAddCustomer(customerWithCardInfo);
+        onAdd(customerWithCardInfo);
         alert('Thêm khách hàng thành công');
         onClose();
     };
@@ -67,4 +67,4 @@ const AddCustomerModal = ({ onClose, onAddCustomer }) => {
     );
 };
 
-export default AddCustomerModal;
+export default Add_Customer;
