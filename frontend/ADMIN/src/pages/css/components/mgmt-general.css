@@ -29,7 +29,7 @@
 .page-container {
     display: flex;
     /* flex: 1; */
-    /* gap: 50px; */
+    gap: 50px;
 }
 
 .main-content-box {
@@ -38,20 +38,18 @@
 }
 
 .header-container {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
 h1 {
-    margin: 50px 0;
+    margin: 30px 0;
     font-size: 50px;
     font-family: 'Arial', 'Courier', 'monospace';
 }
 
 .add-button {
-    padding: 10px 20px;
+    padding: 20px 30px;
     background-color: #f09;
     color: white;
     border: none;
