@@ -232,6 +232,11 @@ const OrderTracking = () => {
                                 <div className="order-items">
                                     {order.items?.map(item => (
                                         <div key={item.id} className="order-item">
+                                            {item.image && (
+                                                <div className="item-image">
+                                                    <img src={item.image} alt={item.name} />
+                                                </div>
+                                            )}
                                             <div className="item-info">
                                                 <span className="item-name">{item.name}</span>
                                                 <span className="item-quantity">x{item.quantity}</span>
