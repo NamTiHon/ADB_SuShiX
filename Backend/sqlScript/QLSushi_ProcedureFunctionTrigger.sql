@@ -1,7 +1,6 @@
 ﻿use DB_SushiX
 go
 
-
 --STORE PROCEDURE
 --Thêm món ăn của nhà hàng
 CREATE OR ALTER PROCEDURE usp_ThemMonAn

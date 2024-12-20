@@ -18,12 +18,25 @@ const AdminLogin = () => {
         password: 'admin123'
     };
 
+    const staffCredentials = {
+        email: 'staff@sushix.com',
+        password: 'staff123'
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (email === adminCredentials.email && password === adminCredentials.password) {
             // Store admin session securely
             localStorage.setItem('adminAuth', true);
+            navigate('/home');
+        } else {
+            setError('Email hoặc mật khẩu không chính xác');
+        }
+
+        if (email === staffCredentials.email && password === staffCredentials.password) {
+            // Store admin session securely
+            localStorage.setItem('userAuth', true);
             navigate('/home');
         } else {
             setError('Email hoặc mật khẩu không chính xác');

@@ -6,10 +6,10 @@ function Nav() {
     const navigate = useNavigate();
     const [showDropdown, setShowDropdown] = useState(false);
     const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
-
+    const isUserAuth = localStorage.getItem('userAuth') === 'true';
     const handleLogoClick = (e) => {
         e.preventDefault();
-        if (isAuthenticated) {
+        if (isAuthenticated || isUserAuth) {
             navigate('/home');
         } else {
             navigate('/');

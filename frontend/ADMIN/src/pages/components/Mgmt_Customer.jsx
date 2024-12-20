@@ -28,7 +28,7 @@ function Mgmt_Customer() {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/auth?page=${currentPage}&limit=${itemsPerPage}`);
+                const response = await fetch(`http://localhost:3000/api/auth`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch customers');
                 }
@@ -72,6 +72,13 @@ function Mgmt_Customer() {
 
     return (
         <div>
+            {loading ? (
+                <div className="loading-container">
+                    <div className="loading-spinner">
+                        Đang tải
+                    </div>
+                </div>
+            ) : (
             <Mgmt_General
                 columns={columns}
                 initialData={currentCustomers}
@@ -79,6 +86,7 @@ function Mgmt_Customer() {
                 AddModal={AddModal}
                 DetailModal={DetailModal}
             />
+            )}
         </div>
     );
 }

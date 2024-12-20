@@ -8,6 +8,7 @@ import branchRoutes from './routes/branchRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import promotionRoutes from './routes/promotionRoutes.js';
 import billRoutes from './routes/billRoutes.js';
+import staffRoutes from './routes/staffRoutes.js';
 
 const app = express()
 
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
     res.json({ msg: "Home Page" })
 });
 
+app.use('/api/staffs', staffRoutes);
 // Error Handler
 app.use(errorHandler);
 

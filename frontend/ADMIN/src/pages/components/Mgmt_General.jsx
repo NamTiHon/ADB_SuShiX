@@ -1,9 +1,11 @@
 import { React, useState, useEffect } from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
+import SideBarTemp from './sideBarTemp';
 import '../css/components/mgmt-general.css';
 
 function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
+    const isUserAuth = localStorage.getItem('userAuth') === 'true';
     const [items, setItems] = useState(initialData);
 
     useEffect(() => {
@@ -93,6 +95,8 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
 
+    console.log('Filtered items:', filteredItems);
+
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
     // If total pages is 0, set current page to 0
@@ -124,7 +128,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         <div className="mgmt-page">
             <Nav />
             <div className="page-container">
-                <SideBar />
+                {isUserAuth ? <SideBarTemp /> : <SideBar /> }
                 <div className="main-content-box">
                     <div className="header-container">
                         <h1>{title}</h1>
@@ -192,8 +196,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                                         }}
                                                     />
                                                 ) : (
-                                                    item[column.id] || 'N/A'
-
+                                                    item[column.id] === 0 ? 0 : (item[column.id] || '')
                                                 )}
                                             </td>
                                         ))}

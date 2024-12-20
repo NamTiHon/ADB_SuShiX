@@ -68,12 +68,22 @@ function Mgmt_Branch() {
     }
 
     return (
-        <Mgmt_General
-            columns={columns}
-            initialData={branches}
-            title={'Quản lý chi nhánh'}
-            AddModal={AddModal}
-            DetailModal={DetailModal} />
+        <div>
+            {loading ? (
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                </div>
+            ) : (
+            <Mgmt_General
+                columns={columns}
+                initialData={branches}
+                title={'Quản lý chi nhánh'}
+                AddModal={AddModal}
+                DetailModal={DetailModal} />
+            )}
+        </div>
+        
+
     );
 }
 

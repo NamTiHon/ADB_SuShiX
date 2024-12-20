@@ -107,23 +107,4 @@ export const userService = {
             throw new Error('Failed to update user');
         }
     },
-    getUserByPage: async (page = 1 , limit = 10 ) => {
-        try {
-            const offset = (page - 1) * limit;
-            const pool = await conn;
-            const result = await pool.request()
-                .input('limit', sql.Int, limit)
-                .input('offset', sql.Int, offset)
-                .query(`
-                    SELECT * FROM KhachHang
-                    JOIN TheThanhVien ON KhachHang.KH_SDT = TheThanhVien.TTV_SDT_KH
-                    ORDER BY KhachHang.KH_SDT
-                    OFFSET @offset ROWS FETCH NEXT @limit ROWS ONLY
-                `);
-            return result.recordset; // Return list of users
-        } catch (error) {
-            console.error('Error fetching all users:', error);
-            throw new Error('Failed to fetch users');
-        }
-    },
 };

@@ -57,12 +57,21 @@ function Mgmt_Dish() {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <Mgmt_General
-            columns={columns}
-            initialData={dishes}
-            title={'Quản lý món ăn'}
-            AddModal={AddModal}
-            DetailModal={DetailModal} />
+        <div>
+            {loading ? (
+                <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                </div>
+            ) : (
+            <Mgmt_General
+                columns={columns}
+                initialData={dishes}
+                title={'Quản lý món ăn'}
+                AddModal={AddModal}
+                DetailModal={DetailModal} />
+            )}
+        </div>
+        
     );
 }
 
