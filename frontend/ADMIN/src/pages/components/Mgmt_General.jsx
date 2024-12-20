@@ -134,7 +134,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                         <div className="search-and-pagination-container">
                             <select className="property-dropdown" value={filterField} onChange={(e) => setFilterField(e.target.value)}>
                                 {columns.filter(column => column.visible).map(column => (
-                                    <option key={column.id} value={column.value}>
+                                    <option key={column.id} value={column.id}>
                                         {column.header}
                                     </option>
                                 ))}
@@ -192,7 +192,6 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                                         }}
                                                     />
                                                 ) : (
-                                                    console.log('ItemXfds:', item[column.value]),
                                                     item[column.id] || 'N/A'
 
                                                 )}

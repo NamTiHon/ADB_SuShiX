@@ -52,12 +52,12 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
                         <h3>THÔNG TIN THẺ</h3>
                         <p><strong>Mã thẻ:</strong> {item.cardId}</p>
                         <p><strong>Ngày tạo:</strong> {item.createdDate}</p>
-                        <p><strong>Số năm sử dụng:</strong> {item.yearsOfUsing}</p>
+                        <p><strong>Số năm sử dụng:</strong> {item.yearOfUsing}</p>
                         <p><strong>Điểm:</strong> {item.points}</p>
                         <p><strong>Tình trạng thẻ:</strong> {item.status}</p>
                         <p><strong>Loại thành viên:</strong> {item.membershipType}</p>
-                        <p><strong>Số điện thoại:</strong> {item.phone}</p>
-                        <p><strong>Mã nhân viên tạo thẻ:</strong> {item.staffId}</p>
+                        <p><strong>Số điện thoại:</strong> {item.customerId}</p>
+                        <p><strong>Mã nhân viên tạo thẻ:</strong> {item.staffCreatorID}</p>
                     </div>
                 </div>
             </div>

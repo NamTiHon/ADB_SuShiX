@@ -79,13 +79,6 @@ function Mgmt_Customer() {
                 AddModal={AddModal}
                 DetailModal={DetailModal}
             />
-            {loading && (
-            <div className="loading">
-                <div className="spinner"></div>
-                Loading...
-            </div>
-        )}
-        {error && <div>Error: {error}</div>}
         </div>
     );
 }
