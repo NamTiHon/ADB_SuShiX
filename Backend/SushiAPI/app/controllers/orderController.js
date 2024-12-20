@@ -61,7 +61,7 @@ export const orderController = {
     // @route   PUT /api/order/:MaPhieu
     updateDishes: async (req, res) => {
         try {
-            const PDM_MaPhieu = req.params.MAPhieu;
+            const PDM_MaPhieu = req.params.MaPhieu;
             const updatedOrder = await dishService.updateDish(PDM_MaPhieu, req.body);
             if (!updatedOrder) {
                 return res.status(404).json({ message: `Cannot update dishes in ${PDM_MaPhieu}` });
@@ -76,7 +76,7 @@ export const orderController = {
     // @route   DELETE /api/order/MaPhieu
     deleteDishes: async (req, res) => {
         try {
-            const PDM_MaPhieu = req.params.MAPhieu;
+            const PDM_MaPhieu = req.params.MaPhieu;
             await dishService.deleteDishes(PDM_MaPhieu, req.body)
             res.status(204).send();
         } catch (error) {
@@ -88,7 +88,7 @@ export const orderController = {
     // @route   DELETE /api/order/MaPhieu
     deleteOrder: async (req, res) => {
         try {
-            const PDM_MaPhieu = req.params.MAPhieu;
+            const PDM_MaPhieu = req.params.MaPhieu;
             await dishService.deleteOrder(PDM_MaPhieu)
             res.status(204).send();
         } catch (error) {
@@ -100,7 +100,7 @@ export const orderController = {
     // @route  GET /api/dishes/:MaPhieu
     getOrder: async (req, res) => {
         try {
-            const PDM_MaPhieu = req.params.MAPhieu;
+            const PDM_MaPhieu = req.params.MaPhieu;
             const order = await orderService.getOrder(PDM_MaPhieu);
             if (!order) {
                 return res.status(404).json({ message: `Cannot find order with MaPhieu: ${PDM_MaPhieu}` });

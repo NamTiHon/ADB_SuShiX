@@ -23,7 +23,7 @@ const OrderConfirmation = () => {
         };
         return branches[branchId] || 'Chi nhánh không xác định';
     };
-
+    const [fullName, setFullName] = useState('');
     const handleConfirm = async () => {
         if (isSubmitting) return;
         
@@ -45,13 +45,15 @@ const OrderConfirmation = () => {
             if (!cartItems?.length) {
                 throw new Error('Giỏ hàng trống');
             }
+            setFullName(formData.fullName);
+            localStorage.setItem('fullName', formData.fullName);
             const orderData = {
                 PDM_MaPhieu: orderId,
                 PDM_SDT_KH: formData.phone,
                 PDM_MaNhanVien: "NV00000000", // Default or get from context
                 PDM_DiaChiCanGiao: formData.address,
                 PDM_MaChiNhanh: formData.branch.CN_MaChiNhanh,
-                PDM_GhiChuThem: formData.notes || ''
+                PDM_GhiChuThem: formData.notes || '',
             };
             console.log(orderData);
             const response = await createOnlineOrder(orderData);

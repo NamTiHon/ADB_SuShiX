@@ -117,7 +117,6 @@ const Menu = () => {
                 setDishes(transformedDishes);
 
                 if (selectedBranch?.name) {
-                    debugger;
                     const filtered = transformedDishes.filter(dish => 
                         dish.branch === selectedBranch.name
                     );

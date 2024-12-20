@@ -1,35 +1,151 @@
 // src/pages/components/OrderTracking.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import '../css/orderTracking.css';
-import { getOrder } from '../../utils/OrderStorage';
 
 const OrderTracking = () => {
     const [orderId, setOrderId] = useState('');
     const [order, setOrder] = useState(null);
     const [error, setError] = useState('');
-    const [setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [customerName, setCustomerName] = useState('');
+    const [dishes, setDishes] = useState({});
+    useEffect(() => {
+        const savedName = localStorage.getItem('fullName');
+        if (savedName) {
+            setCustomerName(savedName);
+        }
+    }, []);
     const calculateSubtotal = (items) => {
         if (!items || !Array.isArray(items)) return 0;
         return items.reduce((sum, item) => sum + ((item?.price || 0) * (item?.quantity || 0)), 0);
     };
-    const handleSearch = (e) => {
+    const fetchDishDetails = async (dishId) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/dishes');
+            if (response.ok) {
+                const { dishes } = await response.json(); // Destructure dishes array
+                console.log('Available dishes:', dishes);
+                
+                const dish = dishes.find(d => d.MA_MaMon === dishId);
+                console.log('Found dish:', dish);
+                
+                if (dish) {
+                    return {
+                        id: dish.MA_MaMon,
+                        name: dish.MA_TenMon,
+                        price: dish.MA_GiaHienTai,
+                        image: dish.MA_HinhAnh,
+                        category: dish.MA_TenDanhMuc
+                    };
+                }
+            }
+        } catch (err) {
+            console.error(`Error fetching dish ${dishId}:`, err);
+        }
+        return null;
+    };
+    
+    const transformOrderItems = async (orderItems) => {
+        try {
+            const itemsWithDetails = await Promise.all(
+                orderItems.map(async item => {
+                    const dishDetails = await fetchDishDetails(item.MDD_MaMon);
+                    console.log(`Dish details for ${item.MDD_MaMon}:`, dishDetails);
+                    
+                    if (!dishDetails) {
+                        console.warn(`No details found for dish ${item.MDD_MaMon}`);
+                    }
+                    
+                    return {
+                        id: item.MDD_MaMon,
+                        dishId: item.MDD_MaMon,
+                        quantity: item.MDD_SoLuong,
+                        name: dishDetails ? dishDetails.name : `Món #${item.MDD_MaMon}`,
+                        price: dishDetails ? dishDetails.price * 1000 : 0, // Multiply by 1000
+                        image: dishDetails ? dishDetails.image : null
+                    };
+                })
+            );
+            console.log('Final transformed items:', itemsWithDetails);
+            return itemsWithDetails;
+        } catch (err) {
+            console.error('Error transforming items:', err);
+            return [];
+        }
+    };
+    const fetchBillByOrderId = async (orderId) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/bills');
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Bills response:', responseData);
+                
+                // Access bills from data property
+                const bills = responseData.data;
+                if (!bills || !Array.isArray(bills)) {
+                    console.error('Invalid bills data format');
+                    return null;
+                }
+    
+                const matchingBill = bills.find(bill => bill.HD_MaPhieu === orderId);
+                console.log('Found bill:', matchingBill);
+                
+                return matchingBill;
+            }
+        } catch (err) {
+            console.error('Error fetching bill:', err);
+        }
+        return null;
+    };
+    const handleSearch = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
         
         try {
-            const searchId = orderId.trim().toUpperCase();
-            const foundOrder = getOrder(searchId);
+            // Fetch order
+            const response = await fetch(`http://localhost:3000/api/order/${orderId.trim()}`);
+            if (!response.ok) throw new Error('Không tìm thấy đơn hàng');
             
-            if (foundOrder) {
-                setOrder(foundOrder);
-            } else {
-                setError('Không tìm thấy đơn hàng với mã này');
-                setOrder(null);
+            const data = await response.json();
+            if (!data.order?.length) throw new Error('Không có thông tin đơn hàng');
+    
+            const orderDetails = data.order[0];
+            
+         
+            // Fetch items and branch info
+            const items = await transformOrderItems(data.order);
+            let branchInfo = null;
+            if (orderDetails.PDM_MaChiNhanh) {
+                const branchResponse = await fetch('http://localhost:3000/api/branches');
+                if (branchResponse.ok) {
+                    const branchData = await branchResponse.json();
+                    branchInfo = branchData.branches.find(
+                        branch => branch.CN_MaChiNhanh === orderDetails.PDM_MaChiNhanh
+                    );
+                }
             }
-        } catch (error) {
-            setError('Có lỗi xảy ra khi tìm kiếm đơn hàng');
+            const billDetails = await fetchBillByOrderId(orderDetails.PDM_MaPhieu);
+            console.log('Bill details for order:', billDetails);
+            const transformedOrder = {
+                orderId: orderDetails.PDM_MaPhieu,
+                orderDate: new Date(orderDetails.PDM_ThoiGianDat).toLocaleString('vi-VN'),
+                phone: orderDetails.PDM_SDT_KH,
+                address: orderDetails.PDM_DiaChiCanGiao,
+                branchId: orderDetails.PDM_MaChiNhanh,
+                customerName: customerName,
+                branchName: branchInfo ? `${branchInfo.CN_DiaChi} (${branchInfo.CN_Ten})` : 'Đang cập nhật',
+                status: 'preparing',
+                items: items,
+                totalBeforeDiscount: billDetails?.HD_TongTruocGiam || 0,
+                discount: billDetails?.HD_SoTienGiam || 0, 
+                finalTotal: billDetails?.HD_TongTienThanhToan || 0
+            };
+    
+            setOrder(transformedOrder);
+        } catch (err) {
+            setError(err.message);
             setOrder(null);
         } finally {
             setIsLoading(false);
@@ -94,7 +210,7 @@ const OrderTracking = () => {
                                 <div className="info-grid">
                                     <div className="info-item">
                                         <label>Người nhận:</label>
-                                        <span>{order.customerName}</span>
+                                        <span>{customerName}</span>
                                     </div>
                                     <div className="info-item">
                                         <label>Số điện thoại:</label>
@@ -130,26 +246,26 @@ const OrderTracking = () => {
                                 <div className="order-summary">
                                     <div className="summary-row">
                                         <span>Tạm tính:</span>
-                                        <span>{calculateSubtotal(order?.items || []).toLocaleString()}đ</span>
+                                        <span>{((order.totalBeforeDiscount || 0) - (order.totalBeforeDiscount < 500000 ? 30000 : 0))?.toLocaleString()}đ</span>
                                     </div>
-                                    {(order?.discount > 0) && (
+                                    {order.totalBeforeDiscount < 500000 && (
+                                        <div className="summary-row">
+                                            <span>Phí vận chuyển:</span>
+                                            <span>30.000đ</span>
+                                        </div>
+                                    )}
+                                    {order.discount > 0 && (
                                         <div className="summary-row discount">
                                             <span>Giảm giá:</span>
-                                            <span>-{(order?.discount || 0).toLocaleString()}đ</span>
+                                            <span>-{order.discount?.toLocaleString()}đ</span>
                                             {order?.appliedCoupon && (
                                                 <small className="coupon-code">Mã: {order.appliedCoupon}</small>
                                             )}
                                         </div>
                                     )}
-                                    <div className="summary-row">
-                                        <span>Phí vận chuyển:</span>
-                                        <span>{(order?.shippingFee || 0).toLocaleString()}đ</span>
-                                    </div>
                                     <div className="summary-total">
                                         <span>Tổng cộng:</span>
-                                        <span>
-                                            {(calculateSubtotal(order?.items || []) - (order?.discount || 0) + (order?.shippingFee || 0)).toLocaleString()}đ
-                                        </span>
+                                        <span>{order.finalTotal?.toLocaleString()}đ</span>
                                     </div>
                                 </div>
                             </div>

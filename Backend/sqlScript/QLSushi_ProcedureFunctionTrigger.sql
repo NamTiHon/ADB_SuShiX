@@ -419,12 +419,7 @@ create or alter proc usp_ThemMonDuocDat
 as
 begin 
 
-	if exists(select * from MonDuocDat where MDD_MaMon = @MaMon) and exists(select * from PhieuDatMon where PDM_MaPhieu = @MaPhieu)
-	begin
-		print(N'Món ăn này đã được đặt rồi.')
-		return
-	end
-	else
+	
 	begin
 		insert into MonDuocDat(MDD_MaMon, MDD_MaPhieu, MDD_SoLuong)
 			values
@@ -909,7 +904,7 @@ create or alter function uf_XemPhieuDatMon
 	(@MaPhieu varchar(12))
 	returns table
 as
-	return ( select * from MonDuocDat join PhieuDatMon on MDD_MaPhieu = PDM_MaPhieu)
+	return ( select * from MonDuocDat join PhieuDatMon on MDD_MaPhieu = PDM_MaPhieu where MDD_MaPhieu=@MaPhieu)
 go
 
 -- Stored Procedure cho hóa đơn
