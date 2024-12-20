@@ -10,7 +10,6 @@ const columns = [
     { id: 'address', header: 'Địa chỉ', value: 'address', editable: true, visible: true },
     { id: 'openingTime', header: 'Giờ mở cửa', value: 'openingTime', editable: true, visible: true },
     { id: 'closingTime', header: 'Giờ đóng cửa', value: 'closingTime', editable: true, visible: true },
-    { id: 'phone', header: 'Số điện thoại', value: 'phone', editable: true, visible: true },
     { id: 'isMotorPark', header: 'Có bãi xe máy', value: 'isMotorPark', editable: true, visible: false },
     { id: 'isCarPark', header: 'Có bãi xe ô tô', value: 'isCarPark', editable: true, visible: false },
     { id: 'hasDelivery', header: 'Có giao hàng', value: 'hasDelivery', editable: true, visible: false },

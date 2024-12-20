@@ -59,6 +59,14 @@ h1 {
     padding-bottom: 30px;
     width: 100%;
     white-space: nowrap;
+
+}
+.property-dropdown {
+    width: 200px;
+    padding: 8px 12px;
+    border: 1px solid #ff0099;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .search-input {
@@ -105,4 +113,27 @@ h1 {
     object-fit: cover;
     align-items: center;
     border-radius: 4px;
+}
+
+.pagination-controls button {
+    font-size: 16px; /* Increase font size */
+    align-content: center;
+    padding: 10px; /* Increase padding */
+    border-radius: 5px; /* Optional: Add border radius */
+    background-color: #f09; /* Optional: Change background color */
+    color: white; /* Optional: Change text color */
+    border: none; /* Optional: Remove border */
+    cursor: pointer; /* Optional: Change cursor to pointer */
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc; /* Optional: Change background color when disabled */
+    cursor: not-allowed; /* Optional: Change cursor when disabled */
+}
+.page-input{
+    width: 50px;
+    padding: 8px 12px;
+    border: 1px solid #ff0099;
+    border-radius: 4px;
+    font-size: 14px;
 }

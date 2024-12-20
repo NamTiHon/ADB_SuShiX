@@ -1,4 +1,4 @@
-import { React, useState, useEffect, } from "react";
+import { React, useState, useEffect } from "react";
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import '../css/components/mgmt-general.css';
@@ -19,6 +19,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         name: column.value,
         editable: column.editable
     }));
+    console.log('Fields:', fields);
 
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -72,6 +73,12 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
             setCurrentPage(pageNumber);
         } else {
             setPageInput(currentPage);
+        }
+    };
+
+    const handlePageInputKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handlePageInputBlur();
         }
     };
 
@@ -147,6 +154,7 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                     value={pageInput}
                                     onChange={handlePageInputChange}
                                     onBlur={handlePageInputBlur}
+                                    onKeyDown={handlePageInputKeyDown}
                                     min="1"
                                     max={totalPages}
                                 />
@@ -168,13 +176,14 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentItems.map(item => (
+                            {console.log('Flattened currentItems:', currentItems)}
+                                {currentItems.flatMap(subArray => subArray).map(item => (
                                     <tr key={item.itemId} onClick={() => handleRowClick(item)}>
                                         {columns.filter(column => column.visible).map(column => (
                                             <td key={`${item.itemId}-${column.id}`}>
                                                 {column.id === 'image' ? (
                                                     <img 
-                                                        src={item[column.value]} 
+                                                        src={item[column.value] || 'default-image-path.jpg'} 
                                                         alt="Product"
                                                         className="table-image"
                                                         onError={(e) => {
@@ -183,7 +192,9 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                                         }}
                                                     />
                                                 ) : (
-                                                    item[column.value]
+                                                    console.log('ItemXfds:', item[column.value]),
+                                                    item[column.id] || 'N/A'
+
                                                 )}
                                             </td>
                                         ))}
