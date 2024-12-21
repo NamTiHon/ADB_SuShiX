@@ -9,6 +9,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import promotionRoutes from './routes/promotionRoutes.js';
 import billRoutes from './routes/billRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
+import cardRoutes from './routes/cardRoutes.js';
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/api/branches', branchRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/promotions', promotionRoutes);
 app.use('/api/bills', billRoutes);
+app.use('/api/cards', cardRoutes);
 app.get('/', (req, res) => {
     res.json({ msg: "Home Page" })
 });

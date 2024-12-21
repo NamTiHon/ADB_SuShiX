@@ -21,7 +21,6 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         name: column.value,
         editable: column.editable
     }));
-    console.log('Fields:', fields);
 
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -95,7 +94,6 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
 
-    console.log('Filtered items:', filteredItems);
 
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
@@ -180,7 +178,6 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {console.log('Flattened currentItems:', currentItems)}
                                 {currentItems.flatMap(subArray => subArray).map(item => (
                                     <tr key={item.itemId} onClick={() => handleRowClick(item)}>
                                         {columns.filter(column => column.visible).map(column => (

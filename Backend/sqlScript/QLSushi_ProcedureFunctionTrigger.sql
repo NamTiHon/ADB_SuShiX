@@ -509,15 +509,13 @@ begin
 	end
 	else
 	begin
-		insert into TheThanhVien(TTV_MaThe, TTV_NgayTao, TTV_LoaiThe, TTV_SDT_KH, TTV_MaNhanVien)
+		insert into TheThanhVien(TTV_MaThe, TTV_NgayTao, TTV_SoNamSuDung, TTV_DiemTichLuy, TTV_TrangThai, TTV_LoaiThe, TTV_SDT_KH, TTV_MaNhanVien)
 			values
-			(@MaThe, @NgayTao, @LoaiThe, @SDT_KH, @MaNhanVien)
+			(@MaThe, @NgayTao, 0, 0, 'Available', @LoaiThe, @SDT_KH, @MaNhanVien)
 	end
 
 	print(N'Đã tạo thẻ thành viên.')
 end;
-
-go
 
 --Cập nhật thông tin thẻ thàng viên
 create or alter proc usp_CapNhatThongTinTheThanhVien
@@ -553,7 +551,6 @@ begin
 end;
 
 go
-
 --Tạo hóa đơn theo phiếu đặt món
 create or alter proc usp_TaoHoaDon
 	@MaHoaDon varchar(12),

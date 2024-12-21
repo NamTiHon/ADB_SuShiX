@@ -3,41 +3,98 @@ import '../css/css-modals/add-customer.css';
 
 const Add_Customer = ({ onClose, onAdd }) => {
     const [newCustomer, setNewCustomer] = useState({
-        name: 'example',
-        gender: 'male', // default to male
-        cccd: '888888888888',
-        email: 'ex@gmail.com',
-        dateOfBirth: '2004-01-01',
-        phone: '0123456879'
+        KH_HoTen: '',
+        KH_GioiTinh: '', 
+        KH_CCCD: '',
+        KH_Email: '',
+        KH_SDT: '',
+        KH_MatKhau: '123456',
+        gender: '',
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewCustomer((prevCustomer) => ({
             ...prevCustomer,
             [name]: value,
         }));
+        // Kiểm tra độ dài của staffId
+        if (name === 'staffId' && value.length !== 10) {
+            setError('Mã nhân viên phải có đúng 10 chữ số');
+        } else {
+            setError('');
+        }
     };
-
-    const handleSubmit = (e) => {
+    const [error, setError] = useState('');
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (newCustomer.staffId.length !== 10) {
+            setError('Mã nhân viên phải có đúng 10 chữ số');
+            return;
+        }
+
         const customerWithCardInfo = {
-            ...newCustomer,
-            cardId: generateCardId(),
-            createdDate: new Date().toISOString().split('T')[0],
-            yearsOfUsing: 0,
-            points: 0,
-            status: 'Hoạt động',
-            membershipType: 'Membership',
-            staffId: '12345' // Example staff ID, replace with actual logic if needed
+            KH_HoTen: newCustomer.name,
+            KH_GioiTinh: newCustomer.gender, // default to male
+            KH_CCCD: newCustomer.cccd,
+            KH_Email: newCustomer.email,
+            KH_SDT: newCustomer.phoneNumber,
+            KH_MatKhau: '123456',
         };
-        onAdd(customerWithCardInfo);
-        alert('Thêm khách hàng thành công');
-        onClose();
+        const card = {
+            MaThe: generateCardId(),
+            NgayTao: new Date().toISOString().split('T')[0],
+            LoaiThe: 'Membership',
+            SDT_KH: newCustomer.phoneNumber,
+            MaNhanVien: newCustomer.staffId,
+        }
+        try {
+            const response = await fetch('http://localhost:3000/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customerWithCardInfo)
+            });
+            console.log(customerWithCardInfo);
+            if (response.ok) {
+                const data = await response.json();
+                onAdd(data);
+                alert('Thêm khách hàng thành công');
+                onClose();
+            } else {
+                alert('Đã xảy ra lỗi khi thêm khách hàng');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Đã xảy ra lỗi khi thêm khách hàng');
+        }
+        try {
+            const response = await fetch('http://localhost:3000/api/cards/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(card)
+            });
+            console.log(card);
+            if (response.ok) {
+                const data = await response.json();
+                onAdd(data);
+                alert('Thêm thẻ thành công');
+                onClose();
+            } else {
+                alert('Đã xảy ra lỗi khi thêm thẻ');
+            }
+        }
+        catch (error) {
+            console.error('Error:', error);
+            alert('Đã xảy ra lỗi khi thêm thẻ');
+        }
     };
 
     const generateCardId = () => {
-        return 'CARD' + Math.floor(Math.random() * 1000000);
+        return 'C' + Math.floor(Math.random() * 10000000);
     };
 
     return (
@@ -51,14 +108,17 @@ const Add_Customer = ({ onClose, onAdd }) => {
                         <p><strong>Họ tên:</strong> <input type="text" name="name" value={newCustomer.name} onChange={handleChange} required /></p>
                         <p><strong>Giới tính:</strong>
                             <select name="gender" value={newCustomer.gender} onChange={handleChange} required>
-                                <option value="male">Nam</option>
-                                <option value="female">Nữ</option>
+                                <option value="" disabled>Chọn giới tính</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
                             </select>
                         </p>
                         <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={newCustomer.cccd} onChange={handleChange} minLength="12" maxLength="12" required pattern="\d*" /></p>
                         <p><strong>Email:</strong> <input type="email" name="email" value={newCustomer.email} onChange={handleChange} required /></p>
                         <p><strong>Ngày sinh:</strong> <input type="date" name="dateOfBirth" value={newCustomer.dateOfBirth} onChange={handleChange} required /></p>
                         <p><strong>Số điện thoại:</strong> <input type="text" name="phoneNumber" value={newCustomer.phone} onChange={handleChange} required /></p>
+                        {error && <p className="error-message">{error}</p>}
+                        <p><strong>Mã nhân viên tạo:</strong> <input type="text" name="staffId" value={newCustomer.staffId} onChange={handleChange} required /></p>
                         <button type="submit" className="add-button">Thêm</button>
                     </div>
                 </form>

@@ -29,10 +29,9 @@ export const UserByEmail = async (req, res) => {
 
 // Đăng ký user mới
 export const register = async (req, res) => {
-    const { email, password, name, role } = req.body;
-
+    const { KH_SDT, KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh, KH_MatKhau } = req.body;
     try {
-        const result = await userService.registerUser(email, password, name, role);
+        const result = await userService.registerUser(KH_SDT, KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh, KH_MatKhau);
         if (!result.success) {
             return res.status(400).json({ message: result.message });
         }

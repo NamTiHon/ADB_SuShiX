@@ -38,13 +38,13 @@ export const userService = {
     registerUser: async (KH_SDT, KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh, KH_MatKhau) => {
         try {
             // Kiểm tra email đã tồn tại
-            const existingUser = await userService.findUserByEmail(email);
+            const existingUser = await userService.findUserByEmail(KH_Email);
             if (existingUser) {
                 return { success: false, message: 'User already exists' };
             }
-
+            console.log(KH_SDT);
             const hashedPassword = await bcrypt.hash(KH_MatKhau, 10); // Hash password
-
+            
             // Thêm user mới
             const pool = await conn;
             const result = await pool.request()
