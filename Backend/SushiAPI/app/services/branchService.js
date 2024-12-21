@@ -39,7 +39,7 @@ export const branchService = {
     // Thêm một chi nhánh mới
     addBranch: async (brachData) => {
         try {
-            const {CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc } = brachData;
+            const {CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc, CN_MaHinhAnh } = brachData;
             const pool = await conn;
             const result = await pool.request()
                 .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
@@ -53,7 +53,8 @@ export const branchService = {
                 .input('HoTroGiaoHang', sql.Bit, CN_HoTroGiaoHang)
                 .input('MaQuanLy', sql.VarChar(12), CN_MaQuanLy)
                 .input('MaKhuVuc', sql.VarChar(12), CN_MaKhuVuc)
-                .execute('sp_ThemChiNhanh')
+                .input('HinhAnh', sql.NVarChar(100), CN_MaHinhAnh)
+                .execute('usp_ThemChiNhanh')
                 return result.recordset[0]; // Trả về chi nhánh đã thêm
         } 
         catch (error){

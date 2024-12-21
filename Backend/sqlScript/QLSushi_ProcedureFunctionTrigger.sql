@@ -100,7 +100,8 @@ create or alter proc usp_ThemChiNhanh
 	@BaiDoXeOto BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	@HoTroGiaoHang BIT, -- dùng để lưu giá trị bool: 0 là không có, 1 là có
 	@MaQuanLy varchar(12), 
-	@MaKhuVuc varchar(12)
+	@MaKhuVuc varchar(12),
+	@HinhAnh varchar(100)
 as
 begin
 	if not exists(select * from NhanVien where NV_MaNhanVien = @MaQuanLy)
@@ -122,9 +123,9 @@ begin
 	end
 	else
 	begin
-		insert into ChiNhanh(CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc)
+		insert into ChiNhanh(CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc, CN_MaHinhAnh)
 			values
-			(@MaChiNhanh, @Ten, @DiaChi, @TGMoCua, @TGDongCua, @SDT, @BaiDoXeMay, @BaiDoXeOto, @HoTroGiaoHang, @MaQuanLy, @MaKhuVuc)
+			(@MaChiNhanh, @Ten, @DiaChi, @TGMoCua, @TGDongCua, @SDT, @BaiDoXeMay, @BaiDoXeOto, @HoTroGiaoHang, @MaQuanLy, @MaKhuVuc, @HinhAnh)
 	end
 
 	print(N'Đã thêm chi nhánh')
@@ -512,11 +513,14 @@ begin
 		insert into TheThanhVien(TTV_MaThe, TTV_NgayTao, TTV_SoNamSuDung, TTV_DiemTichLuy, TTV_TrangThai, TTV_LoaiThe, TTV_SDT_KH, TTV_MaNhanVien)
 			values
 			(@MaThe, @NgayTao, 0, 0, 'Available', @LoaiThe, @SDT_KH, @MaNhanVien)
+
+		    -- Trả về thông tin thẻ thành viên mới tạo
+		SELECT * FROM TheThanhVien WHERE TTV_MaThe = @MaThe;
 	end
 
 	print(N'Đã tạo thẻ thành viên.')
 end;
-
+go
 --Cập nhật thông tin thẻ thàng viên
 create or alter proc usp_CapNhatThongTinTheThanhVien
 	@MaThe varchar(12),
