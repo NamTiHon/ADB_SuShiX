@@ -18,6 +18,7 @@ function Nav() {
 
     const handleLogout = () => {
         localStorage.removeItem('adminAuth');
+        localStorage.removeItem('userAuth');
         navigate('/');
     };
 
@@ -27,14 +28,16 @@ function Nav() {
                 <a href="/" onClick={handleLogoClick}>
                     <div className="logo">SuShiX</div>
                 </a>
-                <span className="temp">Admin</span>
+                {isAuthenticated && <span className="temp">Admin</span>}
+                {isUserAuth && !isAuthenticated && <span className="temp">Nhân viên</span>}
             </div>
             <div className="right">
                 <a href="#"><i className="fas fa-bell 2x"></i></a>
                 <div className="adminBox" onClick={() => setShowDropdown(!showDropdown)}>
                     <i className="fas fa-user"></i>
-                    <span>Admin</span>
-                    {showDropdown && (
+                    {isAuthenticated && <span>Admin</span>}
+                    {isUserAuth && !isAuthenticated && <span>Nhân viên</span>}
+                    {showDropdown && (isAuthenticated || isUserAuth) && (
                         <div className="dropdown-menu">
                             <button onClick={handleLogout}>
                                 <i className="fas fa-sign-out-alt"></i> Đăng xuất
