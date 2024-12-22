@@ -10,6 +10,7 @@ import Mgmt_Staff from './pages/components/Mgmt_Staff';
 import Mgmt_Customer from './pages/components/Mgmt_Customer';
 import Mgmt_Booking from './pages/components/Mgmt_Booking';
 import Mgmt_OnlineOrder from './pages/components/Mgmt_OnlineOrder';
+import Staff_Add_Booking from './pages/components/Staff_Add_Booking';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/mgmt-customer" element={<Mgmt_Customer />} />
                     <Route path="/mgmt-booking" element={<Mgmt_Booking />} />
                     <Route path="/mgmt-online-order" element={<Mgmt_OnlineOrder />} />
+                    <Route path="/staff-add-booking" element={<Staff_Add_Booking />} />
                 </Routes>
             </Router>
     );

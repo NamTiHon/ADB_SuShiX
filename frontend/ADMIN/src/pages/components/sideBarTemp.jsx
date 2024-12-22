@@ -6,7 +6,7 @@ function SideBarTemp() {
         <aside className="sideBar">
             <ul>
                 <a href="/mgmt-customer"><li>Quản lý khách hàng</li></a>
-                <a href="/"><li>Đặt món</li></a>
+                <a href="/staff-add-booking"><li>Đặt món</li></a>
             </ul>
         </aside>
     );
