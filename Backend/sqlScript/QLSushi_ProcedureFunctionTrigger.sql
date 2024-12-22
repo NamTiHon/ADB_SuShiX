@@ -637,14 +637,14 @@ create or alter proc usp_ThemNhanVien
 	@NgaySinh datetime,
 	@GioiTinh nvarchar(3),
 	@NgayVaoLam datetime,
-	@NgayNghiViec datetime,
+	@NgayNghiViec datetime = NULL,
 	@DiaChi nvarchar(100),
 	@SDT varchar(12),
 	@SoNha int,
-	@TenDuong nvarchar(30),
-	@TenPhuong nvarchar(30),
-	@TenQuan nvarchar(30),
-	@TenThanhPho nvarchar(30)
+	@TenDuong nvarchar(30) = NULL,
+	@TenPhuong nvarchar(30) = NULL,
+	@TenQuan nvarchar(30) = NULL,
+	@TenThanhPho nvarchar(30) = NULL
 as
 begin
 	if exists(select *  from NhanVien where NV_MaNhanVien = @MaNhanVien)

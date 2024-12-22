@@ -95,8 +95,8 @@ create table KhachHang (
 	KH_GioiTinh nvarchar(3),
 	KH_MatKhau varchar(100),
 	primary key (KH_SDT)
-);
-on s_KhachHang(KH_SDT)
+)
+on s_KhachHang(KH_SDT);
 
 -- Bảng Loại thẻ:
 create table LoaiThe (
@@ -114,8 +114,8 @@ create table TheThanhVien (
 	TTV_SDT_KH varchar(12),
 	TTV_MaNhanVien varchar(12), --Nhân viên tạo thẻ
 	primary key (TTV_MaThe)
-);
-on s_TheThanhVien(TTV_LoaiThe)
+)
+on s_TheThanhVien(TTV_LoaiThe);
 
 -- Bảng Khuyến mãi:
 create table KhuyenMai (
@@ -166,8 +166,8 @@ create table NhanVien (
 	NV_TenQuan nvarchar(30),
 	NV_TenThanhPho nvarchar(30),
 	primary key (NV_MaNhanVien)
-);
-on s_NhanVien(NV_SDT)
+)
+on s_NhanVien(NV_SDT);
 
 -- Bảng Bộ phận của Nhân viên:
 create table BoPhan_NhanVien (
@@ -177,8 +177,8 @@ create table BoPhan_NhanVien (
 	BP_NV_ChucVu nvarchar(20),
 	BP_NV_Luong float,
 	primary key (BP_NV_MaNhanVien, BP_NV_MaChiNhanh, BP_NV_TenBoPhan)
-);
-on s_BoPhanNhanVien(BP_NV_MaChiNhanh)
+)
+on s_BoPhanNhanVien(BP_NV_MaChiNhanh);
 
 -- Bảng Lịch sử làm việc:
 create table LichSuLamViec (
