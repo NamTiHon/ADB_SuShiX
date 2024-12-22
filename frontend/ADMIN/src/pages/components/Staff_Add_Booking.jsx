@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import '../css/css-modals/add-booking.css';
+import Nav from './Nav';
+import SideBar from './Sidebar';
+import SideBarTemp from './sideBarTemp';
+import '../css/components/staff-add-booking.css';
 
 const Staff_Add_Booking = () => {
+    const isUserAuth = localStorage.getItem('userAuth') === 'true';
+    console.log(isUserAuth);
     const [bookings, setBookings] = useState([]);
 
     const handleAddBooking = (newBooking) => {
@@ -59,7 +64,9 @@ const Staff_Add_Booking = () => {
 
     return (
         <div>
-            <div className="container">
+            <Nav />
+            <div className="page-container">
+                {isUserAuth ? <SideBarTemp /> : <SideBar />}
                 <div className="content">
                     <button className="close-button" onClick={onClose}>X</button>
                     <h2>THÊM PHIẾU ĐẶT</h2>
