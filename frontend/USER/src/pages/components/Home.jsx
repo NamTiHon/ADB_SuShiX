@@ -11,22 +11,22 @@ function Home() {
   const popularItems = [
     {
       title: 'Sushi Set',
-      image: '/img/sushi-set.jpg',
+      image: 'https://sashimitphcm.com/wp-content/uploads/2023/10/369-giam-con-339-500x500.jpg',
       description: 'Combo sushi đặc biệt'
     },
     {
       title: 'Ramen',
-      image: '/img/ramen.jpg',
+      image: 'https://japan.net.vn/images/uploads/2018/03/26/2-mi-ramen-nhat-ban.jpg',
       description: 'Mì Ramen truyền thống'
     },
     {
       title: 'Tempura',
-      image: '/img/tempura.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqrL6hYPMx_KX3jO9ShcWsW8wUfF1ffmJ1cQ&s',
       description: 'Tempura giòn rụm'
     },
     {
       title: 'Bento Box',
-      image: '/img/bento.jpg',
+      image: 'https://cdnphoto.dantri.com.vn/l0SLYuPisGdkxsxroUmEhgUFULU=/thumb_w/960/2021/05/20/comhopbentogautruc-1621499396882.jpg',
       description: 'Hộp cơm Bento'
     }
   ];
@@ -34,28 +34,28 @@ function Home() {
   const bestSellers = [
     {
       title: 'Salmon Sushi',
-      image: '/img/salmon-sushi.jpg',
+      image: 'https://aisforappleau.com/wp-content/uploads/2023/07/how-to-make-sushi-salmon-nigiri-6.jpg',
       description: 'Sushi cá hồi tươi ngon',
       price: '189.000đ',
       rating: 4.5
     },
     {
       title: 'Dragon Roll',
-      image: '/img/dragon-roll.jpg',
+      image: 'https://www.justonecookbook.com/wp-content/uploads/2020/06/Dragon-Roll-0286-I.jpg',
       description: 'Cầu vồng hương vị độc đáo',
       price: '259.000đ',
       rating: 5
     },
     {
       title: 'Udon Special',
-      image: '/img/udon.jpg',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl1WwuW57ztIKRxXMfsZdYLB0QH8eS5ErZ4Q&s',
       description: 'Mì Udon đặc biệt',
       price: '149.000đ',
       rating: 4.8
     },
     {
       title: 'Sake Sashimi',
-      image: '/img/sashimi.jpg',
+      image: 'https://cdn.hokkai.com/wp-content/uploads/2019/05/1307-Sakesashimi.jpg',
       description: 'Cá hồi sashimi thượng hạng',
       price: '219.000đ',
       rating: 4.7
