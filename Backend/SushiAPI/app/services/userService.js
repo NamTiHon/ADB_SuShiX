@@ -72,39 +72,61 @@ export const userService = {
         return await bcrypt.compare(inputPassword, hashedPassword);
     },
 
-    // Sửa đổi thông tin user
     updateUser: async (email, updates) => {
         try {
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                throw new Error(`Invalid email format: ${email}`);
+            }
+    
+            if (!updates || typeof updates !== 'object') {
+                throw new Error('Invalid updates parameter');
+            }
+    
             const pool = await conn;
             let query = 'UPDATE KhachHang SET ';
             const inputs = [];
-
-            if (updates.KH_HoTen) {
+    
+            // Validate and add update fields
+            if (updates.KH_HoTen !== undefined) {
                 query += 'KH_HoTen = @KH_HoTen, ';
                 inputs.push({ name: 'KH_HoTen', type: sql.NVarChar(sql.MAX), value: updates.KH_HoTen });
             }
-            if (updates.KH_GioiTinh) {
+            
+            if (updates.KH_GioiTinh !== undefined) {
                 query += 'KH_GioiTinh = @KH_GioiTinh, ';
                 inputs.push({ name: 'KH_GioiTinh', type: sql.NVarChar(sql.MAX), value: updates.KH_GioiTinh });
             }
-            if (updates.KH_CCCD) {
+            
+            if (updates.KH_CCCD !== undefined) {
                 query += 'KH_CCCD = @KH_CCCD, ';
                 inputs.push({ name: 'KH_CCCD', type: sql.NVarChar(sql.MAX), value: updates.KH_CCCD });
             }
-
-            query = query.slice(0, -2); // Remove trailing comma and space
+    
+            if (inputs.length === 0) {
+                throw new Error('No valid fields to update');
+            }
+    
+            // Finalize query
+            query = query.slice(0, -2);
             query += ' OUTPUT inserted.* WHERE KH_Email = @Email';
-
+    
+            // Execute query
             const request = pool.request();
             inputs.forEach(input => request.input(input.name, input.type, input.value));
             request.input('Email', sql.NVarChar(100), email);
-
+    
             const result = await request.query(query);
-
-            return result.recordset[0]; // Return updated user
+    
+            if (!result.recordset[0]) {
+                throw new Error(`User not found with email: ${email}`);
+            }
+    
+            return result.recordset[0];
         } catch (error) {
             console.error('Error updating user:', error);
-            throw new Error('Failed to update user');
+            throw error; // Preserve original error
         }
     },
 };

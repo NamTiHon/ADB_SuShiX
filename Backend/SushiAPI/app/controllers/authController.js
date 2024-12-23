@@ -66,17 +66,25 @@ export const login = async (req, res) => {
 
 // Update user
 export const updateUser = async (req, res) => {
-    const { email, name, role } = req.body;
-
     try {
-        const result = await userService.updateUser(email, name, role);
-        if (!result.success) {
-            return res.status(400).json({ message: result.message });
+        const email = req.params.email;
+        const updates = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
         }
 
-        res.json({ message: 'User updated successfully', user: result.user });
+        const updatedUser = await userService.updateUser(email, updates);
+
+        res.json({
+            message: 'User updated successfully',
+            user: updatedUser
+        });
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Server error', error: error.message });
+        res.status(error.status || 500).json({ 
+            message: 'Error updating user',
+            error: error.message 
+        });
     }
 };

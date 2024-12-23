@@ -5,7 +5,8 @@ import Nav from './Nav';
 import '../css/profile.css';
 
 const Profile = () => {
-    const { user,logout } = useContext(UserContext);
+    const { user,logout, setUser } = useContext(UserContext);
+    
     const navigate = useNavigate();
     const [previewUrl] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcTMy2FOhsAH3MaIkUfzPTaCYhYXf4jNVi0A&s');
     const [isEditing, setIsEditing] = useState(false);
@@ -39,27 +40,48 @@ const Profile = () => {
 
     const handleSave = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/auth/${email}`, {
+            if (!editedUser.KH_Email) {
+                throw new Error('Email is required');
+            }
+
+            const response = await fetch(`http://localhost:3000/api/auth/${editedUser.KH_Email}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify(editedUser)
+                body: JSON.stringify({
+                    KH_HoTen: editedUser.KH_HoTen,
+                    KH_GioiTinh: editedUser.KH_GioiTinh,
+                    KH_CCCD: editedUser.KH_CCCD
+                })
             });
-    
+
             if (!response.ok) {
-                throw new Error('Failed to update profile');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to update profile');
             }
-    
+
             const updatedUser = await response.json();
-            setOriginalUser(updatedUser.user); // Update original data after successful save
+            
+            // Update all states with new data
+            setOriginalUser(updatedUser.user);
             setEditedUser(updatedUser.user);
+            setUser({...user, ...updatedUser.user}); // Update context
+            
+            // Update localStorage
+            const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+            const newUserData = {...storedUser, ...updatedUser.user};
+            localStorage.setItem('user', JSON.stringify(newUserData));
+            
             setIsEditing(false);
             alert('Cập nhật thông tin thành công');
+            
+            // Refresh user details
+            await fetchUserDetails();
         } catch (error) {
             console.error('Error saving profile:', error);
-            setError('Cập nhật thông tin thất bại, vui lòng thử lại.');
+            setError(`Cập nhật thông tin thất bại: ${error.message}`);
         }
     };
 
@@ -92,8 +114,11 @@ const Profile = () => {
     };
 
     useEffect(() => {
-        fetchUserDetails();
-    }, []);
+        if (email) {
+            fetchUserDetails();
+        }
+    }, [email, user]);
+
 
     const fetchPromotions = async () => {
         setLoadingPromotions(true);
@@ -203,6 +228,7 @@ const Profile = () => {
 
                         <div className="profile-info">
                             <div className="info-group">
+                                {/* Editable Fields */}
                                 <div className="info-item">
                                     <label>Họ và tên:</label>
                                     {isEditing ? (
@@ -217,34 +243,19 @@ const Profile = () => {
                                         <span>{editedUser.KH_HoTen}</span>
                                     )}
                                 </div>
+
+                                {/* Read-only Fields */}
                                 <div className="info-item">
                                     <label>Email:</label>
-                                    {isEditing ? (
-                                        <input
-                                            type="email"
-                                            name="KH_Email"
-                                            value={editedUser.KH_Email || ''}
-                                            onChange={handleInputChange}
-                                            className="edit-input"
-                                        />
-                                    ) : (
-                                        <span>{editedUser.KH_Email}</span>
-                                    )}
+                                    <span>{editedUser.KH_Email}</span>
                                 </div>
+
                                 <div className="info-item">
                                     <label>Số điện thoại:</label>
-                                    {isEditing ? (
-                                        <input
-                                            type="tel"
-                                            name="KH_SDT"
-                                            value={editedUser.KH_SDT || ''}
-                                            onChange={handleInputChange}
-                                            className="edit-input"
-                                        />
-                                    ) : (
-                                        <span>{editedUser.KH_SDT}</span>
-                                    )}
+                                    <span>{editedUser.KH_SDT}</span>
                                 </div>
+
+                                {/* Editable Fields */}
                                 <div className="info-item">
                                     <label>CCCD:</label>
                                     {isEditing ? (
@@ -259,61 +270,40 @@ const Profile = () => {
                                         <span>{editedUser.KH_CCCD}</span>
                                     )}
                                 </div>
+
                                 <div className="info-item">
                                     <label>Giới tính:</label>
                                     {isEditing ? (
-                                        <input
-                                            type="text"
+                                        <select
                                             name="KH_GioiTinh"
                                             value={editedUser.KH_GioiTinh || ''}
                                             onChange={handleInputChange}
                                             className="edit-input"
-                                        />
+                                        >
+                                            <option value="">Chọn giới tính</option>
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
                                     ) : (
                                         <span>{editedUser.KH_GioiTinh}</span>
                                     )}
                                 </div>
+
+                                {/* Read-only Fields */}
                                 <div className="info-item">
                                     <label>Loại thẻ:</label>
-                                    {isEditing ? (
-                                        <input
-                                            type="text"
-                                            name="TTV_LoaiThe"
-                                            value={editedUser.TTV_LoaiThe || ''}
-                                            onChange={handleInputChange}
-                                            className="edit-input"
-                                        />
-                                    ) : (
-                                        <span>{editedUser.TTV_LoaiThe}</span>
-                                    )}
+                                    <span>{editedUser.TTV_LoaiThe}</span>
                                 </div>
+
                                 <div className="info-item">
                                     <label>Điểm tích lũy:</label>
-                                    {isEditing ? (
-                                        <input
-                                            type="number"
-                                            name="TTV_DiemTichLuy"
-                                            value={editedUser.TTV_DiemTichLuy || ''}
-                                            onChange={handleInputChange}
-                                            className="edit-input"
-                                        />
-                                    ) : (
-                                        <span>{editedUser.TTV_DiemTichLuy}</span>
-                                    )}
+                                    <span>{editedUser.TTV_DiemTichLuy}</span>
                                 </div>
+
                                 <div className="info-item">
                                     <label>Ngày tạo thẻ:</label>
-                                    {isEditing ? (
-                                        <input
-                                            type="date"
-                                            name="TTV_NgayTao"
-                                            value={editedUser.TTV_NgayTao || ''}
-                                            onChange={handleInputChange}
-                                            className="edit-input"
-                                        />
-                                    ) : (
-                                        <span>{editedUser.TTV_NgayTao}</span>
-                                    )}
+                                    <span>{editedUser.TTV_NgayTao}</span>
                                 </div>
                             </div>
                         </div>
