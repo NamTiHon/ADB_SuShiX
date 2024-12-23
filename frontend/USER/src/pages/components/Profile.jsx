@@ -29,6 +29,9 @@ const Profile = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [originalUser, setOriginalUser] = useState({});
     const email = user.email;
     const handleInputChange = (e) => {
@@ -399,24 +402,60 @@ const Profile = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label>Mật khẩu cũ:</label>
-                                <input
-                                    type="password"
-                                    value={oldPassword}
-                                    onChange={(e) => setOldPassword(e.target.value)}
-                                />
-                                <label>Mật khẩu mới:</label>
-                                <input
-                                    type="password"
-                                    value={newPassword}
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                                <label>Xác nhận mật khẩu mới:</label>
-                                <input
-                                    type="password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
+                                <div className="password-field">
+                                    <label>Mật khẩu cũ:</label>
+                                    <div className="input-with-icon">
+                                        <input
+                                            type={showOldPassword ? "text" : "password"}
+                                            value={oldPassword}
+                                            onChange={(e) => setOldPassword(e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="password-toggle"
+                                            onClick={() => setShowOldPassword(!showOldPassword)}
+                                        >
+                                            <i className={`fas ${showOldPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="password-field">
+                                    <label>Mật khẩu mới:</label>
+                                    <div className="input-with-icon">
+                                        <input
+                                            type={showNewPassword ? "text" : "password"}
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="password-toggle"
+                                            onClick={() => setShowNewPassword(!showNewPassword)}
+                                        >
+                                            <i className={`fas ${showNewPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="password-field">
+                                    <label>Xác nhận mật khẩu mới:</label>
+                                    <div className="input-with-icon">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="password-toggle"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        >
+                                            <i className={`fas ${showConfirmPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
+                                        </button>
+                                    </div>
+                                </div>
+
                                 {error && <div className="error-message">{error}</div>}
                                 <button onClick={handleChangePassword} className="save-btn">
                                     Đổi mật khẩu
