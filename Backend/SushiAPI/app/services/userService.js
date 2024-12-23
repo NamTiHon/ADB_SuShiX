@@ -129,4 +129,44 @@ export const userService = {
             throw error; // Preserve original error
         }
     },
+    changePassword: async (email, oldPassword, newPassword) => {
+        if (!email || !email.includes('@')) {
+            throw new Error('Invalid email format');
+        }
+
+        try {
+            const pool = await conn;
+            const user = await userService.findUserByEmail(email);
+
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            const isValidPassword = await bcrypt.compare(oldPassword, user.KH_MatKhau);
+            if (!isValidPassword) {
+                throw new Error('Mật khẩu cũ không đúng');
+            }
+
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+            const result = await pool.request()
+                .input('Email', sql.NVarChar(100), email)
+                .input('Password', sql.NVarChar(sql.MAX), hashedPassword)
+                .query(`
+                    UPDATE KhachHang 
+                    SET KH_MatKhau = @Password 
+                    OUTPUT inserted.*
+                    WHERE KH_Email = @Email
+                `);
+
+            if (!result.recordset[0]) {
+                throw new Error('Failed to update password');
+            }
+
+            return { success: true, message: 'Password updated successfully' };
+        } catch (error) {
+            console.error('Error in changePassword:', error);
+            throw error;
+        }
+    },
 };

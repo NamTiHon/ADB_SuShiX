@@ -88,3 +88,28 @@ export const updateUser = async (req, res) => {
         });
     }
 };
+// Add to authController
+// ...existing code...
+
+export const changePassword = async (req, res) => {
+    try {
+        const { email, oldPassword, newPassword } = req.body;
+
+        if (!email || !oldPassword || !newPassword) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const result = await userService.changePassword(email, oldPassword, newPassword);
+
+        res.json({ 
+            success: true,
+            message: 'Password changed successfully' 
+        });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(400).json({ 
+            success: false,
+            message: error.message 
+        });
+    }
+};

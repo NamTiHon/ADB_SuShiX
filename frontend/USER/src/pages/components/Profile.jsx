@@ -156,30 +156,50 @@ const Profile = () => {
         }
     }, [showPromotionsModal]);
     const handleChangePassword = async () => {
-        if (newPassword !== confirmPassword) {
-            setError('Mật khẩu mới và xác nhận mật khẩu không khớp.');
-            return;
-        }
-
         try {
-            const response = await fetch('/api/profile/change-password', {
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                setError('Vui lòng điền đầy đủ thông tin');
+                return;
+            }
+    
+            if (newPassword !== confirmPassword) {
+                setError('Mật khẩu mới và xác nhận mật khẩu không khớp');
+                return;
+            }
+    
+            if (newPassword.length < 6) {
+                setError('Mật khẩu mới phải có ít nhất 6 ký tự');
+                return;
+            }
+    
+            const response = await fetch('http://localhost:3000/api/auth/user/change-password', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify({ oldPassword, newPassword })
+                body: JSON.stringify({
+                    email: editedUser.KH_Email,
+                    oldPassword: oldPassword,
+                    newPassword: newPassword
+                })
             });
-
+    
+            const data = await response.json();
+    
             if (!response.ok) {
-                throw new Error('Failed to change password');
+                throw new Error(data.message || 'Đổi mật khẩu thất bại');
             }
-
+    
             alert('Đổi mật khẩu thành công');
             setShowPasswordModal(false);
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setError('');
         } catch (error) {
             console.error('Error changing password:', error);
-            setError('Đổi mật khẩu thất bại, vui lòng thử lại.');
+            setError('Đổi mật khẩu thất bại: ' + (error.message || 'Vui lòng thử lại'));
         }
     };
     const handleLogout = () => {
