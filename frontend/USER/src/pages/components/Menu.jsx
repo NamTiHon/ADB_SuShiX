@@ -20,14 +20,16 @@ const Menu = () => {
     const [loading, setLoading] = useState(true); // Add loading state
     const [error, setError] = useState(null); // Add error state
     const [searchTerm, setSearchTerm] = useState('');
-    const [setIsSearching] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);  // Changed from [setIsSearching]
     const { selectedBranch } = useBranch();
     const [availableDishes, setAvailableDishes] = useState(dishes);
     const handleSearch = (e) => {
         e.preventDefault();
-        setIsSearching(true);
-        setSearchTerm(e.target.value);
+        const searchValue = e.target.value.toLowerCase();
+        setIsSearching(searchValue.length > 0);
+        setSearchTerm(searchValue);
     };
+
 
     const clearSearch = () => {
         setSearchTerm('');
@@ -58,7 +60,7 @@ const Menu = () => {
     ];
 
     const filteredDishes = availableDishes.filter(dish => {
-        const matchesSearch = searchTerm ? (
+        const matchesSearch = isSearching ? (
             dish.name.toLowerCase().includes(searchTerm) ||
             dish.description.toLowerCase().includes(searchTerm) ||
             dish.category.toLowerCase().includes(searchTerm)
@@ -69,6 +71,7 @@ const Menu = () => {
 
         return matchesSearch && matchesCategory;
     });
+
 
     const selectedCategoryDescription = categories.find(category => category.id === selectedCategory)?.description;
     // Cập nhật danh sách món ăn khi chi nhánh thay đổi
