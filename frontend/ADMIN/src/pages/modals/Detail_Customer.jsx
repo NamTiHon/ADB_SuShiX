@@ -22,15 +22,12 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
             return;
         }
 
-        console.log(customer)
         const dataUser = {
             KH_HoTen: customer.name,
             KH_CCCD: customer.cccd,
             KH_Email: customer.email,
             KH_GioiTinh: customer.gender
         }
-
-        console.log(JSON.stringify(dataUser))
 
         try {
             const response = await fetch(`http://localhost:3000/api/auth/user/${customer.customerId}`, {
@@ -82,10 +79,10 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
                             </>
                         ) : (
                             <>
-                                <p><strong>Họ tên:</strong> {item.name}</p>
-                                <p><strong>Giới tính:</strong> {item.gender}</p>
-                                <p><strong>Số CCCD:</strong> {item.cccd}</p>
-                                <p><strong>Email:</strong> {item.email}</p>
+                                <p><strong>Họ tên:</strong> {updatedCustomer.name}</p>
+                                <p><strong>Giới tính:</strong> {updatedCustomer.gender}</p>
+                                <p><strong>Số CCCD:</strong> {updatedCustomer.cccd}</p>
+                                <p><strong>Email:</strong> {updatedCustomer.email}</p>
                                 <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
                             </>
                         )}

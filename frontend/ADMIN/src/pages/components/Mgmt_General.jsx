@@ -54,7 +54,14 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
 
     const handleUpdate = (item) => {
         // Implement the update logic here
-        console.log('Update item:', item);
+        setItems(prevCustomers =>
+            prevCustomers.map(customer =>
+                customer.customerId === item.customerId
+                    ? { ...customer, ...item } // Cập nhật dữ liệu khách hàng
+                    : customer
+            )
+        );
+        console.log('Update customer:', item);
     };
 
     const handleDeleteItem = (itemToDelete) => {
