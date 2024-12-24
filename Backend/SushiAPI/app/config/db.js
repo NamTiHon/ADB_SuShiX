@@ -13,6 +13,7 @@ const config = {
         enableArithAbort: true,
         instancename: 'MSSQLSERVER',
     },
+    requestTimeout: 100000,
     port: parseInt(process.env.DB_PORT, 10)
 }
 

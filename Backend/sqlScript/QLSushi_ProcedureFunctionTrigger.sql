@@ -624,7 +624,8 @@ begin
 		set KH_HoTen = coalesce(@HoTen, KH_HoTen),
 			KH_CCCD = coalesce(@CCCD, KH_CCCD),
 			KH_Email = coalesce(@Email, KH_Email),
-			KH_GioiTinh = coalesce(@GioiTinh, KH_GioiTinh)			
+			KH_GioiTinh = coalesce(@GioiTinh, KH_GioiTinh)	
+		where KH_SDT = @SDT		
 	end
 	print(N'Đã thay đổi thông tin khách hàng.')
 end

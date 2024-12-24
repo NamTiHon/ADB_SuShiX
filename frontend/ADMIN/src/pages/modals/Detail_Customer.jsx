@@ -15,9 +15,52 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
         }));
     };
 
-    const handleSave = () => {
-        onUpdate(updatedCustomer);
-        setIsEditing(false);
+    const updateCustomer = async (customer) => {
+
+        if (!customer || !customer.customerId) {
+            alert('Dữ liệu khách hàng không hợp lệ!');
+            return;
+        }
+
+        console.log(customer)
+        const dataUser = {
+            KH_HoTen: customer.name,
+            KH_CCCD: customer.cccd,
+            KH_Email: customer.email,
+            KH_GioiTinh: customer.gender
+        }
+
+        console.log(JSON.stringify(dataUser))
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/auth/user/${customer.customerId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataUser),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update customer');
+            }
+    
+            const result = await response.json();
+            alert('Cập nhật thông tin thành công!');
+
+            return result
+        } catch (error) {
+            console.error('Error updating customer:', error);
+            alert('Có lỗi xảy ra khi cập nhật thông tin.', error);
+        }
+    };
+
+    const handleSave = async () => {
+        const result = await updateCustomer(updatedCustomer);
+        if (result) {
+            onUpdate(updatedCustomer);
+            setIsEditing(false);
+        }
     };
 
     return (

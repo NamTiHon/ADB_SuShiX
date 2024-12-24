@@ -169,4 +169,34 @@ export const userService = {
             throw error;
         }
     },
+
+    updateUserFollowingSDT: async (KH_SDT, updates) => {
+        const { KH_HoTen, KH_CCCD, KH_Email, KH_GioiTinh } = updates;
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!KH_Email || !emailRegex.test(KH_Email)) {
+            throw new Error(`Invalid email format: ${KH_Email}`);
+        }
+
+        try {
+            const pool = await conn;
+            await pool.request()
+                .input('SDT', sql.VarChar(12), KH_SDT)
+                .input('HoTen', sql.NVarChar(50), KH_HoTen)
+                .input('CCCD', sql.VarChar(13), KH_CCCD)
+                .input('Email', sql.VarChar(30), KH_Email)
+                .input('GioiTinh', sql.NVarChar(3), KH_GioiTinh)
+                .execute('usp_ChinhSuaThongTinKhachHang');
+
+            return {
+                success: true,
+                message: 'Update user successfully.',
+            };
+
+        } catch (error) {
+            console.error('Error updating user:', error);
+            throw new Error('Failed to update user.');
+        }
+    }
 };

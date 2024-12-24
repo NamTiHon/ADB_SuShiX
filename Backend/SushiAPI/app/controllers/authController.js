@@ -113,3 +113,16 @@ export const changePassword = async (req, res) => {
         });
     }
 };
+
+export const updateUserFollowingSDT = async (req, res) => {
+    try {
+        const KH_SDT = req.params.KH_SDT;
+        const updatedUser = await userService.updateUserFollowingSDT(KH_SDT, req.body);
+        if (!updatedUser) {
+            return res.status(404).json({ message: `Cannot update user ${KH_SDT}` });
+        }
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
