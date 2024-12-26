@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../css/css-modals/add-branch.css';
 import addBranch from '../../services/branchService';
 
@@ -15,8 +15,35 @@ const Add_Branch = ({ onClose, onAdd }) => {
         CN_MaQuanLy: '',
         CN_MaKhuVuc: ''
     });
-
+    const [staffIds, setStaffIds] = useState([]); // List of all staff IDs
+    const [searchTerm, setSearchTerm] = useState('');
+    const [showDropdown, setShowDropdown] = useState(false);
     const [errors, setErrors] = useState({});
+
+
+    useEffect(() => {
+        // Fetch all staff IDs from the server when the component mounts
+        const fetchStaffIds = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/staffs');
+                const data = await response.json();
+                console.log('Fetched staff IDs:', data); // Debug log
+                if (Array.isArray(data.staffs)) {
+                    const ids = data.staffs.map(staff => staff.NV_MaNhanVien);
+                    setStaffIds(ids);
+                } else {
+                    console.error('Expected an array of staff objects');
+                }
+            } catch (error) {
+                console.error('Error fetching staff IDs:', error);
+            }
+        };
+        fetchStaffIds();
+    }, []);
+
+    const filteredStaffIds = useMemo(() => {
+        return staffIds.filter((id) => id.startsWith(searchTerm)).slice(0, 10);
+    }, [staffIds, searchTerm]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -27,19 +54,22 @@ const Add_Branch = ({ onClose, onAdd }) => {
             [name]: newValue,
         }));
 
-        if (name === 'CN_MaQuanLy' && value.length < 10) {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                CN_MaQuanLy: 'Mã quản lý phải có ít nhất 10 ký tự',
-            }));
-        } else {
-            setErrors((prevErrors) => ({
-                ...prevErrors,
-                CN_MaQuanLy: '',
-            }));
+        if (name === 'CN_MaQuanLy') {
+            setSearchTerm(value);
+            setShowDropdown(true);
         }
     };
 
+    const handleSelect = (id) => {
+        setNewBranch((prevBranch) => ({
+            ...prevBranch,
+            CN_MaQuanLy: id,
+        }));
+        setSearchTerm('');
+        setShowDropdown(false);
+    };
+
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (newBranch.CN_MaQuanLy.length < 10) {
@@ -93,6 +123,15 @@ const Add_Branch = ({ onClose, onAdd }) => {
                                 <strong>Mã quản lý:</strong> 
                                 <input type="text" name="CN_MaQuanLy" value={newBranch.CN_MaQuanLy} onChange={handleChange} required />
                                 {errors.CN_MaQuanLy && <span className="error-message">{errors.CN_MaQuanLy}</span>}
+                                {showDropdown && filteredStaffIds.length > 0 && (
+                                    <ul className="staff-id-dropdown">
+                                        {filteredStaffIds.map((id) => (
+                                            <li key={id} onClick={() => handleSelect(id)}>
+                                                {id}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </p>
                             <p><strong>Mã khu vực:</strong> <input type="text" name="CN_MaKhuVuc" value={newBranch.CN_MaKhuVuc} onChange={handleChange} required /></p>
                             <button type="submit" className="add-button">Thêm</button>

@@ -135,5 +135,15 @@ export const orderController = {
             console.error('Controller error:', error);
             res.status(500).json({ message: error.message });
         }
+    },
+
+    getAllOrders: async (req, res) => {
+        try {
+            const orders = await orderService.getAllOrders();
+            res.status(200).json(orders);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
     }
 };

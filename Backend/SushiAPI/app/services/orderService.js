@@ -296,5 +296,21 @@ export const orderService = {
             console.error('Error fetching dish by MaPhieu:', error);
             throw new Error('Failed to fetch dish');
         }
-    }
+    },
+    
+    // Lấy toàn bộ phiếu đặt món:
+    getAllOrders: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .query(`
+                    SELECT * 
+                    FROM PhieuDatMon join MonDuocDat on PhieuDatMon.PDM_MaPhieu = MonDuocDat.MDD_MaPhieu
+                `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching all orders:', error);
+            throw new Error('Failed to fetch all orders');
+        }
+    },
 };
