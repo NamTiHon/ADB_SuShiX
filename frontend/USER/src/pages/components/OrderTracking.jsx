@@ -16,6 +16,16 @@ const OrderTracking = () => {
             setCustomerName(savedName);
         }
     }, []);
+    const getStatusInfo = (statusCode) => {
+        switch (statusCode) {
+            case 0: return { label: 'Đang chờ xác nhận', icon: 'clock', class: 'pending' };
+            case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
+            case 2: return { label: 'Đang giao', icon: 'shipping-fast', class: 'shipping' };
+            case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
+            case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
+            default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
+        }
+    };
     const calculateSubtotal = (items) => {
         if (!items || !Array.isArray(items)) return 0;
         return items.reduce((sum, item) => sum + ((item?.price || 0) * (item?.quantity || 0)), 0);
@@ -136,7 +146,7 @@ const OrderTracking = () => {
                 branchId: orderDetails.PDM_MaChiNhanh,
                 customerName: customerName,
                 branchName: branchInfo ? `${branchInfo.CN_DiaChi} (${branchInfo.CN_Ten})` : 'Đang cập nhật',
-                status: 'preparing',
+                status: billDetails?.HD_TrangThai || 0,
                 items: items,
                 totalBeforeDiscount: billDetails?.HD_TongTruocGiam || 0,
                 discount: billDetails?.HD_SoTienGiam || 0, 
@@ -182,26 +192,26 @@ const OrderTracking = () => {
                     <div className="tracking-result">
                         <div className="order-header">
                             <h3>Đơn hàng #{order.orderId}</h3>
-                            <span className={`status-badge ${order.status}`}>
-                                {order.status === 'preparing' && 'Đang chuẩn bị'}
-                                {order.status === 'shipping' && 'Đang giao'}
-                                {order.status === 'delivered' && 'Đã giao'}
-                            </span>
+                            
                         </div>
 
                         <div className="tracking-timeline">
-                            <div className={`timeline-step ${order.status === 'preparing' ? 'active' : ''}`}>
-                                <i className="fas fa-box"></i>
-                                <span>Đang chuẩn bị</span>
-                            </div>
-                            <div className={`timeline-step ${order.status === 'shipping' ? 'active' : ''}`}>
-                                <i className="fas fa-shipping-fast"></i>
-                                <span>Đang giao</span>
-                            </div>
-                            <div className={`timeline-step ${order.status === 'delivered' ? 'active' : ''}`}>
-                                <i className="fas fa-check-circle"></i>
-                                <span>Đã giao</span>
-                            </div>
+                            {[0, 1, 2, 3].map((step) => {
+                                const statusInfo = getStatusInfo(step);
+                                const isActive = order.status >= step && order.status !== 4;
+                                const isCurrent = order.status === step;
+                                
+                                return (
+                                    <div key={step} 
+                                        className={`timeline-step ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''}`}
+                                    >
+                                        <div className="step-icon">
+                                            <i className={`fas fa-${statusInfo.icon}`}></i>
+                                        </div>
+                                        <span>{statusInfo.label}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
 
                         <div className="order-details">
