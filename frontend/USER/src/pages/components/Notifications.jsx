@@ -10,13 +10,13 @@ const Notifications = () => {
     const handleNotificationClick = (type, id) => {
         switch(type) {
             case 'order':
-                navigate(`/orders/${id}`);
+                navigate(`/order-management`);
                 break;
             case 'promotion':
                 navigate('/menu');
                 break;
             case 'reservation':
-                navigate('/reservations');
+                navigate('/order-management');
                 break;
             default:
                 break;
