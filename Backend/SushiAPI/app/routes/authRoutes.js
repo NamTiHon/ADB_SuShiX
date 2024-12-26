@@ -6,7 +6,8 @@ import {
     UserByEmail, 
     updateUser, 
     changePassword, 
-    updateUserFollowingSDT
+    updateUserFollowingSDT,
+    deleteUser
 } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -26,4 +27,5 @@ router.put('/:email', updateUser);
 router.put('/user/change-password', changePassword);
 
 router.put('/user/:KH_SDT', updateUserFollowingSDT)
+router.delete('/user/:KH_SDT', deleteUser);
 export default router;
