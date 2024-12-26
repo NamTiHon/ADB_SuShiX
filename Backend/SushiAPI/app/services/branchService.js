@@ -40,13 +40,14 @@ export const branchService = {
     addBranch: async (brachData) => {
         try {
             const {CN_MaChiNhanh, CN_Ten, CN_DiaChi, CN_TGMoCua, CN_TGDongCua, CN_SDT, CN_BaiDoXeMay, CN_BaiDoXeOto, CN_HoTroGiaoHang, CN_MaQuanLy, CN_MaKhuVuc, CN_MaHinhAnh } = brachData;
+            console.log('Adding branch:', brachData);
             const pool = await conn;
-            const result = await pool.request()
+            await pool.request()
                 .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
                 .input('Ten', sql.NVarChar(50), CN_Ten)
                 .input('DiaChi', sql.NVarChar(100), CN_DiaChi)
-                .input('TGMoCua', sql.Time, CN_TGMoCua)
-                .input('TGDongCua', sql.Time, CN_TGDongCua)
+                .input('TGMoCua', sql.DateTime, CN_TGMoCua)
+                .input('TGDongCua', sql.DateTime, CN_TGDongCua)
                 .input('SDT', sql.VarChar(12), CN_SDT)
                 .input('BaiDoXeMay', sql.Bit, CN_BaiDoXeMay)
                 .input('BaiDoXeOto', sql.Bit, CN_BaiDoXeOto)
@@ -54,7 +55,11 @@ export const branchService = {
                 .input('MaQuanLy', sql.VarChar(12), CN_MaQuanLy)
                 .input('MaKhuVuc', sql.VarChar(12), CN_MaKhuVuc)
                 .input('HinhAnh', sql.NVarChar(100), CN_MaHinhAnh)
-                .execute('usp_ThemChiNhanh')
+                .execute('usp_ThemChiNhanh');
+                // Truy vấn lại để lấy chi nhánh vừa được thêm
+            const result = await pool.request()
+                .input('CN_MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .query('SELECT * FROM ChiNhanh WHERE CN_MaChiNhanh = @CN_MaChiNhanh');
                 return result.recordset[0]; // Trả về chi nhánh đã thêm
         } 
         catch (error){
@@ -113,6 +118,21 @@ export const branchService = {
         catch (error){
             console.error('Error deleting branch: ', error);
             throw new Error('Failed to delete branch');
+        }
+    },
+
+    getAllRegion: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request().query(`
+                SELECT DISTINCT KV_MaKhuVuc, KV_Ten FROM KhuVuc;
+            `);
+
+            console.log(result.recordset);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching regions:', error);
+            throw new Error('Failed to fetch regions');
         }
     }
 };

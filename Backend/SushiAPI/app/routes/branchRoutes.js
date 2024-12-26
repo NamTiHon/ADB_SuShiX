@@ -6,10 +6,13 @@ const router = express.Router();
 router.get('/', branchController.getBranches);
 
 // Lấy thông tin chi nhánh theo ID
-router.get('/:CN_MaChiNhanh', branchController.getBranchById);
+router.get('/id/:CN_MaChiNhanh', branchController.getBranchById);
 
 // Thêm mới một chi nhánh
 router.post('/', branchController.addBranch);
+
+// // Lấy danh sách khu vực
+router.get('/regions', branchController.getAllRegion);
 
 // // Cập nhật chi nhánh
 // router.put('/:branchId', branchController.updateBranch);

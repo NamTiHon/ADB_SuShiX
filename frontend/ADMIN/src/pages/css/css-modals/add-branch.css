@@ -68,3 +68,27 @@
     margin-top: 5px;
     display: block;
 }
+
+.staff-id-dropdown, .region-dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    background: white;
+    position: absolute;
+    z-index: 1000;
+    width: calc(100% - 20px);
+    top: 50%;
+}
+
+.staff-id-dropdown li, .region-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.staff-id-dropdown li:hover, .region-dropdown li:hover {
+    background-color: #f0f0f0;
+}

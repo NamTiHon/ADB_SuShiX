@@ -36,5 +36,14 @@ export const branchController ={
         catch (error) {
             res.status(500).json({message: error.message});
         }
-    }
+    },
+
+    getAllRegion: async (req, res) => {
+        try {
+            const regions = await branchService.getAllRegion();
+            res.status(200).json({message: 'Regions retrieved successfully', regions});
+        } catch (error) {
+            res.status(500).json({message: error.message});
+        }
+    },
 }

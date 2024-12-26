@@ -24,7 +24,7 @@ function Mgmt_Dish() {
     useEffect(() => {
         const fetchDishes = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/dishes');
+                const response = await fetch('http://localhost:3000/api/dishes/only/dishes');
                 if (!response.ok) {
                     throw new Error('Failed to fetch dishes');
                 }

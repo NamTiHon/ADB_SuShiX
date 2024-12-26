@@ -90,5 +90,18 @@ export const dishService = {
             console.error('Error deleting dish:', error);
             throw new Error('Failed to delete dish');
         }
+    },
+
+    getOnlyDishes: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request().query(`
+                select * from MonAn;
+            `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching dishes:', error);
+            throw new Error('Failed to fetch dishes');
+        }
     }
 };

@@ -64,5 +64,14 @@ export const dishController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+    getOnlyDishes: async (req, res) => {
+        try {
+            const dishes = await dishService.getOnlyDishes();
+            res.status(200).json({ message: 'Dishes retrieved successfully', dishes });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 };
