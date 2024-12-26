@@ -280,4 +280,21 @@ export const orderService = {
             throw new Error('Failed to fetch dish');
         }
     },
+    // Lấy riêng phiếu đặt món
+    getOrderByID: async (MaPhieu) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                .query(`
+                    SELECT * 
+                    FROM PhieuDatMon
+                    where PDM_MaPhieu = @MaPhieu
+                `);
+            return result.recordset; // Trả về undefined nếu không tìm thấy món
+        } catch (error) {
+            console.error('Error fetching dish by MaPhieu:', error);
+            throw new Error('Failed to fetch dish');
+        }
+    }
 };

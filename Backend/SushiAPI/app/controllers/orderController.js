@@ -124,5 +124,16 @@ export const orderController = {
             console.error('Controller error:', error);
             res.status(500).json({ message: error.message });
         }
+    },
+
+    getOrderByID: async (req, res) => {
+        try {
+            const { PDM_MaPhieu } = req.params;
+            const order = await orderService.getOrderByID(PDM_MaPhieu);
+            res.status(200).json(order);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
     }
 };

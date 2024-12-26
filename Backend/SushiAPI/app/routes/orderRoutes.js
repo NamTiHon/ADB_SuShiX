@@ -13,4 +13,5 @@ router.delete('/:MaPhieu', orderController.deleteDishes);
 router.delete('/:MaPhieu', orderController.deleteOrder);
 router.get('/:MaPhieu', orderController.getOrder);
 router.put('/table/:PDM_MaPhieu', orderController.updateReservation);
+router.get('/id/:PDM_MaPhieu', orderController.getOrderByID);
 export default router;
