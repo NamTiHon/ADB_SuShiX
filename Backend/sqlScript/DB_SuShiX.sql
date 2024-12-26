@@ -61,11 +61,14 @@ create table MonAn (
 );
 
 -- Bảng Món được đặt:
-create table MonDuocDat (
-	MDD_MaMon varchar(12),
-	MDD_MaPhieu varchar(12),
-	MDD_SoLuong int,
-	primary key (MDD_MaMon, MDD_MaPhieu)
+--drop table MonDuocDat
+CREATE TABLE MonDuocDat (
+    MDD_MaMon varchar(12) NULL,
+    MDD_MaPhieu varchar(12) NOT NULL,
+    MDD_SoLuong int NULL,
+    CONSTRAINT FK_MonDuocDat_MaMon FOREIGN KEY (MDD_MaMon) 
+        REFERENCES MonAn(MA_MaMon)
+        ON DELETE SET NULL
 );
 
 
