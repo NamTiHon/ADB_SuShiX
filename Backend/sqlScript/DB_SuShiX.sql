@@ -134,6 +134,7 @@ create table KhuyenMai (
 );
 
 -- Bảng Hóa đơn:
+-- drop table HoaDon
 create table HoaDon (
 	HD_MaHoaDon varchar(12),
 	HD_SoTienGiam float, -- Số tiền giảm giá

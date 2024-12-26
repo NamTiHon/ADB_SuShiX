@@ -6,14 +6,10 @@ import { v4 as uuidv4 } from 'uuid';
 export const orderService = {
     //Lập phiếu đặt trực tiếp
     makeDirectOrder: async (orderData) => {
-        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH, PDM_MaNhanVien } = orderData
+        const { PDM_SDT_KH, PDM_SoBan , PDM_SoLuongKH, PDM_MaNhanVien, PDM_MaChiNhanh, PDM_GhiChuThem, PDM_MaPhieu } = orderData
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
-
-        const uuid = uuidv4();
-        const PDM_MaPhieu = uuid.replace(/-/g, '').slice(0, 10);
-
 
         try {
             const pool = await conn;
@@ -24,7 +20,9 @@ export const orderService = {
                 .input('SoBan', sql.Int, PDM_SoBan)
                 .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
                 .input('MaNhanVien', sql.VarChar(12), PDM_MaNhanVien)
-                .execute('sp_TaoPhieuDatMon')
+                .input('MaChiNhanh', sql.VarChar(12), PDM_MaChiNhanh)
+                .input('GhiChuThem', sql.NVarChar(100), PDM_GhiChuThem)
+                .execute('usp_TaoPhieuDatMon')
 
             const OrderID = result.output.PDM_MaPhieu
 
