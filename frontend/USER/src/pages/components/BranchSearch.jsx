@@ -196,7 +196,7 @@ const BranchSearch = () => {
                         </div>
                         <div className="search-filters">
                             <div className="search-input-b">
-                                <i className="fas fa-search"></i>
+                                <i className="fa-solid fa-magnifying-glass"></i>
                                 <input
                                     type="text"
                                     placeholder="Tìm theo tên hoặc địa chỉ..."
@@ -204,7 +204,6 @@ const BranchSearch = () => {
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
-                          
                         </div>
 
                         <div className="status-filter">
