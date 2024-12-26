@@ -318,9 +318,9 @@ begin
 	end
 	else
 	begin
-		insert into PhieuDatMon(PDM_MaPhieu, PDM_ThoiGianDat, PDM_SDT_KH, PDM_MaNhanVien, PDM_SoBan, PDM_SoLuongKH, PDM_DiaChiCanGiao, PDM_MaChiNhanh, PDM_ThoiGianDen, PDM_GhiChuThem)
+		insert into PhieuDatMon(PDM_MaPhieu, PDM_ThoiGianDat, PDM_SDT_KH, PDM_MaNhanVien, PDM_SoBan, PDM_SoLuongKH, PDM_DiaChiCanGiao, PDM_MaChiNhanh, PDM_ThoiGianDen, PDM_GhiChuThem, PDM_TrangThai)
 			values
-			(@MaPhieu, @ThoiGianDat, @SDT_KH, @MaNhanVien, @SoBan, @SoLuongKH, @DiaChiGiao, @MaChiNhanh, @ThoiGianDen, @GhiChuThem)
+			(@MaPhieu, @ThoiGianDat, @SDT_KH, @MaNhanVien, @SoBan, @SoLuongKH, @DiaChiGiao, @MaChiNhanh, @ThoiGianDen, @GhiChuThem, N'Chờ xác nhận')
 	end
 
 	print(N'Đã nhận phiếu đặt món')

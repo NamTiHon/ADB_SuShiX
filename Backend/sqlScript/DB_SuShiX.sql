@@ -74,6 +74,7 @@ CREATE TABLE MonDuocDat (
 
 -- Bảng Phiếu đặt món ( dành cho đặt trực tiếp, đặt trước và đặt online):
 -- Có thể chia partition với index dựa vào loại phiếu đựt món
+--drop table PhieuDatMon
 create table PhieuDatMon (
 	PDM_MaPhieu varchar(12),
 	PDM_ThoiGianDat datetime,
@@ -85,6 +86,7 @@ create table PhieuDatMon (
 	PDM_MaChiNhanh varchar(12),
 	PDM_MaNhanVien varchar(12), -- Nhân viên tạo món
 	PDM_GhiChuThem nvarchar(100), -- Nếu là phiếu đặt trước thì có giá trị vào trường này, không thì là NULL
+	PDM_TrangThai nvarchar(100),
 	primary key (PDM_MaPhieu)
 );
 
