@@ -212,47 +212,76 @@ const Reservation = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Generate reservation ID
         const reservationId = Math.random().toString(36).substr(2, 9).toUpperCase();
-        const now = new Date();
-        const reservation = {
-            PDM_MaPhieu: reservationId,
-            PDM_SDT_KH: formData.phone,
-            PDM_SoBan: 1, // Assuming 1 table per reservation
-            PDM_SoLuongKH: parseInt(formData.guests, 10),
-            PDM_ThoiGianDen: `${formData.date} ${formData.time}:00`,
-            PDM_MaChiNhanh: formData.branch,
-            PDM_MaNhanVien: 'NV00000000', // Assuming a default employee ID
-            PDM_GhiChuThem: formData.note,
-            fullName: formData.name,
-        };
     
         try {
-            console.log('Creating reservation:', reservation);
-            const response = await fetch('http://localhost:3000/api/order/reserve', {
+            // 1. Create basic reservation
+            const reservation = {
+                PDM_MaPhieu: reservationId,
+                PDM_SDT_KH: formData.phone,
+                PDM_SoBan: 1,
+                PDM_SoLuongKH: parseInt(formData.guests, 10),
+                PDM_ThoiGianDen: `${formData.date} ${formData.time}:00`,
+                PDM_MaChiNhanh: formData.branch,
+                PDM_MaNhanVien: 'NV00000000',
+                PDM_GhiChuThem: formData.note,
+                fullName: formData.name,
+            };
+    
+            // Create reservation
+            const reserveResponse = await fetch('http://localhost:3000/api/order/reserve', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(reservation)
             });
     
-            if (!response.ok) {
+            if (!reserveResponse.ok) {
                 throw new Error('Failed to create reservation');
             }
     
-            const result = await response.json();
-            // Save to localStorage
-            const reservations = JSON.parse(localStorage.getItem('reservations') || '{}');
-            reservations[reservationId] = reservation;
-            localStorage.setItem('reservations', JSON.stringify(reservations));
+            // 2. Add dishes if selected
+            if (formData.selectedDishes.length > 0) {
+                // Map dishes to correct format
+                const dishPromises = formData.selectedDishes.map(dish => {
+                    return fetch('http://localhost:3000/api/order/dishes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            MDD_MaMon: dish.id,
+                            MDD_MaPhieu: reservationId,
+                            MDD_SoLuong: dish.quantity
+                        })
+                    });
+                });
     
-            // Pass reservation data with ID to table selection
+                // Wait for all dish orders to complete
+                await Promise.all(dishPromises);
+            }
+    
+            // 3. Save to localStorage and navigate
+            const reservationData = {
+                ...reservation,
+                dishes: formData.selectedDishes.map(dish => ({
+                    MDD_MaMon: dish.id,
+                    MDD_SoLuong: dish.quantity,
+                    name: dish.name,
+                    price: dish.price
+                }))
+            };
+    
+            localStorage.setItem(`reservation_${reservationId}`, JSON.stringify(reservationData));
+    
+            // Navigate to table selection
             navigate('/table-selection', { 
-                state: { reservationData: reservation}
+                state: { 
+                    reservationData: reservationData,
+                    reservationId: reservationId
+                }
             });
+    
         } catch (error) {
-            console.error('Error creating reservation:', error);
+            console.error('Reservation error:', error);
+            alert('Có lỗi xảy ra khi đặt bàn. Vui lòng thử lại.');
         }
     };
     const totalAmount = formData.selectedDishes.reduce(
