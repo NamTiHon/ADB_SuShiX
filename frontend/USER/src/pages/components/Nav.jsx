@@ -63,7 +63,6 @@ function Nav() {
                     </Link>
                     <div className="dropdown-content">
                         <Link to="/order-tracking">Kiểm tra đơn hàng</Link>
-                        <Link to="/check-reservation">Kiểm tra đặt bàn</Link>
                         <Link to="/order-management">Quản lý đơn hàng</Link>
                     </div>
                 </li>

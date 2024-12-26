@@ -19,7 +19,6 @@ import OrderTracking from './pages/components/OrderTracking';
 import Reservation from './pages/components/Reservation';
 import ReservationSuccess from './pages/components/ReservationSuccess';
 import TableSelection from './pages/components/TableSelection';
-import CheckReservation from './pages/components/CheckReservation';
 import PrivateRoute from './pages/components/PrivateRoute';
 import { BranchProvider } from './context/BranchContext';
 import OrderManagement from './pages/components/OrderManagement';
@@ -57,7 +56,6 @@ function App() {
               } />
               <Route path="/table-selection" element={<TableSelection />} />
               <Route path="/reservation-success" element={<ReservationSuccess />} />
-              <Route path="/check-reservation" element={<CheckReservation />} />
               <Route path="/order-management" element={<OrderManagement />} />
               <Route path="/order-details/:orderId" element={<OrderDetails />} /> {/* Add this route */}
               <Route path="/rate-order/:orderId" element={<RateOrder />} /> {/* Add this route */}

@@ -18,19 +18,21 @@
 .search-input-b {
     position: relative;
     width: 100%;
-    margin-bottom: 2rem; /* Add bottom margin */
+    max-width: 500px;
 }
 
 .search-input-b i {
     position: absolute;
-    left: 1rem;
+    left: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: #666;
 }
 
+
 .search-input-b input {
     width: 95%;
+    padding-left: 40px;
     padding: 0.8rem 1rem 0.8rem 2.5rem;
     border: 1px solid #ddd;
     border-radius: 20px;

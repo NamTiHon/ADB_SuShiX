@@ -239,9 +239,9 @@ const Reservation = () => {
                 throw new Error('Failed to create reservation');
             }
     
-            // 2. Add dishes if selected
+            // 2. Handle dishes
             if (formData.selectedDishes.length > 0) {
-                // Map dishes to correct format
+                // Map selected dishes
                 const dishPromises = formData.selectedDishes.map(dish => {
                     return fetch('http://localhost:3000/api/order/dishes', {
                         method: 'POST',
@@ -253,20 +253,36 @@ const Reservation = () => {
                         })
                     });
                 });
-    
-                // Wait for all dish orders to complete
                 await Promise.all(dishPromises);
+            } else {
+                // Create null dish entry if no dishes selected
+                await fetch('http://localhost:3000/api/order/dishes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        MDD_MaMon: null,
+                        MDD_MaPhieu: reservationId,
+                        MDD_SoLuong: 0
+                    })
+                });
             }
     
-            // 3. Save to localStorage and navigate
+            // 3. Save to localStorage
             const reservationData = {
                 ...reservation,
-                dishes: formData.selectedDishes.map(dish => ({
-                    MDD_MaMon: dish.id,
-                    MDD_SoLuong: dish.quantity,
-                    name: dish.name,
-                    price: dish.price
-                }))
+                dishes: formData.selectedDishes.length > 0 ? 
+                    formData.selectedDishes.map(dish => ({
+                        MDD_MaMon: dish.id,
+                        MDD_SoLuong: dish.quantity,
+                        name: dish.name,
+                        price: dish.price
+                    })) : 
+                    [{
+                        MDD_MaMon: null,
+                        MDD_SoLuong: 0,
+                        name: null,
+                        price: 0
+                    }]
             };
     
             localStorage.setItem(`reservation_${reservationId}`, JSON.stringify(reservationData));
@@ -377,7 +393,7 @@ const Reservation = () => {
                                 onChange={handleInputChange}
                                 required
                             >
-                                {[2,3,4,5,6,7,8,9,10].map(num => (
+                                {[2,3,4,5,6,7,8].map(num => (
                                     <option key={num} value={num}>
                                         {num} người
                                     </option>

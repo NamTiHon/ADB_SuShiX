@@ -16,7 +16,19 @@ const OrderTracking = () => {
             setCustomerName(savedName);
         }
     }, []);
-    const getStatusInfo = (statusCode) => {
+    const getStatusInfo = (statusCode, isTableBooking) => {
+        if (isTableBooking) {
+            switch (statusCode) {
+                case 0: return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
+                case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
+                case 2: return { label: 'Chờ đến', icon: 'calendar-check', class: 'waiting' };
+                case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
+                case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
+                default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
+            }
+        }
+        
+        // Existing delivery status
         switch (statusCode) {
             case 0: return { label: 'Đang chờ xác nhận', icon: 'clock', class: 'pending' };
             case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
@@ -58,27 +70,27 @@ const OrderTracking = () => {
     
     const transformOrderItems = async (orderItems) => {
         try {
+            // Handle case where MDD_MaMon is null
+            if (orderItems.length === 1 && !orderItems[0].MDD_MaMon) {
+                return [];
+            }
+    
             const itemsWithDetails = await Promise.all(
                 orderItems.map(async item => {
+                    if (!item.MDD_MaMon) return null;
+                    
                     const dishDetails = await fetchDishDetails(item.MDD_MaMon);
-                    console.log(`Dish details for ${item.MDD_MaMon}:`, dishDetails);
-                    
-                    if (!dishDetails) {
-                        console.warn(`No details found for dish ${item.MDD_MaMon}`);
-                    }
-                    
                     return {
                         id: item.MDD_MaMon,
                         dishId: item.MDD_MaMon,
                         quantity: item.MDD_SoLuong,
                         name: dishDetails ? dishDetails.name : `Món #${item.MDD_MaMon}`,
-                        price: dishDetails ? dishDetails.price * 1000 : 0, // Multiply by 1000
+                        price: dishDetails ? dishDetails.price * 1000 : 0,
                         image: dishDetails ? dishDetails.image : null
                     };
                 })
             );
-            console.log('Final transformed items:', itemsWithDetails);
-            return itemsWithDetails;
+            return itemsWithDetails.filter(Boolean);
         } catch (err) {
             console.error('Error transforming items:', err);
             return [];
@@ -138,11 +150,19 @@ const OrderTracking = () => {
             }
             const billDetails = await fetchBillByOrderId(orderDetails.PDM_MaPhieu);
             console.log('Bill details for order:', billDetails);
+            const orderTime = new Date(orderDetails.PDM_ThoiGianDat);
+            const deliveryTime = new Date(orderTime.getTime() + 45 * 60000); // Add 45 minutes
             const transformedOrder = {
                 orderId: orderDetails.PDM_MaPhieu,
-                orderDate: new Date(orderDetails.PDM_ThoiGianDat).toLocaleString('vi-VN'),
+                orderDate: orderTime.toLocaleString('vi-VN'),
+                arrivalTime: orderDetails.PDM_ThoiGianDen 
+                    ? new Date(orderDetails.PDM_ThoiGianDen).toLocaleString('vi-VN')
+                    : deliveryTime.toLocaleString('vi-VN'),
                 phone: orderDetails.PDM_SDT_KH,
-                address: orderDetails.PDM_DiaChiCanGiao,
+                address: orderDetails.PDM_SoBan 
+                    ? `Bàn ${orderDetails.PDM_SoBan} - ${orderDetails.PDM_SoLuongKH} khách` 
+                    : orderDetails.PDM_DiaChiCanGiao,
+                isTableBooking: !!orderDetails.PDM_SoBan,
                 branchId: orderDetails.PDM_MaChiNhanh,
                 customerName: customerName,
                 branchName: branchInfo ? `${branchInfo.CN_DiaChi} (${branchInfo.CN_Ten})` : 'Đang cập nhật',
@@ -197,7 +217,7 @@ const OrderTracking = () => {
 
                         <div className="tracking-timeline">
                             {[0, 1, 2, 3].map((step) => {
-                                const statusInfo = getStatusInfo(step);
+                                const statusInfo = getStatusInfo(step, order.isTableBooking);
                                 const isActive = order.status >= step && order.status !== 4;
                                 const isCurrent = order.status === step;
                                 
@@ -216,8 +236,16 @@ const OrderTracking = () => {
 
                         <div className="order-details">
                             <div className="detail-section">
-                                <h4>Thông tin giao hàng</h4>
+                                <h4>{order.isTableBooking ? 'Thông tin đặt bàn' : 'Thông tin giao hàng'}</h4>
                                 <div className="info-grid">
+                                    <div className="info-item">
+                                        <label>Thời gian đặt:</label>
+                                        <span>{order.orderDate}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>{order.isTableBooking ? 'Thời gian đến:' : 'Thời gian giao:'}</label>
+                                        <span>{order.arrivalTime}</span>
+                                    </div>
                                     <div className="info-item">
                                         <label>Người nhận:</label>
                                         <span>{customerName}</span>
@@ -227,7 +255,7 @@ const OrderTracking = () => {
                                         <span>{order.phone}</span>
                                     </div>
                                     <div className="info-item">
-                                        <label>Địa chỉ:</label>
+                                        <label>{order.isTableBooking ? 'Thông tin bàn:' : 'Địa chỉ:'}</label>
                                         <span>{order.address}</span>
                                     </div>
                                     <div className="info-item">
@@ -238,51 +266,64 @@ const OrderTracking = () => {
                             </div>
 
                             <div className="detail-section">
-                                <h4>Chi tiết đơn hàng</h4>
-                                <div className="order-items">
-                                    {order.items?.map(item => (
-                                        <div key={item.id} className="order-item">
-                                            {item.image && (
-                                                <div className="item-image">
-                                                    <img src={item.image} alt={item.name} />
+                                <h4>{order.isTableBooking ? 'Món đặt trước' : 'Chi tiết đơn hàng'}</h4>
+                                {order.items?.length > 0 ? (
+                                    <>
+                                        <div className="order-items">
+                                            {order.items.map(item => (
+                                                <div key={item.id} className="order-item">
+                                                    {item.image && (
+                                                        <div className="item-image">
+                                                            <img src={item.image} alt={item.name} />
+                                                        </div>
+                                                    )}
+                                                    <div className="item-info">
+                                                        <span className="item-name">{item.name}</span>
+                                                        <span className="item-quantity">x{item.quantity}</span>
+                                                    </div>
+                                                    <span className="item-price">
+                                                        {(item.price * item.quantity).toLocaleString()}đ
+                                                    </span>
                                                 </div>
-                                            )}
-                                            <div className="item-info">
-                                                <span className="item-name">{item.name}</span>
-                                                <span className="item-quantity">x{item.quantity}</span>
+                                            ))}
+                                        </div>
+
+                                        {!order.isTableBooking && (
+                                            <div className="order-summary">
+                                                <div className="summary-row">
+                                                    <span>Tạm tính:</span>
+                                                    <span>{((order.totalBeforeDiscount || 0) - (order.totalBeforeDiscount < 500000 ? 30000 : 0))?.toLocaleString()}đ</span>
+                                                </div>
+                                                {order.totalBeforeDiscount < 500000 && (
+                                                    <div className="summary-row">
+                                                        <span>Phí vận chuyển:</span>
+                                                        <span>30.000đ</span>
+                                                    </div>
+                                                )}
+                                                {order.discount > 0 && (
+                                                    <div className="summary-row discount">
+                                                        <span>Giảm giá:</span>
+                                                        <span>-{order.discount?.toLocaleString()}đ</span>
+                                                        {order?.appliedCoupon && (
+                                                            <small className="coupon-code">Mã: {order.appliedCoupon}</small>
+                                                        )}
+                                                    </div>
+                                                )}
+                                                <div className="summary-total">
+                                                    <span>Tổng cộng:</span>
+                                                    <span>{order.finalTotal?.toLocaleString()}đ</span>
+                                                </div>
                                             </div>
-                                            <span className="item-price">
-                                                {(item.price * item.quantity).toLocaleString()}đ
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                                
-                                <div className="order-summary">
-                                    <div className="summary-row">
-                                        <span>Tạm tính:</span>
-                                        <span>{((order.totalBeforeDiscount || 0) - (order.totalBeforeDiscount < 500000 ? 30000 : 0))?.toLocaleString()}đ</span>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className="no-items-message">
+                                        <p>Không có món ăn nào được đặt trước</p>
+                                        {order.isTableBooking && (
+                                            <small>Quý khách có thể đặt món khi đến nhà hàng</small>
+                                        )}
                                     </div>
-                                    {order.totalBeforeDiscount < 500000 && (
-                                        <div className="summary-row">
-                                            <span>Phí vận chuyển:</span>
-                                            <span>30.000đ</span>
-                                        </div>
-                                    )}
-                                    {order.discount > 0 && (
-                                        <div className="summary-row discount">
-                                            <span>Giảm giá:</span>
-                                            <span>-{order.discount?.toLocaleString()}đ</span>
-                                            {order?.appliedCoupon && (
-                                                <small className="coupon-code">Mã: {order.appliedCoupon}</small>
-                                            )}
-                                        </div>
-                                    )}
-                                    <div className="summary-total">
-                                        <span>Tổng cộng:</span>
-                                        <span>{order.finalTotal?.toLocaleString()}đ</span>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>
