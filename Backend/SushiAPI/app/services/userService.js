@@ -198,5 +198,28 @@ export const userService = {
             console.error('Error updating user:', error);
             throw new Error('Failed to update user.');
         }
+    },
+
+    // Xóa user theo ID
+    deleteUserById: async (KH_SDT) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('KH_SDT', sql.NVarChar(100), KH_SDT)
+                .query(`
+                    DELETE FROM KhachHang
+                    OUTPUT deleted.*
+                    WHERE KH_SDT = @KH_SDT
+                `);
+
+            if (!result.recordset[0]) {
+                throw new Error(`User not found with SDT: ${KH_SDT}`);
+            }
+
+            return { success: true, user: result.recordset[0] };
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            throw new Error('Failed to delete user');
+        }
     }
 };

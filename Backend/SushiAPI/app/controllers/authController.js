@@ -126,3 +126,18 @@ export const updateUserFollowingSDT = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const deleteUser = async (req, res) => {
+    const { KH_SDT } = req.params;
+
+    try {
+        const result = await userService.deleteUserById(KH_SDT);
+        if (!result.success) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ message: 'User deleted successfully', user: result.user });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
