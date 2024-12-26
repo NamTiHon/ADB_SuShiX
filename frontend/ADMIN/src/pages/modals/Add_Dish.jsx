@@ -1,41 +1,139 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import '../css/css-modals/add-booking.css';
+import '../css/css-modals/add-dish.css';
 
 const Add_Dish = ({ onClose, onAdd }) => {
     const [newDish, setNewDish] = useState({
-        dishName: 'asw',
-        currentPrice: '123',
-        portion: '1',
-        available: false,
-        hasDelivery: false,
-        categoryId: '0122',
-        image: 'asw.jpg'
+        MA_MaMon: '',
+        MA_TenMon: '',
+        MA_GiaHienTai: '',
+        MA_KhauPhan: '',
+        MA_CoSan: false,
+        MA_HoTroGiaoHang: false,
+        MA_TenDanhMuc: '',
+        MA_HinhAnh: ''
     });
+
+    const [categories, setCategories] = useState([]); // List of all categories
+    const [searchCategoryTerm, setSearchCategoryTerm] = useState('');
+    const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+    const [lastDishId, setLastDishId] = useState(0);
+
+    useEffect(() => {
+        // Fetch all categories from the server when the component mounts
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/dishes/only/categories');
+                const data = await response.json();
+                console.log('Fetched categories:', data.category); // Debug log
+                setCategories(data.category);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    useEffect(() => {
+        // Fetch all dishes from the server when the component mounts
+        const fetchDishes = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/dishes/only/dishes');
+                const data = await response.json();
+                console.log('Fetched dishes:', data.dishes.length); // Debug log
+                setLastDishId(data.dishes.length + 1);
+            } catch (error) {
+                console.error('Error fetching dishes:', error);
+            }
+        };
+        fetchDishes();
+    }, []);
+
+    const filteredCategories = useMemo(() => {
+        if (searchCategoryTerm === '') {
+            console.log('a', categories);
+            return categories.slice(0, 10);
+        }
+        return categories.filter((category) => category.MA_TenDanhMuc.toLowerCase().startsWith(searchCategoryTerm.toLowerCase())).slice(0, 10);
+    }, [categories, searchCategoryTerm]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const newValue = e.target.type === 'checkbox' ? e.target.checked : value;
+        let newValue = e.target.type === 'checkbox' ? e.target.checked : value;
+
+        if (name === 'MA_GiaHienTai') {
+            // Remove non-digit characters
+            newValue = value.replace(/\D/g, '');
+        }
+
         setNewDish((prevDish) => ({
             ...prevDish,
             [name]: newValue,
         }));
+
+        if (name === 'MA_TenDanhMuc') {
+            setSearchCategoryTerm(value);
+            setShowCategoryDropdown(true);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleFocus = () => {
+        setShowCategoryDropdown(true);
+    };
+
+    const handleBlur = () => {
+        setTimeout(() => {
+            setShowCategoryDropdown(false);
+        }, 200); // Delay to allow click event to register
+    };
+
+    const handleSelectCategory = (category) => {
+        setNewDish((prevDish) => ({
+            ...prevDish,
+            MA_TenDanhMuc: category.MA_TenDanhMuc,
+        }));
+        setSearchCategoryTerm('');
+        setShowCategoryDropdown(false);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const dishWithInfo = {
             ...newDish,
-            dishId: generateDishId(),
-            createdDate: new Date().toISOString().split('T')[0],
-            status: 'Pending',
-        };
-        onAdd(dishWithInfo);
-        alert('Thêm món ăn thành công');
-        onClose();
+            MA_MaMon: generateDishId(),
+            MA_GiaHienTai: parseFloat(newDish.MA_GiaHienTai.replace(/\D/g, ''))
+        }; 
+
+        console.log('Adding dish:', dishWithInfo);
+        try {
+            const response = await fetch('http://localhost:3000/api/dishes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dishWithInfo),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add dish');
+            }
+
+            const result = await response.json();
+            console.log('Dish added:', result);
+            alert('Thêm món ăn thành công');
+            onAdd(result);
+            onClose();
+        } catch (error) {
+            console.error('Error adding dish:', error);
+            alert('Failed to add dish');
+        }
     };
 
     const generateDishId = () => {
-        return 'DISH' + Math.floor(Math.random() * 1000000);
+        const dishId = 'MA' + lastDishId.toString().padStart(3, '0');
+        setLastDishId(lastDishId + 1);
+
+        return dishId;
     };
 
     return (
@@ -47,13 +145,25 @@ const Add_Dish = ({ onClose, onAdd }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="modal-section">
                             <h3>THÔNG TIN MÓN ĂN</h3>
-                            <p><strong>Tên món ăn:</strong> <input type="text" name="dishName" value={newDish.dishName} onChange={handleChange} required /></p>
-                            <p><strong>Giá hiện tại:</strong> <input type="text" name="currentPrice" value={newDish.currentPrice} onChange={handleChange} required /></p>
-                            <p><strong>Phần ăn:</strong> <input type="text" name="portion" value={newDish.portion} onChange={handleChange} required /></p>
-                            <p><strong>Có sẵn:</strong> <input type="checkbox" name="available" checked={newDish.available} onChange={handleChange} /></p>
-                            <p><strong>Có giao hàng:</strong> <input type="checkbox" name="hasDelivery" checked={newDish.hasDelivery} onChange={handleChange} /></p>
-                            <p><strong>Mã danh mục:</strong> <input type="text" name="categoryId" value={newDish.categoryId} onChange={handleChange} required /></p>
-                            <p><strong>Hình ảnh:</strong> <input type="text" name="image" value={newDish.image} onChange={handleChange} required /></p>
+                            <p><strong>Tên món ăn:</strong> <input type="text" name="MA_TenMon" value={newDish.MA_TenMon} onChange={handleChange} required /></p>
+                            <p><strong>Giá hiện tại:</strong> <input type="text" name="MA_GiaHienTai" value={new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(newDish.MA_GiaHienTai)} onChange={handleChange} required /></p>
+                            <p><strong>Phần ăn:</strong> <input type="text" name="MA_KhauPhan" value={newDish.MA_KhauPhan} onChange={handleChange} required /></p>
+                            <p><strong>Có sẵn:</strong> <input type="checkbox" name="MA_CoSan" checked={newDish.MA_CoSan} onChange={handleChange} /></p>
+                            <p><strong>Có giao hàng:</strong> <input type="checkbox" name="MA_HoTroGiaoHang" checked={newDish.MA_HoTroGiaoHang} onChange={handleChange} /></p>
+                            <p>
+                                <strong>Tên danh mục:</strong> 
+                                <input type="text" name="MA_TenDanhMuc" value={newDish.MA_TenDanhMuc} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} required />
+                                {showCategoryDropdown && filteredCategories.length > 0 && (
+                                    <ul className="category-dropdown">
+                                        {filteredCategories.map((category) => (
+                                            <li key={category.MA_TenDanhMuc} onClick={() => handleSelectCategory(category)}>
+                                                {category.MA_TenDanhMuc}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </p>
+                            <p><strong>Hình ảnh:</strong> <input type="text" name="MA_HinhAnh" value={newDish.MA_HinhAnh} onChange={handleChange} required /></p>
                             <button type="submit" className="add-button">Thêm</button>
                         </div>
                     </form>

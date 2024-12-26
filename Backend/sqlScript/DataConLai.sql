@@ -100,7 +100,7 @@ values
     ('KV007', N'Khu vực Long An', 'TD007', N'Sushi')
 
 go
-
+-- delete from MonDuocDat
 -- delete from MonAn
 insert into
 MonAn (MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc)

@@ -1,0 +1,23 @@
+.category-dropdown {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 5px;
+    z-index: 1000;
+    top: 190px;
+    align-self: center;
+    width: 70%;
+}
+
+.category-dropdown li {
+    list-style: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.category-dropdown li:hover {
+    background: #f0f0f0;
+}

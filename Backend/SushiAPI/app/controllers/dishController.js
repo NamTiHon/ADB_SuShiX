@@ -33,6 +33,7 @@ export const dishController = {
     addDish: async (req, res) => {
         try {
             const newDish = await dishService.addDish(req.body);
+            console.log('Dish added:', newDish);
             res.status(201).json({ message: 'Dish added successfully', dish: newDish });
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -70,6 +71,15 @@ export const dishController = {
         try {
             const dishes = await dishService.getOnlyDishes();
             res.status(200).json({ message: 'Dishes retrieved successfully', dishes });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    getCategory: async (req, res) => {
+        try {
+            const category = await dishService.getCategory();
+            res.status(200).json({ message: 'Category retrieved successfully', category });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

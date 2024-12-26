@@ -10,7 +10,8 @@ CREATE OR ALTER PROCEDURE usp_ThemMonAn
 	@HoTroGiaoHang BIT,
 	@KhauPhan int,
 	@CoSan BIT,
-	@TenDanhMuc varchar(20)
+	@TenDanhMuc nvarchar(20),
+	@HinhAnh varchar(100)
 AS
 BEGIN
 	if exists(select * from MonAn where MA_MaMon = @MaMon)
@@ -20,9 +21,11 @@ BEGIN
 	end
 	else
 	begin
-		insert into MonAn(MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc)
+		insert into MonAn(MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc, MA_HinhAnh)
+		output inserted.*
 			values
-			(@MaMon, @TenMon, @Gia, @KhauPhan, @CoSan, @HoTroGiaoHang, @TenDanhMuc)
+			(@MaMon, @TenMon, @Gia, @KhauPhan, @CoSan, @HoTroGiaoHang, @TenDanhMuc, @HinhAnh)
+
 	end
 
 	print(N'Đã thêm món ăn')

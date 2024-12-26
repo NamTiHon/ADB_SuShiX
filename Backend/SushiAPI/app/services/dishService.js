@@ -37,17 +37,19 @@ export const dishService = {
     // Thêm một món mới
     addDish: async (dishData) => {
         try {
-            const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc } = dishData;
+            const { MA_MaMon, MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc, MA_HinhAnh } = dishData;
+            console.log('Adding dish:', dishData);
             const pool = await conn;
             const result = await pool.request()
                 .input('MaMon', sql.VarChar(12), MA_MaMon)
                 .input('TenMon', sql.NVarChar(50), MA_TenMon)
-                .input('GiaHienTai', sql.Float, MA_GiaHienTai)
+                .input('Gia', sql.Float, MA_GiaHienTai)
                 .input('KhauPhan', sql.Int, MA_KhauPhan)
                 .input('CoSan', sql.Bit, MA_CoSan)
                 .input('HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
                 .input('TenDanhMuc', sql.NVarChar(20), MA_TenDanhMuc)
-                .execute('sp_ThemMonAn')
+                .input('HinhAnh', sql.NVarChar(100), MA_HinhAnh)
+                .execute('usp_ThemMonAn')
 
             return result.recordset[0]; // Trả về món vừa thêm
         } catch (error) {
@@ -102,6 +104,20 @@ export const dishService = {
         } catch (error) {
             console.error('Error fetching dishes:', error);
             throw new Error('Failed to fetch dishes');
+        }
+    },
+
+    getCategory: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .query(`
+                    select distinct MA_TenDanhMuc from MonAn;
+                `);
+            return result.recordset; // Trả về danh sách món theo danh mục
+        } catch (error) {
+            console.error('Error fetching dishes by category:', error);
+            throw new Error('Failed to fetch dishes by category');
         }
     }
 };
