@@ -10,24 +10,14 @@ const OrderDetails = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const getStatusInfo = (status, isTableBooking) => {
-        if (isTableBooking) {
-            switch (status) {
-                case 0: return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
-                case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
-                case 2: return { label: 'Chờ đến', icon: 'calendar-check', class: 'waiting' };
-                case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
-                case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
-                default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
-            }
-        }
-        
+    const getStatusInfo = (status) => {
         switch (status) {
-            case 0: return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
-            case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
-            case 2: return { label: 'Đang giao', icon: 'shipping-fast', class: 'shipping' };
-            case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
-            case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
+            case "Chờ xác nhận": return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
+            case "Đã xác nhận": return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
+            case "Đang giao": return { label: 'Đang giao', icon: 'shipping-fast', class: 'shipping' };
+            case "Chờ đến": return { label: 'Chờ đến', icon: 'calendar-check', class: 'waiting' };
+            case "Đã hoàn thành": return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
+            case "Đã hủy": return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
             default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
         }
     };
@@ -56,7 +46,7 @@ const OrderDetails = () => {
                 setOrder({
                     orderId: orderDetails.PDM_MaPhieu,
                     date: new Date(orderDetails.PDM_ThoiGianDat).toLocaleString('vi-VN'),
-                    status: orderDetails.HD_TrangThai || 0,
+                    status: orderDetails.PDM_TrangThai || 'Không xác định',
                     totalBeforeDiscount: bill?.HD_TongTruocGiam || 0,
                     discount: bill?.HD_SoTienGiam || 0,
                     total: bill?.HD_TongTienThanhToan || 0,
@@ -88,14 +78,30 @@ const OrderDetails = () => {
                 <h2>Theo dõi đơn hàng #{order.orderId}</h2>
 
                 <div className="tracking-timeline">
-                    {[0, 1, 2, 3].map((step) => {
-                        const statusInfo = getStatusInfo(step, order.isTableBooking);
-                        const isActive = order.status >= step && order.status !== 4;
-                        const isCurrent = order.status === step;
+                    {[
+                        ...(order.status === "Đã hủy" ? ["Đã hủy"] : []),
+                        'Chờ xác nhận', 
+                        'Đã xác nhận', 
+                        order.isTableBooking ? 'Chờ đến' : 'Đang giao', 
+                        'Đã hoàn thành'
+                    ].map((step) => {
+                        const statusInfo = getStatusInfo(step);
+                        const orderStatus = getStatusInfo(order.status);
+                        const statusOrder = [
+                            ...(order.status === "Đã hủy" ? ["Đã hủy"] : []),
+                            'Chờ xác nhận', 
+                            'Đã xác nhận', 
+                            order.isTableBooking ? 'Chờ đến' : 'Đang giao', 
+                            'Đã hoàn thành'
+                        ];
+                        const currentIndex = statusOrder.indexOf(order.status);
+                        const stepIndex = statusOrder.indexOf(step);
+                        const isActive = order.status !== 'Đã hủy' ? stepIndex <= currentIndex : step === "Đã hủy";
+                        const isCurrent = step === order.status;
                         
                         return (
                             <div key={step} 
-                                className={`timeline-step ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''}`}
+                                className={`timeline-step ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''} ${order.status === 'Đã hủy' ? 'cancelled' : ''}`}
                             >
                                 <div className="step-icon">
                                     <i className={`fas fa-${statusInfo.icon}`}></i>

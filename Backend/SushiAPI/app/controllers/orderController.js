@@ -145,5 +145,15 @@ export const orderController = {
             console.error('Controller error:', error);
             res.status(500).json({ message: error.message });
         }
+    }, 
+    cancelOrder: async (req, res) => {
+        try {
+            const { MaPhieu } = req.params;
+            const result = await orderService.cancelOrder(MaPhieu);
+            res.status(200).json(result);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
     }
 };

@@ -16,25 +16,14 @@ const OrderTracking = () => {
             setCustomerName(savedName);
         }
     }, []);
-    const getStatusInfo = (statusCode, isTableBooking) => {
-        if (isTableBooking) {
-            switch (statusCode) {
-                case 0: return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
-                case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
-                case 2: return { label: 'Chờ đến', icon: 'calendar-check', class: 'waiting' };
-                case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
-                case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
-                default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
-            }
-        }
-        
-        // Existing delivery status
-        switch (statusCode) {
-            case 0: return { label: 'Đang chờ xác nhận', icon: 'clock', class: 'pending' };
-            case 1: return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
-            case 2: return { label: 'Đang giao', icon: 'shipping-fast', class: 'shipping' };
-            case 3: return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
-            case 4: return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
+    const getStatusInfo = (status) => {
+        switch (status) {
+            case "Chờ xác nhận": return { label: 'Chờ xác nhận', icon: 'clock', class: 'pending' };
+            case "Đã xác nhận": return { label: 'Đã xác nhận', icon: 'check', class: 'confirmed' };
+            case "Đang giao": return { label: 'Đang giao', icon: 'shipping-fast', class: 'shipping' };
+            case "Chờ đến": return { label: 'Chờ đến', icon: 'calendar-check', class: 'waiting' };
+            case "Đã hoàn thành": return { label: 'Đã hoàn thành', icon: 'check-circle', class: 'completed' };
+            case "Đã hủy": return { label: 'Đã hủy', icon: 'times-circle', class: 'cancelled' };
             default: return { label: 'Không xác định', icon: 'question', class: 'unknown' };
         }
     };
@@ -166,7 +155,7 @@ const OrderTracking = () => {
                 branchId: orderDetails.PDM_MaChiNhanh,
                 customerName: customerName,
                 branchName: branchInfo ? `${branchInfo.CN_DiaChi} (${branchInfo.CN_Ten})` : 'Đang cập nhật',
-                status: billDetails?.HD_TrangThai || 0,
+                status: orderDetails.PDM_TrangThai || 'Không xác định',
                 items: items,
                 totalBeforeDiscount: billDetails?.HD_TongTruocGiam || 0,
                 discount: billDetails?.HD_SoTienGiam || 0, 
@@ -216,14 +205,30 @@ const OrderTracking = () => {
                         </div>
 
                         <div className="tracking-timeline">
-                            {[0, 1, 2, 3].map((step) => {
-                                const statusInfo = getStatusInfo(step, order.isTableBooking);
-                                const isActive = order.status >= step && order.status !== 4;
-                                const isCurrent = order.status === step;
+                            {[
+                                ...(order.status === "Đã hủy" ? ["Đã hủy"] : []),
+                                'Chờ xác nhận', 
+                                'Đã xác nhận', 
+                                order.isTableBooking ? 'Chờ đến' : 'Đang giao', 
+                                'Đã hoàn thành'
+                            ].map((step) => {
+                                const statusInfo = getStatusInfo(step);
+                                const orderStatus = getStatusInfo(order.status);
+                                const statusOrder = [
+                                    ...(order.status === "Đã hủy" ? ["Đã hủy"] : []),
+                                    'Chờ xác nhận', 
+                                    'Đã xác nhận', 
+                                    order.isTableBooking ? 'Chờ đến' : 'Đang giao', 
+                                    'Đã hoàn thành'
+                                ];
+                                const currentIndex = statusOrder.indexOf(order.status);
+                                const stepIndex = statusOrder.indexOf(step);
+                                const isActive = order.status !== 'Đã hủy' ? stepIndex <= currentIndex : step === "Đã hủy";
+                                const isCurrent = step === order.status;
                                 
                                 return (
                                     <div key={step} 
-                                        className={`timeline-step ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''}`}
+                                        className={`timeline-step ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''} ${order.status === 'Đã hủy' ? 'cancelled' : ''}`}
                                     >
                                         <div className="step-icon">
                                             <i className={`fas fa-${statusInfo.icon}`}></i>

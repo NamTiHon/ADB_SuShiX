@@ -13,13 +13,38 @@ const OrderManagement = () => {
     const [bills, setBills] = useState({});
 
     const getStatusText = (status, isTableBooking) => {
-        switch (status) {
-            case 0: return 'Chờ xác nhận';
-            case 1: return 'Đã xác nhận';
-            case 2: return isTableBooking ? 'Chờ đến' : 'Đang giao';
-            case 3: return 'Đã hoàn thành';
-            case 4: return 'Đã hủy';
-            default: return 'Không xác định';
+        return status || 'Không xác định';
+    };
+    const cancelOrder = async (orderId) => {
+        if (!window.confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:3000/api/order/cancel/${orderId}`, {
+                method: 'PUT'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to cancel order');
+            }
+
+            // Update local state correctly by mapping through array
+            setOrders(prevOrders => {
+                const updatedOrders = [...prevOrders];
+                const orderIndex = updatedOrders.findIndex(order => order.orderId === orderId);
+                if (orderIndex !== -1) {
+                    updatedOrders[orderIndex] = {
+                        ...updatedOrders[orderIndex],
+                        status: "Đã hủy" // Changed from number to string
+                    };
+                }
+                return updatedOrders;
+            });
+
+        } catch (err) {
+            console.error('Error canceling order:', err);
+            alert('Không thể hủy đơn hàng. Vui lòng thử lại sau.');
         }
     };
 
@@ -59,7 +84,7 @@ const OrderManagement = () => {
                     acc[order.PDM_MaPhieu] = {
                         orderId: order.PDM_MaPhieu,
                         date: new Date(order.PDM_ThoiGianDat || Date.now()).toLocaleString('vi-VN'),
-                        status: order.HD_TrangThai || 0,
+                        status: order.PDM_TrangThai || 'Không xác định',
                         totalBeforeDiscount: bill.HD_TongTruocGiam || 0,
                         discount: bill.HD_SoTienGiam || 0,
                         total: bill.HD_TongTienThanhToan || 0,
@@ -72,7 +97,11 @@ const OrderManagement = () => {
                         billId: bill.HD_MaHoaDon || null
                     };
                     return acc;
-                }, {}));
+                }, {})).sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB - dateA; // Sort descending (newest first)
+                });
     
                 setOrders(uniqueOrders);
             } catch (err) {
@@ -107,7 +136,7 @@ const OrderManagement = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
+                            {Array.isArray(orders) ? orders.map(order => (
                                 <tr key={order.orderId}>
                                     <td>{order.orderId}</td>
                                     <td>{order.date}</td>
@@ -126,9 +155,19 @@ const OrderManagement = () => {
                                         <button onClick={() => navigate(`/order-details/${order.orderId}`)}>
                                             Theo dõi đơn hàng
                                         </button>
+                                        {(order.status === "Chờ xác nhận" || order.status === "Đã hủy") && (
+                                            <button 
+                                                onClick={() => order.status === "Chờ xác nhận" ? cancelOrder(order.orderId) : null}
+                                                className={`cancel-button ${order.status === "Đã hủy" ? 'cancelled' : ''}`}
+                                                disabled={order.status === "Đã hủy"}
+                                            >
+                                                {order.status === "Đã hủy" ? 'Đã hủy' : 'Hủy đơn hàng'}
+                                            </button>
+                                        )}
                                     </td>
+
                                 </tr>
-                            ))}
+                            )) : null}
                         </tbody>
                     </table>
                 )}

@@ -313,4 +313,30 @@ export const orderService = {
             throw new Error('Failed to fetch all orders');
         }
     },
+    cancelOrder: async (MaPhieu) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                .query(`
+                    UPDATE PhieuDatMon 
+                    SET PDM_TrangThai = N'Đã hủy'
+                    WHERE PDM_MaPhieu = @MaPhieu
+                `);
+
+            if (result.rowsAffected[0] === 0) {
+                throw new Error('Order not found');
+            }
+
+            return {
+                success: true,
+                message: 'Order cancelled successfully',
+                orderID: MaPhieu
+            };
+
+        } catch (error) {
+            console.error('Error cancelling order:', error);
+            throw new Error('Failed to cancel order');
+        }
+    },
 };
