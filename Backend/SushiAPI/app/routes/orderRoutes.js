@@ -16,5 +16,5 @@ router.put('/table/:PDM_MaPhieu', orderController.updateReservation);
 router.get('/id/:PDM_MaPhieu', orderController.getOrderByID);
 router.get('/', orderController.getAllOrders);
 router.put('/cancel/:MaPhieu', orderController.cancelOrder); // Add this line
-
+router.put('/status/:MaPhieu', orderController.updateOrderStatus);
 export default router;

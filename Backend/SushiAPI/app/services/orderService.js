@@ -337,4 +337,31 @@ export const orderService = {
             throw new Error('Failed to cancel order');
         }
     },
+    updateOrderStatus: async (MaPhieu, newStatus) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), MaPhieu)
+                .input('TrangThai', sql.NVarChar(50), newStatus)
+                .query(`
+                    UPDATE PhieuDatMon 
+                    SET PDM_TrangThai = @TrangThai
+                    WHERE PDM_MaPhieu = @MaPhieu
+                `);
+    
+            if (result.rowsAffected[0] === 0) {
+                throw new Error('Order not found');
+            }
+    
+            return {
+                success: true,
+                message: 'Order status updated successfully',
+                orderID: MaPhieu
+            };
+    
+        } catch (error) {
+            console.error('Error updating order status:', error);
+            throw new Error('Failed to update order status');
+        }
+    }
 };
