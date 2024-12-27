@@ -7,31 +7,71 @@ import DetailModal from "../modals/Detail_OnlineOrder";
 
 function Mgmt_OnlineOrder() {
     const columns = [
-        { id: 'orderId', header: 'Mã đơn hàng', value: 'orderId' },
-        { id: 'name', header: 'Tên khách hàng', value: 'name' },
+        { id: 'orderId', header: 'Mã phiếu', value: 'orderId' },
         { id: 'phone', header: 'Số điện thoại', value: 'phone' },
-        { id: 'orderDate', header: 'Ngày đặt hàng', value: 'orderDate' },
-        { id: 'orderTime', header: 'Giờ đặt hàng', value: 'orderTime' },
-        { id: 'destination', header: 'Điểm đến', value: 'destination' },
-        { id: 'comment', header: 'Ghi chú', value: 'comment' },
+        { id: 'tableNumber', header: 'Số bàn', value: 'tableNumber' },
+        { id: 'customerCount', header: 'Số khách', value: 'customerCount' },
+        { id: 'orderDate', header: 'Thời gian đặt', value: 'orderDate' },
+        { id: 'arrivalTime', header: 'Thời gian đến', value: 'arrivalTime' },
+        { id: 'status', header: 'Trạng thái', value: 'status' },
+        { id: 'branch', header: 'Chi nhánh', value: 'branch' }
     ];
-
-    const [orders, setOrders] = useState([
-        { orderId: '1', name: 'John Doe', phone: '123456789', orderDate: '2023-10-01', orderTime: '18:00', destination: 'B001', comment: 'Birthday party', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 2 }, { dishId: 'D002', dishName: 'Tempura', quantity: 1 }] },
-        { orderId: '2', name: 'Jane Smith', phone: '987654321', orderDate: '2023-10-02', orderTime: '19:00', destination: 'B002', comment: 'Anniversary', preOrderedDishes: [{ dishId: 'D003', dishName: 'Ramen', quantity: 1 }, { dishId: 'D004', dishName: 'Gyoza', quantity: 1 }] },
-        { orderId: '3', name: 'Alice Johnson', phone: '555555555', orderDate: '2023-10-03', orderTime: '20:00', destination: 'B003', comment: 'Business meeting', preOrderedDishes: [{ dishId: 'D005', dishName: 'Sashimi', quantity: 3 }, { dishId: 'D006', dishName: 'Miso Soup', quantity: 2 }] },
-        { orderId: '4', name: 'Bob Brown', phone: '444444444', orderDate: '2023-10-04', orderTime: '17:00', destination: 'B004', comment: 'Family dinner', preOrderedDishes: [{ dishId: 'D007', dishName: 'Udon', quantity: 2 }, { dishId: 'D008', dishName: 'Katsu', quantity: 3 }] },
-        { orderId: '5', name: 'Charlie Davis', phone: '333333333', orderDate: '2023-10-05', orderTime: '18:30', destination: 'B005', comment: 'Friends gathering', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 4 }, { dishId: 'D002', dishName: 'Tempura', quantity: 2 }, { dishId: 'D003', dishName: 'Ramen', quantity: 3 }] },
-        { orderId: '6', name: 'Diana Evans', phone: '222222222', orderDate: '2023-10-06', orderTime: '19:30', destination: 'B006', comment: 'Solo dining', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 1 }] },
-        { orderId: '7', name: 'Evan Foster', phone: '111111111', orderDate: '2023-10-07', orderTime: '20:30', destination: 'B007', comment: 'Date night', preOrderedDishes: [{ dishId: 'D002', dishName: 'Tempura', quantity: 2 }, { dishId: 'D005', dishName: 'Sashimi', quantity: 1 }] },
-        { orderId: '8', name: 'Fiona Green', phone: '666666666', orderDate: '2023-10-08', orderTime: '21:00', destination: 'B008', comment: 'Team outing', preOrderedDishes: [{ dishId: 'D003', dishName: 'Ramen', quantity: 3 }, { dishId: 'D004', dishName: 'Gyoza', quantity: 2 }, { dishId: 'D001', dishName: 'Sushi', quantity: 4 }] },
-        { orderId: '9', name: 'George Harris', phone: '777777777', orderDate: '2023-10-09', orderTime: '18:45', destination: 'B009', comment: 'Casual dinner', preOrderedDishes: [{ dishId: 'D007', dishName: 'Udon', quantity: 2 }, { dishId: 'D008', dishName: 'Katsu', quantity: 2 }, { dishId: 'D006', dishName: 'Miso Soup', quantity: 1 }] },
-        { orderId: '10', name: 'Hannah White', phone: '888888888', orderDate: '2023-10-10', orderTime: '19:15', destination: 'B010', comment: 'Quick bite', preOrderedDishes: [{ dishId: 'D001', dishName: 'Sushi', quantity: 2 }, { dishId: 'D002', dishName: 'Tempura', quantity: 1 }] }
-    ]);
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch('http://localhost:3000/api/order');
+            if (!response.ok) {
+                throw new Error('Failed to fetch orders');
+            }
+            const data = await response.json();
+            
+            // Group orders by PDM_MaPhieu
+            const groupedOrders = data.reduce((acc, order) => {
+                if (!acc[order.PDM_MaPhieu]) {
+                    acc[order.PDM_MaPhieu] = {
+                        orderId: order.PDM_MaPhieu,
+                        phone: order.PDM_SDT_KH,
+                        tableNumber: order.PDM_SoBan,
+                        customerCount: order.PDM_SoLuongKH,
+                        orderDate: new Date(order.PDM_ThoiGianDat).toLocaleString(),
+                        arrivalTime: new Date(order.PDM_ThoiGianDen).toLocaleString(),
+                        status: order.PDM_TrangThai,
+                        branch: order.PDM_MaChiNhanh,
+                        comment: order.PDM_GhiChuThem,
+                        staff: order.PDM_MaNhanVien,
+                        dishes: []
+                    };
+                }
+                
+                if (order.MDD_MaMon) {
+                    acc[order.PDM_MaPhieu].dishes.push({
+                        dishId: order.MDD_MaMon,
+                        quantity: order.MDD_SoLuong
+                    });
+                }
+                
+                return acc;
+            }, {});
+    
+            // Convert to array of unique orders
+            const uniqueOrders = Object.values(groupedOrders);
+            setOrders(uniqueOrders);
+            setError(null);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        console.log('Current orders:', orders);
-    }, [orders]);
+        fetchOrders();
+    }, []);
+    
 
     const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -124,14 +164,24 @@ function Mgmt_OnlineOrder() {
 
     return (
         <div className="mgmt-page">
-            <Nav />
-            <div className="page-container">
-                <SideBar />
-                <div className="main-content-box">
-                    <div className="header-container">
-                        <h1>Danh sách đặt online</h1>
-                        <button className="add-button" onClick={() => setIsAddModalOpen(true)}>Thêm</button>
+        <Nav />
+        <div className="page-container">
+            <SideBar />
+            <div className="main-content-box">
+                <div className="header-container">
+                    <h1>Danh sách đặt online</h1>
+                    <div className="header-actions">
+                        <button className="refresh-button" onClick={fetchOrders}>
+                            <i className="fas fa-sync"></i>
+                        </button>
                     </div>
+                </div>
+
+                {error && <div className="error-message">{error}</div>}
+                
+                {loading ? (
+                    <div className="loading">Đang tải dữ liệu...</div>
+                ) : (
                     <div className="table-box">
                         <div className="search-and-pagination-container">
                             <select className="property-dropdown" value={filterField} onChange={(e) => setFilterField(e.target.value)}>
@@ -189,11 +239,13 @@ function Mgmt_OnlineOrder() {
                             </tbody>
                         </table>
                     </div>
+                     )}
                 </div>
             </div>
             {selectedOrder && (
                 <DetailModal booking={selectedOrder} onClose={closeModal} onUpdate={handleUpdate} />
             )}
+            
             {isAddModalOpen && (
                 <AddModal onClose={() => setIsAddModalOpen(false)} onAdd={handleAddBooking} />
             )}

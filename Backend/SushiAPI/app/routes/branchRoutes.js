@@ -14,8 +14,8 @@ router.post('/', branchController.addBranch);
 // // Lấy danh sách khu vực
 router.get('/regions', branchController.getAllRegion);
 
-// // Cập nhật chi nhánh
-// router.put('/:branchId', branchController.updateBranch);
+// Cập nhật chi nhánh
+router.put('/:CN_MaChiNhanh', branchController.updateBranch);
 
 // // Xóa chi nhánh
 // router.delete('/:branchId', branchController.deleteBranch);

@@ -81,7 +81,7 @@ const Add_Branch = ({ onClose, onAdd }) => {
                 const response = await fetch('http://localhost:3000/api/branches');
                 const data = await response.json();
                 console.log('Fetched branch count:', data.branches.length); // Debug log
-                setBranchCounter(data.branches.length);
+                setBranchCounter(data.branches.length +1);
             } catch (error) {
                 console.error('Error fetching branch count:', error);
             }
