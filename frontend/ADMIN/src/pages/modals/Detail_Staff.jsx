@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import '../css/css-modals/detail-staff.css'
+import '../css/css-modals/detail-staff.css';
 
-const Detail_Staff = ({ staff, onClose, onUpdate }) => {
+const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [updatedStaff, setUpdatedStaff] = useState({ ...staff });
+    const [updatedStaff, setUpdatedStaff] = useState({ ...item });
     const [isWorkHistoryVisible, setIsWorkHistoryVisible] = useState(false);
 
-    if (!staff) return null;
+    if (!item) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,7 +29,7 @@ const Detail_Staff = ({ staff, onClose, onUpdate }) => {
                 <div className="modal-sections">
                     <div className="modal-section">
                         <h3>THÔNG TIN CÁ NHÂN</h3>
-
+                        
                         {isEditing ? (
                             <>
                                 <p><strong>Mã nhân viên:</strong> {updatedStaff.staffId}</p>
@@ -42,66 +42,39 @@ const Detail_Staff = ({ staff, onClose, onUpdate }) => {
                                 <p><strong>Phòng ban:</strong> <input type="text" name="workingDepartment" value={updatedStaff.workingDepartment} onChange={handleChange} /></p>
                                 <p><strong>Chức vụ:</strong> <input type="text" name="position" value={updatedStaff.position} onChange={handleChange} /></p>
                                 <p><strong><h3>ĐỊA CHỈ</h3></strong></p>
-                                <p><strong>Số điện thoại:</strong> <input type="text" name="address.phoneNumber" value={updatedStaff.address.phone} onChange={handleChange} /></p>
-                                <p><strong>Số nhà:</strong> <input type="text" name="address.homeNumber" value={updatedStaff.address.homeNumber} onChange={handleChange} /></p>
-                                <p><strong>Đường:</strong> <input type="text" name="address.street" value={updatedStaff.address.street} onChange={handleChange} /></p>
-                                <p><strong>Phường:</strong> <input type="text" name="address.ward" value={updatedStaff.address.ward} onChange={handleChange} /></p>
-                                <p><strong>Quận:</strong> <input type="text" name="address.district" value={updatedStaff.address.district} onChange={handleChange} /></p>
-                                <p><strong>Thành phố:</strong> <input type="text" name="address.city" value={updatedStaff.address.city} onChange={handleChange} /></p>
+                                <p><strong>Số điện thoại:</strong> <input type="text" name="address.phoneNumber" value={updatedStaff.phone || ''} onChange={handleChange} /></p>
+                                <p><strong>Số nhà:</strong> <input type="text" name="address.homeNumber" value={updatedStaff.homeNumber || ''} onChange={handleChange} /></p>
+                                <p><strong>Đường:</strong> <input type="text" name="address.street" value={updatedStaff.street || ''} onChange={handleChange} /></p>
+                                <p><strong>Phường:</strong> <input type="text" name="address.ward" value={updatedStaff.ward || ''} onChange={handleChange} /></p>
+                                <p><strong>Quận:</strong> <input type="text" name="address.district" value={updatedStaff.district || ''} onChange={handleChange} /></p>
+                                <p><strong>Thành phố:</strong> <input type="text" name="address.city" value={updatedStaff.city || ''} onChange={handleChange} /></p>
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
+                            console.log(item),
                             <>
-                                <p><strong>Mã nhân viên:</strong> {staff.staffId}</p>
-                                <p><strong>Họ tên:</strong> {staff.name}</p>
-                                <p><strong>Ngày sinh:</strong> {staff.dateOfBirth}</p>
-                                <p><strong>Giới tính:</strong> {staff.gender}</p>
-                                <p><strong>Lương:</strong> {staff.salary}</p>
-                                <p><strong>Ngày bắt đầu:</strong> {staff.startDate}</p>
-                                <p><strong>Ngày nghỉ việc:</strong> {staff.resignationDate}</p>
-                                <p><strong>Phòng ban:</strong> {staff.workingDepartment}</p>
-                                <p><strong>Chức vụ:</strong> {staff.position}</p>
+                                <p><strong>Mã nhân viên:</strong> {item.staffId}</p>
+                                <p><strong>Họ tên:</strong> {item.name}</p>
+                                <p><strong>Giới tính:</strong> {item.gender}</p>
+                                <p><strong>Lương:</strong> {item.salary}</p>
+                                <p><strong>Ngày bắt đầu:</strong> {item.startDate}</p>
+                                <p><strong>Ngày nghỉ việc:</strong> {item.resignationDate}</p>
+                                <p><strong>Phòng ban:</strong> {item.workingDepartment}</p>
+                                <p><strong>Chức vụ:</strong> {item.position}</p>
                                 <p><strong><h3>ĐỊA CHỈ</h3></strong></p>
-                                <p><strong>Số điện thoại:</strong> {staff.address.phone}</p>
-                                <p><strong>Số nhà:</strong> {staff.address.homeNumber}</p>
-                                <p><strong>Đường:</strong> {staff.address.street}</p>
-                                <p><strong>Phường:</strong> {staff.address.ward}</p>
-                                <p><strong>Quận:</strong> {staff.address.district}</p>
-                                <p><strong>Thành phố:</strong> {staff.address.city}</p>
+                                <p><strong>Số điện thoại:</strong> {item.phone || ''}</p>
+                                <p><strong>Số nhà:</strong> {item.homeNumber || ''}</p>
+                                <p><strong>Đường:</strong> {item.street || ''}</p>
+                                <p><strong>Phường:</strong> {item.ward || ''}</p>
+                                <p><strong>Quận:</strong> {item.district || ''}</p>
+                                <p><strong>Thành phố:</strong> {item.city || ''}</p>
                                 <div className="buttons">
                                     <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa thông tin cá nhân</button>
-                                    <button className="see-work-history-button" onClick={() => setIsWorkHistoryVisible(!isWorkHistoryVisible)}>
-                                        {isWorkHistoryVisible ? 'Ẩn lịch sử công tác' : 'Xem lịch sử công tác'}
-                                    </button>
+                                    <button className="delete-button" onClick={() => onDelete(item.staffId)}>Xóa nhân viên</button>
                                 </div>
                             </>
                         )}
-                    </div>
-                    {isWorkHistoryVisible && (
-                        <div className="modal-section">
-                            <h3>Lịch Sử Công Tác</h3>
-                            <table className="work-history-table">
-                                <thead>
-                                    <tr>
-                                        <th>Chi nhánh</th>
-                                        <th>Ngày bắt đầu</th>
-                                        <th>Ngày kết thúc</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {staff.workHistory
-                                        .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-                                        .map((history, index) => (
-                                            <tr key={index}>
-                                                <td>{history.branch}</td>
-                                                <td>{history.startDate}</td>
-                                                <td>{history.endDate}</td>
-                                            </tr>
-                                        ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+                    </div>    
                 </div>
             </div>
         </div>
