@@ -6,13 +6,56 @@ import AddModal from "../modals/Add_OnlineOrder";
 import DetailModal from "../modals/Detail_OnlineOrder";
 
 function Mgmt_OnlineOrder() {
+    const calculateDeliveryTime = (orderDate) => {
+        try {
+            // Parse Vietnamese date format "HH:mm:ss DD/MM/YYYY"
+            const [time, date] = orderDate.split(' ');
+            const [hours, minutes, seconds] = time.split(':');
+            const [day, month, year] = date.split('/');
+            
+            // Create date object with correct format
+            const parsedDate = new Date(year, month - 1, day, hours, minutes, seconds);
+    
+            // Validate date
+            if (isNaN(parsedDate.getTime())) {
+                throw new Error('Invalid date');
+            }
+    
+            // Add 45 minutes
+            parsedDate.setMinutes(parsedDate.getMinutes() + 45);
+    
+            // Format output
+            return parsedDate.toLocaleString('vi-VN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+    
+        } catch (error) {
+            console.error('Error in calculateDeliveryTime:', error, 'Input:', orderDate);
+            return 'Invalid date';
+        }
+    };
     const columns = [
         { id: 'orderId', header: 'Mã phiếu', value: 'orderId' },
         { id: 'phone', header: 'Số điện thoại', value: 'phone' },
         { id: 'tableNumber', header: 'Số bàn', value: 'tableNumber' },
         { id: 'customerCount', header: 'Số khách', value: 'customerCount' },
         { id: 'orderDate', header: 'Thời gian đặt', value: 'orderDate' },
-        { id: 'arrivalTime', header: 'Thời gian đến', value: 'arrivalTime' },
+        { 
+            id: 'time', 
+            header: 'Thời gian', 
+            value: 'arrivalTime',
+            render: (item) => {
+                return item.tableNumber ? 
+                    item.arrivalTime : 
+                    calculateDeliveryTime(item.orderDate);
+            }
+        },
         { id: 'status', header: 'Trạng thái', value: 'status' },
         { id: 'branch', header: 'Chi nhánh', value: 'branch' }
     ];
@@ -231,7 +274,7 @@ function Mgmt_OnlineOrder() {
                                     <tr key={item.orderId} onClick={() => handleRowClick(item)}>
                                         {columns.map(column => (
                                             <td key={`${item.orderId}-${column.id}`}>
-                                                {item[column.value]}
+                                                {column.render ? column.render(item) : item[column.value]}
                                             </td>
                                         ))}
                                     </tr>
