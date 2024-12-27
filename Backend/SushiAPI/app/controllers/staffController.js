@@ -54,7 +54,17 @@ export const staffController = {
             console.error('Error fetching salary:', error);
             res.status(500).json({ message: 'Server error', error: error.message });
         }
-    }
+    },
 
+    deleteStaff: async (req, res) => {
+        const { MaNhanVien } = req.params;
+        try {
+            await staffService.deleteStaff(MaNhanVien);
+            res.status(200).json({ message: 'Staff deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting staff:', error);
+            res.status(500).json({ message: 'Server error', error: error.message });
+        }
+    }
     
 };

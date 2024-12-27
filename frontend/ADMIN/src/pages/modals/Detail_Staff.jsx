@@ -4,7 +4,6 @@ import '../css/css-modals/detail-staff.css';
 const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedStaff, setUpdatedStaff] = useState({ ...item });
-    const [isWorkHistoryVisible, setIsWorkHistoryVisible] = useState(false);
 
     if (!item) return null;
 
@@ -19,6 +18,22 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
     const handleSave = () => {
         onUpdate(updatedStaff);
         setIsEditing(false);
+    };
+
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/staffs/${item.staffId}`, {
+                method: 'DELETE',
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete staff');
+            }
+            onDelete(item.staffId);
+            onClose();
+        } catch (error) {
+            console.error('Error deleting staff:', error);
+            alert('Có lỗi xảy ra khi xóa nhân viên');
+        }
     };
 
     return (
@@ -51,7 +66,6 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
-                            console.log(item),
                             <>
                                 <p><strong>Mã nhân viên:</strong> {item.staffId}</p>
                                 <p><strong>Họ tên:</strong> {item.name}</p>
@@ -69,8 +83,8 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
                                 <p><strong>Quận:</strong> {item.district || ''}</p>
                                 <p><strong>Thành phố:</strong> {item.city || ''}</p>
                                 <div className="buttons">
-                                    <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa thông tin cá nhân</button>
-                                    <button className="delete-button" onClick={() => onDelete(item.staffId)}>Xóa nhân viên</button>
+                                    <button className="update-button-temp" onClick={() => setIsEditing(true)}>Chỉnh sửa thông tin cá nhân</button>
+                                    <button className="delete-button-temp" onClick={handleDelete}>Xóa nhân viên</button>
                                 </div>
                             </>
                         )}

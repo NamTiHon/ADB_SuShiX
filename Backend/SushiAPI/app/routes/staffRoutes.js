@@ -9,4 +9,5 @@ router.post('/', staffController.addStaff);
 router.post('/department', staffController.addDepartment);
 router.get('/department', staffController.getDepartment);
 router.get('/salary/:departmentName', staffController.getSalaryByDepartment);
+router.delete('/:MaNhanVien', staffController.deleteStaff);
 export default router;

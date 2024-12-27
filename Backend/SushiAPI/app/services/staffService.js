@@ -169,6 +169,23 @@ export const staffService = {
             console.error('Error fetching salary by department:', error);
             throw new Error('Failed to fetch salary by department');
         }
+    },
+    
+    deleteStaff: async (MaNhanVien) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaNhanVien', sql.VarChar(12), MaNhanVien)
+                .query(`
+                    DELETE FROM BoPhan_NhanVien
+                    WHERE BP_NV_MaNhanVien = @MaNhanVien
+                    DELETE FROM NhanVien
+                    WHERE NV_MaNhanVien = @MaNhanVien
+                `);
+            console.log(result);
+        } catch (error) {
+            console.error('Error fetching all staffs:', error);
+            throw new Error('Failed to fetch staffs');
+        }
     }
-
 };
