@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import SideBarTemp from './sideBarTemp';
@@ -6,7 +7,7 @@ import '../css/components/staff-add-booking.css';
 
 const Staff_Add_Booking = () => {
     const isUserAuth = localStorage.getItem('userAuth') === 'true';
-    console.log(isUserAuth);
+    const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [dishes, setDishes] = useState([]);
     const [staffs, setStaffs] = useState([]);
@@ -21,7 +22,7 @@ const Staff_Add_Booking = () => {
         PDM_GhiChuThem: '',
         PDM_MaNhanVien: '',
     });
-    const [currentDish, setCurrentDish] = useState({ dishId: '', dishName: '', quantity: '' });
+    const [currentDish, setCurrentDish] = useState({ dishId: '', dishName: '', quantity: '', price: 0 });
     const [preOrderedDishes, setPreOrderedDishes] = useState([]);
     const [notification, setNotification] = useState('');
     const suggestionsRef = useRef(null);
@@ -122,14 +123,14 @@ const Staff_Add_Booking = () => {
     const handleDishSelect = (dishName) => {
         const selectedDish = dishes.find(dish => dish.MA_TenMon === dishName);
         if (selectedDish) {
-            setCurrentDish({ ...currentDish, dishId: selectedDish.MA_MaMon, dishName: selectedDish.MA_TenMon });
+            setCurrentDish({ ...currentDish, dishId: selectedDish.MA_MaMon, dishName: selectedDish.MA_TenMon, price: selectedDish.MA_GiaHienTai * 1000 });
         }
     };
 
     const handleAddDish = () => {
         if (currentDish.dishId && currentDish.quantity) {
             setPreOrderedDishes([...preOrderedDishes, currentDish]);
-            setCurrentDish({ dishId: '', dishName: '', quantity: '' });
+            setCurrentDish({ dishId: '', dishName: '', quantity: '', price: 0 });
         } else {
             setNotification('Please enter both dish ID and quantity.');
             setTimeout(() => setNotification(''), 3000); // Clear notification after 3 seconds
@@ -145,8 +146,48 @@ const Staff_Add_Booking = () => {
         return 'DO' + Math.random().toString(20).substr(2, 7).toUpperCase();
     };
 
+    const generateMaHoaDon = () => {
+        return 'HD' + Math.random().toString(20).substr(2, 7).toUpperCase();
+    };
+
+    const calculateTotalPrice = () => {
+        return preOrderedDishes.reduce((total, dish) => total + dish.price * dish.quantity, 0);
+    };
+
+    const createBill = async (bookingData) => {
+        const billData = {
+            MaHoaDon: generateMaHoaDon(),
+            SoTienGiam: 0, // Assuming no discount for now
+            TongTruocGiam: calculateTotalPrice(),
+            MaPhieu: bookingData.PDM_MaPhieu,
+        };
+        console.log('Bill data:', billData);
+        try {
+            const response = await fetch('http://localhost:3000/api/bills/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(billData)
+            });
+            const data = await response.json();
+            console.log('Bill created successfully:', data);
+            return billData.MaHoaDon; // Ensure the API returns the created bill ID
+        } catch (error) {
+            console.error('Error creating bill:', error);
+            alert('Có lỗi xảy ra khi tạo hóa đơn. Vui lòng thử lại.');
+            return null;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        if (preOrderedDishes.length === 0) {
+            alert('Vui lòng chọn ít nhất một món trước khi thêm phiếu đặt.');
+            return;
+        }
+    
         const bookingData = { ...newBooking, PDM_MaPhieu: generateMaPhieu(), preOrderedDishes };
         try {
             const response = await fetch('http://localhost:3000/api/order/direct', {
@@ -158,7 +199,7 @@ const Staff_Add_Booking = () => {
             });
             const data = await response.json();
             console.log('Order posted successfully:', data);
-
+    
             // Post each preOrderedDish
             for (const dish of preOrderedDishes) {
                 await fetch('http://localhost:3000/api/order/dishes', {
@@ -172,25 +213,33 @@ const Staff_Add_Booking = () => {
                         MDD_SoLuong: dish.quantity,
                     }),
                 });
-                console.log(bookingData.PDM_MaPhieu, dish.dishId, dish.quantity);
+                console.log(bookingData.PDM_MaPhieu, dish.dishId, dish.quantity, bookingData.MaHoaDon);
             }
-
-            handleAddBooking(bookingData);
-            setNewBooking({
-                PDM_MaPhieu: '',
-                PDM_SDT_KH: '',
-                PDM_MaChiNhanh: '',
-                PDM_SoBan: '',
-                PDM_SoLuongKH: '',
-                PDM_GhiChuThem: '',
-                PDM_MaNhanVien: '',
-            });
-            setPreOrderedDishes([]);
-            alert('Đặt món thành công!');
+            const billId = await createBill(bookingData);
+            console.log('Bill ID:', billId);
+            if (billId) {
+                handleAddBooking(bookingData);
+                setNewBooking({
+                    PDM_MaPhieu: '',
+                    PDM_SDT_KH: '',
+                    PDM_MaChiNhanh: '',
+                    PDM_SoBan: '',
+                    PDM_SoLuongKH: '',
+                    PDM_GhiChuThem: '',
+                    PDM_MaNhanVien: '',
+                });
+                setPreOrderedDishes([]);
+                alert('Đặt món thành công!');
+                navigate(`/bill/${billId}`, { state: { billId } }); // Navigate to the Bill page with the billId
+            }
         } catch (error) {
             console.error('Error posting order:', error);
             alert('Có lỗi xảy ra khi đặt món. Vui lòng thử lại.');
         }
+    };
+
+    const formatCurrency = (value) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
     };
 
     return (
@@ -271,6 +320,8 @@ const Staff_Add_Booking = () => {
                                             <tr>
                                                 <th>Tên món</th>
                                                 <th>Số lượng</th>
+                                                <th>Giá</th>
+                                                <th>Tổng tiền</th>
                                                 <th>Hành động</th>
                                             </tr>
                                         </thead>
@@ -279,6 +330,8 @@ const Staff_Add_Booking = () => {
                                                 <tr key={index}>
                                                     <td>{dish.dishName}</td>
                                                     <td>{dish.quantity}</td>
+                                                    <td>{formatCurrency(dish.price)}</td>
+                                                    <td>{formatCurrency(dish.price * dish.quantity)}</td>
                                                     <td>
                                                         <button
                                                             type="button"
@@ -292,6 +345,9 @@ const Staff_Add_Booking = () => {
                                         </tbody>
                                     </table>
                                 )}
+                                <div className="total-price">
+                                    <h3>Tổng tiền: {formatCurrency(calculateTotalPrice())}</h3>
+                                </div>
                             </div>
                             <button type="submit" className="add-button">Thêm phiếu đặt</button>
                             {notification && <div className="notification">{notification}</div>}
