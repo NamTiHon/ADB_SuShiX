@@ -157,11 +157,39 @@ export const orderController = {
         }
     },
 
+
     getOrderByPhoneNumber: async (req, res) => {
         try {
             const { phoneNumber } = req.params; // Update this line
             const orders = await orderService.getOrderByPhone(phoneNumber); // Update this line
             res.status(200).json(orders);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    updateOrderStatus: async (req, res) => {
+        try {
+            const { MaPhieu } = req.params;
+            const { status } = req.body;
+
+            if (!status) {
+                return res.status(400).json({ message: 'Status is required' });
+            }
+
+            const result = await orderService.updateOrderStatus(MaPhieu, status);
+            
+            if (!result) {
+                return res.status(404).json({ 
+                    message: `Cannot update status for order ${MaPhieu}` 
+                });
+            }
+
+            res.status(200).json({
+                message: 'Order status updated successfully',
+                order: result
+            });
         } catch (error) {
             console.error('Controller error:', error);
             res.status(500).json({ message: error.message });

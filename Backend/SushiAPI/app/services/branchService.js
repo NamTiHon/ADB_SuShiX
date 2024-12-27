@@ -112,7 +112,7 @@ export const branchService = {
             const pool = await conn;
             const result = await pool.request()
                 .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
-                .execute('sp_XoaChiNhanh')
+                .execute('usp_XoaChiNhanh')
             return result.rowsAffected[0] > 0; // Trả về true nếu có chi nhánh bị xóa
         } 
         catch (error){

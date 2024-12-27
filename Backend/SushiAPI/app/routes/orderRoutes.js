@@ -17,4 +17,5 @@ router.get('/id/:PDM_MaPhieu', orderController.getOrderByID);
 router.get('/', orderController.getAllOrders);
 router.put('/cancel/:MaPhieu', orderController.cancelOrder); // Add this line
 router.get('/phone/:phoneNumber', orderController.getOrderByPhoneNumber);
+router.put('/status/:MaPhieu', orderController.updateOrderStatus);
 export default router;

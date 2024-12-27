@@ -149,9 +149,8 @@ const Add_Branch = ({ onClose, onAdd }) => {
     };
 
     const generateBranchId = () => {
-        const branchId = 'CN' + branchCounter.toString().padStart(3, '0');
-        setBranchCounter(branchCounter + 1);
-
+        const randomNum = Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
+        const branchId = 'CN' + randomNum.toString().padStart(3, '0');
         return branchId;
     };
 

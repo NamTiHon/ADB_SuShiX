@@ -41,7 +41,8 @@ CREATE OR ALTER PROCEDURE usp_ChinhSuaThongTinMonAn
 	@KhauPhan int = NULL,
 	@CoSan BIT = NULL,
 	@HoTroGiaoHang BIT = NULL,
-	@TenDanhMuc varchar(20) = NULL
+	@TenDanhMuc nvarchar(20) = NULL,
+	@HinhAnh varchar(100) = NULL
 AS
 BEGIN
 	if not exists(select * from MonAn where MA_MaMon = @MaMon)
@@ -57,8 +58,11 @@ BEGIN
 			MA_KhauPhan = coalesce(@KhauPhan, MA_KhauPhan),
 			MA_CoSan = coalesce(@CoSan, MA_CoSan), 
 			MA_HoTroGiaoHang = coalesce(@HoTroGiaoHang, MA_HoTroGiaoHang),
-			MA_TenDanhMuc =  coalesce(@TenDanhMuc, MA_TenDanhMuc)
+			MA_TenDanhMuc =  coalesce(@TenDanhMuc, MA_TenDanhMuc),
+			MA_HinhAnh = coalesce(@HinhAnh, MA_HinhAnh)
 		where MA_MaMon = @MaMon
+		
+		select * from MonAn where MA_MaMon = @MaMon
 	end
 
 	print(N'Đã thay đổi món ăn')
