@@ -965,6 +965,61 @@ GO
 --TRIGGER
 --- This is need for trigger
 
+--Nhân viên đặt món phải có chức vụ là phục vụ.
+create or alter trigger utg_NhanVienDatMon
+on PhieuDatMon
+for insert, update
+as
+begin
+	declare @MaNhanVien varchar(12)
+	select @MaNhanVien = PDM_MaNhanVien from PhieuDatMon
+
+	if not exists( select * from BoPhan_NhanVien
+				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
+	begin
+		raiserror(N'Lỗi: Nhân viên đặt món phải có chức vụ là phục vụ.', 16, 1)
+		rollback transaction
+	end
+end
+
+go
+--Nhân viên lập thẻ thành viên phải có chức vụ là phục vụ
+create or alter trigger utg_NhanVienLapThe
+on TheThanhVien
+for insert, update
+as
+begin
+	declare @MaNhanVien varchar(12)
+	select @MaNhanVien = TTV_MaNhanVien from TheThanhVien
+
+	if not exists( select * from BoPhan_NhanVien
+				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
+	begin
+		raiserror(N'Lỗi: Nhân viên lập thẻ thành viên phải có chức vụ là phục vụ.', 16, 1)
+		rollback transaction
+	end
+end
+
+go
+
+--Khách hàng phải chưa có thẻ hoặc có thẻ đã khóa mới có thể lập thẻ mới
+create or alter trigger utg_LapThe
+on TheThanhVien
+for insert, update
+as
+begin
+	declare @SDT_KH nvarchar(30)
+	select @SDT_KH = TTV_SDT_KH from TheThanhVien
+
+	if exists( select * from TheThanhVien
+				   where TTV_TrangThai = N'Available')
+	begin
+		raiserror(N'Lỗi: Khách hàng này đã có thẻ.', 16, 1)
+		rollback transaction
+	end
+end
+
+
 /*
 DECLARE @ProcedureName NVARCHAR(MAX);
 DECLARE @SQL NVARCHAR(MAX);

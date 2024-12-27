@@ -120,7 +120,7 @@ create table TheThanhVien (
 	TTV_MaNhanVien varchar(12), --Nhân viên tạo thẻ
 	primary key (TTV_MaThe)
 )
-on s_TheThanhVien(TTV_LoaiThe);
+on s_TheThanhVien(TTV_MaThe);
 
 -- Bảng Khuyến mãi:
 create table KhuyenMai (
@@ -173,7 +173,7 @@ create table NhanVien (
 	NV_TenThanhPho nvarchar(30),
 	primary key (NV_MaNhanVien)
 )
-on s_NhanVien(NV_SDT);
+on s_NhanVien(NV_MaNhanVien);
 
 -- Bảng Bộ phận của Nhân viên:
 create table BoPhan_NhanVien (
