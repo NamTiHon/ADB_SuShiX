@@ -18,6 +18,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // First login request
             const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
@@ -26,14 +27,31 @@ const Login = () => {
                 body: JSON.stringify({ email, password })
             });
 
-            const data = await response.json();
+            const loginData = await response.json();
+            
             if (response.ok) {
-                // Lưu thông tin người dùng vào context hoặc localStorage
-                setUser(data); // Giả sử bạn có hàm setUser để lưu thông tin người dùng
-                console.log (data);
-                navigate(from, { replace: true }); // Điều hướng đến trang ban đầu
+                // Fetch additional user profile data
+                const profileResponse = await fetch(`http://localhost:3000/api/auth/${email}`, {
+                    headers: {
+                        'Authorization': `Bearer ${loginData.token}`
+                    }
+                });
+
+                const profileData = await profileResponse.json();
+
+                // Combine login and profile data
+                const fullUserData = {
+                    ...loginData,
+                    profile: profileData.user
+                };
+
+                // Save complete user data
+                setUser(fullUserData);
+                localStorage.setItem('userData', JSON.stringify(fullUserData));
+                console.log('User logged in:', fullUserData);
+                navigate(from, { replace: true });
             } else {
-                setError(data.message || 'Email hoặc mật khẩu không chính xác');
+                setError(loginData.message || 'Email hoặc mật khẩu không chính xác');
             }
         } catch (err) {
             setError('Có lỗi xảy ra. Vui lòng thử lại sau.');

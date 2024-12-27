@@ -53,6 +53,10 @@ const OrderManagement = () => {
             try {
                 setLoading(true);
                 
+                // Get user data from localStorage
+                const userData = JSON.parse(localStorage.getItem('userData'));
+                const userPhone = userData?.profile?.KH_SDT;
+                
                 // Fetch orders and bills in parallel
                 const [ordersResponse, billsResponse] = await Promise.all([
                     fetch('http://localhost:3000/api/order'),
@@ -74,33 +78,36 @@ const OrderManagement = () => {
                     return acc;
                 }, {});
     
-                // Transform orders with bill data
+                // Filter orders by user phone number
                 const uniqueOrders = Object.values(orders.reduce((acc, order) => {
                     if (!order?.PDM_MaPhieu) return acc;
+                    
+                    // Only include orders matching user's phone
+                    if (order.PDM_SDT_KH === userPhone) {
+                        const bill = billsMap[order.PDM_MaPhieu] || {};
+                        const isTableBooking = !!order.PDM_SoBan;
     
-                    const bill = billsMap[order.PDM_MaPhieu] || {};
-                    const isTableBooking = !!order.PDM_SoBan;
-    
-                    acc[order.PDM_MaPhieu] = {
-                        orderId: order.PDM_MaPhieu,
-                        date: new Date(order.PDM_ThoiGianDat || Date.now()).toLocaleString('vi-VN'),
-                        status: order.PDM_TrangThai || 'Không xác định',
-                        totalBeforeDiscount: bill.HD_TongTruocGiam || 0,
-                        discount: bill.HD_SoTienGiam || 0,
-                        total: bill.HD_TongTienThanhToan || 0,
-                        customerPhone: order.PDM_SDT_KH || '',
-                        address: order.PDM_DiaChiCanGiao || '',
-                        branchId: order.PDM_MaChiNhanh || '',
-                        tableNumber: order.PDM_SoBan || null,
-                        guestCount: order.PDM_SoLuongKH || 0,
-                        isTableBooking: isTableBooking,
-                        billId: bill.HD_MaHoaDon || null
-                    };
+                        acc[order.PDM_MaPhieu] = {
+                            orderId: order.PDM_MaPhieu,
+                            date: new Date(order.PDM_ThoiGianDat || Date.now()).toLocaleString('vi-VN'),
+                            status: order.PDM_TrangThai || 'Không xác định',
+                            totalBeforeDiscount: bill.HD_TongTruocGiam || 0,
+                            discount: bill.HD_SoTienGiam || 0,
+                            total: bill.HD_TongTienThanhToan || 0,
+                            customerPhone: order.PDM_SDT_KH || '',
+                            address: order.PDM_DiaChiCanGiao || '',
+                            branchId: order.PDM_MaChiNhanh || '',
+                            tableNumber: order.PDM_SoBan || null,
+                            guestCount: order.PDM_SoLuongKH || 0,
+                            isTableBooking: isTableBooking,
+                            billId: bill.HD_MaHoaDon || null
+                        };
+                    }
                     return acc;
                 }, {})).sort((a, b) => {
                     const dateA = new Date(a.date);
                     const dateB = new Date(b.date);
-                    return dateB - dateA; // Sort descending (newest first)
+                    return dateB - dateA;
                 });
     
                 setOrders(uniqueOrders);
@@ -146,9 +153,11 @@ const OrderManagement = () => {
                                         <div className="order-amount">
                                             <span className="amount-before">{order.totalBeforeDiscount.toLocaleString()}đ</span>
                                             {order.discount > 0 && (
-                                                <span className="discount">-{order.discount.toLocaleString()}đ</span>
+                                                <>
+                                                    <span className="discount">-{order.discount.toLocaleString()}đ</span>
+                                                    <span className="final-amount">{order.total.toLocaleString()}đ</span>
+                                                </>
                                             )}
-                                            <span className="final-amount">{order.total.toLocaleString()}đ</span>
                                         </div>
                                     </td>
                                     <td>
