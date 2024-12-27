@@ -17,7 +17,7 @@ router.get('/regions', branchController.getAllRegion);
 // Cập nhật chi nhánh
 router.put('/:CN_MaChiNhanh', branchController.updateBranch);
 
-// // Xóa chi nhánh
-// router.delete('/:branchId', branchController.deleteBranch);
+// Xóa chi nhánh
+router.delete('/:branchId', branchController.deleteBranch);
 
 export default router;

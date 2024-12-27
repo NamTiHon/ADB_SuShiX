@@ -175,7 +175,10 @@ function Mgmt_OnlineOrder() {
 
     const filteredOrders = sortedOrders.filter(customer => {
         const value = filterField.split('.').reduce((o, i) => o[i], customer);
-        return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
+        // Convert both strings to lowercase for comparison
+        const searchLower = searchQuery.toLowerCase();
+        const valueLower = value?.toString().toLowerCase() || '';
+        return valueLower.includes(searchLower);
     });
 
     const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);

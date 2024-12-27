@@ -58,8 +58,7 @@ const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
             setError(validationError);
             return null;
         }
-
-        setLoading(true);
+    
         try {
             const response = await fetch(`http://localhost:3000/api/auth/user/${customer.customerId}`, {
                 method: 'PUT',
@@ -67,6 +66,7 @@ const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    KH_SDT: customer.customerId, // Add ID to ensure correct customer update
                     KH_HoTen: customer.name,
                     KH_CCCD: customer.cccd,
                     KH_Email: customer.email,
@@ -74,27 +74,52 @@ const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
                     KH_MaTheThanhVien: customer.cardId
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Cập nhật thông tin thất bại');
             }
-
+    
             const result = await response.json();
             alert('Cập nhật thông tin thành công!');
             return result;
         } catch (error) {
             setError(error.message);
             return null;
-        } finally {
-            setLoading(false);
         }
     };
 
     const handleSave = async () => {
-        const result = await updateCustomer(updatedCustomer);
-        if (result) {
-            onUpdate(updatedCustomer);
-            setIsEditing(false);
+        try {
+            setLoading(true);
+            const result = await updateCustomer(updatedCustomer);
+            
+            if (result) {
+                // Only update this specific customer
+                const updatedData = {
+                    ...updatedCustomer,
+                    customerId: item.customerId, // Ensure we keep original ID
+                    cardId: item.cardId,
+                    createdDate: item.createdDate,
+                    points: item.points,
+                    yearOfUsing: item.yearOfUsing,
+                    status: item.status,
+                    membershipType: item.membershipType,
+                    staffCreatorID: item.staffCreatorID
+                };
+    
+                onUpdate(updatedData); // Pass updated data to parent
+                setUpdatedCustomer(updatedData); // Update local state
+                setIsEditing(false);
+                
+                // Refresh page to ensure consistent state
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        } catch (error) {
+            setError('Failed to update customer: ' + error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
