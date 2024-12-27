@@ -75,7 +75,7 @@ function Mgmt_Customer() {
             {loading ? (
                 <div className="loading-container">
                     <div className="loading-spinner">
-                        Đang tải
+                    
                     </div>
                 </div>
             ) : (
