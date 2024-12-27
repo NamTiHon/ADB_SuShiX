@@ -103,7 +103,7 @@ const Add_Dish = ({ onClose, onAdd }) => {
             MA_MaMon: generateDishId(),
             MA_GiaHienTai: parseFloat(newDish.MA_GiaHienTai.replace(/\D/g, ''))
         }; 
-
+    
         console.log('Adding dish:', dishWithInfo);
         try {
             const response = await fetch('http://localhost:3000/api/dishes', {
@@ -113,16 +113,17 @@ const Add_Dish = ({ onClose, onAdd }) => {
                 },
                 body: JSON.stringify(dishWithInfo),
             });
-
+    
             if (!response.ok) {
                 throw new Error('Failed to add dish');
             }
-
+    
             const result = await response.json();
             console.log('Dish added:', result);
             alert('Thêm món ăn thành công');
-            onAdd(result);
+            await onAdd(result);
             onClose();
+            window.location.reload(); // Add reload after successful addition
         } catch (error) {
             console.error('Error adding dish:', error);
             alert('Failed to add dish');
