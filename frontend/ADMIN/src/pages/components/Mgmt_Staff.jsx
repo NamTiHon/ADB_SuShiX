@@ -31,7 +31,7 @@ function StaffMgmt() {
             try {
                 const response = await fetch('http://localhost:3000/api/staffs');
                 if (!response.ok) {
-                    throw new Error('Failed to fetch staffs');
+                    throw new Error(`Failed to fetch staffs: ${response.status} ${response.statusText}`);
                 }
                 const result = await response.json();
                 console.log('Raw API Response:', result); // Debug log
@@ -72,6 +72,8 @@ function StaffMgmt() {
                 <div className="loading-container">
                     <div className="loading-spinner"></div>
                 </div>
+            ) : error ? (
+                <div className="error-message">{error}</div>
             ) : (
                 <Mgmt_General
                     columns={columns}

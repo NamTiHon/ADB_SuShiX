@@ -64,7 +64,7 @@ export const staffService = {
                 .input('MaNhanVien', sql.VarChar(12), MaNhanVien)
                 .input('HoTen', sql.NVarChar(50), HoTen)
                 .input('NgaySinh', sql.Date, NgaySinh)
-                .input('GioiTinh', sql.NVarChar(3), GioiTinh) // 0 hoặc 1
+                .input('GioiTinh', sql.NVarChar(3), GioiTinh) 
                 .input('NgayVaoLam', sql.Date, NgayVaoLam)
                 .input('NgayNghiViec', sql.Date, NgayNghiViec)
                 .input('DiaChi', sql.NVarChar(100), DiaChi)
@@ -92,7 +92,7 @@ export const staffService = {
 	        ChucVu,
 	        Luong
         } = staffData
-
+        console.log('Adding department:', staffData);
         try {
             const pool = await conn;
             const result = await pool.request()
@@ -134,5 +134,41 @@ export const staffService = {
             console.error('Error fetching all staffs:', error);
             throw new Error('Failed to fetch staffs');
         }
+    },
+    
+    getDepartment: async () => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .query(`
+                    SELECT distinct BP_NV_TenBoPhan
+                    FROM BoPhan_NhanVien
+                `);
+
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            throw new Error('Failed to fetch departments');
+        }
+    },
+
+    
+    getSalaryByDepartment: async (departmentName) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('TenBoPhan', sql.NVarChar(50), departmentName)
+                .query(`
+                    SELECT distinct BP_NV_Luong
+                    FROM BoPhan_NhanVien
+                    WHERE BP_NV_TenBoPhan = @TenBoPhan
+                `);
+    
+            return result.recordset[0]?.BP_NV_Luong || 0;
+        } catch (error) {
+            console.error('Error fetching salary by department:', error);
+            throw new Error('Failed to fetch salary by department');
+        }
     }
+
 };
