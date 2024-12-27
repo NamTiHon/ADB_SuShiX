@@ -28,15 +28,19 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
 ### **Chuẩn bị database và dữ liệu**
 
-  2.1. Chạy SQL: thực hiện chạy file **DB_SuShiX.sql** trước
+  2.1. Tạo database: chỉ chạy phần tạo database trong file **DB_SuShiX.sql** trước
+
+  2.2. Chạy file **Partition.sql** để tạo phân vùng
+
+  2.3. Chạy phần còn lại( tạo bảng) trong file **DB_SuShiX.sql**
   
 #### Lưu ý: Cần phải đặt database là DB_SuShiX trước khi chạy.  
 
-  2.2. Chạy file **constraint.sql** để chạy ràng buộc
+  2.4. Chạy file **constraint.sql** để chạy ràng buộc
 
-  2.3. Chạy file **DataConlai.sql** để nhập những data ban đầu --> **DataKhachhang.sql** --> **DataNhanvien.sql** --> **DataBophanNhanvien.sql** --> **DataThethanhvien.sql** --> **UpdateData.sql**
+  2.5. Chạy file **DataConlai.sql** để nhập những data ban đầu --> **DataKhachhang.sql** --> **DataNhanvien.sql** --> **DataBophanNhanvien.sql** --> **DataThethanhvien.sql** --> **UpdateData.sql**
 
-  2.4. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
+  2.6. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
  
 ### **Chạy backend**  
 - Mở terminal trong thư mục SushiAPI

@@ -24,7 +24,7 @@ EXEC sp_executesql @SQL;
 ---- DANH SÁCH CHỈ MỤC 
 -- Unique Non-clustered index cho KH_Email (bảng Khách hàng)
 create unique nonclustered index idx_KhachHang_Email
-on KhachHang (KH_Email)
+on KhachHang (KH_Email, KH_SDT)
 
 -- Non-clustered index cho PDM_SDT_KH và PDM_MaNhanVien (bảng Phiếu đặt món)
 create nonclustered index idx_PhieuDatMon_SDT_KH
