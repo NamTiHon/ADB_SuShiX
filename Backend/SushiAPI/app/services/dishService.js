@@ -85,8 +85,8 @@ export const dishService = {
         try {
             const pool = await conn;
             await pool.request()
-                .input('MA_MaMon', sql.VarChar(10), MA_MaMon)
-                .execute('sp_XoaMonAn')
+                .input('MaMon', sql.VarChar(10), MA_MaMon)
+                .execute('usp_XoaMonAn')
             return { success: true };
         } catch (error) {
             console.error('Error deleting dish:', error);

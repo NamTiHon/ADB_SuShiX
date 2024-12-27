@@ -130,9 +130,12 @@ const Add_Dish = ({ onClose, onAdd }) => {
     };
 
     const generateDishId = () => {
-        const dishId = 'MA' + lastDishId.toString().padStart(3, '0');
-        setLastDishId(lastDishId + 1);
-
+        // Generate random number between 100 and 9999
+        const randomNum = Math.floor(Math.random() * 9900) + 100;
+        
+        // Format with MA prefix and pad to 4 digits
+        const dishId = 'MA' + randomNum.toString().padStart(4, '0');
+        
         return dishId;
     };
 
