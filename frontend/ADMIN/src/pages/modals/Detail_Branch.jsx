@@ -60,9 +60,65 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
         }
     };
 
-    const handleSave = () => {
-        onUpdate(updatedBranch);
-        setIsEditing(false);
+    const handleSave = async () => {
+        // Map display fields to database columns
+        const fieldMapping = {
+            branchId: 'CN_MaChiNhanh',
+            name: 'CN_Ten',
+            address: 'CN_DiaChi',
+            phone: 'CN_SDT',
+            hasMotorParking: 'CN_BaiDoXeMay',
+            hasCarParking: 'CN_BaiDoXeOto',
+            hasDelivery: 'CN_HoTroGiaoHang',
+            managerId: 'CN_MaQuanLy',
+            regionId: 'CN_MaKhuVuc'
+        };
+    
+        // Map updated branch data to database format
+        const mappedData = Object.keys(updatedBranch).reduce((acc, key) => {
+            const dbField = fieldMapping[key];
+            if (dbField) {
+                acc[dbField] = updatedBranch[key];
+            }
+            return acc;
+        }, {});
+    
+        // Ensure branch ID is properly set
+        mappedData.CN_MaChiNhanh = item.branchId;
+    
+        if (!mappedData.CN_MaChiNhanh) {
+            setError('Cannot update: Missing branch ID');
+            alert('Cannot update: Missing branch ID');
+            return;
+        }
+    
+        setLoading(true);
+        try {
+            const response = await fetch(`http://localhost:3000/api/branches/${mappedData.CN_MaChiNhanh}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(mappedData)
+            });
+    
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to update branch');
+            }
+    
+            onUpdate(data.branch);
+            setIsEditing(false);
+            alert('Cập nhật chi nhánh thành công');
+            window.location.reload();
+        } catch (error) {
+            console.error('Update error:', error);
+            setError(error.message);
+            alert(`Lỗi khi cập nhật chi nhánh: ${error.message}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

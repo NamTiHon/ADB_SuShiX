@@ -70,37 +70,34 @@ export const branchService = {
     updateBranch: async (CN_MaChiNhanh, updates) => {
         try {
             const pool = await conn;
-            // Tạo câu lệnh SET động từ object updates
-            const setClause = Object.keys(updates)
-            .map((key) => `${key} = @${key}`)
-            .join(', ');
-
             const request = pool.request();
-
-            //Thêm các giá trị vào request
-            request.input('CN_MaChiNhanh', sql.VarChar(10), CN_MaChiNhanh);
-            const sqlType = 
-                typeof value === 'string' ? sql.NVarChar(50) :
-                typeof value === 'number' ? sql.Float :
-                typeof value === 'boolean' ? sql.Bit :
-                sql.NVarChar(50);
-
-            for (const key in updates) {
-                request.input(key,sqlType, updates[key]);
-            }
-
-            const result = await request.query(`
-                update ChiNhanh
-                set ${setClause}
-                where CN_MaChiNhanh = @CN_MaChiNhanh;
-
-                select * from ChiNhanh where CN_MaChiNhanh = @CN_MaChiNhanh
-            `);
-            return result.recordset[0]; // Trả về chi nhánh vừa cập nhật
+    
+            // Add parameters with correct SQL types
+            request.input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh);
+            request.input('Ten', sql.NVarChar(50), updates.CN_Ten);
+            request.input('DiaChi', sql.NVarChar(100), updates.CN_DiaChi);
+            request.input('TGMoCua', sql.Time, updates.CN_TGMoCua);
+            request.input('TGDongCua', sql.Time, updates.CN_TGDongCua);
+            request.input('SDT', sql.VarChar(12), updates.CN_SDT);
+            request.input('BaiDoXeMay', sql.Bit, updates.CN_BaiDoXeMay);
+            request.input('BaiDoXeOto', sql.Bit, updates.CN_BaiDoXeOto);
+            request.input('HoTroGiaoHang', sql.Bit, updates.CN_HoTroGiaoHang);
+            request.input('MaQuanLy', sql.VarChar(12), updates.CN_MaQuanLy);
+            request.input('MaKhuVuc', sql.VarChar(12), updates.CN_MaKhuVuc);
+    
+            // Execute stored procedure
+            await request.execute('usp_ChinhSuaThongTinChiNhanh');
+    
+            // Get updated branch data
+            const result = await pool.request()
+                .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .query('SELECT * FROM ChiNhanh WHERE CN_MaChiNhanh = @MaChiNhanh');
+    
+            return result.recordset[0];
         } 
-        catch (error){
-            console.error('Error updating branch: ', error);
-            throw new Error('Failed to update branch');
+        catch (error) {
+            console.error('Error updating branch:', error);
+            throw new Error(`Failed to update branch: ${error.message}`);
         }
     },
 
