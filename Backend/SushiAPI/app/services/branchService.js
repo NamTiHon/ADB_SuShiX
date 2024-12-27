@@ -24,14 +24,12 @@ export const branchService = {
         try {
             const pool = await conn;
             const result = await pool.request()
-                .input('CN_MaChiNhanh', sql.VarChar(10), CN_MaChiNhanh)
-                .query (`
-                    select * from dbo.uf_XemChiNhanh(@CN_MaChiNhanh);
-                `);
-            return result.recordset[0]; // trả về undefined nếu không tìm thấy món
-        }
-        catch (error){
-            console.error('Error fetching branch by ID:', error);
+                .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .query('SELECT * FROM ChiNhanh WHERE CN_MaChiNhanh = @MaChiNhanh');
+    
+            return result.recordset[0];
+        } catch (error) {
+            console.error('Error fetching branch:', error);
             throw new Error('Failed to fetch branch');
         }
     },
@@ -109,18 +107,36 @@ export const branchService = {
     // Xóa chi nhánh theo CN_MaChiNhanh
     deleteBranch: async (CN_MaChiNhanh) => {
         try {
+            console.log('Attempting to delete branch:', CN_MaChiNhanh);
             const pool = await conn;
+    
+            // Check branch exists
+            const branch = await pool.request()
+                .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
+                .query('SELECT * FROM ChiNhanh WHERE CN_MaChiNhanh = @MaChiNhanh');
+    
+            if (!branch.recordset[0]) {
+                console.log('Branch not found:', CN_MaChiNhanh);
+                return false;
+            }
+    
+            // Delete branch
             const result = await pool.request()
                 .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
-                .execute('usp_XoaChiNhanh')
-            return result.rowsAffected[0] > 0; // Trả về true nếu có chi nhánh bị xóa
-        } 
-        catch (error){
-            console.error('Error deleting branch: ', error);
-            throw new Error('Failed to delete branch');
+                .execute('usp_XoaChiNhanh');
+    
+            console.log('Delete operation result:', result);
+            
+            // Check if any rows were affected
+            const success = result.rowsAffected.some(count => count > 0);
+            console.log('Delete success:', success);
+            
+            return success;
+        } catch (error) {
+            console.error('Delete error:', error);
+            throw new Error(`Failed to delete branch: ${error.message}`);
         }
     },
-
     getAllRegion: async () => {
         try {
             const pool = await conn;

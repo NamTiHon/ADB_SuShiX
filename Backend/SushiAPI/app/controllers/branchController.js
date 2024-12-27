@@ -67,4 +67,49 @@ export const branchController ={
             res.status(500).json({ message: error.message });
         }
     },
+    deleteBranch: async (req, res) => {
+        try {
+            // Log request parameters for debugging
+            console.log('Request params:', req.params);
+            
+            const CN_MaChiNhanh = req.params.branchId; // Change from CN_MaChiNhanh to branchId to match route
+    
+            // Add detailed validation
+            if (!CN_MaChiNhanh || CN_MaChiNhanh.trim() === '') {
+                console.log('Invalid branch ID:', CN_MaChiNhanh);
+                return res.status(400).json({
+                    message: 'Branch ID is required and cannot be empty'
+                });
+            }
+    
+            // Check if branch exists
+            const existingBranch = await branchService.getBranchById(CN_MaChiNhanh);
+            if (!existingBranch) {
+                return res.status(404).json({
+                    message: `Branch with ID ${CN_MaChiNhanh} not found`
+                });
+            }
+    
+            // Attempt deletion
+            const isDeleted = await branchService.deleteBranch(CN_MaChiNhanh);
+            
+            if (!isDeleted) {
+                return res.status(400).json({
+                    message: `Cannot delete branch ${CN_MaChiNhanh}. It may be referenced by other records.`
+                });
+            }
+    
+            res.status(200).json({
+                message: 'Branch deleted successfully',
+                deletedBranchId: CN_MaChiNhanh
+            });
+    
+        } catch (error) {
+            console.error('Delete branch error:', error);
+            res.status(500).json({
+                message: 'Internal server error while deleting branch',
+                error: error.message
+            });
+        }
+    }
 }
