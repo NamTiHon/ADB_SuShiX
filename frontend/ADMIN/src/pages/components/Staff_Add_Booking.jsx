@@ -190,6 +190,7 @@ const Staff_Add_Booking = () => {
     
         const bookingData = { ...newBooking, PDM_MaPhieu: generateMaPhieu(), preOrderedDishes };
         try {
+            // Create order
             const response = await fetch('http://localhost:3000/api/order/direct', {
                 method: 'POST',
                 headers: {
@@ -200,7 +201,7 @@ const Staff_Add_Booking = () => {
             const data = await response.json();
             console.log('Order posted successfully:', data);
     
-            // Post each preOrderedDish
+            // Post dishes
             for (const dish of preOrderedDishes) {
                 await fetch('http://localhost:3000/api/order/dishes', {
                     method: 'POST',
@@ -213,10 +214,23 @@ const Staff_Add_Booking = () => {
                         MDD_SoLuong: dish.quantity,
                     }),
                 });
-                console.log(bookingData.PDM_MaPhieu, dish.dishId, dish.quantity, bookingData.MaHoaDon);
             }
+    
+            // Create bill
             const billId = await createBill(bookingData);
             console.log('Bill ID:', billId);
+    
+            // Update order status to 'Đã hoàn thành'
+            const statusResponse = await fetch(`http://localhost:3000/api/order/status/${bookingData.PDM_MaPhieu}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'Đã hoàn thành' })
+            });
+    
+            if (!statusResponse.ok) {
+                throw new Error('Failed to update order status');
+            }
+    
             if (billId) {
                 handleAddBooking(bookingData);
                 setNewBooking({
@@ -230,10 +244,10 @@ const Staff_Add_Booking = () => {
                 });
                 setPreOrderedDishes([]);
                 alert('Đặt món thành công!');
-                navigate(`/bill/${billId}`, { state: { billId } }); // Navigate to the Bill page with the billId
+                navigate(`/bill/${billId}`, { state: { billId } });
             }
         } catch (error) {
-            console.error('Error posting order:', error);
+            console.error('Error:', error);
             alert('Có lỗi xảy ra khi đặt món. Vui lòng thử lại.');
         }
     };
