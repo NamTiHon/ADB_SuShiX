@@ -66,6 +66,8 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
             branchId: 'CN_MaChiNhanh',
             name: 'CN_Ten',
             address: 'CN_DiaChi',
+            openingTime: 'CN_TGMoCua',
+            closingTime: 'CN_TGDongCua',
             phone: 'CN_SDT',
             hasMotorParking: 'CN_BaiDoXeMay',
             hasCarParking: 'CN_BaiDoXeOto',
@@ -74,17 +76,26 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
             regionId: 'CN_MaKhuVuc'
         };
     
-        // Map updated branch data to database format
-        const mappedData = Object.keys(updatedBranch).reduce((acc, key) => {
-            const dbField = fieldMapping[key];
-            if (dbField) {
-                acc[dbField] = updatedBranch[key];
-            }
-            return acc;
-        }, {});
+        // Format time values
+        const formatTime = (time) => {
+            if (!time) return null;
+            return `${time}:00`;
+        };
     
-        // Ensure branch ID is properly set
-        mappedData.CN_MaChiNhanh = item.branchId;
+        // Map updated branch data to database format with proper time formatting
+        const mappedData = {
+            CN_MaChiNhanh: item.branchId,
+            CN_Ten: updatedBranch.name,
+            CN_DiaChi: updatedBranch.address,
+            CN_TGMoCua: formatTime(updatedBranch.openingTime),
+            CN_TGDongCua: formatTime(updatedBranch.closingTime),
+            CN_SDT: updatedBranch.phone,
+            CN_BaiDoXeMay: updatedBranch.hasMotorParking === true || updatedBranch.hasMotorParking === 'true',
+            CN_BaiDoXeOto: updatedBranch.hasCarParking === true || updatedBranch.hasCarParking === 'true',
+            CN_HoTroGiaoHang: updatedBranch.hasDelivery === true || updatedBranch.hasDelivery === 'true',
+            CN_MaQuanLy: updatedBranch.managerId,
+            CN_MaKhuVuc: updatedBranch.regionId
+        };
     
         if (!mappedData.CN_MaChiNhanh) {
             setError('Cannot update: Missing branch ID');
@@ -94,6 +105,8 @@ const Detail_Branch = ({ item, onClose, onUpdate, onDelete, fields }) => {
     
         setLoading(true);
         try {
+            console.log('Updating branch with data:', mappedData);
+    
             const response = await fetch(`http://localhost:3000/api/branches/${mappedData.CN_MaChiNhanh}`, {
                 method: 'PUT',
                 headers: {
