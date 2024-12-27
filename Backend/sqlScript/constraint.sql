@@ -24,10 +24,10 @@ alter table MonDuocDat
 	references PhieuDatMon(PDM_MaPhieu)
 
 --Bảng Phiếu đặt món
-alter table PhieuDatMon
-	add constraint FK_PDM_SDT_KH_KH_SDT
-	foreign key (PDM_SDT_KH)
-	references KhachHang(KH_SDT)
+--alter table PhieuDatMon
+--	add constraint FK_PDM_SDT_KH_KH_SDT
+--	foreign key (PDM_SDT_KH)
+--	references KhachHang(KH_SDT)
 
 alter table PhieuDatMon
 	add constraint FK_PDM_MaNhanVien_NV_MaNhanVien
