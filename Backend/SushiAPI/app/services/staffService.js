@@ -118,7 +118,7 @@ export const staffService = {
 	        ChucVu,
 	        Luong
         } = staffUpdate
-
+        console.log('Updating department:', staffUpdate);
         try {
             const pool = await conn;
             const result = await pool.request()
@@ -135,7 +135,64 @@ export const staffService = {
             throw new Error('Failed to fetch staffs');
         }
     },
-    
+
+    updateStaff: async (MaNhanVien, staffUpdate) => {
+        const {
+            HoTen,
+            NgaySinh,
+            GioiTinh,
+            NgayVaoLam,
+            NgayNghiViec,
+            DiaChi,
+            SDT,
+            SoNha,
+            TenDuong,
+            TenPhuong,
+            TenQuan,
+            TenThanhPho 
+        } = staffUpdate;
+        console.log('Updating staff:', staffUpdate);
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaNhanVien', sql.VarChar(12), MaNhanVien)
+                .input('HoTen', sql.NVarChar(50), HoTen)
+                .input('NgaySinh', sql.Date, NgaySinh)
+                .input('GioiTinh', sql.NVarChar(3), GioiTinh) 
+                .input('NgayVaoLam', sql.Date, NgayVaoLam)
+                .input('NgayNghiViec', sql.Date, NgayNghiViec)
+                .input('DiaChi', sql.NVarChar(100), DiaChi)
+                .input('SDT', sql.VarChar(12), SDT)
+                .input('SoNha', sql.Int, SoNha)
+                .input('TenDuong', sql.NVarChar(30), TenDuong)
+                .input('TenPhuong', sql.NVarChar(30), TenPhuong)
+                .input('TenQuan', sql.NVarChar(30), TenQuan)
+                .input('TenThanhPho', sql.NVarChar(30), TenThanhPho)
+                .query(`
+                    UPDATE NhanVien
+                    SET 
+                        NV_HoTen = @HoTen,
+                        NV_NgaySinh = @NgaySinh,
+                        NV_GioiTinh = @GioiTinh,
+                        NV_NgayVaoLam = @NgayVaoLam,
+                        NV_NgayNghiViec = @NgayNghiViec,
+                        NV_DiaChi = @DiaChi,
+                        NV_SDT = @SDT,
+                        NV_SoNha = @SoNha,
+                        NV_TenDuong = @TenDuong,
+                        NV_TenPhuong = @TenPhuong,
+                        NV_TenQuan = @TenQuan,
+                        NV_TenThanhPho = @TenThanhPho
+                    WHERE NV_MaNhanVien = @MaNhanVien
+                `);
+
+            console.log(result);
+        } catch (error) {
+            console.error('Error updating staff:', error);
+            throw new Error('Failed to update staff');
+        }
+    },
+
     getDepartment: async () => {
         try {
             const pool = await conn;
@@ -170,7 +227,7 @@ export const staffService = {
             throw new Error('Failed to fetch salary by department');
         }
     },
-    
+
     deleteStaff: async (MaNhanVien) => {
         try {
             const pool = await conn;

@@ -11,15 +11,16 @@ const columns = [
     { id: 'startDate', header: 'Ngày bắt đầu', value: 'startDate', editable: true, visible: true },
     { id: 'resignationDate', header: 'Ngày nghỉ việc', value: 'resignationDate', editable: true, visible: true },
     { id: 'workingDepartment', header: 'Phòng ban', value: 'workingDepartment', editable: true, visible: true },
-    { id: 'position', header: 'Chức vụ', value: 'position', editable: true, visible: true }
+    { id: 'position', header: 'Chức vụ', value: 'position', editable: true, visible: true },
+    { id: 'MaChiNhanh' , header: 'Mã chi nhánh', value: 'MaChiNhanh', editable: true, visible: true }
 ];
 
-const formatDate = (datetime) => {
-    if (!datetime) return '';
-    const date = new Date(datetime);
-    if (isNaN(date)) return '';
-    return date.toLocaleDateString('vi-VN');
-};
+// const formatDate = (datetime) => {
+//     if (!datetime) return '';
+//     const date = new Date(datetime);
+//     if (isNaN(date)) return '';
+//     return date.toLocaleDateString('vi-VN');
+// };
 
 function StaffMgmt() {
     const [staffs, setStaffs] = useState([]);
@@ -42,9 +43,9 @@ function StaffMgmt() {
                         staffId: staff?.NV_MaNhanVien || '',
                         name: staff?.NV_HoTen || '',
                         gender: staff?.NV_GioiTinh || '',
-                        salary: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(staff?.BP_NV_Luong || 0),
-                        startDate: formatDate(staff?.NV_NgayVaoLam || ''),
-                        resignationDate: formatDate(staff?.NV_NgayNghiViec || ''),
+                        salary: staff?.BP_NV_Luong || 0,
+                        startDate: (staff?.NV_NgayVaoLam || ''),
+                        resignationDate: (staff?.NV_NgayNghiViec || ''),
                         workingDepartment: staff?.BP_NV_TenBoPhan || '',
                         position: staff?.BP_NV_ChucVu || '',
                         phone: staff?.NV_SDT || '',
@@ -52,7 +53,8 @@ function StaffMgmt() {
                         street: staff?.NV_TenDuong || '',
                         ward: staff?.NV_TenPhuong || '',
                         district: staff?.NV_TenQuan || '',
-                        city: staff?.NV_TenThanhPho || ''
+                        city: staff?.NV_TenThanhPho || '',
+                        MaChiNhanh: staff?.BP_NV_MaChiNhanh || '',
                     }));
                 setStaffs(transformedStaffs);
             } catch (err) {

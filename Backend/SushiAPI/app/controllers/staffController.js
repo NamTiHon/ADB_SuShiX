@@ -65,6 +65,29 @@ export const staffController = {
             console.error('Error deleting staff:', error);
             res.status(500).json({ message: 'Server error', error: error.message });
         }
+    },
+    updateStaff: async (req, res) => {
+        const { MaNhanVien } = req.params;
+        const staffUpdate = req.body;
+        try {
+            await staffService.updateStaff(MaNhanVien, staffUpdate);
+            res.status(200).json({ message: 'Staff updated successfully' });
+        } catch (error) {
+            console.error('Error updating staff:', error);
+            res.status(500).json({ message: 'Server error', error: error.message });
+        }
+    },
+
+    updateDepartment: async (req, res) => {
+        const { MaNhanVien } = req.params;
+        const departmentUpdate = req.body;
+        try {
+            await staffService.updateDepartmentStaff(MaNhanVien, departmentUpdate);
+            res.status(200).json({ message: 'Department updated successfully' });
+        } catch (error) {
+            console.error('Error updating department:', error);
+            res.status(500).json({ message: 'Server error', error: error.message });
+        }
     }
     
 };
