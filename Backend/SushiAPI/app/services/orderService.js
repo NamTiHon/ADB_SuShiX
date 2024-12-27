@@ -10,12 +10,13 @@ export const orderService = {
 
         const now = dayjs();
         const PDM_ThoiGianDat = now.format('YYYY-MM-DD HH:mm:ss')
-
+        const PDM_ThoiGianDen = now.format('YYYY-MM-DD HH:mm:ss')
         try {
             const pool = await conn;
             const result = await pool.request()
                 .input('MaPhieu', sql.VarChar(12), PDM_MaPhieu)
                 .input('ThoiGianDat', sql.DateTime, PDM_ThoiGianDat)
+                .input('ThoiGianDen', sql.DateTime, PDM_ThoiGianDen)
                 .input('SDT_KH', sql.VarChar(12), PDM_SDT_KH)
                 .input('SoBan', sql.Int, PDM_SoBan)
                 .input('SoLuongKH', sql.Int, PDM_SoLuongKH)
