@@ -61,24 +61,25 @@ export const dishService = {
     // Cập nhật một món theo MA_MaMon
     updateDish: async (MA_MaMon, updates) => {
         try {
-            const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc } = updates;
+            const { MA_TenMon, MA_GiaHienTai, MA_KhauPhan, MA_CoSan, MA_HoTroGiaoHang, MA_TenDanhMuc, MA_HinhAnh } = updates;
             const pool = await conn;
             const result = await pool.request()
-                .input('MA_MaMon', sql.VarChar(12), MA_MaMon)
-                .input('MA_TenMon', sql.NVarChar(50), MA_TenMon)
-                .input('MA_GiaHienTai', sql.Float, MA_GiaHienTai)
-                .input('MA_KhauPhan', sql.Int, MA_KhauPhan)
-                .input('MA_CoSan', sql.Bit, MA_CoSan)
-                .input('MA_HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
-                .input('MA_TenDanhMuc', sql.NVarChar(20), MA_TenDanhMuc)
-                .execute('sp_ChinhSuaThongTinMonAn')
+                .input('MaMon', sql.VarChar(12), MA_MaMon)
+                .input('TenMon', sql.NVarChar(50), MA_TenMon)
+                .input('Gia', sql.Float, MA_GiaHienTai)
+                .input('KhauPhan', sql.Int, MA_KhauPhan)
+                .input('CoSan', sql.Bit, MA_CoSan)
+                .input('HoTroGiaoHang', sql.Bit, MA_HoTroGiaoHang)
+                .input('TenDanhMuc', sql.NVarChar(20), MA_TenDanhMuc)
+                .input('HinhAnh', sql.VarChar(100), MA_HinhAnh)
+                .execute('usp_ChinhSuaThongTinMonAn')
 
             return result.recordset[0]; // Trả về món vừa cập nhật
         } catch (error) {
             console.error('Error updating dish:', error);
             throw new Error('Failed to update dish');
         }
-    },//SAI Ở ĐÂY, SỬA LẠI
+    },
 
     // Xóa món theo MA_MaMon
     deleteDish: async (MA_MaMon) => {

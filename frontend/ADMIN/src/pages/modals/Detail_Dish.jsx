@@ -52,9 +52,41 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
         }
     };
 
-    const handleSave = () => {
-        onUpdate(updatedItem);
-        setIsEditing(false);
+    const handleSave = async () => {
+        try {
+            setLoading(true);
+            
+            // Map updated item to API fields
+            const updates = {
+                MA_TenMon: updatedItem.dishName || updatedItem.MA_TenMon,
+                MA_GiaHienTai: updatedItem.price || updatedItem.MA_GiaHienTai,
+                MA_KhauPhan: updatedItem.portion || updatedItem.MA_KhauPhan,
+                MA_CoSan: updatedItem.available || updatedItem.MA_CoSan,
+                MA_HoTroGiaoHang: updatedItem.deliverySupport || updatedItem.MA_HoTroGiaoHang,
+                MA_TenDanhMuc: updatedItem.category || updatedItem.MA_TenDanhMuc,
+                MA_HinhAnh: updatedItem.image || updatedItem.MA_HinhAnh
+            };
+    
+            const dishId = updatedItem.dishId || updatedItem.MA_MaMon;
+            
+            const response = await fetch(`http://localhost:3000/api/dishes/${dishId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updates)
+            });
+    
+            if (!response.ok) throw new Error('Không thể cập nhật món ăn');
+    
+            await onUpdate(updatedItem);
+            setIsEditing(false);
+            onClose();
+            window.location.reload();
+        } catch (err) {
+            console.error('Update failed:', err);
+            alert(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
