@@ -46,4 +46,25 @@ export const branchController ={
             res.status(500).json({message: error.message});
         }
     },
+    updateBranch: async (req, res) => {
+        try {
+            const CN_MaChiNhanh = req.params.CN_MaChiNhanh;
+            const updates = req.body;
+            
+            const updatedBranch = await branchService.updateBranch(CN_MaChiNhanh, updates);
+            
+            if (!updatedBranch) {
+                return res.status(404).json({ 
+                    message: `Cannot find branch with ID ${CN_MaChiNhanh}`
+                });
+            }
+
+            res.status(200).json({
+                message: 'Branch updated successfully',
+                branch: updatedBranch
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
 }
