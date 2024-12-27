@@ -4,51 +4,62 @@ import '../css/css-modals/detail-customer.css';
 const Detail_Customer = ({ item, onClose, onUpdate }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedCustomer, setUpdatedCustomer] = useState({ ...item });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     
     if (!item) return null;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setUpdatedCustomer((prevCustomer) => ({
-            ...prevCustomer,
+        setUpdatedCustomer(prev => ({
+            ...prev,
             [name]: value,
         }));
+        setError(null);
+    };
+
+    const validateForm = () => {
+        if (!updatedCustomer.name?.trim()) return 'Họ tên không được để trống';
+        if (!updatedCustomer.cccd?.trim()) return 'CCCD không được để trống';
+        if (!updatedCustomer.email?.trim()) return 'Email không được để trống';
+        return null;
     };
 
     const updateCustomer = async (customer) => {
-
-        if (!customer || !customer.customerId) {
-            alert('Dữ liệu khách hàng không hợp lệ!');
-            return;
+        const validationError = validateForm();
+        if (validationError) {
+            setError(validationError);
+            return null;
         }
 
-        const dataUser = {
-            KH_HoTen: customer.name,
-            KH_CCCD: customer.cccd,
-            KH_Email: customer.email,
-            KH_GioiTinh: customer.gender
-        }
-
+        setLoading(true);
         try {
             const response = await fetch(`http://localhost:3000/api/auth/user/${customer.customerId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(dataUser),
+                body: JSON.stringify({
+                    KH_HoTen: customer.name,
+                    KH_CCCD: customer.cccd,
+                    KH_Email: customer.email,
+                    KH_GioiTinh: customer.gender,
+                    KH_MaTheThanhVien: customer.cardId
+                }),
             });
-    
+
             if (!response.ok) {
-                throw new Error('Failed to update customer');
+                throw new Error('Cập nhật thông tin thất bại');
             }
-    
+
             const result = await response.json();
             alert('Cập nhật thông tin thành công!');
-
-            return result
+            return result;
         } catch (error) {
-            console.error('Error updating customer:', error);
-            alert('Có lỗi xảy ra khi cập nhật thông tin.', error);
+            setError(error.message);
+            return null;
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -65,17 +76,60 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
             <div className="modal-content">
                 <button className="close-button" onClick={onClose}>X</button>
                 <h2>CHI TIẾT KHÁCH HÀNG</h2>
+                {error && <div className="error-message">{error}</div>}
                 <div className="modal-sections">
                     <div className="modal-section">
                         <h3>THÔNG TIN CÁ NHÂN</h3>
-                        
                         {isEditing ? (
                             <>
-                                <p><strong>Họ tên:</strong> <input type="text" name="name" value={updatedCustomer.name} onChange={handleChange} /></p>
-                                <p><strong>Giới tính:</strong> <input type="text" name="gender" value={updatedCustomer.gender} onChange={handleChange} /></p>
-                                <p><strong>Số CCCD:</strong> <input type="text" name="cccd" value={updatedCustomer.cccd} onChange={handleChange} /></p>
-                                <p><strong>Email:</strong> <input type="email" name="email" value={updatedCustomer.email} onChange={handleChange} /></p>
-                                <button className="save-button" onClick={handleSave}>Lưu</button>
+                                <p>
+                                    <strong>Họ tên:</strong> 
+                                    <input 
+                                        type="text" 
+                                        name="name" 
+                                        value={updatedCustomer.name || ''} 
+                                        onChange={handleChange}
+                                        required 
+                                    />
+                                </p>
+                                <p>
+                                    <strong>Giới tính:</strong> 
+                                    <select 
+                                        name="gender" 
+                                        value={updatedCustomer.gender || ''} 
+                                        onChange={handleChange}
+                                    >
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </p>
+                                <p>
+                                    <strong>Số CCCD:</strong> 
+                                    <input 
+                                        type="text" 
+                                        name="cccd" 
+                                        value={updatedCustomer.cccd || ''} 
+                                        onChange={handleChange}
+                                        required 
+                                    />
+                                </p>
+                                <p>
+                                    <strong>Email:</strong> 
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        value={updatedCustomer.email || ''} 
+                                        onChange={handleChange}
+                                        required 
+                                    />
+                                </p>
+                                <button 
+                                    className="save-button" 
+                                    onClick={handleSave}
+                                    disabled={loading}
+                                >
+                                    {loading ? 'Đang lưu...' : 'Lưu'}
+                                </button>
                             </>
                         ) : (
                             <>
