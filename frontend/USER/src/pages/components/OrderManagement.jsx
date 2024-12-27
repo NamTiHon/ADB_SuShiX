@@ -121,6 +121,13 @@ const OrderManagement = () => {
     
         fetchData();
     }, []);
+    const canCancelOrder = (order) => {
+        if (!order.PDM_ThoiGianDat || !order.PDM_ThoiGianDen) return true;
+        const bookingTime = new Date(order.PDM_ThoiGianDat);
+        const arrivalTime = new Date(order.PDM_ThoiGianDen);
+        return bookingTime.getTime() !== arrivalTime.getTime();
+    };
+    
     return (
         <div>
             <Nav />
@@ -164,7 +171,7 @@ const OrderManagement = () => {
                                         <button onClick={() => navigate(`/order-details/${order.orderId}`)}>
                                             Theo dõi đơn hàng
                                         </button>
-                                        {(order.status === "Chờ xác nhận" || order.status === "Đã hủy") && (
+                                        {(order.status === "Chờ xác nhận" || order.status === "Đã hủy") && order.canCancel && (
                                             <button 
                                                 onClick={() => order.status === "Chờ xác nhận" ? cancelOrder(order.orderId) : null}
                                                 className={`cancel-button ${order.status === "Đã hủy" ? 'cancelled' : ''}`}
