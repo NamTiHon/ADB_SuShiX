@@ -106,118 +106,118 @@ create partition scheme s_TheThanhVien
 as partition pf_TheThanhVien
 to ([primary], [FG_Partition_7], [FG_Partition_8])
 
--- Kiểm tra phân vùng
---Bảng Khách Hàng
-SELECT DISTINCT 
-    p.partition_number,
-    p.rows AS rows_in_partition,
-    ps.name AS partition_scheme,
-    pf.name AS partition_function,
-    c.name AS partition_column
-FROM 
-    sys.partitions p
-JOIN 
-    sys.tables t ON p.object_id = t.object_id
-JOIN 
-    sys.indexes i ON i.object_id = t.object_id
-JOIN 
-    sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
-JOIN 
-    sys.partition_functions pf ON ps.function_id = pf.function_id
-JOIN 
-    sys.columns c ON c.object_id = t.object_id
-WHERE 
-    t.name = 'KhachHang' -- Tên bảng của bạn
-    AND c.column_id IN (
-        SELECT ic.column_id
-        FROM sys.index_columns ic
-        WHERE ic.object_id = t.object_id
-        AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
-    );
+-- -- Kiểm tra phân vùng
+-- --Bảng Khách Hàng
+-- SELECT DISTINCT 
+--     p.partition_number,
+--     p.rows AS rows_in_partition,
+--     ps.name AS partition_scheme,
+--     pf.name AS partition_function,
+--     c.name AS partition_column
+-- FROM 
+--     sys.partitions p
+-- JOIN 
+--     sys.tables t ON p.object_id = t.object_id
+-- JOIN 
+--     sys.indexes i ON i.object_id = t.object_id
+-- JOIN 
+--     sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
+-- JOIN 
+--     sys.partition_functions pf ON ps.function_id = pf.function_id
+-- JOIN 
+--     sys.columns c ON c.object_id = t.object_id
+-- WHERE 
+--     t.name = 'KhachHang' -- Tên bảng của bạn
+--     AND c.column_id IN (
+--         SELECT ic.column_id
+--         FROM sys.index_columns ic
+--         WHERE ic.object_id = t.object_id
+--         AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
+--     );
 
---Bảng Thẻ Thành Viên
-SELECT DISTINCT
-    p.partition_number,
-    p.rows AS rows_in_partition,
-    ps.name AS partition_scheme,
-    pf.name AS partition_function,
-    c.name AS partition_column
-FROM 
-    sys.partitions p
-JOIN 
-    sys.tables t ON p.object_id = t.object_id
-JOIN 
-    sys.indexes i ON i.object_id = t.object_id
-JOIN 
-    sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
-JOIN 
-    sys.partition_functions pf ON ps.function_id = pf.function_id
-JOIN 
-    sys.columns c ON c.object_id = t.object_id
-WHERE 
-    t.name = 'TheThanhVien' -- Tên bảng của bạn
-    AND c.column_id IN (
-        SELECT ic.column_id
-        FROM sys.index_columns ic
-        WHERE ic.object_id = t.object_id
-        AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
-    );
+-- --Bảng Thẻ Thành Viên
+-- SELECT DISTINCT
+--     p.partition_number,
+--     p.rows AS rows_in_partition,
+--     ps.name AS partition_scheme,
+--     pf.name AS partition_function,
+--     c.name AS partition_column
+-- FROM 
+--     sys.partitions p
+-- JOIN 
+--     sys.tables t ON p.object_id = t.object_id
+-- JOIN 
+--     sys.indexes i ON i.object_id = t.object_id
+-- JOIN 
+--     sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
+-- JOIN 
+--     sys.partition_functions pf ON ps.function_id = pf.function_id
+-- JOIN 
+--     sys.columns c ON c.object_id = t.object_id
+-- WHERE 
+--     t.name = 'TheThanhVien' -- Tên bảng của bạn
+--     AND c.column_id IN (
+--         SELECT ic.column_id
+--         FROM sys.index_columns ic
+--         WHERE ic.object_id = t.object_id
+--         AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
+--     );
 
--- Bảng Nhân Viên
-SELECT DISTINCT
-    p.partition_number,
-    p.rows AS rows_in_partition,
-    ps.name AS partition_scheme,
-    pf.name AS partition_function,
-    c.name AS partition_column
-FROM 
-    sys.partitions p
-JOIN 
-    sys.tables t ON p.object_id = t.object_id
-JOIN 
-    sys.indexes i ON i.object_id = t.object_id
-JOIN 
-    sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
-JOIN 
-    sys.partition_functions pf ON ps.function_id = pf.function_id
-JOIN 
-    sys.columns c ON c.object_id = t.object_id
-WHERE 
-    t.name = 'NhanVien' -- Tên bảng của bạn
-    AND c.column_id IN (
-        SELECT ic.column_id
-        FROM sys.index_columns ic
-        WHERE ic.object_id = t.object_id
-        AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
-    );
+-- -- Bảng Nhân Viên
+-- SELECT DISTINCT
+--     p.partition_number,
+--     p.rows AS rows_in_partition,
+--     ps.name AS partition_scheme,
+--     pf.name AS partition_function,
+--     c.name AS partition_column
+-- FROM 
+--     sys.partitions p
+-- JOIN 
+--     sys.tables t ON p.object_id = t.object_id
+-- JOIN 
+--     sys.indexes i ON i.object_id = t.object_id
+-- JOIN 
+--     sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
+-- JOIN 
+--     sys.partition_functions pf ON ps.function_id = pf.function_id
+-- JOIN 
+--     sys.columns c ON c.object_id = t.object_id
+-- WHERE 
+--     t.name = 'NhanVien' -- Tên bảng của bạn
+--     AND c.column_id IN (
+--         SELECT ic.column_id
+--         FROM sys.index_columns ic
+--         WHERE ic.object_id = t.object_id
+--         AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
+--     );
 
---Bảng Bộ Phận Nhân Viên
-SELECT DISTINCT
-    p.partition_number,
-    p.rows AS rows_in_partition,
-    ps.name AS partition_scheme,
-    pf.name AS partition_function,
-    c.name AS partition_column
-FROM 
-    sys.partitions p
-JOIN 
-    sys.tables t ON p.object_id = t.object_id
-JOIN 
-    sys.indexes i ON i.object_id = t.object_id
-JOIN 
-    sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
-JOIN 
-    sys.partition_functions pf ON ps.function_id = pf.function_id
-JOIN 
-    sys.columns c ON c.object_id = t.object_id
-WHERE 
-    t.name = 'BoPhan_NhanVien' -- Tên bảng của bạn
-    AND c.column_id IN (
-        SELECT ic.column_id
-        FROM sys.index_columns ic
-        WHERE ic.object_id = t.object_id
-        AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
-    );
+-- --Bảng Bộ Phận Nhân Viên
+-- SELECT DISTINCT
+--     p.partition_number,
+--     p.rows AS rows_in_partition,
+--     ps.name AS partition_scheme,
+--     pf.name AS partition_function,
+--     c.name AS partition_column
+-- FROM 
+--     sys.partitions p
+-- JOIN 
+--     sys.tables t ON p.object_id = t.object_id
+-- JOIN 
+--     sys.indexes i ON i.object_id = t.object_id
+-- JOIN 
+--     sys.partition_schemes ps ON i.data_space_id = ps.data_space_id
+-- JOIN 
+--     sys.partition_functions pf ON ps.function_id = pf.function_id
+-- JOIN 
+--     sys.columns c ON c.object_id = t.object_id
+-- WHERE 
+--     t.name = 'BoPhan_NhanVien' -- Tên bảng của bạn
+--     AND c.column_id IN (
+--         SELECT ic.column_id
+--         FROM sys.index_columns ic
+--         WHERE ic.object_id = t.object_id
+--         AND ic.index_id = 1 -- 1 là ID của primary hoặc clustered index, bạn cần điều chỉnh cho index dùng phân vùng
+--     );
 
 
 
