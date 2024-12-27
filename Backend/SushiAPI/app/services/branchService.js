@@ -72,30 +72,48 @@ export const branchService = {
             const pool = await conn;
             const request = pool.request();
     
-            // Add parameters with correct SQL types
+            // Parse and validate time strings
+            const parseTime = (timeStr) => {
+                if (!timeStr) return null;
+                
+                // Remove any milliseconds
+                const cleanTime = timeStr.split('.')[0];
+                
+                // Ensure time is in HH:mm:ss format
+                const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/;
+                if (!timeRegex.test(cleanTime)) {
+                    throw new Error(`Invalid time format: ${timeStr}`);
+                }
+                
+                return cleanTime;
+            };
+    
+            const openingTime = parseTime(updates.CN_TGMoCua);
+            const closingTime = parseTime(updates.CN_TGDongCua);
+    
+            console.log('Parsed time values:', { openingTime, closingTime });
+    
+            // Add parameters with explicit types
             request.input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh);
             request.input('Ten', sql.NVarChar(50), updates.CN_Ten);
             request.input('DiaChi', sql.NVarChar(100), updates.CN_DiaChi);
-            request.input('TGMoCua', sql.Time, updates.CN_TGMoCua);
-            request.input('TGDongCua', sql.Time, updates.CN_TGDongCua);
+            request.input('TGMoCua', sql.VarChar(8), openingTime);
+            request.input('TGDongCua', sql.VarChar(8), closingTime);
             request.input('SDT', sql.VarChar(12), updates.CN_SDT);
-            request.input('BaiDoXeMay', sql.Bit, updates.CN_BaiDoXeMay);
-            request.input('BaiDoXeOto', sql.Bit, updates.CN_BaiDoXeOto);
-            request.input('HoTroGiaoHang', sql.Bit, updates.CN_HoTroGiaoHang);
+            request.input('BaiDoXeMay', sql.Bit, Boolean(updates.CN_BaiDoXeMay));
+            request.input('BaiDoXeOto', sql.Bit, Boolean(updates.CN_BaiDoXeOto));
+            request.input('HoTroGiaoHang', sql.Bit, Boolean(updates.CN_HoTroGiaoHang));
             request.input('MaQuanLy', sql.VarChar(12), updates.CN_MaQuanLy);
             request.input('MaKhuVuc', sql.VarChar(12), updates.CN_MaKhuVuc);
     
-            // Execute stored procedure
             await request.execute('usp_ChinhSuaThongTinChiNhanh');
     
-            // Get updated branch data
             const result = await pool.request()
                 .input('MaChiNhanh', sql.VarChar(12), CN_MaChiNhanh)
                 .query('SELECT * FROM ChiNhanh WHERE CN_MaChiNhanh = @MaChiNhanh');
     
             return result.recordset[0];
-        } 
-        catch (error) {
+        } catch (error) {
             console.error('Error updating branch:', error);
             throw new Error(`Failed to update branch: ${error.message}`);
         }
