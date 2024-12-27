@@ -73,3 +73,13 @@ export const deleteBill = async (req, res) => {
         res.status(500).json({ message: 'Failed to delete bill', error: error.message });
     }
 };
+
+export const getBillByOrderId = async (req, res) => {
+    try {
+        const bill = await billService.getBillByOrderId(req.params.orderId);
+        if (!bill) return res.status(404).json({ message: 'Bill not found' });
+        res.status(200).json({ message: 'Bill fetched successfully', data: bill });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch bill', error: error.message });
+    }
+}

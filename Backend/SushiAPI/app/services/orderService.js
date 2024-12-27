@@ -337,4 +337,21 @@ export const orderService = {
             throw new Error('Failed to cancel order');
         }
     },
+
+    getOrderByPhone: async (SDT_KH) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('SDT_KH', sql.VarChar(12), SDT_KH)
+                .query(`
+                    SELECT * 
+                    FROM PhieuDatMon
+                    WHERE PDM_SDT_KH = @SDT_KH
+                `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching order by phone:', error);
+            throw new Error('Failed to fetch order');
+        }
+    }
 };

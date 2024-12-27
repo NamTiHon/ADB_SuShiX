@@ -12,6 +12,7 @@ import Mgmt_Booking from './pages/components/Mgmt_Booking';
 import Mgmt_OnlineOrder from './pages/components/Mgmt_OnlineOrder';
 import Staff_Add_Booking from './pages/components/Staff_Add_Booking';
 import Bill from './pages/components/Bill';
+import CheckDish from './pages/components/CheckDish';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                     <Route path="/mgmt-online-order" element={<Mgmt_OnlineOrder />} />
                     <Route path="/staff-add-booking" element={<Staff_Add_Booking />} />
                     <Route path="/bill/:billIds" element={<Bill/>} />
+                    <Route path="/check-dish" element={<CheckDish />} />
                 </Routes>
             </Router>
     );

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getBills, getBillById, getBillsByCustomer, getBillsByDate, createBill,  updateBill, deleteBill } from '../controllers/billController.js';
+import { getBills, getBillById, getBillsByCustomer, getBillsByDate, createBill,  updateBill, deleteBill, getBillByOrderId } from '../controllers/billController.js';
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.get('/date/:ThoiGianDat', getBillsByDate);
 router.post('/create', createBill);
 router.put('/:billId', updateBill);
 router.delete('/:billId', deleteBill);
+router.get('/order/:orderId', getBillByOrderId);
 
 export default router;

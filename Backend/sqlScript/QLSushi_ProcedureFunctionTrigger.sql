@@ -425,6 +425,7 @@ begin
 	
 	begin
 		insert into MonDuocDat(MDD_MaMon, MDD_MaPhieu, MDD_SoLuong)
+		output inserted.*
 			values
 			(@MaMon, @MaPhieu, @SoLuong)
 	end

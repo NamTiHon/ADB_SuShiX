@@ -108,4 +108,17 @@ export const billService = {
             throw new Error('Failed to delete bill');
         }
     },
+
+    getBillByOrderId: async (orderId) => {
+        try {
+            const pool = await conn;
+            const result = await pool.request()
+                .input('MaPhieu', sql.VarChar(12), orderId)
+                .query('SELECT * FROM HoaDon where HD_MaPhieu = @MaPhieu');
+            return result.recordset[0];
+        } catch (error) {
+            console.error('Error fetching bill by order ID:', error);
+            throw new Error('Failed to fetch bill');
+        }
+    }
 };

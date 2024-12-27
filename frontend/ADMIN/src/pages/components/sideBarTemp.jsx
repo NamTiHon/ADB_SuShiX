@@ -7,6 +7,7 @@ function SideBarTemp() {
             <ul>
                 <a href="/mgmt-customer"><li>Quản lý khách hàng</li></a>
                 <a href="/staff-add-booking"><li>Đặt món</li></a>
+                <a href='/check-dish'><li>Kiểm tra đặt món</li></a>
             </ul>
         </aside>
     );

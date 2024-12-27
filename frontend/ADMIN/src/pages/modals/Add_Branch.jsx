@@ -22,7 +22,7 @@ const Add_Branch = ({ onClose, onAdd }) => {
     const [searchRegionTerm, setSearchRegionTerm] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
     const [showRegionDropdown, setShowRegionDropdown] = useState(false);
-    const [errors, setErrors] = useState({});
+    const [errors ] = useState({});
     const [branchCounter, setBranchCounter] = useState(0);
 
 

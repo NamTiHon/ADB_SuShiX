@@ -155,5 +155,16 @@ export const orderController = {
             console.error('Controller error:', error);
             res.status(500).json({ message: error.message });
         }
+    },
+
+    getOrderByPhoneNumber: async (req, res) => {
+        try {
+            const { phoneNumber } = req.params; // Update this line
+            const orders = await orderService.getOrderByPhone(phoneNumber); // Update this line
+            res.status(200).json(orders);
+        } catch (error) {
+            console.error('Controller error:', error);
+            res.status(500).json({ message: error.message });
+        }
     }
 };
