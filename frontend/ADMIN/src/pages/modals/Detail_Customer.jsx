@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/css-modals/detail-customer.css';
 
-const Detail_Customer = ({ item, onClose, onUpdate }) => {
+const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedCustomer, setUpdatedCustomer] = useState({ ...item });
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,34 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
         }));
         setError(null);
     };
+    const handleDelete = async () => {
+        if (!window.confirm('Bạn có chắc chắn muốn xóa khách hàng này?')) {
+            return;
+        }
 
+        setLoading(true);
+        try {
+            const response = await fetch(`http://localhost:3000/api/auth/user/${item.customerId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Xóa khách hàng thất bại');
+            }
+
+            alert('Xóa khách hàng thành công!');
+            onDelete(); // Call onDelete to refresh parent component
+            onClose(); // Close modal after successful deletion
+            window.location.reload(); // Reload page
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
     const validateForm = () => {
         if (!updatedCustomer.name?.trim()) return 'Họ tên không được để trống';
         if (!updatedCustomer.cccd?.trim()) return 'CCCD không được để trống';
@@ -137,7 +164,24 @@ const Detail_Customer = ({ item, onClose, onUpdate }) => {
                                 <p><strong>Giới tính:</strong> {updatedCustomer.gender}</p>
                                 <p><strong>Số CCCD:</strong> {updatedCustomer.cccd}</p>
                                 <p><strong>Email:</strong> {updatedCustomer.email}</p>
-                                <button className="update-button" onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
+                                {!isEditing && (
+                                    <div className="button-group">
+                                        <button 
+                                            className="update-button" 
+                                            onClick={() => setIsEditing(true)}
+                                            disabled={loading}
+                                        >
+                                            Chỉnh sửa
+                                        </button>
+                                        <button 
+                                            className="delete-button" 
+                                            onClick={handleDelete}
+                                            disabled={loading}
+                                        >
+                                            {loading ? 'Đang xóa...' : 'Xóa'}
+                                        </button>
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>
