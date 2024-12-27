@@ -1,11 +1,89 @@
 import React, { useState } from 'react';
-import '../css/css-modals/detail-booking.css';
+import '../css/css-modals/detail-online-order.css';
 
 const Detail_OnlineOrder = ({ booking, onClose, onUpdate, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedOrder, setUpdatedOrder] = useState({ ...booking });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const ORDER_STATUSES = {
+        TABLE: {
+            PENDING: 'Chờ xác nhận',
+            CONFIRMED: 'Đã xác nhận', 
+            WAITING: 'Chờ đến',
+            COMPLETED: 'Đã hoàn thành',
+            CANCELLED: 'Đã hủy'
+        },
+        DELIVERY: {
+            PENDING: 'Chờ xác nhận',
+            CONFIRMED: 'Đã xác nhận',
+            DELIVERING: 'Đang giao',
+            COMPLETED: 'Đã hoàn thành',
+            CANCELLED: 'Đã hủy'
+        }
+    };
+    const StatusSelect = ({ currentStatus, isTableOrder, onStatusChange, loading }) => {
+        const statuses = isTableOrder ? [
+            ORDER_STATUSES.TABLE.PENDING,
+            ORDER_STATUSES.TABLE.CONFIRMED,
+            ORDER_STATUSES.TABLE.WAITING,
+            ORDER_STATUSES.TABLE.COMPLETED
+        ] : [
+            ORDER_STATUSES.DELIVERY.PENDING,
+            ORDER_STATUSES.DELIVERY.CONFIRMED,
+            ORDER_STATUSES.DELIVERY.DELIVERING,
+            ORDER_STATUSES.DELIVERY.COMPLETED
+        ];
+    
+        return (
+            <select 
+                value={currentStatus}
+                onChange={(e) => {
+                    if(window.confirm(`Bạn có chắc muốn chuyển sang trạng thái "${e.target.value}"?`)) {
+                        onStatusChange(e.target.value);
+                    }
+                }}
+                disabled={loading || currentStatus === ORDER_STATUSES.TABLE.CANCELLED || 
+                         currentStatus === ORDER_STATUSES.TABLE.COMPLETED ||
+                         currentStatus === ORDER_STATUSES.DELIVERY.COMPLETED}
+                className="status-select"
+            >
+                {statuses.map(status => (
+                    <option key={status} value={status}>
+                        {status}
+                    </option>
+                ))}
+            </select>
+        );
+    };
+    const handleStatusUpdate = async (newStatus) => {
+        try {
+            setLoading(true);
+            setError(null);
+    
+            const response = await fetch(`http://localhost:3000/api/order/status/${booking.orderId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    orderId: booking.orderId,
+                    status: newStatus 
+                })
+            });
+    
+            if (!response.ok) throw new Error('Không thể cập nhật trạng thái');
+    
+            const result = await response.json();
+            if (result.success) {
+                await onUpdate({ ...booking, status: newStatus });
+                onClose(); // Close modal first
+                window.location.reload(); // Then reload page
+            }
+        } catch (err) {
+            setError('Lỗi: ' + err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
     const calculateDeliveryTime = (orderDate) => {
         try {
             const [time, date] = orderDate.split(' ');
@@ -184,21 +262,25 @@ const Detail_OnlineOrder = ({ booking, onClose, onUpdate, onDelete }) => {
                                     </table>
                                 </div>
                                 <div className="buttons">
-                                    <button 
-                                        className="update-button" 
-                                        onClick={() => setIsEditing(true)}
-                                        disabled={loading}
-                                    >
-                                        Chỉnh sửa
-                                    </button>
-                                    {booking.status !== 'Đã hủy' && (
-                                        <button 
-                                            className="cancel-button" 
-                                            onClick={handleDeleteClick}
-                                            disabled={loading}
-                                        >
-                                            {loading ? 'Đang hủy...' : 'Hủy phiếu đặt'}
-                                        </button>
+                                    {booking.status !== ORDER_STATUSES.TABLE.CANCELLED && (
+                                        <div className="status-buttons">
+                                            <StatusSelect 
+                                                currentStatus={booking.status}
+                                                isTableOrder={Boolean(booking.tableNumber)}
+                                                onStatusChange={handleStatusUpdate}
+                                                loading={loading}
+                                            />
+                                            {booking.status !== ORDER_STATUSES.TABLE.COMPLETED && 
+                                            booking.status !== ORDER_STATUSES.DELIVERY.COMPLETED && (
+                                                <button 
+                                                    className="cancel-button" 
+                                                    onClick={handleDeleteClick}
+                                                    disabled={loading}
+                                                >
+                                                    {loading ? 'Đang hủy...' : 'Hủy đơn'}
+                                                </button>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             </>
