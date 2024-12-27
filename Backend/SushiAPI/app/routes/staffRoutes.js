@@ -5,5 +5,8 @@ const router = express.Router();
 
 // Cập nhật route để chấp nhận các tham số page và limit
 router.get('/', staffController.ShowAllStaffs);
-
+router.post('/', staffController.addStaff);
+router.post('/department', staffController.addDepartment);
+router.get('/department', staffController.getDepartment);
+router.get('/salary/:departmentName', staffController.getSalaryByDepartment);
 export default router;
