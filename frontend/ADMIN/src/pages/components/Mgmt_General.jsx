@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import SideBar from './Sidebar';
 import SideBarTemp from './sideBarTemp';
@@ -54,14 +54,14 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
 
     const handleUpdate = (item) => {
         // Implement the update logic here
-        setItems(prevCustomers =>
-            prevCustomers.map(customer =>
-                customer.customerId === item.customerId
-                    ? { ...customer, ...item } // Cập nhật dữ liệu khách hàng
-                    : customer
+        setItems(prevItems =>
+            prevItems.map(prevItem =>
+                prevItem.staffId === item.staffId
+                    ? { ...prevItem, ...item } // Update the item
+                    : prevItem
             )
         );
-        console.log('Update customer:', item);
+        console.log('Update item:', item);
     };
 
     const handleDeleteItem = (itemToDelete) => {
@@ -100,7 +100,6 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
         const value = filterField.split('.').reduce((o, i) => o[i], item);
         return value && value.toString().toLowerCase().includes(searchQuery.toLowerCase());
     });
-
 
     const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
@@ -186,9 +185,9 @@ function Mgmt_General({ columns, initialData, title, AddModal, DetailModal }) {
                             </thead>
                             <tbody>
                                 {currentItems.flatMap(subArray => subArray).map(item => (
-                                    <tr key={item.itemId} onClick={() => handleRowClick(item)}>
+                                    <tr key={item.staffId} onClick={() => handleRowClick(item)}>
                                         {columns.filter(column => column.visible).map(column => (
-                                            <td key={`${item.itemId}-${column.id}`}>
+                                            <td key={`${item.staffId}-${column.id}`}>
                                                 {column.id === 'image' ? (
                                                     <img 
                                                         src={item[column.value] || 'default-image-path.jpg'} 

@@ -13,6 +13,7 @@ const columns = [
     { id: 'workingDepartment', header: 'Phòng ban', value: 'workingDepartment', editable: true, visible: true },
     { id: 'position', header: 'Chức vụ', value: 'position', editable: true, visible: true }
 ];
+
 const formatDate = (datetime) => {
     if (!datetime) return '';
     const date = new Date(datetime);
@@ -24,13 +25,11 @@ function StaffMgmt() {
     const [staffs, setStaffs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 100000; // Adjust as needed
 
     useEffect(() => {
         const fetchStaffs = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/staffs`);
+                const response = await fetch('http://localhost:3000/api/staffs');
                 if (!response.ok) {
                     throw new Error('Failed to fetch staffs');
                 }
@@ -44,12 +43,18 @@ function StaffMgmt() {
                         name: staff?.NV_HoTen || '',
                         gender: staff?.NV_GioiTinh || '',
                         salary: new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(staff?.BP_NV_Luong || 0),
-                        startDate: formatDate(staff?.NV_NgayVaoLam|| ''),
+                        startDate: formatDate(staff?.NV_NgayVaoLam || ''),
                         resignationDate: formatDate(staff?.NV_NgayNghiViec || ''),
-                        workingDepartment: staff?.BP_NV_TenBoPhan|| '',
-                        position: staff?.BP_NV_ChucVu || ''
+                        workingDepartment: staff?.BP_NV_TenBoPhan || '',
+                        position: staff?.BP_NV_ChucVu || '',
+                        phone: staff?.NV_SDT || '',
+                        homeNumber: staff?.NV_SoNha || '',
+                        street: staff?.NV_TenDuong || '',
+                        ward: staff?.NV_TenPhuong || '',
+                        district: staff?.NV_TenQuan || '',
+                        city: staff?.NV_TenThanhPho || ''
                     }));
-                setStaffs(prevStaffs => [...prevStaffs, ...transformedStaffs]);
+                setStaffs(transformedStaffs);
             } catch (err) {
                 setError(err.message);
                 console.error('Error fetching staffs:', err);
@@ -59,11 +64,7 @@ function StaffMgmt() {
         };
 
         fetchStaffs();
-    }, [currentPage]);
-
-    const indexOfLastStaff = currentPage * itemsPerPage;
-    const indexOfFirstStaff = indexOfLastStaff - itemsPerPage;
-    const currentStaffs = staffs.slice(indexOfFirstStaff, indexOfLastStaff);
+    }, []);
 
     return (
         <div>
@@ -72,16 +73,15 @@ function StaffMgmt() {
                     <div className="loading-spinner"></div>
                 </div>
             ) : (
-            <Mgmt_General
-                columns={columns}
-                initialData={currentStaffs}
-                title={'Quản lý nhân viên'}
-                AddModal={AddModal}
-                DetailModal={DetailModal}
-            />
+                <Mgmt_General
+                    columns={columns}
+                    initialData={staffs}
+                    title={'Quản lý nhân viên'}
+                    AddModal={AddModal}
+                    DetailModal={DetailModal}
+                />
             )}
         </div>
-        
     );
 }
 
