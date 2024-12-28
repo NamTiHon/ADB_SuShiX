@@ -6,6 +6,7 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
     const [updatedStaff, setUpdatedStaff] = useState({});
     const [branches, setBranches] = useState([]);
     const [departments, setDepartments] = useState([]);
+    const [isWorkHistoryVisible, setIsWorkHistoryVisible] = useState(false);
 
     useEffect(() => {
         if (item) {
@@ -152,7 +153,7 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
             }
             onDelete(item.staffId);
             onClose();
-            window.location.reload(); 
+            window.location.reload();
         } catch (error) {
             console.error('Error deleting staff:', error);
             alert('Có lỗi xảy ra khi xóa nhân viên');
@@ -264,11 +265,44 @@ const Detail_Staff = ({ item, onClose, onUpdate, onDelete }) => {
                         <button className="save-button" onClick={handleSave}>Lưu</button>
                     ) : (
                         <>
-                            <button className="update-button-temp" onClick={() => setIsEditing(true)}>Chỉnh sửa thông tin cá nhân</button>
+                            <button className="update-button-temp" onClick={() => { setIsEditing(true); setIsWorkHistoryVisible(false); }}>Chỉnh sửa thông tin cá nhân</button>
                             <button className="delete-button-temp" onClick={handleDelete}>Xóa nhân viên</button>
+                            <button
+                                className="see-work-history-button"
+                                onClick={() => setIsWorkHistoryVisible(!isWorkHistoryVisible)}
+                            >
+                                {isWorkHistoryVisible ? 'Ẩn lịch sử công tác' : 'Xem lịch sử công tác'}
+                            </button>
                         </>
                     )}
                 </div>
+                {isWorkHistoryVisible && (
+                    <div className="modal-section">
+                        <h3>Lịch Sử Công Tác</h3>
+                        {(!item.workHistory || item.workHistory.length === 0) ? (
+                            <p className="no-history-message">Nhân viên chưa chuyển chi nhánh hoặc chưa nghỉ việc</p>
+                        ) : (
+                            <table className="work-history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Chi nhánh</th>
+                                        <th>Ngày bắt đầu</th>
+                                        <th>Ngày kết thúc</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {item.workHistory.map((history, index) => (
+                                        <tr key={index}>
+                                            <td>{history.branch}</td>
+                                            <td>{history.startDate}</td>
+                                            <td>{history.endDate}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );

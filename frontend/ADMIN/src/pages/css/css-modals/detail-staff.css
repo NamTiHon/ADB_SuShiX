@@ -117,9 +117,9 @@ h3 {
 
 .see-work-history-button {
     margin-top: 10px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     padding: 8px 12px;
-    background-color: #f09;
+    background-color: #ff4d4d;
     color: white;
     border: none;
     border-radius: 4px;
@@ -128,7 +128,7 @@ h3 {
 }
 
 .see-work-history-button:hover {
-    background-color: #c93c91;
+    background-color: #cc0000;
 }
 
 .save-button {
@@ -163,6 +163,6 @@ h3 {
     align-self: center;
 }
 .update-button-temp:hover,
-.delete-button:hover {
+.delete-button-temp:hover {
     background-color: #cc0000; /* Darker red on hover */
 }
