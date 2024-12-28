@@ -785,6 +785,28 @@ begin
 end
 
 go
+-- Tính doanh thu theo tháng( đầu vào là tháng, năm, đầu ra là daonh thu theo tháng)
+create or alter proc usp_DoanhThuTheoThang
+	@month int,
+	@year int,
+	@revenue float out
+as
+begin
+	set nocount on
+	
+	if (@month > month(getdate()) and @year = year(getdate())) or @year > year(getdate())
+	begin
+		print(N'Thời gian này chưa có thông tin.')
+		return
+	end
+
+	set @revenue = isnull((select sum(HD_TongTienThanhToan) from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
+				   where month(PDM_ThoiGianDat) = @month and year(PDM_ThoiGianDat) = @year), 0)
+
+end
+
+
+go
 --FUNCTION
 -- Xem danh sách các món ăn có ở khu vực X
 create or alter function uf_DanhSachMonAnTheoKhuVuc
