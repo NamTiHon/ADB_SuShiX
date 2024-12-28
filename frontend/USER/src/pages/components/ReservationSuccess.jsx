@@ -37,7 +37,7 @@ const ReservationSuccess = () => {
                     </div>
 
                     <div className="success-actions">
-                        <button onClick={() => navigate('/reservation-history')} className="history-btn">
+                        <button onClick={() => navigate('/order-management')} className="history-btn">
                             Xem lịch sử đặt bàn
                         </button>
                         <button onClick={() => navigate('/')} className="home-btn">

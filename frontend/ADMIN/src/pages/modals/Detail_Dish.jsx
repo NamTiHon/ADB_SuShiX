@@ -109,45 +109,45 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
                         {isEditing ? (
                             <>
                                 {fields.map((field) => (
-    <p key={field.name}>
-        <strong>{field.label}:</strong>
-        {field.editable ? (
-            typeof item[field.name] === 'boolean' ? (
-                <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={Boolean(updatedItem[field.name])}
-                    onChange={handleChange}
-                />
-            ) : field.name === 'price' || field.name === 'MA_GiaHienTai' ? (
-                <input
-                    type="number"
-                    name={field.name}
-                    value={updatedItem[field.name]}
-                    onChange={handleChange}
-                    min="0"
-                    step="1000"
-                />
-            ) : (
-                <input
-                    type="text"
-                    name={field.name}
-                    value={updatedItem[field.name]}
-                    onChange={handleChange}
-                />
-            )
-        ) : (
-            <span>
-                {typeof item[field.name] === 'boolean' 
-                    ? (item[field.name] ? 'Có' : 'Không') 
-                    : field.name === 'price' || field.name === 'MA_GiaHienTai'
-                        ? Number(item[field.name]).toLocaleString()
-                        : item[field.name]
-                }
-            </span>
-        )}
-    </p>
-))}
+                                    <p key={field.name}>
+                                        <strong>{field.label}:</strong>
+                                        {field.editable ? (
+                                            typeof item[field.name] === 'boolean' ? (
+                                                <input
+                                                    type="checkbox"
+                                                    name={field.name}
+                                                    checked={Boolean(updatedItem[field.name])}
+                                                    onChange={handleChange}
+                                                />
+                                            ) : field.name === 'price' || field.name === 'MA_GiaHienTai' ? (
+                                                <input
+                                                    type="number"
+                                                    name={field.name}
+                                                    value={updatedItem[field.name]}
+                                                    onChange={handleChange}
+                                                    min="0"
+                                                    step="1000"
+                                                />
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    name={field.name}
+                                                    value={updatedItem[field.name]}
+                                                    onChange={handleChange}
+                                                />
+                                            )
+                                        ) : (
+                                            <span>
+                                                {typeof item[field.name] === 'boolean' 
+                                                    ? (item[field.name] ? 'Có' : 'Không') 
+                                                    : field.name === 'price' || field.name === 'MA_GiaHienTai'
+                                                        ? Number(item[field.name]).toLocaleString()
+                                                        : item[field.name]
+                                                }
+                                            </span>
+                                        )}
+                                    </p>
+                                ))}
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (
