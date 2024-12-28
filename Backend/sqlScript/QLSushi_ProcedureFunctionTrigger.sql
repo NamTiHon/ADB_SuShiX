@@ -35,33 +35,36 @@ go
 
 --Chỉnh sửa thông tin món ăn
 CREATE OR ALTER PROCEDURE usp_ChinhSuaThongTinMonAn
-	@MaMon varchar(12), 
-	@TenMon nvarchar(50) = NULL, 
-	@Gia float = NULL,
-	@KhauPhan int = NULL,
-	@CoSan BIT = NULL,
-	@HoTroGiaoHang BIT = NULL,
-	@TenDanhMuc varchar(20) = NULL
+    @MaMon varchar(12), 
+    @TenMon nvarchar(50) = NULL, 
+    @Gia float = NULL,
+    @KhauPhan int = NULL,
+    @CoSan BIT = NULL,
+    @HoTroGiaoHang BIT = NULL,
+    @TenDanhMuc varchar(20) = NULL,
+    @HinhAnh varchar(100) = NULL
 AS
 BEGIN
-	if not exists(select * from MonAn where MA_MaMon = @MaMon)
-	begin
-		print(N'Món ăn không tồn tại.')
-		return
-	end
-	else
-	begin
-		update MonAn
-		set MA_TenMon = coalesce(@TenMon, MA_TenMon), --Nếu không thay đổi tên món, giữ tên món như cũ
-			MA_GiaHienTai = coalesce(@Gia, MA_GiaHienTai),
-			MA_KhauPhan = coalesce(@KhauPhan, MA_KhauPhan),
-			MA_CoSan = coalesce(@CoSan, MA_CoSan), 
-			MA_HoTroGiaoHang = coalesce(@HoTroGiaoHang, MA_HoTroGiaoHang),
-			MA_TenDanhMuc =  coalesce(@TenDanhMuc, MA_TenDanhMuc)
-		where MA_MaMon = @MaMon
-	end
+    if not exists(select * from MonAn where MA_MaMon = @MaMon)
+    begin
+        print(N'Món ăn không tồn tại.')
+        return
+    end
+    else
+    begin
+        update MonAn
+        set MA_TenMon = coalesce(@TenMon, MA_TenMon),
+            MA_GiaHienTai = coalesce(@Gia, MA_GiaHienTai),
+            MA_KhauPhan = coalesce(@KhauPhan, MA_KhauPhan),
+            MA_CoSan = coalesce(@CoSan, MA_CoSan), 
+            MA_HoTroGiaoHang = coalesce(@HoTroGiaoHang, MA_HoTroGiaoHang),
+            MA_TenDanhMuc = coalesce(@TenDanhMuc, MA_TenDanhMuc),
+            MA_HinhAnh = coalesce(@HinhAnh, MA_HinhAnh)
+        where MA_MaMon = @MaMon;
 
-	print(N'Đã thay đổi món ăn')
+        -- Return updated dish
+        select * from MonAn where MA_MaMon = @MaMon;
+    end
 END;
 
 go
@@ -596,6 +599,11 @@ begin
 	if exists(select * from KhachHang where KH_SDT = @SDT)
 	begin
 		print(N'Số điện thoại này đã tồn tại khách hàng đăng ký.')
+		return
+	end
+	if exists(select * from KhachHang where KH_Email = @Email)
+	begin
+		print(N'Email này đã tồn tại khách hàng đăng ký.')
 		return
 	end
 	else

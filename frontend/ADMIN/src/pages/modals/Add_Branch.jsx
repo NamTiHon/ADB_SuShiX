@@ -129,7 +129,7 @@ const Add_Branch = ({ onClose, onAdd }) => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             const branchWithId = {
                 ...newBranch,
@@ -137,11 +137,19 @@ const Add_Branch = ({ onClose, onAdd }) => {
                 CN_TGMoCua: convertToDateTime(newBranch.CN_TGMoCua),
                 CN_TGDongCua: convertToDateTime(newBranch.CN_TGDongCua),
             };
+            
             console.log('Adding branch:', branchWithId);
             await addBranch(branchWithId);
-            alert('Thêm chi nhánh thành công');
+            
+            // Update parent component
             onAdd(branchWithId);
+            
+            // Show success message
+            alert('Thêm chi nhánh thành công');
+            
+            // Close modal and reload page
             onClose();
+            window.location.reload();
         } catch (error) {
             console.error('Error adding branch:', error);
             alert('Failed to add branch');

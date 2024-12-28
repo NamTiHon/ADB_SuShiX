@@ -10,10 +10,19 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
     if (!item) return null;
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUpdatedItem((prevItem) => ({
+        const { name, value, type, checked } = e.target;
+        let finalValue = value;
+    
+        // Handle different input types
+        if (type === 'checkbox') {
+            finalValue = checked;
+        } else if (type === 'number') {
+            finalValue = value === '' ? '' : Number(value);
+        }
+    
+        setUpdatedItem(prevItem => ({
             ...prevItem,
-            [name]: value,
+            [name]: finalValue,
         }));
     };
 
@@ -56,18 +65,19 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
         try {
             setLoading(true);
             
-            // Map updated item to API fields
             const updates = {
                 MA_TenMon: updatedItem.dishName || updatedItem.MA_TenMon,
-                MA_GiaHienTai: updatedItem.price || updatedItem.MA_GiaHienTai,
-                MA_KhauPhan: updatedItem.portion || updatedItem.MA_KhauPhan,
-                MA_CoSan: updatedItem.available || updatedItem.MA_CoSan,
-                MA_HoTroGiaoHang: updatedItem.deliverySupport || updatedItem.MA_HoTroGiaoHang,
+                MA_GiaHienTai: Number(updatedItem.price || updatedItem.MA_GiaHienTai),
+                MA_KhauPhan: Number(updatedItem.portion || updatedItem.MA_KhauPhan),
+                MA_CoSan: Boolean(updatedItem.available),
+                MA_HoTroGiaoHang: Boolean(updatedItem.deliverySupport),
                 MA_TenDanhMuc: updatedItem.category || updatedItem.MA_TenDanhMuc,
                 MA_HinhAnh: updatedItem.image || updatedItem.MA_HinhAnh
             };
     
             const dishId = updatedItem.dishId || updatedItem.MA_MaMon;
+            
+            console.log('Updating dish with:', updates);
             
             const response = await fetch(`http://localhost:3000/api/dishes/${dishId}`, {
                 method: 'PUT',
@@ -99,29 +109,45 @@ const Detail_Dish = ({ item, onClose, onUpdate, onDelete, fields }) => {
                         {isEditing ? (
                             <>
                                 {fields.map((field) => (
-                                    <p key={field.name}>
-                                        <strong>{field.label}:</strong>
-                                        {field.editable ? (
-                                            typeof item[field.name] === 'boolean' ? (
-                                                <input
-                                                    type="checkbox"
-                                                    name={field.name}
-                                                    checked={updatedItem[field.name]}
-                                                    onChange={(e) => handleChange({ target: { name: field.name, value: e.target.checked } })}
-                                                />
-                                            ) : (
-                                                <input
-                                                    type="text"
-                                                    name={field.name}
-                                                    value={updatedItem[field.name]}
-                                                    onChange={handleChange}
-                                                />
-                                            )
-                                        ) : (
-                                            <span>{typeof item[field.name] === 'boolean' ? (item[field.name] ? 'Có' : 'Không') : item[field.name]}</span>
-                                        )}
-                                    </p>
-                                ))}
+    <p key={field.name}>
+        <strong>{field.label}:</strong>
+        {field.editable ? (
+            typeof item[field.name] === 'boolean' ? (
+                <input
+                    type="checkbox"
+                    name={field.name}
+                    checked={Boolean(updatedItem[field.name])}
+                    onChange={handleChange}
+                />
+            ) : field.name === 'price' || field.name === 'MA_GiaHienTai' ? (
+                <input
+                    type="number"
+                    name={field.name}
+                    value={updatedItem[field.name]}
+                    onChange={handleChange}
+                    min="0"
+                    step="1000"
+                />
+            ) : (
+                <input
+                    type="text"
+                    name={field.name}
+                    value={updatedItem[field.name]}
+                    onChange={handleChange}
+                />
+            )
+        ) : (
+            <span>
+                {typeof item[field.name] === 'boolean' 
+                    ? (item[field.name] ? 'Có' : 'Không') 
+                    : field.name === 'price' || field.name === 'MA_GiaHienTai'
+                        ? Number(item[field.name]).toLocaleString()
+                        : item[field.name]
+                }
+            </span>
+        )}
+    </p>
+))}
                                 <button className="save-button" onClick={handleSave}>Lưu</button>
                             </>
                         ) : (

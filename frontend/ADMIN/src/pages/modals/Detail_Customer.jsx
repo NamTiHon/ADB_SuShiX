@@ -94,10 +94,9 @@ const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
             const result = await updateCustomer(updatedCustomer);
             
             if (result) {
-                // Only update this specific customer
                 const updatedData = {
                     ...updatedCustomer,
-                    customerId: item.customerId, // Ensure we keep original ID
+                    customerId: item.customerId,
                     cardId: item.cardId,
                     createdDate: item.createdDate,
                     points: item.points,
@@ -107,14 +106,11 @@ const Detail_Customer = ({ item, onClose, onUpdate, onDelete }) => {
                     staffCreatorID: item.staffCreatorID
                 };
     
-                onUpdate(updatedData); // Pass updated data to parent
-                setUpdatedCustomer(updatedData); // Update local state
+                onUpdate(updatedData); // Update parent component
+                setUpdatedCustomer(updatedData); 
                 setIsEditing(false);
-                
-                // Refresh page to ensure consistent state
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
+                alert('Cập nhật thông tin thành công!');
+                window.location.reload(); // Reload immediately after update
             }
         } catch (error) {
             setError('Failed to update customer: ' + error.message);
