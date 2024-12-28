@@ -100,7 +100,8 @@ const OrderManagement = () => {
                             tableNumber: order.PDM_SoBan || null,
                             guestCount: order.PDM_SoLuongKH || 0,
                             isTableBooking: isTableBooking,
-                            billId: bill.HD_MaHoaDon || null
+                            billId: bill.HD_MaHoaDon || null,
+                            canCancel: order.PDM_TrangThai === "Chờ xác nhận"  // Add this line
                         };
                     }
                     return acc;
@@ -171,13 +172,12 @@ const OrderManagement = () => {
                                         <button onClick={() => navigate(`/order-details/${order.orderId}`)}>
                                             Theo dõi đơn hàng
                                         </button>
-                                        {(order.status === "Chờ xác nhận" || order.status === "Đã hủy") && order.canCancel && (
+                                        {order.status === "Chờ xác nhận" && (
                                             <button 
-                                                onClick={() => order.status === "Chờ xác nhận" ? cancelOrder(order.orderId) : null}
-                                                className={`cancel-button ${order.status === "Đã hủy" ? 'cancelled' : ''}`}
-                                                disabled={order.status === "Đã hủy"}
+                                                onClick={() => cancelOrder(order.orderId)}
+                                                className="cancel-button"
                                             >
-                                                {order.status === "Đã hủy" ? 'Đã hủy' : 'Hủy đơn hàng'}
+                                                Hủy đơn hàng
                                             </button>
                                         )}
                                     </td>
