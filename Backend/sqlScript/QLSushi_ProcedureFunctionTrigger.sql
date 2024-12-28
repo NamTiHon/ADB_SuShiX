@@ -807,7 +807,7 @@ end
 
 go
 -- Tính số lượng thẻ đã lập trong tháng( đầu vào là tháng, năm, đầu ra là số lượng thẻ được lập trong tháng)
-create or alter proc usp_DoanhThuTheoThang
+create or alter proc usp_SoTheTheoThang
 	@month int,
 	@year int,
 	@count float out
