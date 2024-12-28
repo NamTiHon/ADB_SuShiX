@@ -851,8 +851,7 @@ begin
 	end
 
 	set @revenue = isnull((select sum(HD_TongTienThanhToan) from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
-																		join BoPhan_NhanVien on PDM_MaNhanVien = BP_NV_MaNhanVien
-				   where BP_NV_MaNhanVien = @MaChiNhanh and month(PDM_ThoiGianDat) = @month and year(PDM_ThoiGianDat) = @year), 0)
+				   where PDM_MaChiNhanh = @MaChiNhanh and month(PDM_ThoiGianDat) = @month and year(PDM_ThoiGianDat) = @year), 0)
 
 end
 
