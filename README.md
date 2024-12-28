@@ -38,8 +38,7 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
   2.5. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
   
-#### Lưu ý: Cần phải đặt database là DB_SuShiX trước khi chạy.  
-
+#### Lưu ý: Cần phải đặt database là DB_SuShiX trước khi chạy, đồng thời quá trình có thể tốn khá nhiều thời gian do khối lượng giao dịch nhiều.  
 
 
   2.6. Chạy file **DataConlai.sql** để nhập những data ban đầu --> **DataKhachhang.sql** --> **DataNhanvien.sql** --> **DataBophanNhanvien.sql** --> **DataThethanhvien.sql** --> **UpdateData.sql**
