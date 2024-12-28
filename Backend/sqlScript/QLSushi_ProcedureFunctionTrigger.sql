@@ -746,6 +746,7 @@ begin
 		set BP_NV_MaChiNhanh = @MaChiNhanh, BP_NV_TenBoPhan = @TenBoPhan, BP_NV_ChucVu = @ChucVu, BP_NV_Luong = @Luong
 		where BP_NV_MaNhanVien = @MaNhanVien
 	end
+
 	print(N'Cập nhật thông tin bộ phận của nhân viên thành công.')
 end
 	
@@ -827,13 +828,21 @@ begin
 end
 
 go
--- Tính doanh thu theo chi nhánh( đầu vào là chi nhánh, đầu ra là doanh thu của chi nhánh đó)
+-- Tính doanh thu theo tháng trong năm và theo chi nhánh( đầu vào là chi nhánh, tháng, năm và đầu ra là doanh thu của chi nhánh đó)
 create or alter proc usp_DoanhThuTheoChiNhanh
 	@MaChiNhanh varchar(12),
+	@month int,
+	@year int,
 	@revenue float out
 as
 begin
 	set nocount on
+
+	if (@month > month(getdate()) and @year = year(getdate())) or @year > year(getdate())
+	begin
+		print(N'Thời gian này chưa có thông tin.')
+		return
+	end
 	
 	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
 	begin
@@ -843,7 +852,7 @@ begin
 
 	set @revenue = isnull((select sum(HD_TongTienThanhToan) from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
 																		join BoPhan_NhanVien on PDM_MaNhanVien = BP_NV_MaNhanVien
-				   where BP_NV_MaNhanVien = @MaChiNhanh), 0)
+				   where BP_NV_MaNhanVien = @MaChiNhanh and month(PDM_ThoiGianDat) = @month and year(PDM_ThoiGianDat) = @year), 0)
 
 end
 
