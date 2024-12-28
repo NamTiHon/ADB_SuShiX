@@ -10,6 +10,7 @@ import promotionRoutes from './routes/promotionRoutes.js';
 import billRoutes from './routes/billRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
 import cardRoutes from './routes/cardRoutes.js';
+import homeRoutes from './routes/homeRoute.js';
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/staffs', staffRoutes);
+app.use('/api/home', homeRoutes);
 // Error Handler
 app.use(errorHandler);
 
