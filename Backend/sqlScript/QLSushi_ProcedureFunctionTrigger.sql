@@ -972,7 +972,7 @@ for insert, update
 as
 begin
 	declare @MaNhanVien varchar(12)
-	select @MaNhanVien = PDM_MaNhanVien from PhieuDatMon
+	select @MaNhanVien = PDM_MaNhanVien from inserted
 
 	if not exists( select * from BoPhan_NhanVien
 				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
@@ -990,7 +990,7 @@ for insert, update
 as
 begin
 	declare @MaNhanVien varchar(12)
-	select @MaNhanVien = TTV_MaNhanVien from TheThanhVien
+	select @MaNhanVien = TTV_MaNhanVien from inserted
 
 	if not exists( select * from BoPhan_NhanVien
 				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
@@ -1009,10 +1009,10 @@ for insert, update
 as
 begin
 	declare @SDT_KH nvarchar(30)
-	select @SDT_KH = TTV_SDT_KH from TheThanhVien
+	select @SDT_KH = TTV_SDT_KH from inserted
 
 	if exists( select * from TheThanhVien
-				   where TTV_TrangThai = N'Available')
+				   where TTV_SDT_KH = @SDT_KH and TTV_TrangThai = N'Available')
 	begin
 		raiserror(N'Lỗi: Khách hàng này đã có thẻ.', 16, 1)
 		rollback transaction
