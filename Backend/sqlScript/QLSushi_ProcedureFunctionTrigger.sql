@@ -785,7 +785,7 @@ begin
 end
 
 go
--- Tính doanh thu theo tháng( đầu vào là tháng, năm, đầu ra là daonh thu theo tháng)
+-- Tính doanh thu theo tháng( đầu vào là tháng, năm, đầu ra là doanh thu theo tháng)
 create or alter proc usp_DoanhThuTheoThang
 	@month int,
 	@year int,
@@ -805,6 +805,47 @@ begin
 
 end
 
+go
+-- Tính số lượng thẻ đã lập trong tháng( đầu vào là tháng, năm, đầu ra là số lượng thẻ được lập trong tháng)
+create or alter proc usp_DoanhThuTheoThang
+	@month int,
+	@year int,
+	@count float out
+as
+begin
+	set nocount on
+	
+	if (@month > month(getdate()) and @year = year(getdate())) or @year > year(getdate())
+	begin
+		print(N'Thời gian này chưa có thông tin.')
+		return
+	end
+
+	set @count = isnull((select count(TTV_MaThe) from TheThanhVien
+				   where month(TTV_NgayTao) = @month and year(TTV_NgayTao) = @year), 0)
+
+end
+
+go
+-- Tính doanh thu theo chi nhánh( đầu vào là chi nhánh, đầu ra là doanh thu của chi nhánh đó)
+create or alter proc usp_DoanhThuTheoChiNhanh
+	@MaChiNhanh varchar(12),
+	@revenue float out
+as
+begin
+	set nocount on
+	
+	if not exists(select * from ChiNhanh where CN_MaChiNhanh = @MaChiNhanh)
+	begin
+		print(N'Không tồn tại chi nhánh này.')
+		return
+	end
+
+	set @revenue = isnull((select sum(HD_TongTienThanhToan) from HoaDon join PhieuDatMon on HD_MaPhieu = PDM_MaPhieu
+																		join BoPhan_NhanVien on PDM_MaNhanVien = BP_NV_MaNhanVien
+				   where BP_NV_MaNhanVien = @MaChiNhanh), 0)
+
+end
 
 go
 --FUNCTION
