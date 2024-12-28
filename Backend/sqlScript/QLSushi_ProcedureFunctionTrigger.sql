@@ -848,6 +848,19 @@ begin
 end
 
 go
+-- Thống kê toàn bộ khách hàng
+create or alter proc usp_ToanBoKhachHang
+	@count float out
+as
+begin
+	set nocount on
+
+	set @count = isnull((select count(KH_SDT) from KhachHang), 0)
+
+end
+
+
+go
 --FUNCTION
 -- Xem danh sách các món ăn có ở khu vực X
 create or alter function uf_DanhSachMonAnTheoKhuVuc
@@ -982,6 +995,15 @@ create or alter function uf_XemPhieuDatMon
 	returns table
 as
 	return ( select * from MonDuocDat join PhieuDatMon on MDD_MaPhieu = PDM_MaPhieu where MDD_MaPhieu=@MaPhieu)
+go
+
+-- Thống kê top 10 món bán chạy nhất
+create or alter function uf_BanChay()
+	returns table
+as
+	return (select top 10 MA_MaMon, MA_TenMon from MonDuocDat left join MonAn on MDD_MaMon = MA_MaMon
+			group by MA_MaMon, MA_TenMon
+			order by sum(MDD_SoLuong) desc)
 go
 
 -- Stored Procedure cho hóa đơn
