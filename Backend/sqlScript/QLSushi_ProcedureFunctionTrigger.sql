@@ -965,7 +965,7 @@ GO
 --TRIGGER
 --- This is need for trigger
 
---Nhân viên đặt món phải có chức vụ là phục vụ.
+--Nhân viên đặt món không được ở bộ phận Bếp hoặc Vệ sinh.
 create or alter trigger utg_NhanVienDatMon
 on PhieuDatMon
 for insert, update
@@ -974,16 +974,16 @@ begin
 	declare @MaNhanVien varchar(12)
 	select @MaNhanVien = PDM_MaNhanVien from inserted
 
-	if not exists( select * from BoPhan_NhanVien
-				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
+	if exists( select * from BoPhan_NhanVien
+				   where BP_NV_MaNhanVien = @MaNhanVien and (BP_NV_TenBoPhan = N'Bếp' or BP_NV_TenBoPhan = N'Vệ sinh'))
 	begin
-		raiserror(N'Lỗi: Nhân viên đặt món phải có chức vụ là phục vụ.', 16, 1)
+		raiserror(N'Lỗi: Nhân viên đặt món không được ở bộ phận Bếp hoặc Vệ sinh.', 16, 1)
 		rollback transaction
 	end
 end
 
 go
---Nhân viên lập thẻ thành viên phải có chức vụ là phục vụ
+--Nhân viên lập thẻ thành viên không được ở bộ phận Bếp hoặc Vệ sinh.
 create or alter trigger utg_NhanVienLapThe
 on TheThanhVien
 for insert, update
@@ -992,10 +992,10 @@ begin
 	declare @MaNhanVien varchar(12)
 	select @MaNhanVien = TTV_MaNhanVien from inserted
 
-	if not exists( select * from BoPhan_NhanVien
-				   where BP_NV_MaNhanVien = @MaNhanVien and BP_NV_ChucVu = N'Phục vụ')
+	if exists( select * from BoPhan_NhanVien
+				   where BP_NV_MaNhanVien = @MaNhanVien and (BP_NV_TenBoPhan = N'Bếp' or BP_NV_TenBoPhan = N'Vệ sinh'))
 	begin
-		raiserror(N'Lỗi: Nhân viên lập thẻ thành viên phải có chức vụ là phục vụ.', 16, 1)
+		raiserror(N'Lỗi: Nhân viên lập thẻ thành viên không được ở bộ phận Bếp hoặc Vệ sinh.', 16, 1)
 		rollback transaction
 	end
 end
