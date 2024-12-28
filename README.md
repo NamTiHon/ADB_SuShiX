@@ -34,11 +34,13 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
   2.3. Chạy phần còn lại( tạo bảng) trong file **DB_TaoBang.sql**
 
-  2.4. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
+  2.4. Chạy file **constraint.sql** để chạy ràng buộc
+
+  2.5. Chạy file **QLSushi_ProcedureFunctionTrigger.sql** --> **Index.sql** tiếp theo
   
 #### Lưu ý: Cần phải đặt database là DB_SuShiX trước khi chạy.  
 
-  2.5. Chạy file **constraint.sql** để chạy ràng buộc
+
 
   2.6. Chạy file **DataConlai.sql** để nhập những data ban đầu --> **DataKhachhang.sql** --> **DataNhanvien.sql** --> **DataBophanNhanvien.sql** --> **DataThethanhvien.sql** --> **UpdateData.sql**
 
