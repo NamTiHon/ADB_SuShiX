@@ -56,7 +56,11 @@ function App() {
               } />
               <Route path="/table-selection" element={<TableSelection />} />
               <Route path="/reservation-success" element={<ReservationSuccess />} />
-              <Route path="/order-management" element={<OrderManagement />} />
+              <Route path="/order-management" element={
+                <PrivateRoute>
+                  <OrderManagement />
+                </PrivateRoute>
+              } />
               <Route path="/order-details/:orderId" element={<OrderDetails />} /> {/* Add this route */}
               <Route path="/rate-order/:orderId" element={<RateOrder />} /> {/* Add this route */}
             </Routes>
