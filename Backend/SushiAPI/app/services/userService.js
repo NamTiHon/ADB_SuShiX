@@ -207,6 +207,9 @@ export const userService = {
             const result = await pool.request()
                 .input('KH_SDT', sql.NVarChar(100), KH_SDT)
                 .query(`
+                    DELETE FROM TheThanhvien 
+                    OUTPUT deleted.* 
+                    WHERE TTV_SDT_KH = @KH_SDT
                     DELETE FROM KhachHang
                     OUTPUT deleted.*
                     WHERE KH_SDT = @KH_SDT
