@@ -848,14 +848,14 @@ begin
 end
 
 go
--- Thống kê toàn bộ khách hàng
+-- Thống kê toàn bộ khách hàng( theo thẻ thành viên còn hoạt động)
 create or alter proc usp_ToanBoKhachHang
 	@count float out
 as
 begin
 	set nocount on
 
-	set @count = isnull((select count(KH_SDT) from KhachHang), 0)
+	set @count = isnull((select count(TTV_SDT_KH) from TheThanhVien where TTV_TrangThai = 'Available'), 0)
 
 end
 
