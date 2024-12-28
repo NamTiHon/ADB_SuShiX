@@ -1016,17 +1016,16 @@ on TheThanhVien
 for insert, update
 as
 begin
-	declare @SDT_KH nvarchar(30)
+	declare @SDT_KH varchar(12)
 	select @SDT_KH = TTV_SDT_KH from inserted
 
-	if exists( select * from TheThanhVien
-				   where TTV_SDT_KH = @SDT_KH and TTV_TrangThai = N'Available')
+	if( select count(TTV_SDT_KH) from TheThanhVien
+				   where TTV_SDT_KH = @SDT_KH and TTV_TrangThai = 'Available') > 1
 	begin
 		raiserror(N'Lỗi: Khách hàng này đã có thẻ.', 16, 1)
 		rollback transaction
 	end
 end
-
 
 /*
 DECLARE @ProcedureName NVARCHAR(MAX);
