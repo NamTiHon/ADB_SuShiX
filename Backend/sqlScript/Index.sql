@@ -39,6 +39,7 @@ on PhieuDatMon (PDM_ThoiGianDat)
 -- Non-clustered index cho TTV_LoaiThe (bảng Thẻ thành viên)
 create nonclustered index idx_TheThanhVien_LoaiThe
 on TheThanhVien (TTV_LoaiThe)
+include (TTV_NgayTao, TTV_SoNamSuDung, TTV_DiemTichLuy, TTV_TrangThai, TTV_SDT_KH, TTV_MaNhanVien)
 
 create nonclustered index idx_TheThanhVien_NhanVienTao
 on TheThanhvien (TTV_MaNhanVien)
@@ -58,17 +59,19 @@ on NhanVien (NV_NgayVaoLam)
 create nonclustered index idx_BoPhan_NhanVien_MaChiNhanh
 on BoPhan_NhanVien (BP_NV_MaChiNhanh)
 
--- Composite index cho Lương và Tên bộ phận (bảng Bộ phận Nhân viên)
+-- Non-clustered index cho Tên bộ phận (bảng Bộ phận Nhân viên)
 create nonclustered index idx_BoPhanNhanVien_TenBoPhan
 on BoPhan_NhanVien (BP_NV_TenBoPhan)
+include (BP_NV_MaNhanVien, BP_NV_Luong, BP_NV_ChucVu)
 
 
 -- Truy vấn 1: Tìm kiếm khách hàng dựa trên loại thẻ 'Gold':
 /*
+
 set statistics time on;
 set statistics IO on;
 
-	select * 
+	select KH_HoTen, TTV_NgayTao, TTV_SoNamSuDung, TTV_DiemTichLuy, TTV_TrangThai, TTV_SDT_KH, TTV_MaNhanVien, TTV_MaThe
 	from KhachHang KH join TheThanhVien TTV on KH.KH_SDT = TTV.TTV_SDT_KH
 	where TTV.TTV_LoaiThe = 'Gold'
 
