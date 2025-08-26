@@ -3,11 +3,11 @@
 
 ## 1. frontend:
 
-Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd vào 1 trong 2 folder để chạy, tránh trường hợp sau này bị nhầm giữa admin và user
+Folder được chia ra làm 2: **user** và **admin**. Cần phải cd vào 1 trong 2 folder để chạy, tránh trường hợp sau này bị nhầm giữa admin và user
 
   1.1. Nếu muốn chạy admin: **cd admin** --> **npm install** --> **npm start**.
   
-  1.2. nếu muốn chạy user: **cd user** --> **npm install** --> **npm start**.
+  1.2. Nếu muốn chạy user: **cd user** --> **npm install** --> **npm start**.
   
 ## 2. backend:
 
@@ -45,9 +45,9 @@ Folder được chia ra làm 2 cái: **user** và **admin**. Cần phải cd và
 
 ### **Chạy backend**  
 - Mở terminal trong thư mục SushiAPI
-- chạy npm install express để tải express (nếu chưa có folder node_modules)
-- chạy npm run dev
-- sử dụng postman để test
+- Chạy npm install express để tải express (nếu chưa có folder node_modules)
+- Chạy npm run dev
+- Sử dụng postman để test API
 
 
 
