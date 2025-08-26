@@ -1,7 +1,5 @@
 # ADB_SuShiX
-## Thực hiện phần nào thì cd vào phần đó.
-  * Làm frontend: cd frontend
-  * Làm backend: cd backend
+
 
 ## 1. frontend:
 
